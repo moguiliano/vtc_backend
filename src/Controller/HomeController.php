@@ -25,5 +25,5 @@ final class HomeController extends AbstractController
     {
         return $this->render('contact.html.twig');
     }
-    }
+}
 

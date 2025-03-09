@@ -1,0 +1,237 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="card shadow-lg p-4">
+			<h2 class="text-center mb-4">Réserver un trajet</h2>
+
+			{# Affichage des messages de succès #}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">{{ message }}</div>
+			{% endfor %}
+
+			{# Formulaire de réservation #}
+			<form id="reservation-form" method="post">
+				<div class="row">
+					<div class="col-md-6">
+						{{ form_row(form.depart) }}
+						{{ form_row(form.arrivee) }}
+						{{ form_row(form.dateHeureDepart) }}
+						{{ form_row(form.NumeroVol) }}
+					</div>
+					<div
+						class="col-md-6">
+						{# Option pour un arrêt intermédiaire #}
+						<div class="form-check mb-3">
+							{{ form_widget(form.Stop, {'attr': {'class': 'form-check-input', 'id': 'stop-checkbox'}}) }}
+							<label class="form-check-label" for="stop-checkbox">Arrêt intermédiaire</label>
+						</div>
+						<div id="stopover-location" style="display: none;">
+							{{ form_row(form.lieuArret) }}
+						</div>
+						{{ form_row(form.passagers) }}
+						{{ form_row(form.bagages) }}
+						{# Option pour siège bébé #}
+						<div class="form-check mb-3">
+							{{ form_widget(form.siegeBebe, {'attr': {'class': 'form-check-input', 'id': 'babyseat-checkbox'}}) }}
+							<label class="form-check-label" for="babyseat-checkbox">Besoin d’un siège bébé</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						{{ form_row(form.nom) }}
+						{{ form_row(form.telephone) }}
+					</div>
+					<div class="col-md-6">
+						{{ form_row(form.Email) }}
+						{{ form_row(form.commentaire) }}
+					</div>
+				</div>
+
+				<div class="text-center mt-4">
+					<button type="submit" class="btn btn-primary btn-lg">Réserver</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	{# Autocomplétion de l'adresse #}
+	<form id="booking-form">
+    <div>
+        <label for="departure">Lieu de départ :</label>
+        <input type="text" id="departure" name="departure" autocomplete="off" placeholder="Entrez une adresse..." onkeyup="fetchSuggestions('departure')">
+        <button type="button" class="geoButton" data-target="departure">📍 Utiliser ma position</button>
+        <ul class="suggestions-list" id="departure-suggestions"></ul>
+    </div>
+
+    <div>
+        <label for="arrival">Lieu d'arrivée :</label>
+        <input type="text" id="arrival" name="arrival" autocomplete="off" placeholder="Entrez une adresse..." onkeyup="fetchSuggestions('arrival')">
+        <button type="button" class="geoButton" data-target="arrival">📍 Utiliser ma position</button>
+        <ul class="suggestions-list" id="arrival-suggestions"></ul>
+    </div>
+
+    <div id="stop-section" style="display: none;">
+        <label for="stop">Arrêt intermédiaire :</label>
+        <input type="text" id="stop" name="stop" autocomplete="off" placeholder="Entrez une adresse..." onkeyup="fetchSuggestions('stop')">
+        <button type="button" class="geoButton" data-target="stop">📍 Utiliser ma position</button>
+        <ul class="suggestions-list" id="stop-suggestions"></ul>
+    </div>
+
+    <div>
+        <input type="checkbox" id="add-stop" onchange="toggleStopField()"> Ajouter un arrêt intermédiaire
+    </div>
+</form>
+
+
+	<p id="distance"></p>
+	<p id="duration"></p>
+
+	<script>
+
+	const apiKey = "5vQSLKBwontpC6yqQeoA9Hp5_ytsyeN1SldFAQW1Ks8"; // Remplace par ta vraie clé API
+
+
+// ✅ Fonction principale pour récupérer les suggestions d'adresse
+async function fetchSuggestions(inputId) {
+    const inputField = document.getElementById(inputId);
+    const suggestionsList = document.getElementById(`${inputId}-suggestions`);
+    const query = inputField.value.trim();
+
+    if (query.length < 3) {
+        suggestionsList.innerHTML = ""; // Vide la liste si l'entrée est trop courte
+        return;
+    }
+
+    // ✅ API HERE pour l'autocomplétion d'adresse (sans localisation obligatoire)
+    let url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(query)}&apikey=${apiKey}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const data = await response.json();
+        displaySuggestions(data.items, inputId);
+    } catch (error) {
+        console.error("Erreur lors de la requête :", error);
+    }
+}
+
+// ✅ Fonction pour afficher les suggestions
+function displaySuggestions(suggestions, inputId) {
+    const suggestionsList = document.getElementById(`${inputId}-suggestions`);
+    suggestionsList.innerHTML = ""; // Vide la liste précédente
+
+    if (suggestions.length === 0) {
+        suggestionsList.innerHTML = "<li>Aucune suggestion trouvée</li>"; // Message si pas de résultat
+        return;
+    }
+
+    suggestions.forEach((item) => {
+        const li = document.createElement("li");
+        li.innerHTML = item.title; // Nom du lieu suggéré
+        li.addEventListener("click", () => {
+            document.getElementById(inputId).value = item.title; // Remplit le champ
+            suggestionsList.innerHTML = ""; // Vide la liste après sélection
+        });
+        suggestionsList.appendChild(li);
+    });
+}
+
+// ✅ Fonction pour activer la géolocalisation sur un champ spécifique
+document.querySelectorAll(".geoButton").forEach(button => {
+    button.addEventListener("click", () => {
+        const inputId = button.getAttribute("data-target"); // Récupère le champ cible
+        useGeolocation(inputId);
+    });
+});
+
+async function useGeolocation(inputId) {
+    if (!navigator.geolocation) {
+        alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        // ✅ API HERE Reverse Geocoding
+        let url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apikey=${apiKey}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+            const data = await response.json();
+            if (data.items.length > 0) {
+                document.getElementById(inputId).value = data.items[0].address.label; // Remplit le champ
+            } else {
+                alert("Impossible de trouver votre adresse.");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération de l'adresse :", error);
+        }
+    }, (error) => {
+        alert("Impossible d'obtenir votre position. Vérifiez vos autorisations.");
+        console.error("Erreur de géolocalisation :", error);
+    });
+}
+
+// ✅ Fonction pour afficher/cacher le champ d'arrêt intermédiaire
+function toggleStopField() {
+    const stopSection = document.getElementById("stop-section");
+    stopSection.style.display = document.getElementById("add-stop").checked ? "block" : "none";
+}
+
+// ✅ Cacher la liste lorsqu'on clique en dehors
+document.addEventListener("click", (event) => {
+    document.querySelectorAll(".suggestions-list").forEach(list => {
+        if (!list.previousElementSibling.contains(event.target) && !list.contains(event.target)) {
+            list.innerHTML = "";
+        }
+    });
+});
+
+	</script>
+
+
+
+
+
+
+	<script>
+		    document.getElementById('reservation-form').addEventListener('submit', function (event) {
+                 event.preventDefault(); // Empêcher la soumission classique
+            let origin = document.getElementById('reservation_depart').value;
+            let destination = document.getElementById('reservation_arrivee').value;
+
+            if (! origin || ! destination) {
+            alert("Veuillez saisir une adresse de départ et d'arrivée !");
+            return;
+            }
+
+            fetch('/distance', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+            {origin: origin, destination: destination}
+            )
+            }).then(response => response.json()).then(data => {
+            if (data.error) {
+            alert(data.error);
+            } else {
+            document.getElementById('distance').innerText = `Distance : ${
+            data.distance_km
+            } km`;
+            document.getElementById('duration').innerText = `Durée estimée : ${
+            data.duration_min
+            } min`;
+            }
+            }).catch(error => console.error('Erreur:', error));
+            });
+	</script>
+{% endblock %}
