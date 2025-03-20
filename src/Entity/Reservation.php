@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -23,38 +23,38 @@ class Reservation
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHeureDepart = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $stopOption = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $NumeroVol = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $Stop = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $lieuArret = null;
-
-    #[ORM\Column]
-    private ?int $passagers = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $bagages = null;
+    private ?string $stopLieu = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $siegeBebe = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(type: 'float')]
+    private float $distance;
 
-    #[ORM\Column(length: 20)]
-    private ?string $telephone = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Email = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $commentaire = null;
+    #[ORM\Column(type: 'integer')]
+    private int $duree;
 
     #[ORM\Column(length: 50)]
-    private ?string $TypeVehicule = null;
+    private ?string $typeVehicule = null;
+
+    #[ORM\Column(type: 'float')]
+    private float $prix;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isGuest = false;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $guestInfo = null;
+
+    // ✅ Toutes les propriétés sont maintenant bien placées avant les méthodes.
 
     public function getId(): ?int
     {
@@ -69,7 +69,6 @@ class Reservation
     public function setDepart(string $depart): static
     {
         $this->depart = $depart;
-
         return $this;
     }
 
@@ -81,7 +80,6 @@ class Reservation
     public function setArrivee(string $arrivee): static
     {
         $this->arrivee = $arrivee;
-
         return $this;
     }
 
@@ -93,67 +91,28 @@ class Reservation
     public function setDateHeureDepart(\DateTimeInterface $dateHeureDepart): static
     {
         $this->dateHeureDepart = $dateHeureDepart;
-
         return $this;
     }
 
-    public function getNumeroVol(): ?string
+    public function getStopOption(): ?bool
     {
-        return $this->NumeroVol;
+        return $this->stopOption;
     }
 
-    public function setNumeroVol(?string $NumeroVol): static
+    public function setStopOption(?bool $stopOption): static
     {
-        $this->NumeroVol = $NumeroVol;
-
+        $this->stopOption = $stopOption;
         return $this;
     }
 
-    public function isStop(): ?bool
+    public function getStopLieu(): ?string
     {
-        return $this->Stop;
+        return $this->stopLieu;
     }
 
-    public function setStop(?bool $Stop): static
+    public function setStopLieu(?string $stopLieu): static
     {
-        $this->Stop = $Stop;
-
-        return $this;
-    }
-
-    public function getLieuArret(): ?string
-    {
-        return $this->lieuArret;
-    }
-
-    public function setLieuArret(?string $lieuArret): static
-    {
-        $this->lieuArret = $lieuArret;
-
-        return $this;
-    }
-
-    public function getPassagers(): ?int
-    {
-        return $this->passagers;
-    }
-
-    public function setPassagers(int $passagers): static
-    {
-        $this->passagers = $passagers;
-
-        return $this;
-    }
-
-    public function getBagages(): ?int
-    {
-        return $this->bagages;
-    }
-
-    public function setBagages(?int $bagages): static
-    {
-        $this->bagages = $bagages;
-
+        $this->stopLieu = $stopLieu;
         return $this;
     }
 
@@ -165,67 +124,83 @@ class Reservation
     public function setSiegeBebe(?bool $siegeBebe): static
     {
         $this->siegeBebe = $siegeBebe;
-
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getDistance(): float
     {
-        return $this->nom;
+        return $this->distance;
     }
 
-    public function setNom(string $nom): static
+    public function setDistance(float $distance): static
     {
-        $this->nom = $nom;
-
+        $this->distance = $distance;
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function getDuree(): int
     {
-        return $this->telephone;
+        return $this->duree;
     }
 
-    public function setTelephone(string $telephone): static
+    public function setDuree(int $duree): static
     {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->Email;
-    }
-
-    public function setEmail(?string $Email): static
-    {
-        $this->Email = $Email;
-
-        return $this;
-    }
-
-    public function getCommentaire(): ?string
-    {
-        return $this->commentaire;
-    }
-
-    public function setCommentaire(?string $commentaire): static
-    {
-        $this->commentaire = $commentaire;
-
+        $this->duree = $duree;
         return $this;
     }
 
     public function getTypeVehicule(): ?string
     {
-        return $this->TypeVehicule;
+        return $this->typeVehicule;
     }
 
-    public function setTypeVehicule(string $TypeVehicule): static
+    public function setTypeVehicule(string $typeVehicule): static
     {
-        $this->TypeVehicule = $TypeVehicule;
+        $this->typeVehicule = $typeVehicule;
+        return $this;
+    }
 
+    public function getPrix(): float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): static
+    {
+        $this->prix = $prix;
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getIsGuest(): bool
+    {
+        return $this->isGuest;
+    }
+
+    public function setIsGuest(bool $isGuest): static
+    {
+        $this->isGuest = $isGuest;
+        return $this;
+    }
+
+    public function getGuestInfo(): ?string
+    {
+        return $this->guestInfo;
+    }
+
+    public function setGuestInfo(?string $guestInfo): static
+    {
+        $this->guestInfo = $guestInfo;
         return $this;
     }
 }
