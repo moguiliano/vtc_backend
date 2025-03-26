@@ -96,32 +96,13 @@
     }
 
     // 🧠 Ajoute l'autocomplétion aux champs avec data-autocomplete
-    document.querySelectorAll('[data-autocomplete="true"]').forEach(input => {
-        input.addEventListener('input', async () => {
-            const query = input.value;
-            if (query.length < 2) return;
 
-            const res = await fetch('/reservation/autocomplete?q=' + encodeURIComponent(query));
-            if (!res.ok) return;
 
-            const suggestions = await res.json();
-            const listId = input.id + '-list';
 
-            let datalist = document.getElementById(listId);
-            if (!datalist) {
-                datalist = document.createElement('datalist');
-                datalist.id = listId;
-                document.body.appendChild(datalist);
-                input.setAttribute('list', listId);
-            }
-
-            datalist.innerHTML = '';
-            suggestions.forEach(label => {
-                const option = document.createElement('option');
-                option.value = label;
-                datalist.appendChild(option);
-            });
-        });
-    });
 </script>
+<script>
+    window.HERE_API_KEY = "{{ here_api_key }}";
+</script>
+<script src="{{ asset('js/autocomplete.js') }}"></script>
+
 {% endblock %}

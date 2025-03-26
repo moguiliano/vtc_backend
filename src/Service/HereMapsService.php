@@ -19,7 +19,7 @@ class HereMapsService
     public function __construct(HttpClientInterface $client, ParameterBagInterface $params)
     {
         $this->client = $client;
-        $this->apiKey = $params->get('here_api_key'); // clé API chargée depuis le .env
+        $this->apiKey = $params->get('here_api_key');
     }
 
     /**
@@ -81,22 +81,35 @@ class HereMapsService
     }
 
     /**
-     * Retourne une liste de suggestions d'adresses en fonction d'une requête utilisateur.
+     * Retourne une liste de suggestions d'adresses avec position GPS
+     * dans un rayon de 100km autour de Marseille.
      */
     public function autocompleteAddress(string $query): array
     {
         $encodedQuery = urlencode($query);
-        $url = "https://autocomplete.search.hereapi.com/v1/autocomplete?q={$encodedQuery}&apiKey={$this->apiKey}";
+        $url = "https://autocomplete.search.hereapi.com/v1/autocomplete?"
+             . "q={$encodedQuery}"
+             . "&in=circle:43.2965,5.3698;r=100000"
+             . "&apiKey={$this->apiKey}";
 
         $response = $this->client->request('GET', $url);
         $data = $response->toArray();
 
-        $suggestions = [];
+        $results = [];
 
         foreach ($data['items'] ?? [] as $item) {
-            $suggestions[] = $item['address']['label'];
+            $label = $item['address']['label'] ?? null;
+            $position = $item['position'] ?? null;
+
+            if ($label && $position) {
+                $results[] = [
+                    'label' => $label,
+                    'lat' => $position['lat'],
+                    'lng' => $position['lng'],
+                ];
+            }
         }
 
-        return $suggestions;
+        return $results;
     }
 }
