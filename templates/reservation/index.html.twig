@@ -1,71 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Réservation{% endblock %}
+
 {% block body %}
-	<div class="container mt-5">
-		<div class="card shadow-lg p-4">
-			<h2 class="text-center mb-4">Réserver un trajet</h2>
-
-			{# Affichage des messages de succès #}
-			{% for message in app.flashes('success') %}
-				<div class="alert alert-success">{{ message }}</div>
-			{% endfor %}
-
-			{# Formulaire de réservation #}
-			<form id="reservation-form" method="post">
-				<div class="row">
-					<div class="col-md-6">
-						{{ form_row(form.depart) }}
-						{{ form_row(form.arrivee) }}
-						{{ form_row(form.dateHeureDepart) }}
-						{{ form_row(form.NumeroVol) }}
-					</div>
-					<div
-						class="col-md-6">
-						{# Option pour un arrêt intermédiaire #}
-						<div class="form-check mb-3">
-							{{ form_widget(form.Stop, {'attr': {'class': 'form-check-input', 'id': 'reservation_Stop'}}) }}
-							<label class="form-check-label" for="reservation_Stop">Arrêt intermédiaire</label>
-						</div>
-
-
-						<div id="stopover-location" style="display: none;">
-							{{ form_row(form.lieuArret, {'attr': {'id': 'reservation_lieuArret'}}) }}
-						</div>
-
-						
-						{# Option pour siège bébé #}
-						<div class="form-check mb-3">
-							{{ form_widget(form.siegeBebe, {'attr': {'class': 'form-check-input', 'id': 'babyseat-checkbox'}}) }}
-							<label class="form-check-label" for="babyseat-checkbox">Besoin d’un siège bébé</label>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						{{ form_row(form.nom) }}
-						{{ form_row(form.telephone) }}
-					</div>
-					<div class="col-md-6">
-						{{ form_row(form.Email) }}
-					</div>
-				</div>
-
-				<div class="text-center mt-4">
-					<button type="submit" class="btn btn-primary btn-lg">Réserver</button>
-				</div>
-			</form>
-		</div>
-	</div>
-
-	{# Autocomplétion de l'adresse #}
-
-
-	<p id="distance"></p>
-	<p id="duration"></p>
-
-
-
-<script src="{{ asset('js/reservation.js') }}"></script>
-
+    <h1>Bienvenue dans la section Réservation</h1>
+    <p>Cliquez sur le bouton ci-dessous pour créer une nouvelle réservation :</p>
+    <a class="btn btn-primary" href="{{ path('reservation_new') }}">Réserver</a>
 {% endblock %}

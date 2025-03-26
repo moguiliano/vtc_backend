@@ -1,44 +1,56 @@
 <?php
+
+namespace App\Controller;
+
+use App\Entity\Reservation;
+use App\Form\ReservationType;
+use App\Service\HereMapsService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpClient\HttpClient;
-use App\Entity\Reservation;
-use Symfony\Bundle\SecurityBundle\Security;
 
-#[Route('/reservation/init', name: 'reservation_init', methods: ['POST'])]
-public function initReservation(Request $request, EntityManagerInterface $entityManager): Response
+/**
+ * Contrôleur de réservation (formulaire + autocomplétion HERE).
+ */
+#[Route('/reservation')]
+class ReservationController extends AbstractController
 {
-    $data = json_decode($request->getContent(), true);
-    $depart = $data['depart'];
-    $arrivee = $data['arrivee'];
-    $stopLieu = $data['stopLieu'] ?? null;
-    $typeVehicule = $data['typeVehicule'];
+    #[Route('', name: 'reservation_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $reservation = new Reservation();
+        $form = $this->createForm(ReservationType::class, $reservation);
+        $form->handleRequest($request);
 
-    // Simule le calcul du prix
-    $distance = rand(5, 50);
-    $duree = rand(10, 90);
-    $prix = $distance * $this->getVehiclePricing($typeVehicule);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+            return $this->redirectToRoute('reservation_success');
+        }
 
-    $reservation = new Reservation();
-    $reservation->setDepart($depart);
-    $reservation->setArrivee($arrivee);
-    $reservation->setStopLieu($stopLieu);
-    $reservation->setTypeVehicule($typeVehicule);
-    $reservation->setDistance($distance);
-    $reservation->setDuree($duree);
-    $reservation->setPrix($prix);
+        return $this->render('reservation/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
-    $entityManager->persist($reservation);
-    $entityManager->flush();
+    #[Route('/success', name: 'reservation_success', methods: ['GET'])]
+    public function success(): Response
+    {
+        return $this->render('reservation/success.html.twig');
+    }
 
-    return new JsonResponse([
-        'message' => 'Réservation enregistrée',
-        'prix' => $prix,
-        'distance' => $distance,
-        'duree' => $duree,
-        'reservationId' => $reservation->getId()
-    ], Response::HTTP_OK);
+    #[Route('/autocomplete', name: 'reservation_autocomplete', methods: ['GET'])]
+    public function autocomplete(Request $request, HereMapsService $hereMapsService): JsonResponse
+    {
+        $query = $request->query->get('q');
+        if (!$query) {
+            return new JsonResponse(['error' => 'Le paramètre "q" est requis'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $suggestions = $hereMapsService->autocompleteAddress($query);
+        return new JsonResponse($suggestions);
+    }
 }

@@ -1,10 +1,127 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - ZenCAR{% endblock %}
+{% block title %}ZenCar - Réservation{% endblock %}
 
 {% block body %}
+<h1>Réservez votre trajet</h1>
 
-    <h1>Bienvenue chez ZenCAR</h1>
-    <p>Votre VTC premium disponible 24/7.</p>
+{{ form_start(form) }}
 
+    {# 📍 Lieu de départ avec bouton de géolocalisation #}
+    <div class="mb-3">
+        {{ form_label(form.depart) }}
+        {{ form_widget(form.depart, {
+            'attr': {
+                'data-autocomplete': 'true',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        }) }}
+        {{ form_errors(form.depart) }}
+        <button type="button" class="btn btn-outline-secondary mt-1" onclick="useCurrentLocation('reservation_depart')">
+            📍 Utiliser ma position pour le départ
+        </button>
+    </div>
+
+    {# 🅿️ Lieu d’arrêt facultatif avec bouton GPS #}
+    <div class="mb-3">
+        {{ form_label(form.stopLieu) }}
+        {{ form_widget(form.stopLieu, {
+            'attr': {
+                'data-autocomplete': 'true',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        }) }}
+        {{ form_errors(form.stopLieu) }}
+        <button type="button" class="btn btn-outline-secondary mt-1" onclick="useCurrentLocation('reservation_stopLieu')">
+            📍 Utiliser ma position pour l’arrêt
+        </button>
+    </div>
+
+    {# 🎯 Lieu d’arrivée avec géolocalisation #}
+    <div class="mb-3">
+        {{ form_label(form.arrivee) }}
+        {{ form_widget(form.arrivee, {
+            'attr': {
+                'data-autocomplete': 'true',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        }) }}
+        {{ form_errors(form.arrivee) }}
+        <button type="button" class="btn btn-outline-secondary mt-1" onclick="useCurrentLocation('reservation_arrivee')">
+            📍 Utiliser ma position pour l’arrivée
+        </button>
+    </div>
+
+    {# 👶 Siège bébé #}
+    <div class="mb-3">
+        {{ form_row(form.siegeBebe) }}
+    </div>
+
+    {# 🚘 Type de véhicule #}
+    <div class="mb-3">
+        {{ form_row(form.typeVehicule) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Réserver</button>
+
+{{ form_end(form) }}
+
+<script>
+    // 📍 Injecte la géolocalisation dans un champ donné
+    function useCurrentLocation(fieldId) {
+        if (!navigator.geolocation) {
+            alert("La géolocalisation n’est pas supportée par votre navigateur.");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async position => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            const response = await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey={{ here_api_key }}`);
+            const data = await response.json();
+
+            if (data.items && data.items.length > 0) {
+                const label = data.items[0].address.label;
+                document.getElementById(fieldId).value = label;
+            } else {
+                alert("Adresse non trouvée.");
+            }
+        }, () => {
+            alert("Accès à la position refusé ou indisponible.");
+        });
+    }
+
+    // 🧠 Ajoute l'autocomplétion aux champs avec data-autocomplete
+    document.querySelectorAll('[data-autocomplete="true"]').forEach(input => {
+        input.addEventListener('input', async () => {
+            const query = input.value;
+            if (query.length < 2) return;
+
+            const res = await fetch('/reservation/autocomplete?q=' + encodeURIComponent(query));
+            if (!res.ok) return;
+
+            const suggestions = await res.json();
+            const listId = input.id + '-list';
+
+            let datalist = document.getElementById(listId);
+            if (!datalist) {
+                datalist = document.createElement('datalist');
+                datalist.id = listId;
+                document.body.appendChild(datalist);
+                input.setAttribute('list', listId);
+            }
+
+            datalist.innerHTML = '';
+            suggestions.forEach(label => {
+                const option = document.createElement('option');
+                option.value = label;
+                datalist.appendChild(option);
+            });
+        });
+    });
+</script>
 {% endblock %}

@@ -1,9 +1,9 @@
 <?php
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
@@ -32,16 +32,16 @@ class Reservation
     #[ORM\Column(nullable: true)]
     private ?bool $siegeBebe = null;
 
-    #[ORM\Column(type: 'float')]
-    private float $distance;
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $distance = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer' ,nullable: true)]
     private int $duree;
 
     #[ORM\Column(length: 50)]
     private ?string $typeVehicule = null;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'float', nullable: true)]
     private float $prix;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -54,8 +54,8 @@ class Reservation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $guestInfo = null;
 
-    // ✅ Toutes les propriétés sont maintenant bien placées avant les méthodes.
-
+    // --- Getters and setters ---
+    
     public function getId(): ?int
     {
         return $this->id;

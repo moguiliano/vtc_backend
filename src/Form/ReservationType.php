@@ -1,26 +1,63 @@
 <?php
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+// src/Form/ReservationType.php
+namespace App\Form;
+
+use App\Entity\Reservation;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-function buildForm(FormBuilderInterface $builder, array $options)
+class ReservationType extends AbstractType
 {
-    $builder
-        ->add('depart', TextType::class, ['label' => 'Lieu de départ'])
-        ->add('arrivee', TextType::class, ['label' => 'Lieu d\'arrivée'])
-        ->add('stopOption', CheckboxType::class, ['label' => 'Ajouter un stop ?', 'required' => false])
-        ->add('stopLieu', TextType::class, ['label' => 'Lieu du stop', 'required' => false])
-        ->add('siegeBebe', CheckboxType::class, ['label' => 'Siège bébé ?', 'required' => false])
-        ->add('typeVehicule', ChoiceType::class, [
-            'choices' => [
-                'Green' => 'Green',
-                'Berline' => 'Berline',
-                'Van' => 'Van',
-                'Grand Coffre' => 'Grand Coffre'
-            ]
-        ])
-        ->add('save', SubmitType::class, ['label' => 'Estimer le prix']);
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('depart', TextType::class, [
+                'label' => 'Lieu de départ',
+                'attr' => [
+                    'autocomplete' => 'off',
+                    'id' => 'reservation_depart'
+                ]
+            ])
+            ->add('stopLieu', TextType::class, [
+                'required' => false,
+                'label' => 'Lieu d’arrêt (facultatif)',
+                'attr' => [
+                    'autocomplete' => 'off',
+                    'id' => 'reservation_stopLieu'
+                ]
+            ])
+            ->add('arrivee', TextType::class, [
+                'label' => 'Lieu d’arrivée',
+                'attr' => [
+                    'autocomplete' => 'off',
+                    'id' => 'reservation_arrivee'
+                ]
+            ])
+            ->add('siegeBebe', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Besoin d’un siège bébé ?'
+            ])
+            ->add('typeVehicule', TextType::class, [
+                'label' => 'Type de véhicule'
+            ])
+           
+            ->add('dateHeureDepart', DateTimeType::class, [
+                'label' => 'Date et heure du départ',
+                'required' => false,
+                'widget' => 'single_text'
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Reservation::class,
+        ]);
+    }
 }
