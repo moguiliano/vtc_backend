@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}ZenCar - Réservation{% endblock %}
@@ -18,7 +19,7 @@
             }
         }) }}
         {{ form_errors(form.depart) }}
-        <button type="button" class="btn btn-outline-secondary mt-1" onclick="useCurrentLocation('reservation_depart')">
+        <button type="button" class="btn btn-outline-secondary mt-1" onclick="ReservationApp.useGeolocation('reservation_depart')">
             📍 Utiliser ma position pour le départ
         </button>
     </div>
@@ -34,7 +35,7 @@
             }
         }) }}
         {{ form_errors(form.stopLieu) }}
-        <button type="button" class="btn btn-outline-secondary mt-1" onclick="useCurrentLocation('reservation_stopLieu')">
+        <button type="button" class="btn btn-outline-secondary mt-1" onclick="ReservationApp.useGeolocation('reservation_stopLieu')">
             📍 Utiliser ma position pour l’arrêt
         </button>
     </div>
@@ -50,7 +51,7 @@
             }
         }) }}
         {{ form_errors(form.arrivee) }}
-        <button type="button" class="btn btn-outline-secondary mt-1" onclick="useCurrentLocation('reservation_arrivee')">
+        <button type="button" class="btn btn-outline-secondary mt-1" onclick="ReservationApp.useGeolocation('reservation_arrivee')">
             📍 Utiliser ma position pour l’arrivée
         </button>
     </div>
@@ -69,40 +70,10 @@
 
 {{ form_end(form) }}
 
-<script>
-    // 📍 Injecte la géolocalisation dans un champ donné
-    function useCurrentLocation(fieldId) {
-        if (!navigator.geolocation) {
-            alert("La géolocalisation n’est pas supportée par votre navigateur.");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(async position => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-
-            const response = await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey={{ here_api_key }}`);
-            const data = await response.json();
-
-            if (data.items && data.items.length > 0) {
-                const label = data.items[0].address.label;
-                document.getElementById(fieldId).value = label;
-            } else {
-                alert("Adresse non trouvée.");
-            }
-        }, () => {
-            alert("Accès à la position refusé ou indisponible.");
-        });
-    }
-
-    // 🧠 Ajoute l'autocomplétion aux champs avec data-autocomplete
-
-
-
-</script>
+{# ✅ Injection de la clé API et inclusion du JS principal #}
 <script>
     window.HERE_API_KEY = "{{ here_api_key }}";
 </script>
-<script src="{{ asset('js/autocomplete.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
 
 {% endblock %}

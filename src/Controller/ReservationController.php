@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Contrôleur de réservation (formulaire + autocomplétion HERE).
- */
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
@@ -31,8 +28,9 @@ class ReservationController extends AbstractController
             return $this->redirectToRoute('reservation_success');
         }
 
-        return $this->render('reservation/index.html.twig', [
+        return $this->render('home.html.twig', [
             'form' => $form->createView(),
+            'here_api_key' => $this->getParameter('here_api_key') // ✅ injection de la clé HERE
         ]);
     }
 
@@ -53,4 +51,17 @@ class ReservationController extends AbstractController
         $suggestions = $hereMapsService->autocompleteAddress($query);
         return new JsonResponse($suggestions);
     }
+    #[Route('/test', name: 'reservation_test')]
+    public function testReservation(): Response
+    {
+        return $this->render('reservation/reservation_test.html.twig', [
+            'here_api_key' => $this->getParameter('here_api_key')
+        ]);
+        
+        
+        
+    }
+
+
+
 }
