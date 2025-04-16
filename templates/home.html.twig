@@ -1,79 +1,70 @@
-
 {% extends 'base.html.twig' %}
 
-{% block title %}ZenCar - Réservation{% endblock %}
+{% block title %}Réservation ZenCar
+{% endblock %}
 
 {% block body %}
-<h1>Réservez votre trajet</h1>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	
 
-{{ form_start(form) }}
+	<link rel="stylesheet" href="{{ asset('css/reservationStyles.css') }}">
 
-    {# 📍 Lieu de départ avec bouton de géolocalisation #}
-    <div class="mb-3">
-        {{ form_label(form.depart) }}
-        {{ form_widget(form.depart, {
+
+	<div id="reservation-test-container" class="container">
+		{{ form_start(form) }}
+
+		<header>
+			<h1>Réservez votre trajet avec
+				<span>ZenCar</span>
+			</h1>
+			<p>ZenCar est votre partenaire de confiance pour un service de qualité.</p>
+		</header>
+
+		<div class="tabs">
+			<button class="tab-button active" data-tab="tab1" data-step="1">Réservation</button>
+			<button class="tab-button" data-tab="tab2" data-step="2">Véhicules</button>
+			<button class="tab-button" data-tab="tab3" data-step="3">Récapitulatif</button>
+		</div>
+		{% include 'reservation/tab1.html.twig' %}
+		{% include 'reservation/tab2.html.twig' %}
+		{% include 'reservation/tab3.html.twig' %}
+
+
+	</div>
+
+
+
+	<div class="form-group">
+		{{ form_widget(form.typeVehicule, {
+            'type': 'hidden',
             'attr': {
-                'data-autocomplete': 'true',
-                'autocomplete': 'off',
-                'class': 'form-control'
+                'id': 'reservation_typeVehicule'
             }
         }) }}
-        {{ form_errors(form.depart) }}
-        <button type="button" class="btn btn-outline-secondary mt-1" onclick="ReservationApp.useGeolocation('reservation_depart')">
-            📍 Utiliser ma position pour le départ
-        </button>
-    </div>
+	</div>
 
-    {# 🅿️ Lieu d’arrêt facultatif avec bouton GPS #}
-    <div class="mb-3">
-        {{ form_label(form.stopLieu) }}
-        {{ form_widget(form.stopLieu, {
-            'attr': {
-                'data-autocomplete': 'true',
-                'autocomplete': 'off',
-                'class': 'form-control'
-            }
-        }) }}
-        {{ form_errors(form.stopLieu) }}
-        <button type="button" class="btn btn-outline-secondary mt-1" onclick="ReservationApp.useGeolocation('reservation_stopLieu')">
-            📍 Utiliser ma position pour l’arrêt
-        </button>
-    </div>
+	{{ form_widget(form.duree) }}
+	{{ form_widget(form.distance) }}
+	{{ form_widget(form.prix) }}
 
-    {# 🎯 Lieu d’arrivée avec géolocalisation #}
-    <div class="mb-3">
-        {{ form_label(form.arrivee) }}
-        {{ form_widget(form.arrivee, {
-            'attr': {
-                'data-autocomplete': 'true',
-                'autocomplete': 'off',
-                'class': 'form-control'
-            }
-        }) }}
-        {{ form_errors(form.arrivee) }}
-        <button type="button" class="btn btn-outline-secondary mt-1" onclick="ReservationApp.useGeolocation('reservation_arrivee')">
-            📍 Utiliser ma position pour l’arrivée
-        </button>
-    </div>
 
-    {# 👶 Siège bébé #}
-    <div class="mb-3">
-        {{ form_row(form.siegeBebe) }}
-    </div>
 
-    {# 🚘 Type de véhicule #}
-    <div class="mb-3">
-        {{ form_row(form.typeVehicule) }}
-    </div>
+	{{ form_end(form, {'render_rest': false}) }}
 
-    <button type="submit" class="btn btn-primary">Réserver</button>
 
-{{ form_end(form) }}
+	<script>
+		window.HERE_API_KEY = "{{ here_api_key }}";
+	</script>
 
-{# ✅ Injection de la clé API et inclusion du JS principal #}
-<script>
-    window.HERE_API_KEY = "{{ here_api_key }}";
-</script>
-<script src="{{ asset('js/main.js') }}"></script>
+	<!--script de l'affichage de la map -->
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ asset('/js/autocomplete.js') }}"></script>
+	<script src="{{ asset('/js/ui.js') }}"></script>
+	<script src="{{ asset('/js/reservation.js') }}"></script>
+	<script src="{{ asset('/js/map.js') }}"></script>
+	<script src="{{ asset('js/main.js') }}"></script>
 
 {% endblock %}

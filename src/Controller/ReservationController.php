@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
+    public function __construct(private HereMapsService $hereMapsService) {}
+
     #[Route('', name: 'reservation_index', methods: ['GET', 'POST'])]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -23,14 +25,25 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            // Récupérer séparément date et heure
+            $date = $form->get('dateDepart')->getData();    // DateTime (00:00:00)
+            $heure = $form->get('heureDepart')->getData();  // DateTime (par défaut à 1970-01-01)
+        
+            // Fusionner les deux en un seul DateTime
+            $dateHeureDepart = new \DateTime();
+            $dateHeureDepart->setDate($date->format('Y'), $date->format('m'), $date->format('d'));
+            $dateHeureDepart->setTime($heure->format('H'), $heure->format('i'));
+            
             $entityManager->persist($reservation);
             $entityManager->flush();
             return $this->redirectToRoute('reservation_success');
         }
 
-        return $this->render('home.html.twig', [
+        return $this->render('reservation/reservation_test.html.twig', [
             'form' => $form->createView(),
-            'here_api_key' => $this->getParameter('here_api_key') // ✅ injection de la clé HERE
+            'here_api_key' => $this->getParameter('here_api_key')
         ]);
     }
 
@@ -40,28 +53,37 @@ class ReservationController extends AbstractController
         return $this->render('reservation/success.html.twig');
     }
 
-    #[Route('/autocomplete', name: 'reservation_autocomplete', methods: ['GET'])]
-    public function autocomplete(Request $request, HereMapsService $hereMapsService): JsonResponse
+    #[Route('/calculate-trip', name: 'reservation_calculate_trip', methods: ['POST'])]
+    public function calculateTrip(Request $request): JsonResponse
     {
-        $query = $request->query->get('q');
-        if (!$query) {
-            return new JsonResponse(['error' => 'Le paramètre "q" est requis'], Response::HTTP_BAD_REQUEST);
+        $data = json_decode($request->getContent(), true);
+        $pickup = $data['pickup'] ?? null;
+        $dropoff = $data['dropoff'] ?? null;
+        $stop = ($data['stopEnabled'] ?? false) ? ($data['stop'] ?? null) : null;
+        $heure = (int) ($data['heure'] ?? date('G'));
+
+        if (!$pickup || !$dropoff) {
+            return new JsonResponse(['error' => 'Adresse de départ ou arrivée manquante.'], 400);
         }
 
-        $suggestions = $hereMapsService->autocompleteAddress($query);
-        return new JsonResponse($suggestions);
-    }
-    #[Route('/test', name: 'reservation_test')]
-    public function testReservation(): Response
-    {
-        return $this->render('reservation/reservation_test.html.twig', [
-            'here_api_key' => $this->getParameter('here_api_key')
+        $distanceInfos = $this->hereMapsService->getDistanceAndDurationWithStop($pickup, $dropoff, $stop);
+        if (isset($distanceInfos['error'])) {
+            return new JsonResponse($distanceInfos, 400);
+        }
+
+        $prixParCategorie = [];
+        $categories = ['eco_berline', 'grand_coffre', 'berline', 'van'];
+        foreach ($categories as $cat) {
+            $prix = $this->hereMapsService->estimerPrix($distanceInfos['distance_km'], $cat, $heure);
+            if ($prix) {
+                $prixParCategorie[$cat] = $prix;
+            }
+        }
+
+        return new JsonResponse([
+            'distance_km' => $distanceInfos['distance_km'],
+            'duration_min' => $distanceInfos['duration_min'],
+            'prix' => $prixParCategorie
         ]);
-        
-        
-        
     }
-
-
-
 }

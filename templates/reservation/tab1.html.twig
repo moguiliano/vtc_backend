@@ -1,0 +1,114 @@
+<div id="tab1" class="tab-content active">
+
+	<div class="general-container">
+		<div class="form-group">
+			<label class="form-label fw-bold">🕒 Quand souhaitez-vous partir ?</label>
+			<div class="inline-group">
+				<button type="button" id="immediateBtn" class="time-btn active" style="background-color: #ff5630;">Immédiat</button>
+				<button type="button" id="laterBtn" class="time-btn">Plus tard</button>
+			</div>
+		</div>
+
+		<div id="dateTimeGroup" class="form-group" style="display: none;">
+			<div
+				class="row mb-4">
+				<!-- DATE -->
+				<div class="col-md-6">
+					<label for="dateDepart" class="form-label form-label-fixed">📅 Date de départ</label>
+					<div class="input-group">
+						<span class="input-group-text">
+							<i class="fas fa-calendar-alt"></i>
+						</span>
+						{{ form_widget(form.dateDepart) }}
+					</div>
+				</div>
+
+				<!-- HEURE -->
+				<div class="col-md-6">
+					{{ form_label(form.heureDepart, "🕒 Heure de départ", {'label_attr': {'class': 'form-label form-label-fixed'}}) }}
+					<div class="input-group">
+						<span class="input-group-text">
+							<i class="fas fa-clock"></i>
+						</span>
+						{{ form_widget(form.heureDepart, {
+								'attr': {
+									'type': 'time',
+									'class': 'form-control'
+								}
+								}) }}
+					</div>
+				</div>
+
+
+				{# Champs complet heure date 
+																<input
+												type="hidden"
+												id="reservation_dateHeureDepart"
+												name="reservation[dateHeureDepart]"
+												>
+																 #}
+
+
+			</div>
+
+		</div>
+
+
+		<div class="form-group">
+			{{ form_label(form.depart) }}
+			{{ form_widget(form.depart, {
+									'attr': {
+										'data-autocomplete': 'true',
+										'autocomplete': 'off',
+										'class': 'form-control'
+									}
+								}) }}
+			{{ form_errors(form.depart) }}
+			<button type="button" class="btn btn-outline-secondary mt-1" onclick="Autocomplete.useGeolocation('reservation_depart')">
+				📍 Utiliser ma position pour le départ
+			</button>
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.arrivee) }}
+			{{ form_widget(form.arrivee, {
+                    'attr': {
+                        'data-autocomplete': 'true',
+                        'autocomplete': 'off',
+                        'class': 'form-control'
+                    }
+                }) }}
+			{{ form_errors(form.arrivee) }}
+			<button type="button" class="btn btn-outline-secondary mt-1" onclick="Autocomplete.useGeolocation('reservation_arrivee')">
+				📍 Utiliser ma position pour l'arrivée
+			</button>
+		</div>
+
+		<div class="form-group inline-group">
+			<input type="checkbox" id="reservation_Stop" style="width: 16px; height: 16px;">
+			<label for="reservation_Stop">Ajouter un arrêt</label>
+		</div>
+		<div class="form-group" id="stopover-location">
+			<label for="reservation_stopLieu">Lieu de l'arrêt</label>
+			{{ form_row(form.stopLieu)}}
+			<button type="button" class="geoButton" onclick="Autocomplete.useGeolocation('reservation_stopLieu')">📍 Utiliser ma position</button>
+		</div>
+
+		<div class="form-group inline-group">
+			{{ form_widget(form.siegeBebe, {
+                    'attr': {
+                        'style': 'width: 16px; height: 16px;'
+                    }
+                }) }}
+			{{ form_label(form.siegeBebe, "Besoin d'un siège bébé") }}
+		</div>
+
+		<div class="button-group">
+			<button type="button" class="nav-main-btn" id="goToVehicle">🚗 Choisir le véhicule</button>
+		</div>
+	</div>
+	
+	<div id="mapContainer" style="width: 100%; height: 400px; margin-top: 30px;"></div>
+
+</div>
+<!--comment mettre general container et map container cote a cote avec une grille bootstrap a 50/50 , et un affichage responsive -->
