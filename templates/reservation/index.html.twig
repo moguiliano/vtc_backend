@@ -1,0 +1,18 @@
+{{ form_start(form, {
+		  attr: {
+			class: 'w-100',
+			style: 'display: contents;'
+		  }
+		}) }}
+		{% include 'reservation/tab1.html.twig' %}
+		{% include 'reservation/tab2.html.twig' %}
+		{% include 'reservation/tab3.html.twig' %}
+			{{ form_widget(form.duree, {'type': 'hidden', 'attr': {'id': 'reservation_duree'}}) }}
+			{{ form_widget(form.distance, {'type': 'hidden', 'attr': {'id': 'reservation_distance'}}) }}
+			{{ form_widget(form.typeVehicule, {'type': 'hidden', 'attr': {'id': 'reservation_typeVehicule'}}) }}
+			{{ form_widget(form.prix, {'type': 'hidden'}) }}
+            {# ajouter user : nom numero de telephone
+            dans le table verification code ajoute nom ou pseudo  .
+            si is verified =1 insert le user dans la table user
+            fais une jointure entre user et reservation.  #}
+		{{ form_end(form) }}

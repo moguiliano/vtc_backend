@@ -1,0 +1,25 @@
+
+
+- [ ] Passer les paramètres `ACCOUNT_SID`, `AUTH_TOKEN`, `FROM` en prod dans `.env.local`
+- [ ] Tester l envoi de SMS en production
+- [ ] template : supprier les hovers sur whatsapp et appels 
+- [ ] mettre a jour le recap .
+- [ ] carte prod a mettre a jour 
+- [ ] twilio prod sms confirmation 
+- [ ] creer admin avec editeur de facture 
+- [ ] Tester l envoi de SMS en production
+
+
+
+
+
+
+## 🧼 À faire régulièrement
+
+- [ ] Mettre à jour le code source depuis ton dossier local
+- [ ] Nettoyer le cache (`cache:clear`)
+- [ ] Maintenir une sauvegarde locale de la BDD
+
+---
+
+💡 *Modifie `[ ]` en `[x]` une fois que la tâche est faite.*

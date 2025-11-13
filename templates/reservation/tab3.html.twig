@@ -1,0 +1,242 @@
+<div id="tab3" class="tab-content">
+	<div style="text-align: left; margin-bottom: 16px;">
+		<button type="button" class="nav-main-btn back-btn" onclick="UI.switchToTab('tab2')">Retour</button>
+	</div>
+	<div class="general-container">
+		<h2 style="color: white;">Récapitulatif</h2>
+		<ul style="color: #ccc; line-height: 1.6;">
+			<li>
+				<strong>Départ :</strong>
+				<span id="recap_depart"></span>
+			</li>
+			<li>
+				<strong>Arrivée :</strong>
+				<span id="recap_arrivee"></span>
+			</li>
+			<li>
+				<strong>Arrêt :</strong>
+				<span id="recap_stop"></span>
+			</li>
+			<li>
+				<strong>Siège bébé :</strong>
+				<span id="recap_siege"></span>
+			</li>
+			<li>
+				<strong>Type de véhicule :</strong>
+				<span id="recap_type"></span>
+			</li>
+		</ul>
+
+		<div id="recapitulatif-trajet" class="text-white text-sm my-2"></div>
+		<div id="recap_prix_list" class="text-white mt-3"></div>
+
+		<div id="guest-verification-section" class="mt-4">
+			<h5 class="text-white">Réservation en tant qu’invité</h5>
+
+			<div class="form-group mt-3">
+				<label for="prenom">Prénom</label>
+				<input type="text" id="prenom" name="prenom" class="form-control" autocomplete="given-name" required>
+			</div>
+
+			{% include "./reservation/outilsReservation/phone.html.twig" %}
+
+			
+		</div>
+		<button id="confirmReservationBtn" class="btn btn-success mt-4" data-reservation-id="{{ reservation is defined and reservation ? reservation.id : '' }}" disabled>✅ Réserver maintenant</button>
+
+
+	</div>
+
+</div>
+
+
+<script>
+	(function () { // ---- helpers ----
+function $(sel) {
+return document.querySelector(sel);
+}
+
+function getFirstName() {
+const el = $('#prenom') || $('#guestFirstName') || $('input[name="prenom"]') || $('#firstName');
+return el ? el.value.trim() : '';
+}
+
+function normalizeFrPhone(raw) { // fallback FR : 0X XX XX XX XX -> +33X...
+const digits = (raw || '').replace(/[^\d+]/g, '');
+if (/^\+/.test(digits)) 
+return digits;
+ // déjà en E.164
+if (/^0\d{9}$/.test(digits)) 
+return '+33' + digits.slice(1);
+
+return digits; // sinon, laisse tel quel
+}
+
+function getFullPhone() {
+const input = $('#guestPhone') || $('#telephoneClient') || $('#phone') || $('#clientPhone') || $('input[type="tel"]');
+if (! input) 
+return '';
+
+
+// Si intl-tel-input est présent, on le privilégie
+try {
+const iti = window.intlTelInputGlobals && window.intlTelInputGlobals.getInstance(input);
+if (iti) { // Validation si dispo
+if (typeof iti.isValidNumber === 'function' && ! iti.isValidNumber()) {
+return ''; // invalide -> on renverra vide pour déclencher l'alerte
+}
+if (typeof iti.getNumber === 'function') {
+return iti.getNumber(); // E.164
+}
+}
+} catch (e) { /* ignore */
+}
+
+// Fallback sans iti : normalise FR (modifiable)
+return normalizeFrPhone(input.value.trim());
+}
+
+// ---- bouton confirm ----
+const btn = document.getElementById('confirmReservationBtn');
+if (! btn) 
+return;
+ // pas de bouton sur cette page
+
+const resId = btn.dataset.reservationId || '';
+if (! resId) 
+return;
+ // sur la home : pas d'ID encore -> ne rien attacher
+
+btn.addEventListener('click', async () => {
+const prenom = getFirstName();
+const clientPhone = getFullPhone();
+
+if (! prenom) {
+alert('Merci de renseigner votre prénom.');
+return;
+}
+if (! clientPhone) {
+alert('Merci de renseigner un numéro de téléphone valide.');
+return;
+}
+
+btn.disabled = true;
+
+try {
+const resp = await fetch(`/reservation/${resId}/confirm`, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-Requested-With': 'XMLHttpRequest'
+},
+body: JSON.stringify(
+{prenom, clientPhone}
+)
+});
+
+const data = await resp.json();
+
+if (data.ok && data.redirect) {
+window.location.href = data.redirect;
+} else {
+alert(data.error || 'Erreur lors de la confirmation.');
+btn.disabled = false;
+}
+} catch (e) {
+alert('Impossible de confirmer la réservation pour le moment.');
+btn.disabled = false;
+}
+});
+})();
+
+
+document.addEventListener('DOMContentLoaded', function () { // Récupération des éléments HTML nécessaires
+const countryCode = document.getElementById('countryCode');
+const guestPhone = document.getElementById('guestPhone');
+const prenom = document.getElementById('prenom');
+const sendOtpBtn = document.getElementById('sendOtpBtn');
+const otpField = document.getElementById('otpField');
+const otpInput = document.getElementById('otpInput');
+const otpFeedback = document.getElementById('otpFeedback');
+const confirmBtn = document.getElementById('confirmReservationBtn');
+
+// Fonction pour construire le numéro de téléphone complet (ex: +33612345678)
+function getFullPhoneNumber() {
+if (! guestPhone || ! countryCode) 
+return '';
+
+
+let number = guestPhone.value.trim();
+
+// Supprime un éventuel 0 en début de numéro
+if (number.startsWith('0')) {
+number = number.substring(1);
+}
+
+return countryCode.value + number;
+}
+
+// Envoi du code OTP
+if (sendOtpBtn) {
+sendOtpBtn.addEventListener('click', function () {
+const phone = getFullPhoneNumber();
+
+// Vérification que le numéro est rempli
+if (! phone || phone.length < 6) {
+alert("Merci de saisir un numéro de téléphone valide.");
+return;
+}
+
+fetch('/otp/send', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded'
+},
+body: `phone=${
+encodeURIComponent(phone)
+}`
+}).then(res => res.json()).then(data => {
+if (data.status === 'sent') {
+otpField.classList.remove('d-none');
+otpFeedback.innerText = "📲 Un code a été envoyé par SMS. Veuillez le saisir ci-dessous.";
+} else {
+otpFeedback.innerText = "❌ Une erreur est survenue lors de l'envoi du code.";
+}
+}).catch(() => {
+otpFeedback.innerText = "❌ Une erreur réseau est survenue.";
+});
+});
+}
+
+// Vérification du code OTP
+otpInput ?. addEventListener('input', () => {
+const code = otpInput.value.trim();
+const phone = getFullPhoneNumber();
+
+if (code.length === 6) {
+fetch('/otp/verify', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded'
+},
+body: `phone=${
+encodeURIComponent(phone)
+}&code=${
+encodeURIComponent(code)
+}`
+}).then(res => res.json()).then(data => {
+if (data.valid) {
+otpFeedback.innerText = "✅ Vérification réussie. Vous pouvez réserver.";
+confirmBtn.disabled = false;
+} else {
+otpFeedback.innerText = "❌ Code incorrect. Réessayez.";
+confirmBtn.disabled = true;
+}
+}).catch(() => {
+otpFeedback.innerText = "❌ Impossible de vérifier le code. Problème réseau.";
+confirmBtn.disabled = true;
+});
+}
+});
+});
+</script>

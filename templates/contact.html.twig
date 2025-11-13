@@ -1,0 +1,240 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - ZenCAR
+{% endblock %}
+
+
+
+{% block body %}
+
+
+	<section id="contact" class="container my-5">
+		<h2 class="text-center mb-4">Contactez-nous</h2>
+		<p class="text-center mb-5" style="color: white;">
+			Une question ou une demande ? Contactez
+			<span style="color:#ff5630">ZenCAR</span>
+			facilement.
+		</p>
+
+		{# Message flash de succès #}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success text-center">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<div
+			class="row">
+			<!-- Formulaire de contact à gauche -->
+			<div class="col-md-6 mb-4">
+				<div class="p-4 rounded contact-form-container h-100">
+					<h4 class="mb-3">📧 Formulaire</h4>
+
+					{{ form_start(form) }}
+
+					<div class="mb-3">
+						{{ form_label(form.name) }}
+						{{ form_widget(form.name) }}
+						{% if form_errors(form.name) %}
+							<div class="form-error text-white small">
+								{{ form_errors(form.name) }}
+							</div>
+						{% endif %}
+					</div>
+
+					<div class="mb-3">
+						{{ form_label(form.email) }}
+						{{ form_widget(form.email) }}
+						{% if form_errors(form.email) %}
+							<div class="form-error text-white small">
+								{{ form_errors(form.email) }}
+							</div>
+						{% endif %}
+					</div>
+
+					<div class="mb-3">
+						{{ form_label(form.phone) }}
+						{{ form_widget(form.phone) }}
+						{% if form_errors(form.phone) %}
+							<div class="form-error text-white small">
+								{{ form_errors(form.phone) }}
+							</div>
+						{% endif %}
+					</div>
+
+					<div class="mb-3">
+						{{ form_label(form.message) }}
+						{{ form_widget(form.message) }}
+						{% if form_errors(form.message) %}
+							<div class="form-error text-white small">
+								{{ form_errors(form.message) }}
+							</div>
+						{% endif %}
+					</div>
+
+					<button type="submit" class="btn btn-contact w-100">Envoyer</button>
+
+					{{ form_end(form) }}
+				</div>
+			</div>
+
+			<!-- Appel + WhatsApp à droite, l’un sur l’autre -->
+			<div
+				class="col-md-6 mb-4 d-flex flex-column gap-4">
+				<!-- Appel -->
+				<div class="p-4 rounded contact-box h-100">
+					<h4>📞 Appel 
+						<a href="tel:+33674039694" class="text-white font-weight-bold text-center">+33 6 74 03 96 94</a>
+					</h4>
+					<p>Appelez-nous directement pour toute urgence ou réservation rapide.</p>
+					<a href="tel:+33674039694" class="btn btn-call w-100">Appeler maintenant</a>
+					
+
+				</div>
+
+				<!-- WhatsApp -->
+				<div class="p-4 rounded contact-box h-100">
+					<h4>💬 WhatsApp</h4>
+					<p>Discutez avec ZenCAR via WhatsApp en un clic.</p>
+					<a href="https://wa.me/33610435679" target="_blank" class="btn btn-whatsapp w-100">Envoyer un message</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<style>
+		/* SECTION CONTACT harmonisée ZenCAR */
+
+		#contact {
+			color: #fff;
+		}
+		.form-error {
+			color: #fff;
+			margin-top: 0.25rem;
+			font-size: 0.875rem;
+		}
+
+
+		/* Blocs (formulaire et boîtes WhatsApp / Appel) */
+		.contact-form-container,
+		.contact-box {
+			background-color: hsla(0, 0%, 100%, 0.035); /* très léger fond */
+			border: 1px solid hsla(0, 0%, 100%, 0.15); /* bordure blanche légère */
+			border-radius: 1rem;
+			padding: 2rem;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		/* Effet au survol */
+		.contact-form-container:hover,
+		.contact-box:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+		}
+
+		/* Titres dans les blocs */
+		.contact-box h4,
+		.contact-form-container h4 {
+			color: #ffffff;
+			font-weight: 600;
+			margin-bottom: 1rem;
+		}
+
+		/* Textes et labels */
+		.contact-box p,
+		.contact-form-container p,
+		.contact-form-container label {
+			color: #cccccc;
+		}
+
+		/* Champs de formulaire */
+		.contact-form-container .form-control {
+			background-color: rgba(255, 255, 255, 0.03);
+			color: #fff;
+			border: 1px solid hsla(0, 0%, 100%, 0.12);
+			border-radius: 0.5rem;
+			padding: 0.75rem;
+		}
+
+		.contact-form-container .form-control::placeholder {
+			color: #888;
+		}
+
+		.contact-form-container .form-control:focus {
+			background-color: rgba(255, 255, 255, 0.05);
+			border-color: #aaa;
+			outline: none;
+			box-shadow: none;
+		}
+
+		/* Boutons généraux */
+		.btn {
+			border: none;
+			border-radius: 0.5rem;
+			padding: 0.75rem 1.25rem;
+			font-weight: 500;
+			transition: background-color 0.2s ease;
+		}
+
+		/* Bouton "Envoyer" */
+		.btn-contact {
+			background-color: #ff5630; /* Orange ZenCAR */
+			color: #fff;
+			border: none;
+			border-radius: 0.5rem;
+			padding: 0.75rem 1.25rem;
+			font-weight: 600;
+			transition: background-color 0.2s ease, transform 0.2s ease;
+			box-shadow: 0 4px 10px rgba(255, 86, 48, 0.3);
+		}
+
+		.btn-contact:hover {
+			background-color: #e14a2a; /* Orange foncé pour hover */
+			transform: translateY(-2px);
+			box-shadow: 0 6px 14px rgba(255, 86, 48, 0.45);
+		}
+
+
+		/* Bouton "Appel" */
+		.btn-call {
+			background-color: #1a73e8;
+			color: #fff;
+		}
+
+		.btn-call:hover {
+			background-color: #155bb5;
+		}
+
+		/* Bouton "WhatsApp" */
+		.btn-whatsapp {
+			background-color: #25D366;
+			color: #fff;
+		}
+
+		.btn-whatsapp:hover {
+			background-color: #1ca94f;
+		}
+
+		/* Titre principal */
+		#contact h2 {
+			color: #fff;
+			font-weight: 700;
+			font-size: 2rem;
+		}
+
+		#contact p {
+			color: #bbbbbb;
+			font-size: 1rem;
+		}
+
+		/* Responsive ajusté */
+		@media(max-width: 767px) {
+			.contact-box,
+			.contact-form-container {
+				padding: 1.5rem 1rem;
+			}
+		}
+
+	</style>
+{% endblock %}

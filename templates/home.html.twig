@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation ZenCar
+{% endblock %}
+
+{% block body %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link
+	rel="stylesheet" href="{{ asset('css/reservationStyles.css') }}">
+
+	<!-- Boutons Appel / WhatsApp -->
+	<div id="floating-contact">
+		<a href="tel:+33610435679" class="btn btn-call rounded-circle shadow-sm" title="Appeler">
+			<i class="bi bi-telephone-fill"></i>
+		</a>
+		<a href="https://wa.me/33610435679" target="_blank" class="btn btn-whatsapp rounded-circle shadow-sm" title="WhatsApp">
+			<i class="bi bi-whatsapp"></i>
+		</a>
+	</div>
+
+	<div id="reservation-test-container" class="container">
+		{% include 'headerZencar.html.twig' %}
+
+		<style>
+			.hero {
+				background: url('/images/hero-zencar.png') center/cover no-repeat;
+				padding: 100px 0;
+				color: white;
+				text-align: center;
+			}
+			.icon-step {
+				font-size: 2rem;
+				color: #ff5630;
+			}
+			.step-box {
+				background-color: rgba(255, 255, 255, 0.04);
+				border: 1px solid hsla(0, 0%, 100%, 0.15);
+				border-radius: 12px;
+				padding: 20px;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				transition: transform 0.3s ease, opacity 0.5s ease;
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			/* Ajout optionnel d'un hover */
+			.step-box:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+			}
+			.step-box.show {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		</style>
+
+		<div class="hero">
+			<h1 class="display-4 fw-bold">ZenCAR - Votre VTC à Marseille</h1>
+			<p class="lead mt-3">Commandez un chauffeur en
+				<strong>5 à 10 minutes</strong>, même en heure de pointe.</p>
+			<a href="#tab1" class="btn btn-primary btn-lg">Commander maintenant</a>
+		</div>
+
+		<section class="container my-5 container my-5 pourquoi-choisir-Zencar">
+
+			<div class="text-center mb-4">
+				<h2 class="h4">Pourquoi choisir ZenCAR ?</h2>
+				<p>Paiement à bord (CB ou espèces), facture disponible sur demande, chauffeurs professionnels et expérimentés, tarification transparente.</p>
+			</div>
+
+			<div
+				class="row mt-4 g-4 align-items-stretch justify-content-center cates-explic row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+				<!-- 1. Commande -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-calendar-check"></i>
+						</div>
+						<h5>1. Commande</h5>
+						<p>Réservez en ligne en 2 clics pour un trajet immédiat ou pour plus tard, ou contactez-nous par téléphone/WhatsApp.</p>
+					</div>
+				</div>
+
+				<!-- 2. Carte interactive (temps & km) -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-map"></i>
+						</div>
+						<h5>2. Carte interactive</h5>
+						<p>Itinéraire affiché sur la carte avec distance (km) et durée estimée en temps réel.</p>
+					</div>
+				</div>
+
+				<!-- 3. Options -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-sliders"></i>
+						</div>
+						<h5>3. Options</h5>
+						<p>Départ & arrivée, ajout d’arrêt, siège bébé et besoins spécifiques directement dans le formulaire.</p>
+					</div>
+				</div>
+
+				<!-- 4. Transparence prix -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-cash-coin"></i>
+						</div>
+						<h5>4. Transparence prix</h5>
+						<p>Distance, durée et tarif affichés clairement avant validation de votre réservation.</p>
+					</div>
+				</div>
+
+				<!-- 5. Bon de commande par SMS -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-receipt-cutoff"></i>
+						</div>
+						<h5>5. Bon de commande par SMS</h5>
+						<p>Vous recevez un SMS récapitulatif (nom, lieu, heure, prix) une fois la commande confirmée.</p>
+					</div>
+				</div>
+
+				<!-- 6. Notification chauffeur -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-telephone-inbound"></i>
+						</div>
+						<h5>6. Notification chauffeur</h5>
+						<p>Le chauffeur vous contacte (appel/SMS) avec les détails du véhicule et la plaque.</p>
+					</div>
+				</div>
+
+				<!-- 7. Facture (à la demande) -->
+				<div class="col">
+					<div class="step-box text-center h-100">
+						<div class="icon-step mb-3">
+							<i class="bi bi-receipt"></i>
+						</div>
+						<h5>7. Facture à la demande</h5>
+						<p>Une facture peut être fournie sur demande après votre trajet.</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="text-center mt-4">
+				<a href="{{ path('app_services') }}" class="btn btn-outline-light">Voir nos services</a>
+			</div>
+		</section>
+
+		<div class="tabs">
+			<button class="tab-button active" data-tab="tab1" data-step="1">Réservation</button>
+			<button class="tab-button" data-tab="tab2" data-step="2">Véhicules</button>
+			<button class="tab-button" data-tab="tab3" data-step="3">Récapitulatif</button>
+		</div>
+
+		{% include 'reservation/index.html.twig' %}
+
+	
+	</div>
+
+	<!-- Scripts HERE Maps et custom -->
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ asset('/js/autocomplete.js') }}"></script>
+	<script src="{{ asset('/js/ui.js') }}"></script>
+	<script src="{{ asset('/js/reservation.js') }}"></script>
+	<script src="{{ asset('/js/map.js') }}"></script>
+	<script src="{{ asset('js/main.js') }}"></script>
+
+	<!-- Animation step-box -->
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+const boxes = document.querySelectorAll('.step-box');
+const observer = new IntersectionObserver(entries => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('show');
+}
+});
+}, {threshold: 0.2});
+boxes.forEach(box => observer.observe(box));
+});
+	</script>
+{% endblock %}

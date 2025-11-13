@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Réservation confirmée{% endblock %}
+
+{% block body %}
+  <div class="container my-4 text-white">
+    {% for label, messages in app.flashes %}
+      {% for message in messages %}
+        <div class="alert alert-{{ label }}">{{ message }}</div>
+      {% endfor %}
+    {% endfor %}
+
+    <h1 class="h4 mb-3">🎉 Réservation confirmée</h1>
+
+    {% if reservation is defined %}
+      <ul class="list-unstyled">
+        <li><strong>Départ :</strong> {{ reservation.depart }}</li>
+        <li><strong>Arrivée :</strong> {{ reservation.arrivee }}</li>
+        <li><strong>Date/Heure :</strong> {{ reservation.dateHeureDepart ? reservation.dateHeureDepart|date('d/m/Y H:i') : 'Immédiat' }}</li>
+        <li><strong>Type véhicule :</strong> {{ reservation.typeVehicule ?: '—' }}</li>
+        <li><strong>Prix :</strong> {{ reservation.prix ? reservation.prix|number_format(2, ',', ' ') ~ ' €' : '—' }}</li>
+      </ul>
+    {% else %}
+      <p>Votre réservation a été enregistrée.</p>
+    {% endif %}
+
+    <a class="btn btn-primary mt-3" href="{{ path('app_home') }}">Nouvelle réservation</a>
+  </div>
+{% endblock %}

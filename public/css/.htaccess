@@ -1,0 +1,18 @@
+# Forcer HTTPS (déjà présent normalement)
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Sécurité navigateur (nécessaire pour certaines APIs)
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+Header set Referrer-Policy "no-referrer-when-downgrade"
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

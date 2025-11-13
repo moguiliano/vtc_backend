@@ -1,0 +1,47 @@
+# config/services.yaml
+
+parameters:
+  here_api_key: '%env(HERE_API_KEY)%'
+  # Les 3 lignes suivantes sont optionnelles (informatives),
+  # l'important est d'utiliser %env()% plus bas dans "services:"
+  twilio.sid:   '%env(TWILIO_SID)%'
+  twilio.token: '%env(TWILIO_TOKEN)%'
+  twilio.from:  '%env(TWILIO_FROM)%'
+
+services:
+  # --- Defaults ---
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  # --- Auto-register everything in src/ (sauf exclusions) ---
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+
+  # --- 1) Déclare le client Twilio (autowirable) ---
+  Twilio\Rest\Client:
+    arguments:
+      - '%env(TWILIO_SID)%'
+      - '%env(TWILIO_TOKEN)%'
+
+  # Alias pratique pour correspondre à ton usage "@twilio.client"
+  twilio.client:
+    alias: Twilio\Rest\Client
+
+  # --- 2) Câble ton service SmsNotifier ---
+  App\Service\SmsNotifier:
+    arguments:
+      $twilio: '@twilio.client'                         # <= injection du client Twilio
+    bind:
+      string $twilioFrom: '%env(string:TWILIO_FROM)%'   # <= bind des scalaires
+
+  # --- 3) (Optionnel) Ton wrapper TwilioService, si tu l'utilises ailleurs ---
+  App\Service\TwilioService:
+    bind:
+      string $sid:   '%env(string:TWILIO_SID)%'
+      string $token: '%env(string:TWILIO_TOKEN)%'
+      string $from:  '%env(string:TWILIO_FROM)%'

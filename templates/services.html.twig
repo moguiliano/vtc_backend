@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos services | ZenCAR
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	<style>
+		.service-card,
+		.vehicle-card {
+			background-color: rgba(255, 255, 255, 0.04);
+			border: 1px solid hsla(0, 0%, 100%, 0.15);
+			padding: 20px;
+			border-radius: 12px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			text-align: center;
+			height: 100%;
+			color: white;
+		}
+		.service-card:hover,
+		.vehicle-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+		}
+		.bi {
+			font-size: 2rem;
+			margin-bottom: 10px;
+			color: #fff;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5 text-white">
+		<h1 class="display-5 fw-bold text-center mb-4">Nos services</h1>
+		<p class="lead text-center mb-5">
+			<span style="color: #ff5630; font-weight: bold;">ZenCAR</span>, votre plateforme VTC à Marseille.
+												    Commandez un chauffeur en
+			<strong>5 à 10 minutes</strong>, même en heure de pointe.
+												    Paiement à bord (CB ou espèces), facture disponible.
+		</p>
+
+
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			<div class="col">
+				<div class="service-card h-100">
+					<i class="bi bi-stopwatch"></i>
+					<h5>Chauffeur rapide</h5>
+					<p>Disponible même en heure de pointe en moins de 10 minutes.</p>
+				</div>
+			</div>
+			<div class="col">
+				<div class="service-card h-100">
+					<i class="bi bi-credit-card"></i>
+					<h5>Paiement flexible</h5>
+					<p>Carte bleue ou espèces à bord, vous choisissez.</p>
+				</div>
+			</div>
+			<div class="col">
+				<div class="service-card h-100">
+					<i class="bi bi-receipt"></i>
+					<h5>Facture disponible</h5>
+					<p>Demandez une facture après la course, envoyée par e-mail.</p>
+				</div>
+			</div>
+		</div>
+
+		<hr class="my-5 border-white"/>
+
+<h2 class="h4 mb-4 text-center">🚖 Services proposés</h2>
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			<div class="col">
+				<div class="service-card">
+					<i class="bi bi-train-front fs-1 mb-3"></i>
+					<h5>Transfert gare</h5>
+					<p>
+						Prise en charge prioritaire dans la file dédiée aux professionnels du transport</p>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="service-card">
+					<i class="bi bi-airplane fs-1 mb-3"></i>
+					<h5>Transfert aéroport</h5>
+					<p>Suivi de vol en temps réel. Prise en charge prioritaire dans la file dédiée aux professionnels du transport.</p>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="service-card">
+					<i class="bi bi-tree fs-1 mb-3"></i>
+					<h5>Calanques</h5>
+					<p>Transport privé vers les plus beaux coins de Marseille.</p>
+					<p class="mt-2 small">
+						Pour une excursion personnalisée, contactez-nous par appel, WhatsApp ou via le
+						<a href="{{ path('app_contact') }}" class="link-light text-decoration-underline">formulaire de contact</a>.
+					</p>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="service-card">
+					<i class="bi bi-clock-history fs-1 mb-3"></i>
+					<h5>Mise à disposition</h5>
+					<p>Chauffeur personnel pour plusieurs heures.</p>
+					<p class="mt-2 small">
+						Un devis est nécessaire pour ce service. Contactez-nous par appel, WhatsApp ou via le
+						<a href="{{ path('app_contact') }}" class="link-light text-decoration-underline">formulaire de contact</a>.
+					</p>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="service-card">
+					<i class="bi bi-cash-coin"></i>
+					<h5>Prix déterminés</h5>
+					<p>Tarif connu à l'avance, sans surprise.</p>
+				</div>
+			</div>
+			<div class="col">
+				<div class="service-card">
+					<i class="bi bi-people"></i>
+					<h5>+300 chauffeurs partenaires</h5>
+					<p>Disponibilité assurée partout à Marseille et ses alentours.</p>
+				</div>
+			</div>
+		</div>
+
+		<hr class="my-5 border-white"/>
+
+		<h2 class="h4 mb-4 text-center">🚘 Notre flotte</h2>
+		<div class="row row-cols-1 row-cols-md-4 g-4">
+			<div class="col">
+				<div class="vehicle-card">
+					<i class="bi bi-car-front"></i>
+					<h6>Éco-Berline</h6>
+					<p>Simple et économique pour vos trajets quotidiens.</p>
+				</div>
+			</div>
+			<div class="col">
+				<div class="vehicle-card">
+					<i class="bi bi-car-front-fill"></i>
+					<h6>Berline Premium</h6>
+					<p>Confort optimal, conduite souple et tenue de chauffeur premium.</p>
+				</div>
+			</div>
+			<div class="col">
+				<div class="vehicle-card">
+					<i class="bi bi-truck-front"></i>
+					<h6>Van 7-8 places</h6>
+					<p>Idéal pour groupes ou familles avec bagages.</p>
+				</div>
+			</div>
+			<div class="col">
+				<div class="vehicle-card">
+					<i class="bi bi-bag-check"></i>
+					<h6>Grand coffre</h6>
+					<p>Parfait pour bagages volumineux ou trajets longue distance.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-5 text-center">
+			<p class="text-white small">
+				📧 Un bon de commande vous est envoyé par SMS (nom, lieu, heure et prix).<br/>
+				📱 Votre chauffeur confirme sa venue par appel ou message avec véhicule et plaque.
+			</p>
+			<a href="{{ path('app_home') }}" class="btn btn-primary btn-lg mt-2">Réserver maintenant</a>
+		</div>
+
+	</div>
+{% endblock %}

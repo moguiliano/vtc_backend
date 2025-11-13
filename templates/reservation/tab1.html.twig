@@ -1,0 +1,183 @@
+<div id="tab1" class="tab-content active">
+
+	<div class="general-container p-3">
+		{% if not form.vars.valid %}
+			<div class="alert symfony-error w-100 mb-3">
+				{{ form_errors(form) }}
+			</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col-12 col-sm-6 donneesClient">
+				<div class="form-group">
+					<label class="form-label fw-bold">🕒 Quand souhaitez-vous partir ?</label>
+					<div class="inline-group">
+						<button type="button" id="immediateBtn" class="time-btn active" style="background-color: #303affff;">Immédiat</button>
+						<button type="button" id="laterBtn" class="time-btn">Plus tard</button>
+					</div>
+				</div>
+
+				<div
+					id="dateTimeGroup" class="form-grou row mb-4" style="display: none;">
+
+					<!-- DATE -->
+					<div class="col-12">
+						<label for="dateDepart" class="form-label form-label-fixed">📅 Date de départ</label>
+						<div class="input-group">
+							<span class="input-group-text">
+								<i class="fas fa-calendar-alt"></i>
+							</span>
+							{{ form_widget(form.dateDepart) }}
+						</div>
+
+
+						<!-- HEURE -->
+						<div class="col-12">
+							{{ form_label(form.heureDepart, "🕒 Heure de départ", {'label_attr': {'class': 'form-label form-label-fixed'}}) }}
+							<div class="input-group">
+								<span class="input-group-text">
+									<i class="fas fa-clock"></i>
+								</span>
+								{{ form_widget(form.heureDepart)}}
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+
+				<!--depart -->
+
+				<!--depart -->
+				<div class="form-group">
+					{{ form_label(form.depart) }}
+					{{ form_widget(form.depart, {
+		'attr': {
+			'data-autocomplete': 'true',
+			'autocomplete': 'off',
+			'class': 'form-control',
+			'placeholder': '📍 Adresse de départ (ex : Gare Saint-Charles)'
+		}
+	}) }}
+					{{ form_errors(form.depart) }}
+					<button type="button" class="btn btn-outline-secondary mt-1 btn-geoloc" onclick="Autocomplete.useGeolocation('reservation_depart')">
+						<svg width="1em" height="1em" viewbox="0 0 24 24" fill="none" aria-label="Remplir automatiquement mon emplacement" class="pe-location-fetch css-bOZeEP" role="button" tabindex="0">
+							<path d="M10.5 13.5.5 11 21 3l-8 20.5-2.5-10Z" fill="currentColor"></path>
+						</svg>
+						Utiliser ma position pour le départ
+					</button>
+				</div>
+
+				<!--stop facultatif -->
+				<div class="form-group inline-group">
+					<input type="checkbox" id="reservation_Stop" style="width: 16px; height: 16px;">
+					<label for="reservation_Stop">Ajouter un arrêt</label>
+				</div>
+				<div class="form-group" id="stopover-location">
+					<label for="reservation_stopLieu">Lieu de l'arrêt</label>
+					{{ form_widget(form.stopLieu, {
+		'attr': {
+			'placeholder': '⛔ Adresse de l’arrêt (facultatif)',
+			'class': 'form-control'
+		}
+	}) }}
+					<button type="button" class="btn btn-outline-secondary mt-1 btn-geoloc" onclick="Autocomplete.useGeolocation('reservation_stopLieu')">
+						<svg width="1em" height="1em" viewbox="0 0 24 24" fill="none" aria-label="Remplir automatiquement mon emplacement" class="pe-location-fetch css-bOZeEP" role="button" tabindex="0">
+							<path d="M10.5 13.5.5 11 21 3l-8 20.5-2.5-10Z" fill="currentColor"></path>
+						</svg>
+						Utiliser ma position
+					</button>
+				</div>
+
+				<!--arrivee  -->
+				<div class="form-group">
+					{{ form_label(form.arrivee) }}
+					{{ form_widget(form.arrivee, {
+		'attr': {
+			'data-autocomplete': 'true',
+			'autocomplete': 'off',
+			'class': 'form-control',
+			'placeholder': '🏁 Adresse d’arrivée (ex : Aéroport Marseille Provence)'
+		}
+	}) }}
+					{{ form_errors(form.arrivee) }}
+					<button type="button" class="btn btn-outline-secondary mt-1 btn-geoloc" onclick="Autocomplete.useGeolocation('reservation_arrivee')">
+						<svg width="1em" height="1em" viewbox="0 0 24 24" fill="none" aria-label="Remplir automatiquement mon emplacement" class="pe-location-fetch css-bOZeEP" role="button" tabindex="0">
+							<path d="M10.5 13.5.5 11 21 3l-8 20.5-2.5-10Z" fill="currentColor"></path>
+						</svg>
+						Utiliser ma position pour l'arrivée
+					</button>
+				</div>
+
+
+				<!--siege bebe -->
+
+				<div class="form-group inline-group">
+					{{ form_widget(form.siegeBebe, {
+                    'attr': {
+                        'style': 'width: 16px; height: 16px;'
+                    }
+                }) }}
+					{{ form_label(form.siegeBebe, "Besoin d'un siège bébé") }}
+				</div>
+			</div>
+
+
+			<div class="col-12 col-sm-6 carte">
+				<div id="mapContainer"></div>
+				<div class="map-info mt-2 d-flex flex-column flex-sm-row justify-content-between gap-2">
+					<div class="form-control distance-box border rounded p-2 text-center w-100">
+						Distance :
+						<span id="distanceText">-</span>
+					</div>
+					<div class="form-control duration-box border rounded p-2 text-center w-100">
+						Durée :
+						<span id="durationText">-</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="button-group mt-4">
+			<button type="button" class="nav-main-btn" id="goToVehicle">🚗 Choisir le véhicule</button>
+		</div>
+	</div>
+
+
+</div>
+<script>
+	function toggleGeoButtons() {
+const isMobile = window.innerWidth<= 576;
+	document.querySelectorAll(".btn-geoloc").forEach(btn => {
+btn.style.display = isMobile ? "none" : "inline-block";
+}
+);
+}
+
+window.addEventListener("DOMContentLoaded", toggleGeoButtons);
+window.addEventListener("resize", toggleGeoButtons);
+document.addEventListener("DOMContentLoaded", function () {
+const contactIcons = document.getElementById("floating-contact");
+const observerTarget = document.querySelector(".general-container.p-3");
+
+if (contactIcons && observerTarget) {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+contactIcons.style.display = "none";
+} else {
+contactIcons.style.display = "flex";
+}
+});
+}, {
+root: null,
+threshold: 0, // Dès que ça touche
+rootMargin: "0px 0px -90% 0px" // Déclenche 10% avant le bas de l’écran
+});
+
+observer.observe(observerTarget);
+}
+});
+</script>
