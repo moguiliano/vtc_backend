@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Reservation;
-use Twilio\Rest\Client;
+use App\Service\PhoneNormalizerService;
 use Psr\Log\LoggerInterface;
+use Twilio\Rest\Client;
 
 /**
  * SmsNotifier
@@ -34,15 +35,10 @@ final class SmsNotifier
     /** @var LoggerInterface|null Logger (optionnel) */
     private ?LoggerInterface $logger;
 
-    /**
-     * @param Client               $twilio        Client Twilio
-     * @param string               $twilioFrom    Numéro Twilio expéditeur (ex: +33600000000)
-     * @param string[]             $adminNumbers  Liste de numéros admin (peut être vide)
-     * @param LoggerInterface|null $logger        Logger optionnel
-     */
     public function __construct(
         Client $twilio,
         string $twilioFrom,
+        private PhoneNormalizerService $phoneNormalizer,
         array $adminNumbers = [],
         ?LoggerInterface $logger = null
     ) {
@@ -71,7 +67,7 @@ final class SmsNotifier
 
         // 2) Déterminer le numéro du client (override front > entité liée) puis normaliser
         $rawClient = $clientPhone ?: $this->extractClientPhone($r);
-        $toClient  = $this->normalizeToE164Like($rawClient, $defaultCountry);
+        $toClient  = $this->phoneNormalizer->normalize($rawClient, $defaultCountry);
 
         // 3) Envoi client (si présent)
         if ($toClient) {
@@ -82,7 +78,7 @@ final class SmsNotifier
 
         // 4) Envoi admins (si configurés)
         foreach ($this->adminNumbers as $adminRaw) {
-            $toAdmin = $this->normalizeToE164Like($adminRaw, $defaultCountry);
+            $toAdmin = $this->phoneNormalizer->normalize($adminRaw, $defaultCountry);
             if ($toAdmin) {
                 $this->sendSms($toAdmin, $adminMsg);
             }
@@ -185,40 +181,6 @@ final class SmsNotifier
         }
 
         return $this->callIfAvailable($r, ['getPhone']);
-    }
-
-    /**
-     * Normalise un numéro "humain" en forme E.164-like selon un pays par défaut.
-     * - Supprime les séparateurs
-     * - Convertit '00' en '+'
-     * - FR : transforme 0XXXXXXXXX -> +33XXXXXXXXX
-     */
-    private function normalizeToE164Like(?string $raw, string $defaultCountry = 'FR'): ?string
-    {
-        if (!$raw) {
-            return null;
-        }
-
-        // Garder uniquement chiffres et '+'
-        $n = \preg_replace('/[^\d+]/', '', $raw) ?? '';
-
-        // 00 -> +
-        if (\str_starts_with($n, '00')) {
-            $n = '+' . \substr($n, 2);
-        }
-
-        // Déjà au format international
-        if (\str_starts_with($n, '+')) {
-            return $n;
-        }
-
-        // Règle FR : 0********* -> +33*********
-        if ($defaultCountry === 'FR' && \preg_match('/^0\d{9}$/', $n) === 1) {
-            return '+33' . \substr($n, 1);
-        }
-
-        // Sinon retourner tel quel (Twilio rejettera s'il est invalide)
-        return $n ?: null;
     }
 
     /**

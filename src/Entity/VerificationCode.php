@@ -25,16 +25,38 @@ class VerificationCode
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
+    #[ORM\Column(name: "expires_at", type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $expiresAt = null;
+
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    private int $attempts = 0;
+
+    #[ORM\Column(name: "last_sent_at", type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastSentAt = null;
+
     #[ORM\Column(name: "is_verified", type: "boolean")]
     private bool $isVerified = false;
 
     public function getId(): ?int { return $this->id; }
+
     public function getPhoneNumber(): ?string { return $this->phoneNumber; }
     public function setPhoneNumber(string $phoneNumber): self { $this->phoneNumber = $phoneNumber; return $this; }
+
     public function getCode(): ?string { return $this->code; }
     public function setCode(string $code): self { $this->code = $code; return $this; }
+
     public function getCreatedAt(): ?\DateTimeInterface { return $this->createdAt; }
     public function setCreatedAt(\DateTimeInterface $createdAt): self { $this->createdAt = $createdAt; return $this; }
+
+    public function getExpiresAt(): ?\DateTimeInterface { return $this->expiresAt; }
+    public function setExpiresAt(?\DateTimeInterface $expiresAt): self { $this->expiresAt = $expiresAt; return $this; }
+
+    public function getAttempts(): int { return $this->attempts; }
+    public function setAttempts(int $attempts): self { $this->attempts = $attempts; return $this; }
+
+    public function getLastSentAt(): ?\DateTimeInterface { return $this->lastSentAt; }
+    public function setLastSentAt(?\DateTimeInterface $lastSentAt): self { $this->lastSentAt = $lastSentAt; return $this; }
+
     public function isVerified(): bool { return $this->isVerified; }
     public function setIsVerified(bool $isVerified): self { $this->isVerified = $isVerified; return $this; }
 }
