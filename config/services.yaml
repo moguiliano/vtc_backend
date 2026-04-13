@@ -8,6 +8,10 @@ parameters:
   otp.ttl_minutes:      5
   otp.antispam_seconds: 60
   otp.max_attempts:     5
+  pricing.commission_percent:      20.0
+  pricing.night_surcharge_percent: 20.0
+  pricing.night_start_hour:        23
+  pricing.night_end_hour:          7
 
 services:
   # --- Defaults ---
@@ -40,6 +44,14 @@ services:
       $phoneNormalizer: '@App\Service\PhoneNormalizerService'
     bind:
       string $twilioFrom: '%env(string:TWILIO_FROM)%'
+
+  # --- 5) HereMapsService avec paramètres pricing ---
+  App\Service\HereMapsService:
+    arguments:
+      $commissionPercent:     '%pricing.commission_percent%'
+      $nightSurchargePercent: '%pricing.night_surcharge_percent%'
+      $nightStartHour:        '%pricing.night_start_hour%'
+      $nightEndHour:          '%pricing.night_end_hour%'
 
   # --- 4) OtpService avec paramètres configurables ---
   App\Service\OtpService:

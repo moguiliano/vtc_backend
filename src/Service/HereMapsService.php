@@ -2,26 +2,30 @@
 
 namespace App\Service;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Repository\VehicleCategoryRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * Service qui centralise toutes les fonctionnalités liées à l'API HERE et au calcul de prix.
- */
 class HereMapsService
 {
-    private HttpClientInterface $client;
     private string $apiKey;
 
-    public function __construct(HttpClientInterface $client, ParameterBagInterface $params)
-    {
-        $this->client = $client;
+    public function __construct(
+        private HttpClientInterface $client,
+        private VehicleCategoryRepository $vehicleRepo,
+        ParameterBagInterface $params,
+        private float $commissionPercent = 20.0,
+        private float $nightSurchargePercent = 20.0,
+        private int $nightStartHour = 23,
+        private int $nightEndHour = 7,
+    ) {
         $this->apiKey = $params->get('here_api_key');
     }
 
-    /**
-     * Appel HTTP GET à l'API HERE
-     */
+    // -------------------------------------------------------------------------
+    // API HERE
+    // -------------------------------------------------------------------------
+
     private function fetchFromApi(string $url): ?array
     {
         $response = $this->client->request('GET', $url);
@@ -34,25 +38,16 @@ class HereMapsService
         }
     }
 
-    /**
-     * Geocode une adresse en coordonnées GPS
-     */
     public function geocodeAddress(string $address): ?array
     {
-        $encoded = urlencode($address);
-        $url = "https://geocode.search.hereapi.com/v1/geocode?q={$encoded}&apiKey={$this->apiKey}";
+        $url = "https://geocode.search.hereapi.com/v1/geocode?q=" . urlencode($address) . "&apiKey={$this->apiKey}";
         $data = $this->fetchFromApi($url);
         return $data['items'][0]['position'] ?? null;
     }
 
-    /**
-     * Autocomplétion d'adresse centrée sur Marseille
-     */
     public function autocompleteAddress(string $query): array
     {
-        $encoded = urlencode($query);
-        $url = "https://autosuggest.search.hereapi.com/v1/autosuggest?q={$encoded}&at=43.2965,5.3698&apiKey={$this->apiKey}";
-
+        $url = "https://autosuggest.search.hereapi.com/v1/autosuggest?q=" . urlencode($query) . "&at=43.2965,5.3698&apiKey={$this->apiKey}";
         $data = $this->fetchFromApi($url);
         if (!$data) return [];
 
@@ -65,19 +60,15 @@ class HereMapsService
                 'lng'   => $item['position']['lng'] ?? null,
             ];
         }
-
         return $results;
     }
 
-
-    /**
-     * Distance & durée avec arrêt facultatif
-     */
     public function getDistanceAndDurationWithStop(string $originAddress, string $destinationAddress, ?string $stopAddress = null): array
     {
-        $origin = $this->geocodeAddress($originAddress);
+        $origin      = $this->geocodeAddress($originAddress);
         $destination = $this->geocodeAddress($destinationAddress);
-        $via = $stopAddress ? $this->geocodeAddress($stopAddress) : null;
+        $via         = $stopAddress ? $this->geocodeAddress($stopAddress) : null;
+
         if (!$origin || !$destination || ($stopAddress && !$via)) {
             return ['error' => 'Impossible de géocoder une ou plusieurs adresses'];
         }
@@ -89,7 +80,6 @@ class HereMapsService
         $url .= "&return=summary&apiKey={$this->apiKey}";
 
         $data = $this->fetchFromApi($url);
-
         if (!$data || !isset($data['routes'][0]['sections'])) {
             return ['error' => 'Aucun itinéraire trouvé'];
         }
@@ -97,42 +87,61 @@ class HereMapsService
         $totalDistance = 0;
         $totalDuration = 0;
         foreach ($data['routes'][0]['sections'] as $section) {
-            $summary = $section['summary'];
-            $totalDistance += $summary['length'];
-            $totalDuration += $summary['duration'];
+            $totalDistance += $section['summary']['length'];
+            $totalDuration += $section['summary']['duration'];
         }
 
         return [
-            'distance_km'   => round($totalDistance / 1000, 2),
-            'duration_min'  => round($totalDuration / 60, 2)
+            'distance_km'  => round($totalDistance / 1000, 2),
+            'duration_min' => round($totalDuration / 60, 2),
         ];
     }
 
+    // -------------------------------------------------------------------------
+    // Pricing — lit depuis la BDD
+    // -------------------------------------------------------------------------
+
     /**
-     * Estimation de prix d'un trajet selon la distance, heure et catégorie de véhicule
+     * Estime le prix pour un slug de catégorie donné.
+     * Retourne null si la catégorie est inconnue ou inactive.
      */
-    public function estimerPrix(float $distance, string $categorie, int $heure): ?array
+    public function estimerPrix(float $distance, string $slugCategorie, int $heure): ?array
     {
-        $prix = match ($categorie) {
-            'eco_berline'   => $this->calculEcoBerline($distance),
-            'grand_coffre'  => $this->calculGrandCoffre($distance),
-            'berline'       => $this->calculBerline($distance),
-            'van'           => $this->calculVan($distance),
-            default         => null,
-        };
-
-        if (!$prix) return null;
-
-        if ($heure < 7 || $heure >= 23) {
-            $prix['prix_total'] = round($prix['prix_total'] * 1.2, 2);
-            $prix['commission'] = round($prix['prix_total'] * 0.20, 2);
-            $prix['net_chauffeur'] = round($prix['prix_total'] - $prix['commission'], 2);
-            $prix['majoration_nuit'] = true;
-        } else {
-            $prix['majoration_nuit'] = false;
+        $categorie = $this->vehicleRepo->findBySlug($slugCategorie);
+        if (!$categorie || !$categorie->isActive()) {
+            return null;
         }
 
-        return $prix;
+        $prixBrut  = $categorie->calculerPrixBrut($distance);
+        $isNuit    = ($heure < $this->nightEndHour || $heure >= $this->nightStartHour);
+
+        if ($isNuit) {
+            $prixBrut = round($prixBrut * (1 + $this->nightSurchargePercent / 100), 2);
+        }
+
+        return $this->formatPrix($prixBrut, $isNuit);
+    }
+
+    /**
+     * Retourne les estimations pour toutes les catégories actives.
+     */
+    public function estimerToutesCategoriesActives(float $distance, int $heure): array
+    {
+        $categories = $this->vehicleRepo->findAllActive();
+        $result     = [];
+
+        foreach ($categories as $categorie) {
+            $prixBrut = $categorie->calculerPrixBrut($distance);
+            $isNuit   = ($heure < $this->nightEndHour || $heure >= $this->nightStartHour);
+
+            if ($isNuit) {
+                $prixBrut = round($prixBrut * (1 + $this->nightSurchargePercent / 100), 2);
+            }
+
+            $result[$categorie->getSlug()] = $this->formatPrix($prixBrut, $isNuit);
+        }
+
+        return $result;
     }
 
     public function getFullEstimation(string $depart, string $arrivee, ?string $stop, string $categorie, int $heure): array
@@ -141,45 +150,26 @@ class HereMapsService
         if (isset($distanceInfos['error'])) return $distanceInfos;
 
         $prixInfos = $this->estimerPrix($distanceInfos['distance_km'], $categorie, $heure);
-        if (!$prixInfos) return ['error' => 'Erreur lors de l’estimation du prix.'];
+        if (!$prixInfos) return ['error' => 'Catégorie de véhicule introuvable.'];
 
         return array_merge($distanceInfos, $prixInfos);
     }
 
-    private function formatPrix(float $prix): array
+    // -------------------------------------------------------------------------
+    // Utilitaires
+    // -------------------------------------------------------------------------
+
+    private function formatPrix(float $prix, bool $majoration_nuit = false): array
     {
-        $prix = round($prix, 2);
-        $commission = round($prix * 0.20, 2);
-        $net = round($prix - $commission, 2);
+        $prix       = round($prix, 2);
+        $commission = round($prix * ($this->commissionPercent / 100), 2);
+        $net        = round($prix - $commission, 2);
 
         return [
-            'prix_total' => $prix,
-            'commission' => $commission,
-            'net_chauffeur' => $net,
+            'prix_total'     => $prix,
+            'commission'     => $commission,
+            'net_chauffeur'  => $net,
+            'majoration_nuit'=> $majoration_nuit,
         ];
-    }
-
-    private function calculEcoBerline(float $distance): array
-    {
-        $prix = $distance <= 10 ? 20 + ($distance * 2.5) : 45 + (($distance - 10) * 2);
-        return $this->formatPrix($prix);
-    }
-
-    private function calculGrandCoffre(float $distance): array
-    {
-        $prix = $distance <= 10 ? 30 + ($distance * 2.5) : 55 + (($distance - 10) * 2);
-        return $this->formatPrix($prix);
-    }
-
-    private function calculBerline(float $distance): array
-    {
-        $prix = $distance <= 4 ? 35 : 35 + (($distance - 4) * 3.1);
-        return $this->formatPrix($prix);
-    }
-
-    private function calculVan(float $distance): array
-    {
-        $prix = $distance <= 7 ? 63 : 63 + (($distance - 7) * 3.2);
-        return $this->formatPrix($prix);
     }
 }
