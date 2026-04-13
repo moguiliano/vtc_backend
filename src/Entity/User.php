@@ -16,6 +16,9 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $prenom = null;
+
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
@@ -40,6 +43,24 @@ class User
         $this->nom = $nom;
 
         return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /** Alias utilisé par SmsNotifier */
+    public function getFirstname(): ?string
+    {
+        return $this->prenom;
     }
 
     public function getEmail(): ?string

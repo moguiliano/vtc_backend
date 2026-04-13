@@ -1,92 +1,66 @@
+{# Mapping slug → icône FontAwesome #}
+{% set icons = {
+    'eco_berline':  'fa-car-side',
+    'grand_coffre': 'fa-suitcase-rolling',
+    'berline':      'fa-gem',
+    'van':          'fa-shuttle-van'
+} %}
+
 <div id="tab2" class="tab-content">
-  <div style="text-align: left; margin-bottom: 16px;">
-    <button type="button" class="nav-main-btn back-btn" onclick="UI.switchToTab('tab1')">Retour</button>
-  </div>
+	<div style="text-align: left; margin-bottom: 16px;">
+		<button type="button" class="nav-main-btn back-btn" onclick="UI.switchToTab('tab1')">Retour</button>
+	</div>
 
-  <div class="general-container">
-    <h2 style="margin-bottom: 24px; color: #ffffff;">Choisissez votre véhicule</h2>
+	<div class="general-container">
+		<h2 style="margin-bottom: 24px; color: #ffffff;">Choisissez votre véhicule</h2>
 
-    <div class="d-flex flex-column gap-3">
+		<div class="d-flex flex-column gap-3">
 
-      <!-- Eco-Berline -->
-      <div class="vehicle-card w-100" id="vehicle-eco-berline" data-type="eco-berline">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <i class="fas fa-car-side" style="font-size: 1.8rem; color: #ff5630;"></i>
-          <div class="vehicle-price" data-type="eco_berline" style="font-size: 1rem; font-weight: bold; color: #fff;">Prix : 30 euros</div>
-        </div>
-        <h5 class="text-white" style="font-size: 1.1rem; text-align: left;">Eco-Berline</h5>
-        <div class="d-flex align-items-center gap-3 mt-2">
-          <div><i class="fas fa-user-friends me-1" style="font-size: 0.8rem; color: #888;"></i>4</div>
-          <div><i class="fas fa-suitcase me-1" style="font-size: 0.8rem; color: #888;"></i>2</div>
-          <a data-bs-toggle="collapse" href="#info-eco" role="button" style="font-size: 0.8rem; color: #888; text-decoration: none;">
-            <i class="fas fa-info-circle me-1" style="font-size: 0.8rem; color: #888;"></i>Plus d'info
-          </a>
-        </div>
-        <div class="collapse mt-2 text-white small" id="info-eco">
-          Idéal pour les trajets urbains. Compact, confortable et économique.
-        </div>
-      </div>
+			{% for vehicle in vehicles %}
+			<div class="vehicle-card w-100" id="vehicle-{{ vehicle.slug }}" data-type="{{ vehicle.slug }}">
+				<div class="d-flex justify-content-between align-items-center mb-2">
+					<i class="fas {{ icons[vehicle.slug] ?? 'fa-car' }}" style="font-size: 1.8rem; color: #ff5630;"></i>
+					<div class="vehicle-price" data-type="{{ vehicle.slug }}" style="font-size: 1rem; font-weight: bold; color: #fff;">
+						À partir de {{ vehicle.basePriceUnderThreshold|number_format(0) }} €
+					</div>
+				</div>
+				<h5 class="text-white" style="font-size: 1.1rem; text-align: left;">{{ vehicle.label }}</h5>
 
-      <!-- Grand Coffre -->
-      <div class="vehicle-card w-100" id="vehicle-grand-coffre" data-type="grand-coffre">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <i class="fas fa-suitcase-rolling" style="font-size: 1.8rem; color: #ff5630;"></i>
-          <div class="vehicle-price" data-type="grand_coffre" style="font-size: 1rem; font-weight: bold; color: #fff;">Prix : 35 euros</div>
-        </div>
-        <h5 class="text-white" style="font-size: 1.1rem; text-align: left;">Grand Coffre</h5>
-        <div class="d-flex align-items-center gap-3 mt-2">
-          <div><i class="fas fa-user-friends me-1" style="font-size: 0.8rem; color: #888;"></i>4</div>
-          <div><i class="fas fa-suitcase me-1" style="font-size: 0.8rem; color: #888;"></i>3</div>
-          <a data-bs-toggle="collapse" href="#info-coffre" role="button" style="font-size: 0.8rem; color: #888; text-decoration: none;">
-            <i class="fas fa-info-circle me-1" style="font-size: 0.8rem; color: #888;"></i>Plus d'info
-          </a>
-        </div>
-        <div class="collapse mt-2 text-white small" id="info-coffre">
-          Parfait pour transporter des bagages volumineux tout en gardant du confort.
-        </div>
-      </div>
+				<div class="d-flex align-items-center gap-3 mt-2">
+					<div>
+						<i class="fas fa-user-friends me-1" style="font-size: 0.8rem; color: #888;"></i>{{ vehicle.maxPassengers }}
+					</div>
+					<div>
+						<i class="fas fa-suitcase me-1" style="font-size: 0.8rem; color: #888;"></i>{{ vehicle.luggageCapacity }}
+					</div>
+					{% if vehicle.description %}
+					<a data-bs-toggle="collapse" href="#info-{{ vehicle.slug }}" role="button" style="font-size: 0.8rem; color: #888; text-decoration: none;">
+						<i class="fas fa-info-circle me-1" style="font-size: 0.8rem; color: #888;"></i>Plus d'info
+					</a>
+					{% endif %}
+				</div>
 
-      <!-- Van -->
-      <div class="vehicle-card w-100" id="vehicle-van" data-type="van">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <i class="fas fa-shuttle-van" style="font-size: 1.8rem; color: #ff5630;"></i>
-          <div class="vehicle-price" data-type="van" style="font-size: 1rem; font-weight: bold; color: #fff;">Prix : 40 euros</div>
-        </div>
-        <h5 class="text-white" style="font-size: 1.1rem; text-align: left;">Van</h5>
-        <div class="d-flex align-items-center gap-3 mt-2">
-          <div><i class="fas fa-user-friends me-1" style="font-size: 0.8rem; color: #888;"></i>7</div>
-          <div><i class="fas fa-suitcase me-1" style="font-size: 0.8rem; color: #888;"></i>5</div>
-          <a data-bs-toggle="collapse" href="#info-van" role="button" style="font-size: 0.8rem; color: #888; text-decoration: none;">
-            <i class="fas fa-info-circle me-1" style="font-size: 0.8rem; color: #888;"></i>Plus d'info
-          </a>
-        </div>
-        <div class="collapse mt-2 text-white small" id="info-van">
-          Idéal pour les groupes ou familles nombreuses avec beaucoup de bagages.
-        </div>
-      </div>
+				{% if vehicle.description %}
+				<div class="collapse mt-2 text-white small" id="info-{{ vehicle.slug }}">
+					{{ vehicle.description }}
+				</div>
+				{% endif %}
+			</div>
+			{% else %}
+			<div class="text-white text-center py-4">
+				Aucun véhicule disponible pour le moment.
+			</div>
+			{% endfor %}
 
-      <!-- Berline Premium -->
-      <div class="vehicle-card w-100" id="vehicle-berline-premium" data-type="berline-premium">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <i class="fas fa-gem" style="font-size: 1.8rem; color: #ff5630;"></i>
-          <div class="vehicle-price" data-type="berline" style="font-size: 1rem; font-weight: bold; color: #fff;">Prix : 50 euros</div>
-        </div>
-        <h5 class="text-white" style="font-size: 1.1rem; text-align: left;">Berline Premium</h5>
-        <div class="d-flex align-items-center gap-3 mt-2">
-          <div><i class="fas fa-user-friends me-1" style="font-size: 0.8rem; color: #888;"></i>4</div>
-          <div><i class="fas fa-suitcase me-1" style="font-size: 0.8rem; color: #888;"></i>3</div>
-          <a data-bs-toggle="collapse" href="#info-premium" role="button" style="font-size: 0.8rem; color: #888; text-decoration: none;">
-            <i class="fas fa-info-circle me-1" style="font-size: 0.8rem; color: #888;"></i>Plus d'info
-          </a>
-        </div>
-        <div class="collapse mt-2 text-white small" id="info-premium">
-          Véhicule haut de gamme avec intérieur raffiné. Idéal pour les déplacements VIP.
-        </div>
-      </div>
-    </div>
+		</div>
 
-    <div class="button-group mt-4">
-      <button type="button" class="nav-main-btn" id="nextRecapBtn">📋 Voir le récapitulatif</button>
-    </div>
-  </div>
+		<div class="button-group mt-4">
+			<button type="button" class="nav-main-btn" id="nextRecapBtn">📋 Voir le récapitulatif</button>
+		</div>
+	</div>
 </div>
+
+{# Expose les véhicules au JS pour les libellés dynamiques #}
+<script>
+window.ZenCarVehicles = {{ vehicles|map(v => {'slug': v.slug, 'label': v.label})|json_encode|raw }};
+</script>

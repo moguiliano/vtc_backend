@@ -29,6 +29,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 // ✅ AJOUTS
 use App\Repository\ReservationRepository;
+use App\Repository\VehicleCategoryRepository;
+use App\Service\PhoneNormalizerService;
 use App\Service\SmsNotifier;
 
 final class HomeController extends AbstractController
@@ -66,7 +68,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, VehicleCategoryRepository $vehicleRepo): Response
     {
         // Création d'une nouvelle entité Reservation (vide)
         $reservation = new Reservation();
@@ -93,7 +95,7 @@ final class HomeController extends AbstractController
                 ?? $request->request->get('guestPhone')
                 ?? $request->request->get('clientPhone')
                 ?? null;
-            $clientPhone = self::normalizeToE164Like($clientPhone, 'FR');
+            $clientPhone = $phoneNormalizer->normalize($clientPhone, 'FR');
 
 
             $entityManager->persist($reservation);
@@ -106,33 +108,11 @@ final class HomeController extends AbstractController
 
         // Affichage du formulaire
         return $this->render('home.html.twig', [
-            'form' => $form->createView(),
+            'form'     => $form->createView(),
+            'vehicles' => $vehicleRepo->findAllActive(),
         ]);
     }
-    private static function normalizeToE164Like(?string $raw, string $defaultCountry = 'FR'): ?string
-    {
-        if (!$raw) return null;
-        $n = preg_replace('/[^\d+]/', '', $raw);
-
-        // 00… -> +…
-        if (str_starts_with($n, '00')) {
-            $n = '+' . substr($n, 2);
-        }
-
-        // déjà international
-        if (str_starts_with($n, '+')) {
-            return $n; // on suppose correct (Twilio validera)
-        }
-
-        // Cas FR : 0XXXXXXXXX -> +33XXXXXXXXX
-        if ($defaultCountry === 'FR' && preg_match('/^0\d{9}$/', $n)) {
-            return '+33' . substr($n, 1);
-        }
-
-        // Autres cas nationaux simples : on renvoie brut (mieux vaut +CC en amont)
-        return $n;
-    }
-    #[Route('/api/get-here-key', name: 'api_get_here_key', methods: ['GET'])]
+#[Route('/api/get-here-key', name: 'api_get_here_key', methods: ['GET'])]
     public function getHereKey(): JsonResponse
     {
         return $this->json([

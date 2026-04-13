@@ -142,15 +142,15 @@
               const recapPrixBlock = document.getElementById("recap_prix_list");
               if (recapPrixBlock) {
                 recapPrixBlock.innerHTML = "";
+
+                // Libellés dynamiques depuis les données BDD exposées par Twig
+                const vehicleLabels = {};
+                (window.ZenCarVehicles || []).forEach((v) => {
+                  vehicleLabels[v.slug] = v.label;
+                });
+
                 Object.entries(data.prix || {}).forEach(([cat, prix]) => {
-                  // Libellés lisibles pour l’utilisateur
-                  const label =
-                    {
-                      eco_berline: "Eco-Berline",
-                      grand_coffre: "Grand Coffre",
-                      berline: "Berline",
-                      van: "Van",
-                    }[cat] || cat;
+                  const label = vehicleLabels[cat] || cat;
 
                   recapPrixBlock.innerHTML += `
                     <div><strong>${label} :</strong> ${prix.prix_total} €${

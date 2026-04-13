@@ -2,11 +2,16 @@
 
 parameters:
   here_api_key: '%env(HERE_API_KEY)%'
-  # Les 3 lignes suivantes sont optionnelles (informatives),
-  # l'important est d'utiliser %env()% plus bas dans "services:"
   twilio.sid:   '%env(TWILIO_SID)%'
   twilio.token: '%env(TWILIO_TOKEN)%'
   twilio.from:  '%env(TWILIO_FROM)%'
+  otp.ttl_minutes:      5
+  otp.antispam_seconds: 60
+  otp.max_attempts:     5
+  pricing.commission_percent:      20.0
+  pricing.night_surcharge_percent: 20.0
+  pricing.night_start_hour:        23
+  pricing.night_end_hour:          7
 
 services:
   # --- Defaults ---
@@ -35,9 +40,25 @@ services:
   # --- 2) Câble ton service SmsNotifier ---
   App\Service\SmsNotifier:
     arguments:
-      $twilio: '@twilio.client'                         # <= injection du client Twilio
+      $twilio: '@twilio.client'
+      $phoneNormalizer: '@App\Service\PhoneNormalizerService'
     bind:
-      string $twilioFrom: '%env(string:TWILIO_FROM)%'   # <= bind des scalaires
+      string $twilioFrom: '%env(string:TWILIO_FROM)%'
+
+  # --- 5) HereMapsService avec paramètres pricing ---
+  App\Service\HereMapsService:
+    arguments:
+      $commissionPercent:     '%pricing.commission_percent%'
+      $nightSurchargePercent: '%pricing.night_surcharge_percent%'
+      $nightStartHour:        '%pricing.night_start_hour%'
+      $nightEndHour:          '%pricing.night_end_hour%'
+
+  # --- 4) OtpService avec paramètres configurables ---
+  App\Service\OtpService:
+    arguments:
+      $ttlMinutes:      '%otp.ttl_minutes%'
+      $antispamSeconds: '%otp.antispam_seconds%'
+      $maxAttempts:     '%otp.max_attempts%'
 
   # --- 3) (Optionnel) Ton wrapper TwilioService, si tu l'utilises ailleurs ---
   App\Service\TwilioService:

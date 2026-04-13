@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Reservation;
+use App\Entity\VehicleCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\ReservationCrudController;
@@ -44,7 +45,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Gestion des réservations');
         yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
         
+        yield MenuItem::section('Tarification');
+        yield MenuItem::linkToCrud('Véhicules & Prix', 'fa fa-car', VehicleCategory::class);
+
         yield MenuItem::section('Paramètres');
-        yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out')->setExtra('firewall_name', 'main');
+        yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
     }
 }
