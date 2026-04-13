@@ -49,6 +49,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Véhicules & Prix', 'fa fa-car', VehicleCategory::class);
 
         yield MenuItem::section('Paramètres');
-        yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out')->setExtra('firewall_name', 'main');
+        yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
     }
 }
