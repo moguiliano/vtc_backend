@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
 use App\Service\SmsNotifier;
 use App\Repository\ReservationRepository;
@@ -20,7 +21,7 @@ class ReservationController extends AbstractController
     public function __construct(private HereMapsService $hereMapsService) {}
 
     #[Route('', name: 'reservation_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, VehicleCategoryRepository $vehicleRepo): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -42,6 +43,7 @@ class ReservationController extends AbstractController
         return $this->render('reservation/index.html.twig', [
             'form'         => $form->createView(),
             'here_api_key' => $this->getParameter('here_api_key'),
+            'vehicles'     => $vehicleRepo->findAllActive(),
         ]);
     }
 
@@ -99,13 +101,10 @@ class ReservationController extends AbstractController
             return new JsonResponse($distanceInfos, 400);
         }
 
-        $prixParCategorie = [];
-        foreach (['eco_berline', 'grand_coffre', 'berline', 'van'] as $cat) {
-            $prix = $this->hereMapsService->estimerPrix($distanceInfos['distance_km'], $cat, $heure);
-            if ($prix) {
-                $prixParCategorie[$cat] = $prix;
-            }
-        }
+        $prixParCategorie = $this->hereMapsService->estimerToutesCategoriesActives(
+            $distanceInfos['distance_km'],
+            $heure
+        );
 
         return new JsonResponse([
             'distance_km'  => $distanceInfos['distance_km'],

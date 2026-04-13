@@ -29,6 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 // ✅ AJOUTS
 use App\Repository\ReservationRepository;
+use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
 use App\Service\SmsNotifier;
 
@@ -67,7 +68,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, VehicleCategoryRepository $vehicleRepo): Response
     {
         // Création d'une nouvelle entité Reservation (vide)
         $reservation = new Reservation();
@@ -107,7 +108,8 @@ final class HomeController extends AbstractController
 
         // Affichage du formulaire
         return $this->render('home.html.twig', [
-            'form' => $form->createView(),
+            'form'     => $form->createView(),
+            'vehicles' => $vehicleRepo->findAllActive(),
         ]);
     }
 #[Route('/api/get-here-key', name: 'api_get_here_key', methods: ['GET'])]
