@@ -43,10 +43,40 @@ final class HomeController extends AbstractController
     }
 
     // Landing page SEO — "taxi marseille"
-    #[Route('/taxi-marseille', name: 'app_taxi_marseille', methods: ['GET'])]
-    public function taxiMarseille(VehicleCategoryRepository $vehicleRepo): Response
+    #[Route('/taxi-marseille', name: 'app_taxi_marseille', methods: ['GET', 'POST'])]
+    public function taxiMarseille(Request $request, EntityManagerInterface $entityManager, VehicleCategoryRepository $vehicleRepo, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer): Response
     {
+        $reservation = new Reservation();
+        $form = $this->createForm(ReservationType::class, $reservation);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $date  = $form->get('dateDepart')->getData();
+            $heure = $form->get('heureDepart')->getData();
+
+            if ($date && $heure) {
+                $fusion = new \DateTime();
+                $fusion->setDate((int)$date->format('Y'), (int)$date->format('m'), (int)$date->format('d'));
+                $fusion->setTime((int)$heure->format('H'), (int)$heure->format('i'));
+                $reservation->setDateHeureDepart($fusion);
+            }
+
+            $prenom      = (string) $request->request->get('prenom', '');
+            $clientPhone = $request->request->get('fullPhone')
+                ?? $request->request->get('guestPhone')
+                ?? $request->request->get('clientPhone')
+                ?? null;
+            $clientPhone = $phoneNormalizer->normalize($clientPhone, 'FR');
+
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+            $smsNotifier->notifyReservation($reservation, $clientPhone, $prenom);
+
+            return $this->redirectToRoute('reservation_success_with_id', ['id' => $reservation->getId()]);
+        }
+
         return $this->render('taxi-marseille.html.twig', [
+            'form'     => $form->createView(),
             'vehicles' => $vehicleRepo->findAllActive(),
         ]);
     }
