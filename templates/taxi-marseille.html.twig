@@ -111,7 +111,7 @@
   /* Hero */
   .zen-hero {
     background: linear-gradient(135deg, var(--zen-green-dark) 0%, var(--zen-green) 100%);
-    padding: 80px 0 60px;
+    padding: clamp(40px, 8vw, 80px) 0 clamp(32px, 6vw, 60px);
     color: var(--zen-white);
   }
   .zen-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; }
@@ -144,7 +144,7 @@
   .zen-section-title {
     color: var(--zen-green-dark);
     font-weight: 700;
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
     margin-bottom: 8px;
   }
   .zen-section-subtitle { color: #555; margin-bottom: 36px; }
@@ -231,7 +231,7 @@
     padding: 50px 0;
     text-align: center;
   }
-  .zen-cta-banner h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; }
+  .zen-cta-banner h2 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 700; margin-bottom: 10px; }
   .zen-cta-banner p  { opacity: .85; margin-bottom: 24px; }
 
   /* Seniors highlight */
@@ -256,6 +256,20 @@
   .zen-form-section { background: var(--zen-dark); padding: 60px 0; }
   .zen-form-section .tabs .tab-button { color: #ccc; }
   .zen-form-section .tabs .tab-button.active { color: var(--zen-green); border-bottom-color: var(--zen-green); }
+
+  /* ── Mobile CTA full-width ───────────────────── */
+  @media (max-width: 480px) {
+    .zen-hero .btn,
+    .zen-hero .zen-cta-tel,
+    .zen-cta-banner .btn,
+    .zen-seniors-card .btn {
+      width: 100%;
+      text-align: center;
+      display: block;
+    }
+    .zen-seniors-card { padding: 16px; }
+    .zen-section { padding: 40px 0; }
+  }
 </style>
 {% endblock %}
 
@@ -312,7 +326,7 @@
     <h2 class="zen-section-title text-center">Nos services Taxi & VTC à Marseille</h2>
     <p class="zen-section-subtitle text-center">Tous vos trajets, un seul numéro : <strong>06 74 03 96 94</strong></p>
 
-    <div class="row g-4 row-cols-2 row-cols-sm-3 row-cols-lg-4">
+    <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-4">
 
       <div class="col">
         <div class="zen-service-card">
