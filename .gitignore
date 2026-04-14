@@ -42,3 +42,16 @@ yarn-error.log
 /.env
 /.idea/
 /public/build/
+
+# Fichiers sensibles dans templates/
+templates/.env
+templates/.env.*
+templates/.htaccess
+templates/partials/dev.log
+
+# Worktrees Claude Code
+.claude/worktrees/
+
+# Entités/Fixtures de test non finalisées
+src/Entity/voiture.php
+src/DataFixtures/AppFixtures.php

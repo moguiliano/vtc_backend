@@ -44,7 +44,7 @@ class ReservationCrudController extends AbstractCrudController
                 'Van' => 'Van',
                 'Grand Coffre' => 'Grand Coffre'
             ]);
-        $prix = NumberField::new('prix', 'Prix (€)')->setNumDecimals(2)->onlyOnDetail();
+        $prix = NumberField::new('prix', 'Prix (€)')->setNumDecimals(2);
         $user = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
         $isGuest = BooleanField::new('isGuest', 'Réservation en tant qu\'invité')->onlyOnDetail();
         $guestInfo = TextField::new('guestInfo', 'Informations invité')->onlyOnDetail();
@@ -65,7 +65,7 @@ class ReservationCrudController extends AbstractCrudController
                 $prix,
                 $user,
                 $isGuest,
-                $guestInfo
+                $guestInfo,
             ];
         } elseif (Crud::PAGE_NEW === $pageName || Crud::PAGE_EDIT === $pageName) {
             return [
@@ -75,7 +75,8 @@ class ReservationCrudController extends AbstractCrudController
                 $stopOption,
                 $stopLieu,
                 $siegeBebe,
-                $typeVehicule
+                $typeVehicule,
+                $prix,
             ];
         }
     }

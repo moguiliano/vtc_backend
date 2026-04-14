@@ -1,0 +1,602 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Taxi Marseille — Disponible en 5 min | ZenCAR Taxi & VTC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Commandez un taxi à Marseille en 5 minutes. Taxi ou VTC au choix, prise en charge garantie, tarif affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94." />
+<meta name="robots" content="index, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/taxi-marseille" />
+{% endblock %}
+
+{% block og_title %}Taxi Marseille — Disponible en 5 min | ZenCAR{% endblock %}
+{% block og_description %}Commandez un taxi à Marseille en 5 min. Tarif fixe affiché, prise en charge garantie, +300 chauffeurs locaux. Aéroport, gare, seniors. 06 74 03 96 94{% endblock %}
+{% block og_url %}https://dzencar.fr/taxi-marseille{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TaxiService",
+  "name": "ZenCAR — Taxi & VTC Marseille",
+  "url": "https://dzencar.fr",
+  "telephone": "+33674039694",
+  "description": "Plateforme de mise en relation Taxi & VTC à Marseille. Prise en charge garantie, tarif affiché, chauffeurs locaux.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Marseille",
+    "addressRegion": "Provence-Alpes-Côte d'Azur",
+    "addressCountry": "FR"
+  },
+  "areaServed": [
+    {"@type": "City", "name": "Marseille"},
+    {"@type": "City", "name": "Aix-en-Provence"},
+    {"@type": "Place", "name": "Aéroport Marseille-Provence"}
+  ],
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "06:00",
+    "closes": "23:00"
+  },
+  "priceRange": "€€"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Comment commander un taxi à Marseille avec ZenCAR ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Réservez sur dzencar.fr ou appelez le 06 74 03 96 94. Votre taxi arrive en 5 à 10 minutes avec SMS de confirmation incluant le nom et la plaque du chauffeur."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "ZenCAR propose-t-il des taxis ET des VTC à Marseille ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, ZenCAR est la seule plateforme à Marseille qui regroupe taxis et VTC sur une interface unique. Vous choisissez votre type de véhicule selon vos besoins et votre budget."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quel est le tarif d'un taxi Marseille aéroport ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le tarif est affiché avant confirmation sur dzencar.fr. Aucune surprise, aucun surge pricing. Le prix que vous voyez est le prix que vous payez."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "ZenCAR propose-t-il un taxi pour personnes âgées à Marseille ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Accompagnement senior : courses, promenades bord de mer, rendez-vous médicaux, visites au cimetière. Chauffeurs patients, aide à la montée et descente. Conventions EHPAD disponibles."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://dzencar.fr/"},
+    {"@type": "ListItem", "position": 2, "name": "Taxi Marseille", "item": "https://dzencar.fr/taxi-marseille"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{{ asset('css/reservationStyles.css') }}">
+<style>
+  :root {
+    --zen-green:      #1D9E75;
+    --zen-green-dark: #0F6E56;
+    --zen-bg-light:   #E1F5EE;
+    --zen-dark:       #1A1A18;
+    --zen-white:      #FEFEFE;
+  }
+
+  /* Hero */
+  .zen-hero {
+    background: linear-gradient(135deg, var(--zen-green-dark) 0%, var(--zen-green) 100%);
+    padding: 80px 0 60px;
+    color: var(--zen-white);
+  }
+  .zen-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; }
+  .zen-hero .badge-rapide {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: .9rem;
+    margin-bottom: 16px;
+  }
+  .zen-cta-tel {
+    background: var(--zen-white);
+    color: var(--zen-green-dark);
+    font-weight: 700;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 8px;
+    transition: background .2s;
+  }
+  .zen-cta-tel:hover { background: var(--zen-bg-light); }
+
+  /* Sections */
+  .zen-section { padding: 60px 0; }
+  .zen-section-alt { background: var(--zen-bg-light); }
+  .zen-section-title {
+    color: var(--zen-green-dark);
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  .zen-section-subtitle { color: #555; margin-bottom: 36px; }
+
+  /* Service cards */
+  .zen-service-card {
+    background: var(--zen-white);
+    border-radius: 14px;
+    padding: 24px 20px;
+    height: 100%;
+    border: 1px solid #e0f0e9;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .zen-service-card:hover {
+    box-shadow: 0 8px 24px rgba(15,110,86,.12);
+    transform: translateY(-4px);
+  }
+  .zen-service-card .icon {
+    width: 48px; height: 48px;
+    background: var(--zen-bg-light);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; color: var(--zen-green);
+    margin-bottom: 14px;
+  }
+  .zen-service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .zen-service-card p  { font-size: .88rem; color: #666; margin: 0; }
+
+  /* Différenciateurs */
+  .zen-diff-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid #e8f5f0;
+  }
+  .zen-diff-item:last-child { border-bottom: none; }
+  .zen-diff-item .check {
+    width: 36px; height: 36px; min-width: 36px;
+    background: var(--zen-green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1rem;
+  }
+  .zen-diff-item strong { display: block; font-size: 1rem; color: var(--zen-dark); }
+  .zen-diff-item span   { font-size: .88rem; color: #666; }
+
+  /* Zones */
+  .zen-zone-badge {
+    display: inline-block;
+    background: var(--zen-white);
+    border: 1.5px solid var(--zen-green);
+    color: var(--zen-green-dark);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: .88rem;
+    font-weight: 600;
+    margin: 5px 4px;
+  }
+
+  /* FAQ */
+  .zen-faq .accordion-button {
+    font-weight: 600;
+    color: var(--zen-dark);
+    background: var(--zen-white);
+  }
+  .zen-faq .accordion-button:not(.collapsed) {
+    color: var(--zen-green-dark);
+    background: var(--zen-bg-light);
+    box-shadow: none;
+  }
+  .zen-faq .accordion-button::after {
+    filter: hue-rotate(130deg);
+  }
+  .zen-faq .accordion-item {
+    border: 1px solid #d8ede6;
+    border-radius: 10px !important;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  /* CTA bannière */
+  .zen-cta-banner {
+    background: var(--zen-green-dark);
+    color: var(--zen-white);
+    padding: 50px 0;
+    text-align: center;
+  }
+  .zen-cta-banner h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; }
+  .zen-cta-banner p  { opacity: .85; margin-bottom: 24px; }
+
+  /* Seniors highlight */
+  .zen-seniors-card {
+    background: linear-gradient(135deg, #fff8f0, #fff3e0);
+    border: 2px solid #ff9800;
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .zen-seniors-card h3 { color: #e65100; font-weight: 700; }
+
+  /* Floating buttons */
+  #floating-contact {
+    position: fixed; bottom: 24px; right: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    z-index: 999;
+  }
+  .btn-call     { background: #1976d2; color: white; font-size: 1.3rem; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
+  .btn-whatsapp { background: #25d366; color: white; font-size: 1.3rem; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
+
+  /* Form section */
+  .zen-form-section { background: var(--zen-dark); padding: 60px 0; }
+  .zen-form-section .tabs .tab-button { color: #ccc; }
+  .zen-form-section .tabs .tab-button.active { color: var(--zen-green); border-bottom-color: var(--zen-green); }
+</style>
+{% endblock %}
+
+{% block body %}
+
+{# ── Boutons flottants ──────────────────────────────────────────── #}
+<div id="floating-contact">
+  <a href="tel:+33674039694" class="btn btn-call rounded-circle shadow-sm" title="Appeler ZenCAR">
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+  <a href="https://wa.me/33674039694" target="_blank" class="btn btn-whatsapp rounded-circle shadow-sm" title="WhatsApp ZenCAR">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>
+
+{# ── Fil d'Ariane ─────────────────────────────────────────────────── #}
+<div style="background:#f8f9fa; border-bottom:1px solid #e9ecef;">
+  <div class="container py-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0" style="font-size:.85rem;">
+        <li class="breadcrumb-item"><a href="{{ path('app_home') }}" style="color:var(--zen-green);">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Taxi Marseille</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+{# ── Hero ──────────────────────────────────────────────────────────── #}
+<section class="zen-hero text-center">
+  <div class="container">
+    <span class="badge-rapide">⚡ Prise en charge en 5 à 10 min</span>
+    <h1>Taxi Marseille — Disponible en 5 min</h1>
+    <p class="lead mt-3 mb-4" style="opacity:.9; max-width:600px; margin:auto;">
+      Taxi ou VTC au choix, tarif affiché avant réservation, prise en charge garantie.
+      <strong>Plus de 300 chauffeurs</strong> marseillais disponibles.
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a href="#reserver" class="btn btn-lg btn-warning fw-bold px-4">
+        <i class="bi bi-geo-alt-fill me-2"></i>Réserver maintenant
+      </a>
+      <a href="tel:+33674039694" class="zen-cta-tel">
+        <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+      </a>
+    </div>
+    <p class="mt-4" style="opacity:.7; font-size:.85rem;">
+      Disponible 7j/7 · Aéroport · Gare · Calanques · Seniors
+    </p>
+  </div>
+</section>
+
+{# ── Services ──────────────────────────────────────────────────────── #}
+<section class="zen-section" id="services">
+  <div class="container">
+    <h2 class="zen-section-title text-center">Nos services Taxi & VTC à Marseille</h2>
+    <p class="zen-section-subtitle text-center">Tous vos trajets, un seul numéro : <strong>06 74 03 96 94</strong></p>
+
+    <div class="row g-4 row-cols-2 row-cols-sm-3 row-cols-lg-4">
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-plane"></i></div>
+          <h3>Taxi Aéroport Marseille</h3>
+          <p>Transfert vers/depuis l'Aéroport Marseille-Provence (Marignane). Ponctualité garantie.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-train"></i></div>
+          <h3>Taxi Gare Saint-Charles</h3>
+          <p>Prise en charge et dépose à la gare TGV de Marseille Saint-Charles.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-user-friends"></i></div>
+          <h3>Taxi Personnes Âgées</h3>
+          <p>Accompagnement senior bienveillant : courses, médicaux, balades, EHPAD.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-baby-carriage"></i></div>
+          <h3>Taxi Siège Bébé</h3>
+          <p>Siège bébé disponible sur demande dans votre formulaire de réservation.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-water"></i></div>
+          <h3>Balade Calanques</h3>
+          <p>Transfert vers les Calanques de Marseille, Cassis ou La Ciotat avec attente.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-clock"></i></div>
+          <h3>Mise à Disposition</h3>
+          <p>Chauffeur à votre disposition à l'heure, pour vos rendez-vous ou événements.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-road"></i></div>
+          <h3>Longue Distance</h3>
+          <p>Marseille → Paris, Lyon, Nice, Toulon. Tarif négocié, confort garanti.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="zen-service-card">
+          <div class="icon"><i class="fas fa-gem"></i></div>
+          <h3>VTC Premium</h3>
+          <p>Berline haut de gamme pour vos déplacements professionnels et VIP.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ── Différenciateurs ─────────────────────────────────────────────── #}
+<section class="zen-section zen-section-alt">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-5 mb-4 mb-lg-0">
+        <h2 class="zen-section-title">Pourquoi ZenCAR est le meilleur taxi à Marseille ?</h2>
+        <p class="zen-section-subtitle">Ce qui nous différencie d'Uber, Bolt et des autres plateformes.</p>
+        <a href="tel:+33674039694" class="btn btn-lg fw-bold px-4" style="background:var(--zen-green);color:white;border-radius:50px;">
+          <i class="bi bi-telephone-fill me-2"></i>Appeler maintenant
+        </a>
+      </div>
+      <div class="col-lg-7">
+        <div class="zen-diff-item">
+          <div class="check"><i class="bi bi-shield-check"></i></div>
+          <div>
+            <strong>Prise en charge garantie — aucune annulation chauffeur</strong>
+            <span>Votre taxi arrive. Nous ne tolérons pas les annulations de dernière minute.</span>
+          </div>
+        </div>
+        <div class="zen-diff-item">
+          <div class="check"><i class="bi bi-tag-fill"></i></div>
+          <div>
+            <strong>Tarif fixe affiché avant réservation — pas de surge pricing</strong>
+            <span>Le prix affiché est le prix payé. Même en heure de pointe ou par mauvais temps.</span>
+          </div>
+        </div>
+        <div class="zen-diff-item">
+          <div class="check"><i class="bi bi-car-front-fill"></i></div>
+          <div>
+            <strong>Taxi ET VTC sur une seule plateforme — unique à Marseille</strong>
+            <span>Choisissez entre taxi réglementé et VTC selon votre besoin et budget.</span>
+          </div>
+        </div>
+        <div class="zen-diff-item">
+          <div class="check"><i class="bi bi-geo-fill"></i></div>
+          <div>
+            <strong>Chauffeurs locaux marseillais</strong>
+            <span>Ils connaissent Marseille, ses raccourcis et ses quartiers. Pas des algorithmes.</span>
+          </div>
+        </div>
+        <div class="zen-diff-item">
+          <div class="check"><i class="bi bi-chat-dots-fill"></i></div>
+          <div>
+            <strong>SMS de confirmation avec nom + plaque du chauffeur</strong>
+            <span>Vous savez qui vient vous chercher avant même qu'il arrive.</span>
+          </div>
+        </div>
+        <div class="zen-diff-item">
+          <div class="check"><i class="bi bi-people-fill"></i></div>
+          <div>
+            <strong>Siège bébé & besoins spécifiques disponibles</strong>
+            <span>Options disponibles directement dans le formulaire de réservation en ligne.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── Seniors ───────────────────────────────────────────────────────── #}
+<section class="zen-section">
+  <div class="container">
+    <div class="zen-seniors-card">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h2 style="color:#e65100; font-weight:700; font-size:1.5rem;">
+            <i class="fas fa-heart me-2"></i>Transport seniors & EHPAD à Marseille
+          </h2>
+          <p class="mt-2 mb-3" style="color:#555;">
+            Nos chauffeurs sont formés à l'accompagnement des personnes âgées.
+            Aide à la montée et descente du véhicule, patience, ponctualité.
+          </p>
+          <ul class="list-unstyled mb-0" style="color:#444;">
+            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#e65100;"></i>Courses alimentaires, pharmacie, rendez-vous médicaux</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#e65100;"></i>Promenades bord de mer — Corniche, Plage du Prado</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#e65100;"></i>Visites au cimetière, sorties famille</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#e65100;"></i>Conventions possibles avec EHPAD et maisons de retraite</li>
+          </ul>
+        </div>
+        <div class="col-lg-4 text-center mt-4 mt-lg-0">
+          <a href="{{ path('app_transport_seniors') }}" class="btn btn-lg fw-bold px-4 d-block mb-3" style="background:#e65100;color:white;border-radius:50px;">
+            En savoir plus
+          </a>
+          <a href="tel:+33674039694" class="btn btn-outline-dark btn-lg fw-bold px-4 d-block" style="border-radius:50px;">
+            <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── Zones desservies ──────────────────────────────────────────────── #}
+<section class="zen-section zen-section-alt">
+  <div class="container text-center">
+    <h2 class="zen-section-title">Zones desservies par ZenCAR à Marseille</h2>
+    <p class="zen-section-subtitle">Nous couvrons l'ensemble de la métropole Aix-Marseille et au-delà.</p>
+    <div>
+      {% set zones = [
+        'Vieux-Port', 'Castellane', 'La Joliette', 'Prado', 'Timone',
+        'Luminy', 'La Valentine', 'Noailles', 'Endoume', 'Saint-Just',
+        'Aéroport Marignane', 'Gare Saint-Charles', 'Aix-en-Provence',
+        'Aubagne', 'Cassis', 'La Ciotat', 'Toulon', 'Calanques'
+      ] %}
+      {% for zone in zones %}
+        <span class="zen-zone-badge">{{ zone }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ── FAQ ───────────────────────────────────────────────────────────── #}
+<section class="zen-section" id="faq">
+  <div class="container">
+    <h2 class="zen-section-title text-center">Questions fréquentes — Taxi Marseille</h2>
+    <p class="zen-section-subtitle text-center">Tout ce que vous voulez savoir avant de commander.</p>
+
+    <div class="accordion zen-faq" id="faqAccordion" style="max-width:760px; margin:auto;">
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            Comment commander un taxi à Marseille avec ZenCAR ?
+          </button>
+        </h3>
+        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Réservez sur <strong>dzencar.fr</strong> ou appelez le <strong>06 74 03 96 94</strong>.
+            Votre taxi arrive en 5 à 10 minutes avec un SMS de confirmation incluant le nom et la plaque du chauffeur.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+            ZenCAR propose-t-il des taxis ET des VTC à Marseille ?
+          </button>
+        </h3>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Oui, ZenCAR est la seule plateforme à Marseille qui regroupe <strong>taxis et VTC</strong> sur une interface unique.
+            Vous choisissez votre type de véhicule selon vos besoins et votre budget.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+            Quel est le tarif d'un taxi Marseille aéroport ?
+          </button>
+        </h3>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Le tarif est <strong>affiché avant confirmation</strong> sur dzencar.fr.
+            Aucune surprise, aucun surge pricing. Le prix que vous voyez est le prix que vous payez.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+            ZenCAR propose-t-il un taxi pour personnes âgées à Marseille ?
+          </button>
+        </h3>
+        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Oui. Accompagnement senior : courses, promenades bord de mer (Corniche, Prado), visites au cimetière,
+            rendez-vous médicaux. Chauffeurs patients avec aide à la montée/descente.
+            <strong>Conventions EHPAD disponibles.</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ── CTA bannière avant le formulaire ─────────────────────────────── #}
+<div class="zen-cta-banner">
+  <div class="container">
+    <h2>Prêt à commander votre taxi à Marseille ?</h2>
+    <p>Tarif affiché en temps réel · SMS de confirmation · Prise en charge garantie</p>
+    <a href="#reserver" class="btn btn-warning btn-lg fw-bold px-5" style="border-radius:50px;">
+      <i class="bi bi-geo-alt-fill me-2"></i>Réserver maintenant
+    </a>
+  </div>
+</div>
+
+{# ── Formulaire de réservation ─────────────────────────────────────── #}
+<section class="zen-form-section" id="reserver">
+  <div class="container">
+    <h2 class="text-center text-white mb-4" style="font-weight:700;">Réservez votre taxi à Marseille</h2>
+
+    <div class="tabs">
+      <button class="tab-button active" data-tab="tab1" data-step="1">Réservation</button>
+      <button class="tab-button" data-tab="tab2" data-step="2">Véhicules</button>
+      <button class="tab-button" data-tab="tab3" data-step="3">Récapitulatif</button>
+    </div>
+
+    {% include 'reservation/index.html.twig' %}
+  </div>
+</section>
+
+{# ── Scripts ────────────────────────────────────────────────────────── #}
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"      charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"   charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"        charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" charset="utf-8"></script>
+<script src="{{ asset('/js/autocomplete.js') }}"></script>
+<script src="{{ asset('/js/ui.js') }}"></script>
+<script src="{{ asset('/js/reservation.js') }}"></script>
+<script src="{{ asset('/js/map.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+
+{% endblock %}

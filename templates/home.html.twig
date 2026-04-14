@@ -1,6 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservation ZenCar
+{% block title %}Taxi Marseille — Disponible en 5 min | ZenCAR Taxi & VTC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Commandez un taxi à Marseille en 5 minutes. Taxi ou VTC au choix, prise en charge garantie, tarif affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94." />
+<meta name="robots" content="index, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/" />
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TaxiService",
+  "name": "ZenCAR — Taxi & VTC Marseille",
+  "url": "https://dzencar.fr",
+  "telephone": "+33674039694",
+  "description": "Plateforme de mise en relation Taxi & VTC à Marseille. Prise en charge garantie, tarif affiché, chauffeurs locaux.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Marseille",
+    "addressRegion": "Provence-Alpes-Côte d'Azur",
+    "addressCountry": "FR"
+  },
+  "areaServed": [
+    {"@type": "City", "name": "Marseille"},
+    {"@type": "City", "name": "Aix-en-Provence"},
+    {"@type": "Place", "name": "Aéroport Marseille-Provence"}
+  ],
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "06:00",
+    "closes": "23:00"
+  },
+  "priceRange": "€€"
+}
+</script>
 {% endblock %}
 
 {% block body %}
@@ -57,9 +96,9 @@
 		</style>
 
 		<div class="hero">
-			<h1 class="display-4 fw-bold">ZenCAR - Votre plate forme  Taxi/VTC à Marseille</h1>
-			<p class="lead mt-3">Commandez un chauffeur en
-				<strong>5 à 10 minutes</strong>, même en heure de pointe.</p>
+			<h1 class="display-4 fw-bold">Taxi Marseille — Disponible en 5 min</h1>
+			<p class="lead mt-3">Taxi ou VTC au choix, prise en charge garantie.
+				<strong>Plus de 300 chauffeurs</strong> disponibles à Marseille.</p>
 			<a href="#tab1" class="btn btn-primary btn-lg">Commander maintenant</a>
 		</div>
 

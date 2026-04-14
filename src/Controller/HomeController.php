@@ -42,6 +42,22 @@ final class HomeController extends AbstractController
         return $this->render('services.html.twig');
     }
 
+    // Landing page SEO — "taxi marseille"
+    #[Route('/taxi-marseille', name: 'app_taxi_marseille', methods: ['GET'])]
+    public function taxiMarseille(VehicleCategoryRepository $vehicleRepo): Response
+    {
+        return $this->render('taxi-marseille.html.twig', [
+            'vehicles' => $vehicleRepo->findAllActive(),
+        ]);
+    }
+
+    // Page transport seniors & EHPAD
+    #[Route('/transport-seniors-marseille', name: 'app_transport_seniors', methods: ['GET'])]
+    public function transportSeniors(): Response
+    {
+        return $this->render('transport-seniors-marseille.html.twig');
+    }
+
     // Route pour la page de contact
     #[Route('/contact', name: 'app_contact')]
     public function contact(Request $request, EntityManagerInterface $entityManager): Response
