@@ -1,612 +1,471 @@
-      /* Boutons Appel / WhatsApp */
-      .btn-call {
-        background-color: #0d6efd;
-        color: white;
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.3rem;
-        border: none;
-      }
+/* ============================================================
+   ZenCAR — reservationStyles.css
+   Responsive complet : mobile-first, 4 breakpoints
+   xs < 400 | sm 576 | md 768 | lg 992+
+   ============================================================ */
 
-      .btn-whatsapp {
-        background-color: #25D366;
-        color: white;
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.3rem;
-        border: none;
-      }
-
-      /* Sticky des icônes */
-      #floating-contact {
-        position: sticky;
-        top: 0;
-        z-index: 1055;
-        padding: 0.5rem 1rem;
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.5rem;
-        background-color: transparent;
-      }
-
-
-/* Layout général et structure de la page */  
-#reservation-test-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    color: white;
+/* ── Variables ──────────────────────────────────────────────── */
+:root {
+  --zen-orange:     #ff5630;
+  --zen-orange-dim: rgba(255, 86, 48, 0.15);
+  --zen-bg:         rgba(255, 255, 255, 0.04);
+  --zen-border:     rgba(255, 255, 255, 0.15);
+  --zen-muted:      #cccccc;
 }
 
-/* Layout général et structure de la page */ 
-#reservation-test-container header {
-    width: 100%;
-    max-width: 960px;
-    padding: 32px;
-    border-radius: 8px;
-    margin-bottom: 24px;
-    text-align: center;
-}
-	input::placeholder,
-	textarea::placeholder,
-	select::placeholder {
-		color: rgba(255, 255, 255, 0.6) !important;
-		opacity: 1 !important;
-	}
+*, *::before, *::after { box-sizing: border-box; }
 
-	.input-group .form-control::placeholder {
-		color: rgba(255, 255, 255, 0.6) !important;
-	}
-
-	input.form-control,
-	textarea.form-control,
-	select.form-control {
-		background-color: transparent;
-		color: #fff;
-		border-color: hsla(0, 0%, 100%, 0.15);
-	}
-
-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
+/* ============================================================
+   FLOATING BUTTONS
+   ============================================================ */
+#floating-contact {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1055;
 }
 
-header h1 span {
-    color: #ff5630;
+.btn-call,
+.btn-whatsapp {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-call:hover,
+.btn-whatsapp:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(0,0,0,.45);
+}
+.btn-call     { background: #1976d2; color: white; }
+.btn-whatsapp { background: #25d366; color: white; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar-brand span {
+  font-size: clamp(.95rem, 3vw, 1.25rem);
+  letter-spacing: -.5px;
+}
+.navbar-nav .nav-link {
+  font-size: clamp(.78rem, 1.8vw, .95rem);
+  padding: 8px 10px;
+}
+@media (max-width: 991px) {
+  .navbar-collapse .nav-item {
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .navbar-collapse .nav-item:last-child { border-bottom: none; }
+  .navbar-nav .nav-link { padding: 12px 16px; font-size: 1rem; }
 }
 
-header p {
-    margin-top: 8px;
-    color: #cccccc;
+/* ============================================================
+   HERO (home)
+   ============================================================ */
+.hero {
+  background: url('/images/hero-zencar.png') center/cover no-repeat;
+  padding: clamp(50px, 10vw, 100px) 16px clamp(40px, 8vw, 80px);
+  color: white;
+  text-align: center;
+  width: 100%;
 }
+.hero h1   { font-size: clamp(1.4rem, 5vw, 2.8rem); font-weight: 800; line-height: 1.2; }
+.hero .lead { font-size: clamp(.9rem, 2.5vw, 1.2rem); }
+.hero .btn  { font-size: clamp(.85rem, 2vw, 1.1rem); margin-top: 20px; }
 
-/* Header & Onglets (Tabs) */
+/* ============================================================
+   SECTION "POURQUOI"
+   ============================================================ */
+.pourquoi-choisir-Zencar { padding: clamp(24px, 5vw, 50px) 8px; }
+.pourquoi-choisir-Zencar .h4 { font-size: clamp(1rem, 3vw, 1.4rem); }
+
+.step-box {
+  background: var(--zen-bg);
+  border: 1px solid var(--zen-border);
+  border-radius: 12px;
+  padding: 20px 14px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform .3s ease, opacity .5s ease, box-shadow .3s;
+}
+.step-box.show  { opacity: 1; transform: translateY(0); }
+.step-box:hover { transform: translateY(-5px); box-shadow: 0 0 12px rgba(255,255,255,.15); }
+.icon-step      { font-size: 2rem; color: var(--zen-orange); }
+.step-box h5    { font-size: clamp(.85rem, 2vw, 1rem); margin: 0; }
+.step-box p     { font-size: clamp(.78rem, 1.8vw, .9rem); color: var(--zen-muted); margin: 0; }
+
+/* ============================================================
+   TABS
+   ============================================================ */
 .tabs {
-    display: flex;
-    border-bottom: 1px solid #444;
-    margin-bottom: 24px;
-    width: 100%;
-    max-width: 960px;
+  display: flex;
+  border-bottom: 1px solid #444;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 960px;
 }
-@media (max-width: 575.98px) {
-  .tabs {
-    display: none !important;
+@media (max-width: 359px) { .tabs { display: none !important; } }
+
+.tab-button {
+  flex: 1;
+  padding: 10px 4px;
+  cursor: pointer;
+  text-align: center;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: clamp(.75rem, 2.2vw, 1rem);
+  color: white;
+  white-space: nowrap;
+}
+.tab-button.active {
+  border-bottom: 3px solid var(--zen-orange);
+  font-weight: 700;
+}
+
+/* ============================================================
+   GENERAL CONTAINER
+   ============================================================ */
+#reservation-test-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  color: white;
+  width: 100%;
+  padding: 0 8px;
+}
+
+.tab-content { width: 100%; max-width: 960px; display: none; }
+.tab-content.active { display: block; }
+
+.general-container {
+  border: 1px solid var(--zen-border);
+  border-radius: 8px;
+  background: var(--zen-bg);
+  padding: 16px;
+  position: relative;
+}
+@media (min-width: 576px) { .general-container { padding: 24px; } }
+@media (min-width: 768px) { .general-container { padding: 32px; } }
+
+/* ============================================================
+   TAB 1 — FORMULAIRE + CARTE
+   ============================================================ */
+
+/* Layout tab1 : empilé mobile, 50/50 desktop */
+.tab1-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+.tab1-layout > * { min-width: 0; }
+
+@media (min-width: 768px) {
+  .tab1-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .tab1-layout > .donneesClient,
+  .tab1-layout > .carte {
+    flex: 1 1 0;
+    width: calc(50% - 12px);
+    min-width: 0;
   }
 }
 
-.tab-button {
-    flex: 1;
-    padding: 12px;
-    cursor: pointer;
-    text-align: center;
-    background: none;
-    border: none;
-    outline: none;
-    font-size: 1.1rem;
-    color: white;
-}
+/* ── Formulaire ─────────────────────────────────── */
+.donneesClient { width: 100%; }
 
-.tab-button.active {
-    border-bottom: 3px solid #ff5630;
-    font-weight: bold;
-}
-
-/* Contenu des onglets (Formulaires) */ 
-.tab-content {
-    width: 100%;
-    max-width: 960px;
-    display: none;
-    position: relative;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.general-container {
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.04);
-    padding: 32px;
-    position: relative;
-}
-
-/* === CORRECTION RESPONSIVE PRINCIPALE === */
-/* Layout principal : 50/50 sur desktop/tablet, empilé sur mobile */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Espacement entre les colonnes */
-    align-items: flex-start; /* Alignement en haut */
-}
-
-/* Sur grands écrans (desktop) : 50/50 */
-@media (min-width: 768px) {
-    .col-12.col-sm-6 {
-        flex: 1 1 calc(50% - 10px); /* 50% moins la moitié du gap */
-        max-width: calc(50% - 10px);
-        box-sizing: border-box;
-    }
-    
-    /* Hauteur fixe pour la section carte sur desktop */
-    .carte {
-        height: 600px; /* Hauteur fixe plus grande */
-        min-height: 600px;
-    }
-    
-    /* Section données client avec hauteur correspondante */
-    .donneesClient {
-        min-height: 600px;
-        max-height: 600px;
-        overflow-y: auto; /* Scroll si contenu trop long */
-    }
-}
-
-/* Sur petits écrans (mobile) : empilé */
-@media (max-width: 767px) {
-    .row {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .col-12.col-sm-6 {
-        flex: 1 1 100%;
-        max-width: 100%;
-        width: 100%;
-    }
-    
-    /* Hauteur réduite pour la carte sur mobile */
-    .carte {
-        height: 350px;
-        min-height: 350px;
-    }
-    
-    .donneesClient {
-        min-height: auto;
-        max-height: none;
-    }
-}
-
-/* Container de la carte HERE - CORRECTION CRITIQUE */
-#mapContainer {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100%;
-    max-height: 100%;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden !important;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-sizing: border-box;
-}
-
-/* Forcer l'affichage correct des éléments internes de HERE Maps */
-#mapContainer * {
-    box-sizing: border-box !important;
-}
-
-#mapContainer canvas,
-#mapContainer .H_ib_body {
-    max-width: 100% !important;
-    max-height: 100% !important;
-}
-
-/* Container parent de la carte - TRÈS IMPORTANT */
-.carte {
-    display: block !important; /* Pas de flex pour éviter les problèmes */
-    width: 100%;
-    border-radius: 8px;
-    padding: 12px;
-    height: auto;
-    min-height: 400px;
-
-    box-sizing: border-box;
-    position: relative;
-}
-
-
-/* Champs de formulaire et styles */ 
 .form-group {
-    margin-bottom: 24px;
-    position: relative;
+  margin-bottom: 16px;
+  position: relative;
 }
-
 .form-group label {
-    font-weight: 500;
-    color: #cccccc;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.form-group input,
-.form-group select,
-.form-group button {
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.04);
-    color: white;
-    width: 100%;
-    box-sizing: border-box;
+  font-weight: 500;
+  color: var(--zen-muted);
+  display: block;
+  margin-bottom: 6px;
+  font-size: clamp(.82rem, 2vw, .95rem);
 }
 
 .form-control,
 .form-select,
 .input-group-text,
 textarea {
-    background-color: rgba(255, 255, 255, 0.04) !important;
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: var(--zen-bg) !important;
+  color: white !important;
+  border: 1px solid var(--zen-border) !important;
+  font-size: clamp(.82rem, 2vw, .95rem) !important;
 }
-
-/* Champs de formulaire et styles */
 .form-control:focus,
 .form-select:focus,
 textarea:focus {
-    background-color: rgba(255, 255, 255, 0.04) !important;
-    color: white !important;
-    border-color: #ff5630 !important;
-    box-shadow: 0 0 0 0.25rem rgba(255, 86, 48, 0.25);
+  background: var(--zen-bg) !important;
+  color: white !important;
+  border-color: var(--zen-orange) !important;
+  box-shadow: 0 0 0 .2rem rgba(255, 86, 48, .25) !important;
+}
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255,255,255,.45) !important;
+  font-size: clamp(.78rem, 1.8vw, .9rem) !important;
+}
+
+.input-group { display: flex; width: 100%; }
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: .9rem;
 }
 
 .inline-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.button-group {
-    display: flex;
-    justify-content: center;
-    margin-top: 24px;
-    gap: 8px;
+/* Bouton géolocalisation */
+.btn-geoloc {
+  display: none;
+  font-size: .78rem;
+  padding: 5px 10px;
+  margin-top: 6px;
+  color: var(--zen-muted);
+  border: 1px solid var(--zen-border);
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
 }
+@media (min-width: 577px) { .btn-geoloc { display: inline-flex; } }
 
-/*  Boutons  */
-.nav-main-btn {
-    background-color: #ff5630;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.back-btn {
-    background-color: #555;
-    color: white;
-    padding: 10px 18px;
-    font-size: 0.9rem;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-}
-
-/* Boutons de temps */
-.time-btn {
-    padding: 8px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.04);
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.time-btn.active {
-    background-color: #ff5630;
-    border-color: #ff5630;
-}
-
-/* =Autocomplétion (liste des suggestions) == */ 
-.autocomplete-list {
-    position: absolute;
-    z-index: 9999;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: rgba(28, 29, 38, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 0 0 12px 12px;
-    max-height: 240px;
-    overflow-y: auto;
-    list-style: none;
-    padding: 0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(6px);
-    animation: fadeInUp 0.2s ease;
-}
-
-.autocomplete-list li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 18px;
-    font-size: 0.95rem;
-    color: #ffffff;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-}
-
-.autocomplete-list li:first-child {
-    border-top: none;
-}
-
-.autocomplete-list li:hover {
-    background-color: rgba(255, 86, 48, 0.15);
-}
-
-.autocomplete-list .icon {
-    font-size: 1.1rem;
-    color: #ff5630;
-}
-
-/* =Cartes des véhicules== */  
-.vehicle-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-.vehicle-card:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(1.03);
-}
-
-.vehicle-card i {
-    font-size: 28px;
-    margin-bottom: 8px;
-    color: #ff5630;
-}
-
-.vehicle-card h4 {
-    margin: 0;
-    font-weight: 500;
-}
-
-.vehicle-card.active {
-    border-color: #ff5630;
-    background-color: rgba(255, 86, 48, 0.1);
-}
-
-/* ==Animations= */ 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.form-error {
-    color: #ff5630;
-    font-size: 0.85rem;
-    margin-top: 4px;
-    display: block;
-}
-
-.form-label-fixed {
-    display: inline-block;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    white-space: nowrap;
-}
-
-.input-group {
-    display: flex;
-}
-
-.input-group-text {
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    background-color: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.mb-4 {
-    margin-bottom: 1.5rem;
-}
-
-/* = Classes utilitaires & responsive == */
-.col-md-6 {
-    flex: 0 0 48%;
-    max-width: 48%;
-    margin: 0 1%;
-}
-
-/* Correction responsive pour col-md-6 */
-@media (max-width: 767px) {
-    .col-md-6 {
-        flex: 1 1 100%;
-        max-width: 100%;
-        margin: 0;
-        margin-bottom: 16px;
-    }
-}
-
-.d-flex {
-    display: flex;
-}
-
-.flex-column {
-    flex-direction: column;
-}
-
-.gap-3 {
-    gap: 1rem;
-}
-
-.mb-2 {
-    margin-bottom: 0.5rem;
-}
-
-.mt-1 {
-    margin-top: 0.25rem;
-}
-
-.mt-2 {
-    margin-top: 0.5rem;
-}
-
-.mt-3 {
-    margin-top: 1rem;
-}
-
-.mt-4 {
-    margin-top: 1.5rem;
-}
-
-.w-100 {
-    width: 100%;
-}
-
-.h-100 {
-    height: 100%;
-}
-
-.justify-content-between {
-    justify-content: space-between;
-}
-
-.align-items-center {
-    align-items: center;
-}
-
-.me-1 {
-    margin-right: 0.25rem;
-}
-
-.small {
-    font-size: 0.875rem;
-}
-
-.text-white {
-    color: white;
-}
-
-.text-sm {
-    font-size: 0.875rem;
-}
-
-.my-2 {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-/* === Boutons === */
-.btn {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    border: 1px solid transparent;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: #0d6efd;
-    color: white;
-}
-
-.btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
-    background-color: transparent;
-}
-
-/* ==Imitation de Bootstrap (si utilisé sans Bootstrap réel)= */  
-.collapse {
-    display: none;
-}
-
-.collapse.show {
-    display: block;
-}
-
+/* ── Carte HERE Maps ────────────────────────────── */
+.carte { width: 100%; }
 
 #mapContainer {
-  position: relative;
   width: 100% !important;
-  height: 100% !important;
-  min-height: 400px !important;
-   height: 400px !important;
-  min-height: 400px !important;
+  height: 260px !important;
+  border-radius: 8px;
+  overflow: hidden !important;
+  border: 2px solid var(--zen-border);
+  position: relative;
 }
-
+@media (min-width: 400px) { #mapContainer { height: 300px !important; } }
+@media (min-width: 576px) { #mapContainer { height: 360px !important; } }
+@media (min-width: 768px) { #mapContainer { height: 420px !important; } }
+@media (min-width: 992px) { #mapContainer { height: 460px !important; } }
 
 .map-info {
-  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: clamp(.8rem, 2vw, .9rem);
 }
-
-@media (max-width: 575.98px) {
+@media (min-width: 400px) {
+  .map-info { flex-direction: row; }
   .map-info .distance-box,
-  .map-info .duration-box {
-    width: 100% !important;
-  }
+  .map-info .duration-box { flex: 1; }
 }
 
+/* Boutons temps */
+.time-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--zen-border);
+  border-radius: 4px;
+  background: var(--zen-bg);
+  color: white;
+  cursor: pointer;
+  font-size: clamp(.8rem, 2vw, .95rem);
+  transition: all .2s;
+}
+.time-btn.active { background: #303aff; border-color: #303aff; }
+
+/* ============================================================
+   BOUTONS NAVIGATION
+   ============================================================ */
+.button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.nav-main-btn {
+  background: var(--zen-orange);
+  border: none;
+  padding: 12px 22px;
+  border-radius: 6px;
+  color: white;
+  font-size: clamp(.82rem, 2vw, 1rem);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.nav-main-btn:hover { background: #e04020; }
+
+.back-btn {
+  background: #555;
+  color: white;
+  padding: 10px 16px;
+  font-size: clamp(.8rem, 2vw, .9rem);
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ============================================================
+   TAB 2 — VÉHICULES
+   ============================================================ */
+.vehicle-card {
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--zen-border);
+  border-radius: 10px;
+  padding: 14px 12px;
+  color: white;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.vehicle-card:hover {
+  background: rgba(255,255,255,.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+}
+.vehicle-card.active {
+  border-color: var(--zen-orange);
+  background: var(--zen-orange-dim);
+}
+.vehicle-card h5 { font-size: clamp(.85rem, 2vw, 1.05rem); }
+.vehicle-card .vehicle-price { font-size: clamp(.8rem, 2vw, .95rem); }
+
+/* ============================================================
+   TAB 3 — RÉCAPITULATIF
+   ============================================================ */
+#tab3 h2  { font-size: clamp(1.1rem, 3vw, 1.5rem); }
+#tab3 ul  { padding-left: 0; list-style: none; font-size: clamp(.82rem, 2vw, 1rem); }
+#tab3 ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  line-height: 1.5;
+}
+#tab3 ul li:last-child { border-bottom: none; }
+
+#guest-verification-section h5 { font-size: clamp(.9rem, 2vw, 1.1rem); }
+
+/* ============================================================
+   AUTOCOMPLÉTION
+   ============================================================ */
+.autocomplete-list {
+  position: absolute;
+  z-index: 9999;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: rgba(20, 21, 30, .97);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 0 0 12px 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,.4);
+  backdrop-filter: blur(6px);
+}
+.autocomplete-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  font-size: clamp(.78rem, 2vw, .92rem);
+  color: white;
+  border-top: 1px solid rgba(255,255,255,.04);
+  cursor: pointer;
+  transition: background .15s;
+}
+.autocomplete-list li:first-child { border-top: none; }
+.autocomplete-list li:hover       { background: var(--zen-orange-dim); }
+.autocomplete-list .icon          { color: var(--zen-orange); font-size: .95rem; }
+
+/* ============================================================
+   ERREURS
+   ============================================================ */
+.form-error {
+  color: var(--zen-orange);
+  font-size: .8rem;
+  margin-top: 4px;
+  display: block;
+}
 .symfony-error {
   color: white !important;
-  background-color: rgba(255, 0, 0, 0.3);
-  padding: 10px 15px;
+  background: rgba(255, 0, 0, .22);
+  padding: 10px 14px;
   border-radius: 6px;
-  font-size: 1rem;
-  line-height: 1.4;
-  animation: fadeError 0.3s ease-in-out;
+  font-size: clamp(.82rem, 2vw, .95rem);
+  animation: fadeError .3s ease;
 }
-/* ✅ style pour les erreurs */
 
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  font-size: clamp(.75rem, 2vw, .9rem);
+  padding: 16px !important;
+  text-align: center;
+}
+
+/* ============================================================
+   UTILITAIRES
+   ============================================================ */
+.collapse      { display: none; }
+.collapse.show { display: block; }
+.d-none        { display: none !important; }
+.mb-4          { margin-bottom: 1.5rem; }
+.mt-1          { margin-top: .25rem; }
+.mt-2          { margin-top: .5rem; }
+.mt-3          { margin-top: 1rem; }
+.mt-4          { margin-top: 1.5rem; }
+.my-2          { margin: .5rem 0; }
+.w-100         { width: 100%; }
+.text-white    { color: white; }
+.text-sm       { font-size: .875rem; }
+.small         { font-size: .875rem; }
+.gap-3         { gap: 1rem; }
+.me-1          { margin-right: .25rem; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 @keyframes fadeError {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-
-
-
