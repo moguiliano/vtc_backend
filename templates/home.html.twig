@@ -43,57 +43,30 @@
 {% endblock %}
 
 {% block body %}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	<link
-	rel="stylesheet" href="{{ asset('css/reservationStyles.css') }}">
 
-	<!-- Boutons Appel / WhatsApp -->
+	{# Boutons flottants #}
 	<div id="floating-contact">
-		<a href="tel:+33610435679" class="btn btn-call rounded-circle shadow-sm" title="Appeler">
+		<a href="tel:+33674039694" class="btn-call rounded-circle shadow-sm" title="Appeler">
 			<i class="bi bi-telephone-fill"></i>
 		</a>
-		<a href="https://wa.me/33610435679" target="_blank" class="btn btn-whatsapp rounded-circle shadow-sm" title="WhatsApp">
+		<a href="https://wa.me/33674039694" target="_blank" class="btn-whatsapp rounded-circle shadow-sm" title="WhatsApp">
 			<i class="bi bi-whatsapp"></i>
 		</a>
 	</div>
 
+	{# Style spécifique à la page : image hero #}
+	<style>
+		.hero {
+			background: url('/images/hero-zencar.png') center/cover no-repeat;
+			padding: clamp(50px, 10vw, 100px) 16px clamp(40px, 8vw, 80px);
+			color: white;
+			text-align: center;
+			width: 100%;
+		}
+	</style>
+
 	<div id="reservation-test-container" class="container">
 		{% include 'headerZencar.html.twig' %}
-
-		<style>
-			.hero {
-				background: url('/images/hero-zencar.png') center/cover no-repeat;
-				padding: 100px 0;
-				color: white;
-				text-align: center;
-			}
-			.icon-step {
-				font-size: 2rem;
-				color: #ff5630;
-			}
-			.step-box {
-				background-color: rgba(255, 255, 255, 0.04);
-				border: 1px solid hsla(0, 0%, 100%, 0.15);
-				border-radius: 12px;
-				padding: 20px;
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				transition: transform 0.3s ease, opacity 0.5s ease;
-				opacity: 0;
-				transform: translateY(20px);
-			}
-			/* Ajout optionnel d'un hover */
-			.step-box:hover {
-				transform: translateY(-5px);
-				box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
-			}
-			.step-box.show {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		</style>
 
 		<div class="hero">
 			<h1 class="display-4 fw-bold">Taxi Marseille — Disponible en 5 min</h1>

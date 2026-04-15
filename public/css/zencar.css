@@ -1,0 +1,392 @@
+/* ============================================================
+   ZenCAR — zencar.css
+   CSS global partagé entre toutes les pages
+   Mobile-first | 4 breakpoints : xs<400 sm576 md768 lg992+
+   ============================================================ */
+
+/* ── Variables globales ────────────────────────────────────── */
+:root {
+  --zen-orange:      #ff5630;
+  --zen-orange-dim:  rgba(255, 86, 48, 0.15);
+  --zen-green:       #1D9E75;
+  --zen-green-dark:  #0F6E56;
+  --zen-green-light: #E1F5EE;
+  --zen-bg:          rgba(255, 255, 255, 0.04);
+  --zen-border:      rgba(255, 255, 255, 0.15);
+  --zen-muted:       #cccccc;
+  --zen-dark:        #1A1A18;
+  --zen-call:        #1976d2;
+  --zen-whatsapp:    #25d366;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ============================================================
+   BOUTONS FLOTTANTS (présents sur toutes les pages)
+   ============================================================ */
+#floating-contact {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1055;
+}
+
+.btn-call,
+.btn-whatsapp {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.35);
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+}
+.btn-call:hover,
+.btn-whatsapp:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(0,0,0,.45);
+}
+.btn-call     { background: var(--zen-call);     color: white; }
+.btn-whatsapp { background: var(--zen-whatsapp); color: white; }
+
+/* ============================================================
+   FIL D'ARIANE
+   ============================================================ */
+.zen-breadcrumb {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+.zen-breadcrumb .breadcrumb { margin: 0; font-size: .85rem; }
+.zen-breadcrumb .breadcrumb-item a {
+  color: var(--zen-green);
+  text-decoration: none;
+}
+.zen-breadcrumb .breadcrumb-item a:hover { text-decoration: underline; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar-brand span {
+  font-size: clamp(.95rem, 3vw, 1.25rem);
+  letter-spacing: -.5px;
+}
+.navbar-nav .nav-link {
+  font-size: clamp(.78rem, 1.8vw, .95rem);
+  padding: 8px 10px;
+}
+@media (max-width: 991px) {
+  .navbar-collapse .nav-item {
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .navbar-collapse .nav-item:last-child { border-bottom: none; }
+  .navbar-nav .nav-link { padding: 12px 16px; font-size: 1rem; }
+}
+
+/* ============================================================
+   SECTIONS GÉNÉRIQUES
+   ============================================================ */
+.zen-section     { padding: clamp(32px, 6vw, 60px) 0; }
+.zen-section-alt { background: var(--zen-green-light); }
+
+.zen-section-title {
+  font-weight: 700;
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  margin-bottom: 8px;
+}
+.zen-section-subtitle { color: #555; margin-bottom: 36px; }
+
+/* ============================================================
+   HÉROS — Dark (page accueil)
+   ============================================================ */
+.zen-hero-dark {
+  padding: clamp(50px, 10vw, 100px) 16px clamp(40px, 8vw, 80px);
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+.zen-hero-dark h1    { font-size: clamp(1.4rem, 5vw, 2.8rem); font-weight: 800; line-height: 1.2; }
+.zen-hero-dark .lead { font-size: clamp(.9rem, 2.5vw, 1.2rem); }
+
+/* ── Héros Vert (taxi-marseille) ────────────────────────────── */
+.zen-hero-green {
+  background: linear-gradient(135deg, var(--zen-green-dark) 0%, var(--zen-green) 100%);
+  padding: clamp(40px, 8vw, 80px) 0 clamp(32px, 6vw, 60px);
+  color: white;
+  text-align: center;
+}
+.zen-hero-green h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; }
+.zen-hero-green .badge-rapide {
+  display: inline-block;
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 50px;
+  padding: 6px 18px;
+  font-size: .9rem;
+  margin-bottom: 16px;
+}
+
+/* ── Héros Orange (transport seniors) ───────────────────────── */
+.zen-hero-orange {
+  background: linear-gradient(135deg, #e65100 0%, #ff8f00 100%);
+  color: white;
+  padding: clamp(40px, 8vw, 80px) 0 clamp(32px, 6vw, 60px);
+  text-align: center;
+}
+.zen-hero-orange h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; }
+
+/* ── Lien téléphone hero (pill blanc) ───────────────────────── */
+.zen-cta-tel {
+  background: white;
+  color: var(--zen-green-dark);
+  font-weight: 700;
+  border-radius: 50px;
+  padding: 14px 32px;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  text-decoration: none;
+  display: inline-block;
+  min-height: 44px;
+  transition: background .2s;
+}
+.zen-cta-tel:hover { background: var(--zen-green-light); color: var(--zen-green-dark); }
+
+/* ============================================================
+   BOUTON PRINCIPAL
+   ============================================================ */
+.btn-zen {
+  background: var(--zen-orange);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  min-height: 44px;
+  font-size: clamp(.85rem, 2vw, 1rem);
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s, transform .2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-zen:hover         { background: #e04020; color: white; transform: translateY(-1px); }
+.btn-zen-pill          { border-radius: 50px; }
+
+/* ============================================================
+   CARTES — Fond sombre (pages sombres)
+   ============================================================ */
+.zen-card {
+  background: var(--zen-bg);
+  border: 1px solid var(--zen-border);
+  border-radius: 12px;
+  padding: clamp(16px, 3vw, 24px);
+  height: 100%;
+  color: white;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+.zen-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 12px rgba(255,255,255,.15);
+}
+.zen-card .zen-card-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+/* ============================================================
+   CARTES — Fond blanc (pages claires)
+   ============================================================ */
+.zen-service-card {
+  background: white;
+  border-radius: 14px;
+  padding: clamp(16px, 3vw, 24px);
+  height: 100%;
+  border: 1px solid #e0f0e9;
+  transition: box-shadow .2s, transform .2s;
+}
+.zen-service-card:hover {
+  box-shadow: 0 8px 24px rgba(15,110,86,.12);
+  transform: translateY(-4px);
+}
+.zen-service-card .icon {
+  width: 48px; height: 48px;
+  background: var(--zen-green-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: var(--zen-green);
+  margin-bottom: 14px;
+}
+.zen-service-card h3 { font-size: clamp(.9rem, 2vw, 1rem); font-weight: 700; margin-bottom: 6px; }
+.zen-service-card p  { font-size: clamp(.8rem, 2vw, .88rem); color: #666; margin: 0; }
+
+/* ── Cartes orange (seniors) ─────────────────────────────────── */
+.zen-service-card-orange {
+  background: white;
+  border-radius: 14px;
+  padding: clamp(16px, 3vw, 28px) clamp(14px, 2.5vw, 22px);
+  height: 100%;
+  border: 1px solid #ffe0cc;
+  transition: box-shadow .2s, transform .2s;
+}
+.zen-service-card-orange:hover {
+  box-shadow: 0 8px 24px rgba(230,81,0,.12);
+  transform: translateY(-4px);
+}
+.zen-service-card-orange .icon { font-size: 2rem; color: var(--zen-orange); margin-bottom: 14px; }
+.zen-service-card-orange h3    { font-size: clamp(.9rem, 2vw, 1rem); font-weight: 700; }
+.zen-service-card-orange p     { font-size: clamp(.8rem, 2vw, .88rem); color: #666; }
+
+/* ============================================================
+   DIFFÉRENCIATEURS (taxi-marseille)
+   ============================================================ */
+.zen-diff-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e8f5f0;
+}
+.zen-diff-item:last-child { border-bottom: none; }
+.zen-diff-item .check {
+  width: 36px; height: 36px; min-width: 36px;
+  background: var(--zen-green);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1rem;
+}
+.zen-diff-item strong { display: block; font-size: 1rem; color: var(--zen-dark); }
+.zen-diff-item span   { font-size: .88rem; color: #666; }
+
+/* ============================================================
+   GARANTIE BADGES (seniors)
+   ============================================================ */
+.guarantee-badge {
+  display: flex; align-items: center; gap: 12px;
+  background: white; border-radius: 12px;
+  padding: clamp(12px, 2vw, 16px) 20px;
+  border-left: 4px solid var(--zen-orange); margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.guarantee-badge .icon {
+  font-size: 1.4rem; color: var(--zen-orange); min-width: 30px;
+}
+
+/* ============================================================
+   BLOC SENIORS (taxi-marseille)
+   ============================================================ */
+.zen-seniors-card {
+  background: linear-gradient(135deg, #fff8f0, #fff3e0);
+  border: 2px solid #ff9800;
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 32px);
+}
+.zen-seniors-card h3 { color: #e65100; font-weight: 700; }
+
+/* ============================================================
+   BADGES ZONES
+   ============================================================ */
+.zen-zone-badge {
+  display: inline-block;
+  background: white;
+  border: 1.5px solid var(--zen-green);
+  color: var(--zen-green-dark);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: .88rem;
+  font-weight: 600;
+  margin: 5px 4px;
+}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+.zen-faq .accordion-button {
+  font-weight: 600; color: var(--zen-dark); background: white;
+}
+.zen-faq .accordion-button:not(.collapsed) {
+  color: var(--zen-green-dark); background: var(--zen-green-light); box-shadow: none;
+}
+.zen-faq .accordion-item {
+  border: 1px solid #d8ede6;
+  border-radius: 10px !important;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   CTA BANNIÈRE
+   ============================================================ */
+.zen-cta-banner {
+  background: var(--zen-green-dark);
+  color: white;
+  padding: clamp(32px, 6vw, 50px) 0;
+  text-align: center;
+}
+.zen-cta-banner h2 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 700; margin-bottom: 10px; }
+.zen-cta-banner p  { opacity: .85; margin-bottom: 24px; }
+
+/* ============================================================
+   STEP BOXES (page accueil)
+   ============================================================ */
+.step-box {
+  background: var(--zen-bg);
+  border: 1px solid var(--zen-border);
+  border-radius: 12px;
+  padding: 20px 14px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform .3s ease, opacity .5s ease, box-shadow .3s;
+}
+.step-box.show  { opacity: 1; transform: translateY(0); }
+.step-box:hover { transform: translateY(-5px); box-shadow: 0 0 12px rgba(255,255,255,.15); }
+.icon-step      { font-size: 2rem; color: var(--zen-orange); }
+.step-box h5    { font-size: clamp(.85rem, 2vw, 1rem); margin: 0; }
+.step-box p     { font-size: clamp(.78rem, 1.8vw, .9rem); color: var(--zen-muted); margin: 0; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  font-size: clamp(.75rem, 2vw, .9rem);
+  padding: 16px !important;
+  text-align: center;
+}
+
+/* ============================================================
+   RESPONSIVE — CTA mobile full-width
+   ============================================================ */
+@media (max-width: 480px) {
+  .zen-hero-green .btn,
+  .zen-hero-green .zen-cta-tel,
+  .zen-hero-orange .btn,
+  .zen-cta-banner .btn,
+  .zen-seniors-card .btn {
+    width: 100%;
+    text-align: center;
+    display: block;
+  }
+}
+
+/* ============================================================
+   ANIMATIONS GLOBALES
+   ============================================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeError {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

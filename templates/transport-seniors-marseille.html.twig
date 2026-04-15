@@ -46,88 +46,27 @@
 </script>
 {% endblock %}
 
-{% block stylesheets %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<style>
-  :root {
-    --zen-green:      #1D9E75;
-    --zen-green-dark: #0F6E56;
-    --zen-bg-light:   #E1F5EE;
-    --zen-dark:       #1A1A18;
-    --zen-orange:     #e65100;
-    --zen-orange-bg:  #fff8f0;
-  }
-  .seniors-hero {
-    background: linear-gradient(135deg, #e65100 0%, #ff8f00 100%);
-    color: white;
-    padding: clamp(40px, 8vw, 80px) 0 clamp(32px, 6vw, 60px);
-    text-align: center;
-  }
-  .seniors-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; }
-  .zen-section { padding: 60px 0; }
-  .zen-section-alt { background: var(--zen-bg-light); }
-  .zen-section-title { color: var(--zen-green-dark); font-weight: 700; font-size: clamp(1.1rem, 4vw, 1.6rem); margin-bottom: 8px; }
-  .service-card {
-    background: white;
-    border-radius: 14px;
-    padding: 28px 22px;
-    height: 100%;
-    border: 1px solid #ffe0cc;
-    transition: box-shadow .2s, transform .2s;
-  }
-  .service-card:hover { box-shadow: 0 8px 24px rgba(230,81,0,.12); transform: translateY(-4px); }
-  .service-card .icon { font-size: 2rem; color: var(--zen-orange); margin-bottom: 14px; }
-  .service-card h3 { font-size: 1rem; font-weight: 700; }
-  .service-card p  { font-size: .88rem; color: #666; }
-  .guarantee-badge {
-    display: flex; align-items: center; gap: 12px;
-    background: white; border-radius: 12px; padding: 16px 20px;
-    border-left: 4px solid var(--zen-orange); margin-bottom: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
-  }
-  .guarantee-badge .icon { font-size: 1.4rem; color: var(--zen-orange); min-width: 30px; }
-  #floating-contact {
-    position: fixed; bottom: 24px; right: 20px;
-    display: flex; flex-direction: column; gap: 12px; z-index: 999;
-  }
-  .btn-call     { background: #1976d2; color: white; font-size: 1.3rem; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
-  .btn-whatsapp { background: #25d366; color: white; font-size: 1.3rem; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
-
-  /* ── Mobile responsive ─────────────────────── */
-  .zen-section { padding: clamp(32px, 6vw, 60px) 0; }
-  @media (max-width: 480px) {
-    .seniors-hero .btn { width: 100%; display: block; text-align: center; }
-    section .btn-lg { min-height: 44px; }
-  }
-</style>
-{% endblock %}
-
 {% block body %}
 
+{# ── Boutons flottants ──────────────────────────────────────── #}
 <div id="floating-contact">
-  <a href="tel:+33674039694" class="btn btn-call rounded-circle shadow-sm" title="Appeler ZenCAR">
+  <a href="tel:+33674039694" class="btn-call rounded-circle shadow-sm" title="Appeler ZenCAR">
     <i class="bi bi-telephone-fill"></i>
   </a>
-  <a href="https://wa.me/33674039694" target="_blank" class="btn btn-whatsapp rounded-circle shadow-sm" title="WhatsApp ZenCAR">
+  <a href="https://wa.me/33674039694" target="_blank" class="btn-whatsapp rounded-circle shadow-sm" title="WhatsApp ZenCAR">
     <i class="bi bi-whatsapp"></i>
   </a>
 </div>
 
-{# ── Fil d'Ariane ─────────────────────────────────────────────────── #}
-<div style="background:#f8f9fa; border-bottom:1px solid #e9ecef;">
-  <div class="container py-2">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mb-0" style="font-size:.85rem;">
-        <li class="breadcrumb-item"><a href="{{ path('app_home') }}" style="color:var(--zen-green);">Accueil</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('app_taxi_marseille') }}" style="color:var(--zen-green);">Taxi Marseille</a></li>
-        <li class="breadcrumb-item active">Transport Seniors</li>
-      </ol>
-    </nav>
-  </div>
-</div>
+{# ── Fil d'ariane ───────────────────────────────────────────── #}
+{% include 'partials/_breadcrumb.html.twig' with { items: [
+  { label: 'Accueil', url: path('app_home') },
+  { label: 'Taxi Marseille', url: path('app_taxi_marseille') },
+  { label: 'Transport Seniors' }
+]} %}
 
-{# ── Hero ──────────────────────────────────────────────────────────── #}
-<section class="seniors-hero">
+{# ── Hero ───────────────────────────────────────────────────── #}
+<section class="zen-hero-orange">
   <div class="container">
     <span style="display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:50px;padding:6px 18px;font-size:.9rem;margin-bottom:16px;">
       ❤️ Service senior bienveillant
@@ -137,86 +76,79 @@
       Chauffeurs patients et attentionnés, aide à la montée et descente.
       <strong>Disponible 7j/7</strong> pour tous vos déplacements.
     </p>
-    <div class="d-flex flex-wrap justify-content-center gap-3">
-      <a href="tel:+33674039694" class="btn btn-light btn-lg fw-bold px-4" style="color:var(--zen-orange);border-radius:50px;">
+    <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center gap-3">
+      <a href="tel:+33674039694" class="btn btn-light btn-lg fw-bold px-4" style="color:#e65100;border-radius:50px;min-height:44px;">
         <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
       </a>
-      <a href="https://wa.me/33674039694" class="btn btn-success btn-lg fw-bold px-4" style="border-radius:50px;">
+      <a href="https://wa.me/33674039694" class="btn btn-success btn-lg fw-bold px-4" style="border-radius:50px;min-height:44px;">
         <i class="bi bi-whatsapp me-2"></i>WhatsApp
       </a>
     </div>
   </div>
 </section>
 
-{# ── Services seniors ──────────────────────────────────────────────── #}
+{# ── Services seniors ───────────────────────────────────────── #}
 <section class="zen-section">
   <div class="container">
-    <h2 class="zen-section-title text-center">Nos services pour personnes âgées à Marseille</h2>
-    <p class="text-center text-muted mb-5">Un chauffeur dévoué pour tous vos besoins du quotidien.</p>
+    <h2 class="zen-section-title text-center" style="color:var(--zen-green-dark);">Nos services pour personnes âgées à Marseille</h2>
+    <p class="zen-section-subtitle text-center">Un chauffeur dévoué pour tous vos besoins du quotidien.</p>
 
     <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
-
       <div class="col">
-        <div class="service-card">
+        <div class="zen-service-card-orange">
           <div class="icon"><i class="fas fa-shopping-basket"></i></div>
           <h3>Courses & Supermarchés</h3>
           <p>Accompagnement aux courses alimentaires, pharmacie, marchés de Noailles, La Plaine. Le chauffeur vous aide avec vos sacs.</p>
         </div>
       </div>
-
       <div class="col">
-        <div class="service-card">
+        <div class="zen-service-card-orange">
           <div class="icon"><i class="fas fa-stethoscope"></i></div>
           <h3>Rendez-vous médicaux</h3>
           <p>Médecin généraliste, spécialiste, kiné, CHU Timone, Hôpital Nord. Attente sur place possible.</p>
         </div>
       </div>
-
       <div class="col">
-        <div class="service-card">
+        <div class="zen-service-card-orange">
           <div class="icon"><i class="fas fa-umbrella-beach"></i></div>
           <h3>Promenades bord de mer</h3>
           <p>Corniche Kennedy, Plage du Prado, Parc Borély. Profitez du soleil marseillais en toute sérénité.</p>
         </div>
       </div>
-
       <div class="col">
-        <div class="service-card">
+        <div class="zen-service-card-orange">
           <div class="icon"><i class="fas fa-church"></i></div>
           <h3>Visites cimetière & famille</h3>
           <p>Cimetière Saint-Pierre, Mazargues, visites en famille. Ponctualité et discrétion garanties.</p>
         </div>
       </div>
-
       <div class="col">
-        <div class="service-card">
+        <div class="zen-service-card-orange">
           <div class="icon"><i class="fas fa-building"></i></div>
           <h3>Sorties EHPAD & maison de retraite</h3>
           <p>Conventions possibles avec les établissements. Facturation mensuelle disponible pour les EHPAD.</p>
         </div>
       </div>
-
       <div class="col">
-        <div class="service-card">
+        <div class="zen-service-card-orange">
           <div class="icon"><i class="fas fa-calendar-check"></i></div>
           <h3>Mise à disposition à la journée</h3>
           <p>Votre chauffeur personnel pour toute une journée. Idéal pour les événements familiaux.</p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-{# ── Garanties ─────────────────────────────────────────────────────── #}
+{# ── Garanties ──────────────────────────────────────────────── #}
 <section class="zen-section zen-section-alt">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-5 mb-4 mb-lg-0">
-        <h2 class="zen-section-title">Un service pensé pour le confort des seniors</h2>
+        <h2 class="zen-section-title" style="color:var(--zen-green-dark);">Un service pensé pour le confort des seniors</h2>
         <p class="text-muted mb-4">Nous formons nos chauffeurs à l'accompagnement des personnes âgées et à mobilité réduite.</p>
-        <a href="tel:+33674039694" class="btn btn-lg fw-bold px-4" style="background:var(--zen-orange);color:white;border-radius:50px;">
-          <i class="bi bi-telephone-fill me-2"></i>Appeler le 06 74 03 96 94
+        <a href="tel:+33674039694" class="btn-zen btn-zen-pill px-4" style="background:#e65100;">
+          <i class="bi bi-telephone-fill"></i>Appeler le 06 74 03 96 94
         </a>
       </div>
       <div class="col-lg-7">
@@ -245,16 +177,16 @@
   </div>
 </section>
 
-{# ── CTA final ─────────────────────────────────────────────────────── #}
-<section style="background:var(--zen-orange);color:white;padding:60px 0;text-align:center;">
+{# ── CTA final ──────────────────────────────────────────────── #}
+<section style="background:#e65100;color:white;padding:clamp(32px,6vw,60px) 0;text-align:center;">
   <div class="container">
-    <h2 style="font-weight:700;font-size:1.8rem;">Réservez un taxi senior à Marseille</h2>
+    <h2 style="font-weight:700;font-size:clamp(1.2rem,4vw,1.8rem);">Réservez un taxi senior à Marseille</h2>
     <p style="opacity:.9;margin-bottom:28px;">Disponible 7j/7 — Appelez ou envoyez un WhatsApp</p>
     <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center gap-3">
-      <a href="tel:+33674039694" class="btn btn-light btn-lg fw-bold px-4" style="color:var(--zen-orange);border-radius:50px;">
+      <a href="tel:+33674039694" class="btn btn-light btn-lg fw-bold px-4" style="color:#e65100;border-radius:50px;min-height:44px;">
         <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
       </a>
-      <a href="{{ path('app_taxi_marseille') }}#reserver" class="btn btn-outline-light btn-lg fw-bold px-4" style="border-radius:50px;">
+      <a href="{{ path('app_taxi_marseille') }}#reserver" class="btn btn-outline-light btn-lg fw-bold px-4" style="border-radius:50px;min-height:44px;">
         Réserver en ligne
       </a>
     </div>

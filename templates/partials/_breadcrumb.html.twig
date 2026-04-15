@@ -1,0 +1,27 @@
+{#
+  Fil d'ariane réutilisable — ZenCAR
+  Usage :
+    {% include 'partials/_breadcrumb.html.twig' with { items: [
+      { label: 'Accueil', url: path('app_home') },
+      { label: 'Taxi Marseille', url: path('app_taxi_marseille') },
+      { label: 'Contact' }
+    ]} %}
+  Le dernier item (sans 'url') devient l'item actif.
+#}
+<div class="zen-breadcrumb">
+  <div class="container py-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        {% for item in items %}
+          {% if loop.last %}
+            <li class="breadcrumb-item active" aria-current="page">{{ item.label }}</li>
+          {% else %}
+            <li class="breadcrumb-item">
+              <a href="{{ item.url }}">{{ item.label }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </nav>
+  </div>
+</div>
