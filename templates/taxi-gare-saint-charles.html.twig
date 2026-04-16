@@ -1,0 +1,321 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Taxi & VTC Gare Saint-Charles Marseille — ZenCAR{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Taxi et VTC pour la Gare Saint-Charles de Marseille. Taxi au compteur tarifs officiels, VTC prix fixe affiché avant réservation. Disponible 7j/7. Appelez le 06 74 03 96 94." />
+<meta name="robots" content="index, follow" />
+{% endblock %}
+
+{% block og %}
+<meta property="og:title" content="Taxi & VTC Gare Saint-Charles Marseille — ZenCAR" />
+<meta property="og:description" content="Taxi au compteur ou VTC prix fixe pour la Gare Saint-Charles de Marseille. Prise en charge garantie. 06 74 03 96 94." />
+<meta property="og:url" content="https://dzencar.fr/taxi-gare-saint-charles" />
+<meta property="og:type" content="website" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/taxi-gare-saint-charles" />
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://dzencar.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Taxi Marseille", "item": "https://dzencar.fr/taxi-marseille" },
+      { "@type": "ListItem", "position": 3, "name": "Gare Saint-Charles" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TaxiService",
+    "name": "ZenCAR — Taxi & VTC Gare Saint-Charles Marseille",
+    "url": "https://dzencar.fr/taxi-gare-saint-charles",
+    "telephone": "+33674039694",
+    "description": "Service Taxi et VTC pour la Gare Saint-Charles de Marseille. Taxi au compteur tarifs officiels Ville de Marseille, VTC prix fixe affiché avant réservation.",
+    "areaServed": [
+      { "@type": "TrainStation", "name": "Gare de Marseille-Saint-Charles" },
+      { "@type": "City", "name": "Marseille" }
+    ],
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "05:00",
+      "closes": "23:59"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Quel est le tarif taxi depuis la Gare Saint-Charles ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le tarif taxi est fixé par le compteur selon les tarifs officiels réglementés par la Ville de Marseille. Pour un VTC, le prix fixe est calculé et affiché avant votre confirmation de réservation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Où se trouvent les taxis à la Gare Saint-Charles ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La station de taxis se situe à la sortie principale de la Gare Saint-Charles, en bas du grand escalier monumental, côté Boulevard d'Athènes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Peut-on réserver un taxi pour la Gare Saint-Charles à l'avance ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, vous pouvez réserver à l'avance via notre formulaire de réservation en ligne ou par téléphone au 06 74 03 96 94. La réservation à l'avance est recommandée pour les trains matinaux."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ZenCAR dessert-il toutes les destinations depuis la Gare Saint-Charles ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, nous assurons les transferts depuis et vers la Gare Saint-Charles vers toutes les destinations : centre-ville, aéroport, hôtels, quartiers résidentiels et alentours de Marseille."
+        }
+      }
+    ]
+  }
+]
+</script>
+{% endblock %}
+
+{% block body %}
+
+{# Boutons flottants #}
+<div id="floating-contact">
+    <a href="tel:+33674039694" class="btn-call rounded-circle shadow-sm" title="Appeler">
+        <i class="bi bi-telephone-fill"></i>
+    </a>
+    <a href="https://wa.me/33674039694" target="_blank" class="btn-whatsapp rounded-circle shadow-sm" title="WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+</div>
+
+{# Fil d'Ariane #}
+{% include 'partials/_breadcrumb.html.twig' with { items: [
+    { label: 'Accueil', url: path('app_home') },
+    { label: 'Taxi Marseille', url: path('app_taxi_marseille') },
+    { label: 'Gare Saint-Charles' }
+]} %}
+
+{# Hero #}
+<div class="zen-hero-green">
+    <span class="zen-hero-badge">🚄 Prise en charge à la sortie du train</span>
+    <h1 class="zen-hero-title">Taxi & VTC Gare<br>Saint-Charles Marseille</h1>
+    <p class="zen-hero-subtitle">
+        Taxi au compteur tarifs officiels Ville de Marseille,
+        ou VTC avec <strong>prix fixe affiché avant réservation</strong>.
+        Disponible <strong>7j/7</strong>.
+    </p>
+    <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+        <a href="{{ path('app_home') }}#tab1" class="btn-zen btn-zen-pill px-4" style="min-height:48px;font-size:1rem;">
+            <i class="bi bi-geo-alt-fill"></i> Réserver maintenant
+        </a>
+        <a href="tel:+33674039694" class="zen-cta-tel">
+            <i class="bi bi-telephone-fill"></i> 06 74 03 96 94
+        </a>
+    </div>
+</div>
+
+{# Infos pratiques #}
+<section class="zen-section">
+    <div class="container">
+        <h2 class="text-center text-white mb-2">Gare de Marseille-Saint-Charles</h2>
+        <p class="text-center mb-5" style="color:#aaa;">Grande gare TGV — Terminus principal de Marseille</p>
+
+        <div class="row g-4 row-cols-1 row-cols-md-3">
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                    <h3 class="h5 text-white">Localisation</h3>
+                    <p>Gare centrale de Marseille, Boulevard d'Athènes, 13001.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-signpost-2-fill"></i></div>
+                    <h3 class="h5 text-white">Station taxis</h3>
+                    <p>En bas du grand escalier monumental, côté Boulevard d'Athènes.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-people-fill"></i></div>
+                    <h3 class="h5 text-white">Groupes & familles</h3>
+                    <p>Van 7-8 places disponible pour les grands groupes avec bagages.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Taxi vs VTC #}
+<section class="zen-section" style="background:#0d1117;">
+    <div class="container">
+        <h2 class="text-center text-white mb-2 h4">Taxi ou VTC depuis la Gare Saint-Charles ?</h2>
+        <p class="text-center mb-5" style="color:#aaa;">Deux options, une même qualité de service.</p>
+        <div class="row g-4 row-cols-1 row-cols-md-2">
+            <div class="col">
+                <div class="zen-card h-100">
+                    <div class="zen-card-icon"><i class="bi bi-taxi-front-fill"></i></div>
+                    <h3 class="h5 text-white mb-3">Taxi</h3>
+                    <ul class="list-unstyled mb-0" style="color:#ccc;">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Tarif au compteur officiel homologué</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Tarifs réglementés Ville de Marseille</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Paiement CB ou espèces à bord</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Disponible 7j/7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col">
+                <div class="zen-card h-100">
+                    <div class="zen-card-icon"><i class="bi bi-car-front-fill"></i></div>
+                    <h3 class="h5 text-white mb-3">VTC</h3>
+                    <ul class="list-unstyled mb-0" style="color:#ccc;">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Prix fixe affiché avant réservation</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Tarif calculé selon votre trajet exact</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Paiement CB ou espèces à bord</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Chauffeur à l'heure, garanti</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Destinations depuis la gare #}
+<section class="zen-section">
+    <div class="container">
+        <h2 class="text-center text-white mb-5 h4">Destinations depuis la Gare Saint-Charles</h2>
+        <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-4">
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-airplane-fill"></i></div>
+                    <h3 class="h5 text-white">Aéroport Marseille</h3>
+                    <p>Transfert direct vers l'aéroport Marseille-Provence (MRS).</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-building-fill"></i></div>
+                    <h3 class="h5 text-white">Hôtels & centre-ville</h3>
+                    <p>Vieux-Port, Canebière, La Joliette, tous hôtels de Marseille.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-tree-fill"></i></div>
+                    <h3 class="h5 text-white">Calanques & tourisme</h3>
+                    <p>Cassis, La Ciotat, Calanques de Marseille.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="zen-card h-100 text-center">
+                    <div class="zen-card-icon"><i class="bi bi-house-fill"></i></div>
+                    <h3 class="h5 text-white">Quartiers résidentiels</h3>
+                    <p>Tous arrondissements et communes des alentours de Marseille.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# FAQ #}
+<section class="zen-section">
+    <div class="container">
+        <h2 class="text-center text-white mb-5 h4">Questions fréquentes — Gare Saint-Charles</h2>
+        <div class="zen-faq">
+            <div class="accordion" id="faqGare">
+
+                <div class="accordion-item bg-transparent border-bottom border-secondary">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed bg-transparent text-white" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#gfaq1">
+                            Quel est le tarif taxi depuis la Gare Saint-Charles ?
+                        </button>
+                    </h3>
+                    <div id="gfaq1" class="accordion-collapse collapse" data-bs-parent="#faqGare">
+                        <div class="accordion-body" style="color:#ccc;">
+                            Le tarif taxi est fixé par le compteur selon les tarifs officiels réglementés par la Ville de Marseille.
+                            Pour un VTC, le prix fixe est calculé et affiché avant votre confirmation de réservation.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-transparent border-bottom border-secondary">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed bg-transparent text-white" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#gfaq2">
+                            Où se trouvent les taxis à la Gare Saint-Charles ?
+                        </button>
+                    </h3>
+                    <div id="gfaq2" class="accordion-collapse collapse" data-bs-parent="#faqGare">
+                        <div class="accordion-body" style="color:#ccc;">
+                            La station de taxis se situe à la sortie principale, en bas du grand escalier monumental, côté Boulevard d'Athènes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-transparent border-bottom border-secondary">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed bg-transparent text-white" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#gfaq3">
+                            Peut-on réserver à l'avance pour la Gare Saint-Charles ?
+                        </button>
+                    </h3>
+                    <div id="gfaq3" class="accordion-collapse collapse" data-bs-parent="#faqGare">
+                        <div class="accordion-body" style="color:#ccc;">
+                            Oui, vous pouvez réserver à l'avance via notre formulaire en ligne ou par téléphone au 06 74 03 96 94.
+                            Recommandé pour les trains TGV matinaux.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-transparent border-secondary">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed bg-transparent text-white" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#gfaq4">
+                            ZenCAR dessert-il toutes les destinations depuis la gare ?
+                        </button>
+                    </h3>
+                    <div id="gfaq4" class="accordion-collapse collapse" data-bs-parent="#faqGare">
+                        <div class="accordion-body" style="color:#ccc;">
+                            Oui, nous assurons les transferts vers toutes les destinations : centre-ville, aéroport, hôtels, tous arrondissements et communes des alentours.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Forfaits VTC #}
+{% include 'partials/_forfaits.html.twig' %}
+
+{# CTA final #}
+<div class="zen-cta-banner">
+    <h2>Réservez votre taxi ou VTC gare</h2>
+    <p>Gare Saint-Charles — Disponible 7j/7 — Prise en charge garantie</p>
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="{{ path('app_home') }}#tab1" class="btn-zen btn-zen-pill px-4" style="min-height:48px;">
+            <i class="bi bi-geo-alt-fill"></i> Réserver en ligne
+        </a>
+        <a href="tel:+33674039694" class="zen-cta-tel">
+            <i class="bi bi-telephone-fill"></i> 06 74 03 96 94
+        </a>
+    </div>
+</div>
+
+{% endblock %}

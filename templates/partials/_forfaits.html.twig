@@ -1,0 +1,36 @@
+{% if forfaits is defined and forfaits|length > 0 %}
+<section class="zen-section" style="background:#0d1117;">
+    <div class="container">
+        <h2 class="text-center text-white mb-1 h4">Forfaits VTC</h2>
+        <p class="text-center mb-5" style="color:#aaa;font-size:.9rem;">
+            Prix fixe affiché avant confirmation — Tarif VTC uniquement
+        </p>
+        <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3 justify-content-center">
+            {% for forfait in forfaits %}
+            <div class="col">
+                <div class="zen-card h-100 text-center" style="border:1px solid rgba(255,86,48,.2);">
+                    {% if forfait.icone %}
+                    <div class="zen-card-icon"><i class="{{ forfait.icone }}"></i></div>
+                    {% endif %}
+                    <div class="mb-2" style="color:#aaa;font-size:.85rem;">
+                        {{ forfait.depart }} → {{ forfait.arrivee }}
+                    </div>
+                    <div class="fw-bold text-white" style="font-size:2rem;">
+                        {{ forfait.prix }} €
+                    </div>
+                    <div class="mt-3">
+                        <a href="tel:+33674039694" class="btn-zen btn-zen-pill"
+                           style="font-size:.85rem;padding:8px 20px;">
+                            <i class="bi bi-telephone-fill"></i> Réserver ce forfait
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <p class="text-center mt-4" style="color:#666;font-size:.8rem;">
+            * Tarifs VTC. Le taxi est facturé au compteur selon les tarifs officiels de la Ville de Marseille.
+        </p>
+    </div>
+</section>
+{% endif %}

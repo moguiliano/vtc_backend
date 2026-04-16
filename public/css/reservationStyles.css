@@ -1,115 +1,25 @@
 /* ============================================================
    ZenCAR — reservationStyles.css
-   Responsive complet : mobile-first, 4 breakpoints
-   xs < 400 | sm 576 | md 768 | lg 992+
+   CSS UNIQUEMENT pour le formulaire de réservation (tabs, map, véhicules)
+   Les styles globaux (variables, navbar, hero, cartes, etc.) sont dans zencar.css
    ============================================================ */
 
-/* ── Variables ──────────────────────────────────────────────── */
+/* ── Variables spécifiques formulaire ──────────────────────── */
 :root {
-  --zen-orange:     #ff5630;
   --zen-orange-dim: rgba(255, 86, 48, 0.15);
   --zen-bg:         rgba(255, 255, 255, 0.04);
   --zen-border:     rgba(255, 255, 255, 0.15);
   --zen-muted:      #cccccc;
 }
 
-*, *::before, *::after { box-sizing: border-box; }
-
 /* ============================================================
-   FLOATING BUTTONS
-   ============================================================ */
-#floating-contact {
-  position: fixed;
-  bottom: 24px;
-  right: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 1055;
-}
-
-.btn-call,
-.btn-whatsapp {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0,0,0,.35);
-  transition: transform .2s, box-shadow .2s;
-}
-.btn-call:hover,
-.btn-whatsapp:hover {
-  transform: scale(1.12);
-  box-shadow: 0 6px 20px rgba(0,0,0,.45);
-}
-.btn-call     { background: #1976d2; color: white; }
-.btn-whatsapp { background: #25d366; color: white; }
-
-/* ============================================================
-   NAVBAR
-   ============================================================ */
-.navbar-brand span {
-  font-size: clamp(.95rem, 3vw, 1.25rem);
-  letter-spacing: -.5px;
-}
-.navbar-nav .nav-link {
-  font-size: clamp(.78rem, 1.8vw, .95rem);
-  padding: 8px 10px;
-}
-@media (max-width: 991px) {
-  .navbar-collapse .nav-item {
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
-  .navbar-collapse .nav-item:last-child { border-bottom: none; }
-  .navbar-nav .nav-link { padding: 12px 16px; font-size: 1rem; }
-}
-
-/* ============================================================
-   HERO (home)
-   ============================================================ */
-.hero {
-  background: url('/images/hero-zencar.png') center/cover no-repeat;
-  padding: clamp(50px, 10vw, 100px) 16px clamp(40px, 8vw, 80px);
-  color: white;
-  text-align: center;
-  width: 100%;
-}
-.hero h1   { font-size: clamp(1.4rem, 5vw, 2.8rem); font-weight: 800; line-height: 1.2; }
-.hero .lead { font-size: clamp(.9rem, 2.5vw, 1.2rem); }
-.hero .btn  { font-size: clamp(.85rem, 2vw, 1.1rem); margin-top: 20px; }
-
-/* ============================================================
-   SECTION "POURQUOI"
+   SECTION "POURQUOI CHOISIR" (home)
    ============================================================ */
 .pourquoi-choisir-Zencar { padding: clamp(24px, 5vw, 50px) 8px; }
 .pourquoi-choisir-Zencar .h4 { font-size: clamp(1rem, 3vw, 1.4rem); }
 
-.step-box {
-  background: var(--zen-bg);
-  border: 1px solid var(--zen-border);
-  border-radius: 12px;
-  padding: 20px 14px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: transform .3s ease, opacity .5s ease, box-shadow .3s;
-}
-.step-box.show  { opacity: 1; transform: translateY(0); }
-.step-box:hover { transform: translateY(-5px); box-shadow: 0 0 12px rgba(255,255,255,.15); }
-.icon-step      { font-size: 2rem; color: var(--zen-orange); }
-.step-box h5    { font-size: clamp(.85rem, 2vw, 1rem); margin: 0; }
-.step-box p     { font-size: clamp(.78rem, 1.8vw, .9rem); color: var(--zen-muted); margin: 0; }
-
 /* ============================================================
-   TABS
+   TABS (onglets réservation)
    ============================================================ */
 .tabs {
   display: flex;
@@ -136,9 +46,12 @@
   border-bottom: 3px solid var(--zen-orange);
   font-weight: 700;
 }
+@media (max-width: 399px) {
+  .tab-button { white-space: normal; line-height: 1.2; padding: 8px 2px; }
+}
 
 /* ============================================================
-   GENERAL CONTAINER
+   CONTENEUR GÉNÉRAL (home / réservation)
    ============================================================ */
 #reservation-test-container {
   min-height: 100vh;
@@ -168,7 +81,7 @@
    TAB 1 — FORMULAIRE + CARTE
    ============================================================ */
 
-/* Layout tab1 : empilé mobile, 50/50 desktop */
+/* Layout tab1 : empilé mobile → 50/50 dès 768px */
 .tab1-layout {
   display: flex;
   flex-direction: column;
@@ -191,7 +104,7 @@
   }
 }
 
-/* ── Formulaire ─────────────────────────────────── */
+/* ── Champs formulaire ──────────────────────────────────────── */
 .donneesClient { width: 100%; }
 
 .form-group {
@@ -260,7 +173,7 @@ textarea::placeholder {
 }
 @media (min-width: 577px) { .btn-geoloc { display: inline-flex; } }
 
-/* ── Carte HERE Maps ────────────────────────────── */
+/* ── Carte HERE Maps ────────────────────────────────────────── */
 .carte { width: 100%; }
 
 #mapContainer {
@@ -289,12 +202,12 @@ textarea::placeholder {
   .map-info .duration-box { flex: 1; }
 }
 
-/* Boutons temps */
+/* ── Boutons temps (Immédiat / Plus tard) ───────────────────── */
 .time-btn {
   padding: 8px 14px;
   min-height: 44px;
   border: 1px solid var(--zen-border);
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--zen-bg);
   color: white;
   cursor: pointer;
@@ -304,7 +217,7 @@ textarea::placeholder {
 .time-btn.active { background: #303aff; border-color: #303aff; }
 
 /* ============================================================
-   BOUTONS NAVIGATION
+   BOUTONS NAVIGATION (Suivant / Retour)
    ============================================================ */
 .button-group {
   display: flex;
@@ -318,7 +231,8 @@ textarea::placeholder {
   background: var(--zen-orange);
   border: none;
   padding: 12px 22px;
-  border-radius: 6px;
+  min-height: 44px;
+  border-radius: 8px;
   color: white;
   font-size: clamp(.82rem, 2vw, 1rem);
   cursor: pointer;
@@ -336,7 +250,7 @@ textarea::placeholder {
   padding: 10px 16px;
   min-height: 44px;
   font-size: clamp(.8rem, 2vw, .9rem);
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
 }
@@ -362,7 +276,7 @@ textarea::placeholder {
   border-color: var(--zen-orange);
   background: var(--zen-orange-dim);
 }
-.vehicle-card h5 { font-size: clamp(.85rem, 2vw, 1.05rem); }
+.vehicle-card h5           { font-size: clamp(.85rem, 2vw, 1.05rem); }
 .vehicle-card .vehicle-price { font-size: clamp(.8rem, 2vw, .95rem); }
 
 /* ============================================================
@@ -376,6 +290,15 @@ textarea::placeholder {
   line-height: 1.5;
 }
 #tab3 ul li:last-child { border-bottom: none; }
+
+#confirmReservationBtn {
+  min-height: 44px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#sendOtpBtn { width: 100%; }
+@media (min-width: 576px) { #sendOtpBtn { width: auto; } }
 
 #guest-verification-section h5 { font-size: clamp(.9rem, 2vw, 1.1rem); }
 
@@ -415,7 +338,7 @@ textarea::placeholder {
 .autocomplete-list .icon          { color: var(--zen-orange); font-size: .95rem; }
 
 /* ============================================================
-   ERREURS
+   ERREURS FORMULAIRE
    ============================================================ */
 .form-error {
   color: var(--zen-orange);
@@ -430,60 +353,4 @@ textarea::placeholder {
   border-radius: 6px;
   font-size: clamp(.82rem, 2vw, .95rem);
   animation: fadeError .3s ease;
-}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-footer {
-  font-size: clamp(.75rem, 2vw, .9rem);
-  padding: 16px !important;
-  text-align: center;
-}
-
-/* ============================================================
-   UTILITAIRES
-   ============================================================ */
-.collapse      { display: none; }
-.collapse.show { display: block; }
-.d-none        { display: none !important; }
-.mb-4          { margin-bottom: 1.5rem; }
-.mt-1          { margin-top: .25rem; }
-.mt-2          { margin-top: .5rem; }
-.mt-3          { margin-top: 1rem; }
-.mt-4          { margin-top: 1.5rem; }
-.my-2          { margin: .5rem 0; }
-.w-100         { width: 100%; }
-.text-white    { color: white; }
-.text-sm       { font-size: .875rem; }
-.small         { font-size: .875rem; }
-.gap-3         { gap: 1rem; }
-.me-1          { margin-right: .25rem; }
-
-/* ============================================================
-   TOUCH TARGETS & MOBILE FIXES
-   ============================================================ */
-#confirmReservationBtn {
-  min-height: 44px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-#sendOtpBtn { width: 100%; }
-@media (min-width: 576px) { #sendOtpBtn { width: auto; } }
-
-@media (max-width: 399px) {
-  .tab-button { white-space: normal; line-height: 1.2; padding: 8px 2px; }
-}
-
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeError {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
 }

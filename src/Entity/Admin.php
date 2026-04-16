@@ -17,6 +17,9 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $nom = null;
+
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -36,6 +39,9 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
+
+    public function getNom(): ?string { return $this->nom; }
+    public function setNom(string $nom): static { $this->nom = $nom; return $this; }
 
     public function getEmail(): ?string
     {

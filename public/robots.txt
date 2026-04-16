@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /login
+Disallow: /logout
+Disallow: /reservation/success
+
+Sitemap: https://dzencar.fr/sitemap.xml

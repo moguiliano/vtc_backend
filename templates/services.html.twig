@@ -1,6 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos services | ZenCAR{% endblock %}
+{% block title %}Nos services Taxi & VTC | ZenCAR Marseille{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Taxi au compteur et VTC prix fixe à Marseille. Transfert aéroport, gare Saint-Charles, calanques, transport seniors, mise à disposition. Flotte berline, van, grand coffre. 06 74 03 96 94." />
+<meta name="robots" content="index, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/services" />
+{% endblock %}
+
+{% block og_title %}Nos services Taxi & VTC à Marseille | ZenCAR{% endblock %}
+{% block og_description %}Taxi au compteur ou VTC prix fixe à Marseille. Aéroport, gare, calanques, seniors, mise à disposition. Berline, van, grand coffre. Appelez le 06 74 03 96 94.{% endblock %}
+{% block og_url %}https://dzencar.fr/services{% endblock %}
 
 {% block body %}
 
@@ -10,32 +23,60 @@
 ]} %}
 
 <div class="container mt-5 text-white">
-  <h1 class="display-5 fw-bold text-center mb-4">Nos services</h1>
+  <h1 class="display-5 fw-bold text-center mb-4">Nos services Taxi & VTC à Marseille</h1>
   <p class="lead text-center mb-5">
-    <span style="color: var(--zen-orange); font-weight: bold;">ZenCAR</span>, votre plateforme Taxi/VTC à Marseille.
-    Commandez un chauffeur en <strong>5 à 10 minutes</strong>, même en heure de pointe.
+    <span style="color: var(--zen-orange); font-weight: bold;">ZenCAR</span>, votre plateforme Taxi & VTC à Marseille.
+    Disponible en <strong>5 à 10 minutes</strong>, même en heure de pointe.
     Paiement à bord (CB ou espèces), facture disponible.
   </p>
+
+  {# Taxi vs VTC #}
+  <div class="row g-4 row-cols-1 row-cols-md-2 mb-5">
+    <div class="col">
+      <div class="zen-card h-100">
+        <div class="zen-card-icon"><i class="bi bi-taxi-front-fill"></i></div>
+        <h2 class="h5 text-white mb-3">Taxi</h2>
+        <ul class="list-unstyled mb-0" style="color:#ccc;">
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Tarif au compteur officiel homologué</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Tarifs fixés par la Ville de Marseille</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Paiement à bord — CB ou espèces</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#4caf50;"></i>Disponible 7j/7</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="zen-card h-100">
+        <div class="zen-card-icon"><i class="bi bi-car-front-fill"></i></div>
+        <h2 class="h5 text-white mb-3">VTC</h2>
+        <ul class="list-unstyled mb-0" style="color:#ccc;">
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Prix fixe affiché avant réservation</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Tarif calculé selon votre trajet exact</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Paiement à bord — CB ou espèces</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:var(--zen-orange);"></i>Disponible 7j/7</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-stopwatch"></i></div>
-        <h5>Chauffeur rapide</h5>
+        <h3 class="h5">Chauffeur rapide</h3>
         <p>Disponible même en heure de pointe en moins de 10 minutes.</p>
       </div>
     </div>
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-credit-card"></i></div>
-        <h5>Paiement flexible</h5>
+        <h3 class="h5">Paiement flexible</h3>
         <p>Carte bleue ou espèces à bord, vous choisissez.</p>
       </div>
     </div>
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-receipt"></i></div>
-        <h5>Facture disponible</h5>
+        <h3 class="h5">Facture disponible</h3>
         <p>Demandez une facture après la course, envoyée par e-mail.</p>
       </div>
     </div>
@@ -43,26 +84,26 @@
 
   <hr class="my-5 border-white"/>
 
-  <h2 class="h4 mb-4 text-center">🚖 Services proposés</h2>
+  <h2 class="h4 mb-4 text-center">Nos trajets & prestations</h2>
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-train-front fs-1 mb-3"></i></div>
-        <h5>Transfert gare</h5>
+        <h3 class="h5">Transfert gare</h3>
         <p>Prise en charge prioritaire dans la file dédiée aux professionnels du transport.</p>
       </div>
     </div>
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-airplane fs-1 mb-3"></i></div>
-        <h5>Transfert aéroport</h5>
+        <h3 class="h5">Transfert aéroport</h3>
         <p>Suivi de vol en temps réel. Prise en charge prioritaire dans la file dédiée aux professionnels du transport.</p>
       </div>
     </div>
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-tree fs-1 mb-3"></i></div>
-        <h5>Calanques</h5>
+        <h3 class="h5">Calanques</h3>
         <p>Transport privé vers les plus beaux coins de Marseille.</p>
         <p class="mt-2 small">
           Pour une excursion personnalisée, contactez-nous par appel, WhatsApp ou via le
@@ -73,7 +114,7 @@
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-clock-history fs-1 mb-3"></i></div>
-        <h5>Mise à disposition</h5>
+        <h3 class="h5">Mise à disposition</h3>
         <p>Chauffeur personnel pour plusieurs heures.</p>
         <p class="mt-2 small">
           Un devis est nécessaire pour ce service. Contactez-nous par appel, WhatsApp ou via le
@@ -83,15 +124,15 @@
     </div>
     <div class="col">
       <div class="zen-card h-100">
-        <div class="zen-card-icon"><i class="bi bi-cash-coin"></i></div>
-        <h5>Prix déterminés</h5>
-        <p>Tarif connu à l'avance, sans surprise.</p>
+        <div class="zen-card-icon"><i class="bi bi-heart-pulse"></i></div>
+        <h3 class="h5">Transport seniors</h3>
+        <p>Chauffeurs attentionnés, aide à la montée et à la descente. Conventions EHPAD disponibles.</p>
       </div>
     </div>
     <div class="col">
       <div class="zen-card h-100">
         <div class="zen-card-icon"><i class="bi bi-people"></i></div>
-        <h5>+300 chauffeurs partenaires</h5>
+        <h3 class="h5">+300 chauffeurs partenaires</h3>
         <p>Disponibilité assurée partout à Marseille et ses alentours.</p>
       </div>
     </div>

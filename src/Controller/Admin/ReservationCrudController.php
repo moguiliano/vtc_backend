@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\Reservation;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -25,6 +27,19 @@ class ReservationCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Réservation')
             ->setEntityLabelInPlural('Réservations')
             ->setPageTitle(Crud::PAGE_INDEX, 'Liste des réservations');
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        // Modifier uniquement si ROLE_RESERVATIONS_EDIT
+        if (!$this->isGranted('ROLE_RESERVATIONS_EDIT')) {
+            $actions->disable(Action::EDIT, Action::NEW);
+        }
+        // Supprimer uniquement si ROLE_RESERVATIONS_DELETE
+        if (!$this->isGranted('ROLE_RESERVATIONS_DELETE')) {
+            $actions->disable(Action::DELETE, Action::BATCH_DELETE);
+        }
+        return $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
     public function configureFields(string $pageName): iterable

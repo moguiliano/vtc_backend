@@ -2,11 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Admin;
+use App\Entity\Forfait;
 use App\Entity\Reservation;
 use App\Entity\VehicleCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Controller\Admin\ReservationCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -16,39 +17,61 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
-    {
-    }
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator) {}
 
     #[Route('/admin', name: 'admin_dashboard')]
     public function index(): Response
     {
-        // Redirige directement vers la gestion des réservations
-        $url = $this->adminUrlGenerator
-            ->setController(ReservationCrudController::class)
-            ->generateUrl();
+        // Redirige vers les réservations si accès, sinon tableau de bord
+        if ($this->isGranted('ROLE_RESERVATIONS_VIEW')) {
+            $url = $this->adminUrlGenerator
+                ->setController(ReservationCrudController::class)
+                ->generateUrl();
+            return $this->redirect($url);
+        }
 
-        return $this->redirect($url);
+        return $this->render('@EasyAdmin/page/content.html.twig', [
+            'content_title' => 'Tableau de bord ZenCAR',
+        ]);
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('ZenCAR - Administration')
+            ->setTitle('ZenCAR — Administration')
             ->renderContentMaximized();
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Tableau de Bord', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
 
-        yield MenuItem::section('Gestion des réservations');
-        yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
-        
-        yield MenuItem::section('Tarification');
-        yield MenuItem::linkToCrud('Véhicules & Prix', 'fa fa-car', VehicleCategory::class);
+        // Réservations
+        if ($this->isGranted('ROLE_RESERVATIONS_VIEW')) {
+            yield MenuItem::section('Réservations');
+            yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
+        }
 
-        yield MenuItem::section('Paramètres');
+        // Tarification
+        if ($this->isGranted('ROLE_FORFAITS_VIEW') || $this->isGranted('ROLE_VEHICULES_VIEW')) {
+            yield MenuItem::section('Tarification');
+        }
+        if ($this->isGranted('ROLE_VEHICULES_VIEW')) {
+            yield MenuItem::linkToCrud('Véhicules & Prix', 'fa fa-car', VehicleCategory::class);
+        }
+        if ($this->isGranted('ROLE_FORFAITS_VIEW')) {
+            yield MenuItem::linkToCrud('Forfaits VTC', 'fa fa-tag', Forfait::class);
+        }
+
+        // Gestion des admins (super admin uniquement)
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            yield MenuItem::section('Administration');
+            yield MenuItem::linkToCrud('Administrateurs', 'fa fa-users', Admin::class);
+        }
+
+        // Mon compte (tous)
+        yield MenuItem::section('Mon compte');
+        yield MenuItem::linkToRoute('Changer mon mot de passe', 'fa fa-key', 'admin_change_password');
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
     }
 }

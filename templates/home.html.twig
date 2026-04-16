@@ -1,15 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Taxi Marseille — Disponible en 5 min | ZenCAR Taxi & VTC{% endblock %}
+{% block title %}Taxi & VTC Marseille — Disponible en 5 min | ZenCAR{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Commandez un taxi à Marseille en 5 minutes. Taxi ou VTC au choix, prise en charge garantie, tarif affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94." />
+<meta name="description" content="Taxi ou VTC à Marseille en 5 minutes. Taxi au compteur tarifs Ville de Marseille, VTC prix fixe affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94." />
 <meta name="robots" content="index, follow" />
 {% endblock %}
 
 {% block canonical %}
 <link rel="canonical" href="https://dzencar.fr/" />
 {% endblock %}
+
+{% block og_title %}Taxi & VTC Marseille — Disponible en 5 min | ZenCAR{% endblock %}
+{% block og_description %}Taxi au compteur tarifs officiels Ville de Marseille, ou VTC prix fixe affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94.{% endblock %}
+{% block og_url %}https://dzencar.fr/{% endblock %}
 
 {% block jsonld %}
 <script type="application/ld+json">
@@ -54,28 +58,96 @@
 		</a>
 	</div>
 
-	{# Style spécifique à la page : image hero #}
+	{# Style hero split #}
 	<style>
-		.hero {
-			background: url('/images/hero-zencar.png') center/cover no-repeat;
-			padding: clamp(50px, 10vw, 100px) 16px clamp(40px, 8vw, 80px);
+		.hero-split {
+			background: linear-gradient(135deg, #0d1117 0%, #1a2332 100%);
+			padding: clamp(40px, 7vw, 90px) 0;
+			overflow: hidden;
+		}
+		.hero-split-badge {
+			display: inline-block;
+			background: rgba(255, 86, 48, .15);
+			border: 1px solid rgba(255, 86, 48, .4);
+			color: var(--zen-orange);
+			border-radius: 50px;
+			padding: 6px 18px;
+			font-size: .85rem;
+			margin-bottom: 1.2rem;
+		}
+		.hero-split h1 {
+			font-size: clamp(1.8rem, 4vw, 3rem);
+			font-weight: 800;
 			color: white;
-			text-align: center;
+			line-height: 1.2;
+			margin-bottom: 1rem;
+		}
+		.hero-split .hero-lead {
+			color: rgba(255, 255, 255, .8);
+			font-size: clamp(.95rem, 2vw, 1.15rem);
+			margin-bottom: 2rem;
+			max-width: 480px;
+		}
+		.hero-split-img {
+			position: relative;
+		}
+		.hero-split-img img {
 			width: 100%;
+			max-height: 480px;
+			object-fit: cover;
+			object-position: center top;
+			border-radius: 16px;
+			box-shadow: 0 20px 60px rgba(0,0,0,.5);
+		}
+		@media (max-width: 991px) {
+			.hero-split-img { margin-top: 2.5rem; }
+			.hero-split .hero-lead { max-width: 100%; }
 		}
 	</style>
 
-	<div id="reservation-test-container" class="container">
-		{% include 'headerZencar.html.twig' %}
+	{# Hero split — texte gauche / image droite #}
+	<section class="hero-split">
+		<div class="container">
+			<div class="row align-items-center">
 
-		<div class="hero">
-			<h1 class="display-4 fw-bold">Taxi Marseille — Disponible en 5 min</h1>
-			<p class="lead mt-3">Taxi ou VTC au choix, prise en charge garantie.
-				<strong>Plus de 300 chauffeurs</strong> disponibles à Marseille.</p>
-			<a href="#tab1" class="btn btn-primary btn-lg">Commander maintenant</a>
+				{# Colonne texte #}
+				<div class="col-lg-6">
+					<span class="hero-split-badge">⚡ Prise en charge en 5 à 10 min</span>
+					<h1>Taxi & VTC Marseille<br>Disponibles 7j/7</h1>
+					<p class="hero-lead">
+						Taxi au compteur tarifs officiels Ville de Marseille,
+						ou VTC avec <strong style="color:white;">prix fixe affiché avant réservation</strong>.
+						Plus de 300 chauffeurs professionnels à Marseille, aéroport, gare et alentours.
+					</p>
+					<div class="d-flex flex-wrap gap-3">
+						<a href="#tab1" class="btn-zen btn-zen-pill px-4" style="min-height:48px;font-size:1rem;">
+							<i class="bi bi-geo-alt-fill"></i> Réserver maintenant
+						</a>
+						<a href="tel:+33674039694" class="btn btn-outline-light px-4 fw-bold"
+						   style="border-radius:50px;min-height:48px;font-size:1rem;">
+							<i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+						</a>
+					</div>
+				</div>
+
+				{# Colonne image #}
+				<div class="col-lg-6 hero-split-img">
+					<img src="/images/hero-fleet.png"
+					     alt="Mercedes Viano et Classe S — Flotte ZenCAR Marseille"
+					     width="600" height="480">
+				</div>
+
+			</div>
 		</div>
+	</section>
 
-		<section class="container my-5 container my-5 pourquoi-choisir-Zencar">
+
+	{# Forfaits VTC #}
+	{% include 'partials/_forfaits.html.twig' %}
+
+	<div id="reservation-test-container" class="container">
+
+		<section class="my-5 pourquoi-choisir-Zencar">
 
 			<div class="text-center mb-4">
 				<h2 class="h4">Pourquoi choisir ZenCAR ?</h2>

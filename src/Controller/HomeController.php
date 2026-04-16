@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 // ✅ AJOUTS
+use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
@@ -81,6 +82,24 @@ final class HomeController extends AbstractController
         ]);
     }
 
+    // Landing page SEO — "taxi aéroport marseille"
+    #[Route('/taxi-aeroport-marseille', name: 'app_taxi_aeroport', methods: ['GET'])]
+    public function taxiAeroport(ForfaitRepository $forfaitRepo): Response
+    {
+        return $this->render('taxi-aeroport-marseille.html.twig', [
+            'forfaits' => $forfaitRepo->findActifs(),
+        ]);
+    }
+
+    // Landing page SEO — "taxi gare saint-charles marseille"
+    #[Route('/taxi-gare-saint-charles', name: 'app_taxi_gare', methods: ['GET'])]
+    public function taxiGare(ForfaitRepository $forfaitRepo): Response
+    {
+        return $this->render('taxi-gare-saint-charles.html.twig', [
+            'forfaits' => $forfaitRepo->findActifs(),
+        ]);
+    }
+
     // Page transport seniors & EHPAD
     #[Route('/transport-seniors-marseille', name: 'app_transport_seniors', methods: ['GET'])]
     public function transportSeniors(): Response
@@ -114,7 +133,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, VehicleCategoryRepository $vehicleRepo): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, VehicleCategoryRepository $vehicleRepo, ForfaitRepository $forfaitRepo): Response
     {
         // Création d'une nouvelle entité Reservation (vide)
         $reservation = new Reservation();
@@ -156,6 +175,7 @@ final class HomeController extends AbstractController
         return $this->render('home.html.twig', [
             'form'     => $form->createView(),
             'vehicles' => $vehicleRepo->findAllActive(),
+            'forfaits' => $forfaitRepo->findActifs(),
         ]);
     }
 #[Route('/api/get-here-key', name: 'api_get_here_key', methods: ['GET'])]

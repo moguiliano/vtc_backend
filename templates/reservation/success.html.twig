@@ -1,28 +1,210 @@
 {% extends 'base.html.twig' %}
-{% block title %}Réservation confirmée{% endblock %}
+{% block title %}Réservation confirmée — ZenCAR{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="noindex, nofollow" />
+{% endblock %}
 
 {% block body %}
-  <div class="container my-4 text-white">
-    {% for label, messages in app.flashes %}
-      {% for message in messages %}
-        <div class="alert alert-{{ label }}">{{ message }}</div>
-      {% endfor %}
-    {% endfor %}
 
-    <h1 class="h4 mb-3">🎉 Réservation confirmée</h1>
+<style>
+  .success-wrap {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(32px, 6vw, 80px) 16px;
+  }
+  .success-card {
+    background: #1a1d27;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px;
+    padding: clamp(28px, 5vw, 52px) clamp(20px, 5vw, 48px);
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.45);
+  }
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(76,175,80,.15);
+    border: 2px solid rgba(76,175,80,.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.4rem;
+    font-size: 2rem;
+    color: #66bb6a;
+  }
+  .success-title {
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: .4rem;
+  }
+  .success-sub {
+    text-align: center;
+    color: rgba(255,255,255,.45);
+    font-size: .88rem;
+    margin-bottom: 2rem;
+  }
+  .recap-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.8rem;
+  }
+  .recap-table tr {
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .recap-table tr:last-child {
+    border-bottom: none;
+  }
+  .recap-table td {
+    padding: 10px 4px;
+    font-size: .9rem;
+  }
+  .recap-table td:first-child {
+    color: rgba(255,255,255,.45);
+    width: 42%;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .recap-table td:last-child {
+    color: white;
+    font-weight: 600;
+  }
+  .recap-price-row td:last-child {
+    color: var(--zen-orange);
+    font-size: 1.1rem;
+  }
+  .info-banner {
+    background: rgba(255,86,48,.08);
+    border: 1px solid rgba(255,86,48,.2);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: rgba(255,255,255,.7);
+    font-size: .83rem;
+    margin-bottom: 1.6rem;
+    line-height: 1.6;
+  }
+  .info-banner i {
+    color: var(--zen-orange);
+    margin-right: 6px;
+  }
+  .btn-new-resa {
+    display: block;
+    width: 100%;
+    background: var(--zen-orange);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 13px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity .2s;
+    margin-bottom: .8rem;
+  }
+  .btn-new-resa:hover { opacity: .9; color: white; }
+  .btn-call-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 50px;
+    padding: 11px;
+    color: rgba(255,255,255,.7);
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-call-cta:hover { border-color: var(--zen-orange); color: var(--zen-orange); }
+</style>
+
+{% for label, messages in app.flashes %}
+  {% for message in messages %}
+    <div class="container mt-3">
+      <div class="alert alert-{{ label }}">{{ message }}</div>
+    </div>
+  {% endfor %}
+{% endfor %}
+
+<div class="success-wrap">
+  <div class="success-card">
+
+    <div class="success-icon">
+      <i class="bi bi-check-lg"></i>
+    </div>
+
+    <h1 class="success-title">Réservation confirmée !</h1>
+    <p class="success-sub">Un récapitulatif vous sera transmis par SMS.</p>
 
     {% if reservation is defined %}
-      <ul class="list-unstyled">
-        <li><strong>Départ :</strong> {{ reservation.depart }}</li>
-        <li><strong>Arrivée :</strong> {{ reservation.arrivee }}</li>
-        <li><strong>Date/Heure :</strong> {{ reservation.dateHeureDepart ? reservation.dateHeureDepart|date('d/m/Y H:i') : 'Immédiat' }}</li>
-        <li><strong>Type véhicule :</strong> {{ reservation.typeVehicule ?: '—' }}</li>
-        <li><strong>Prix :</strong> {{ reservation.prix ? reservation.prix|number_format(2, ',', ' ') ~ ' €' : '—' }}</li>
-      </ul>
-    {% else %}
-      <p>Votre réservation a été enregistrée.</p>
+    <table class="recap-table">
+      <tr>
+        <td>Départ</td>
+        <td>{{ reservation.depart }}</td>
+      </tr>
+      <tr>
+        <td>Arrivée</td>
+        <td>{{ reservation.arrivee }}</td>
+      </tr>
+      <tr>
+        <td>Date & heure</td>
+        <td>
+          {% if reservation.dateHeureDepart %}
+            {{ reservation.dateHeureDepart|date('d/m/Y') }} à {{ reservation.dateHeureDepart|date('H:i') }}
+          {% else %}
+            <span style="color:var(--zen-orange);">Immédiat</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% if reservation.typeVehicule %}
+      <tr>
+        <td>Véhicule</td>
+        <td>{{ reservation.typeVehicule }}</td>
+      </tr>
+      {% endif %}
+      {% if reservation.stopOption and reservation.stopLieu %}
+      <tr>
+        <td>Arrêt en route</td>
+        <td>{{ reservation.stopLieu }}</td>
+      </tr>
+      {% endif %}
+      {% if reservation.siegeBebe %}
+      <tr>
+        <td>Option</td>
+        <td><i class="bi bi-check-circle-fill me-1" style="color:#66bb6a;"></i>Siège bébé</td>
+      </tr>
+      {% endif %}
+      {% if reservation.prix %}
+      <tr class="recap-price-row">
+        <td>Prix estimé</td>
+        <td>{{ reservation.prix|number_format(2, ',', ' ') }} €</td>
+      </tr>
+      {% endif %}
+    </table>
     {% endif %}
 
-    <a class="btn btn-primary mt-3" href="{{ path('app_home') }}">Nouvelle réservation</a>
+    <div class="info-banner">
+      <i class="bi bi-info-circle-fill"></i>
+      Votre chauffeur vous contactera avant la prise en charge pour confirmer sa venue, son véhicule et sa plaque d'immatriculation.
+    </div>
+
+    <a href="{{ path('app_home') }}" class="btn-new-resa">
+      <i class="bi bi-plus-circle me-2"></i>Nouvelle réservation
+    </a>
+    <a href="tel:+33674039694" class="btn-call-cta">
+      <i class="bi bi-telephone-fill"></i>06 74 03 96 94
+    </a>
+
   </div>
+</div>
+
 {% endblock %}
