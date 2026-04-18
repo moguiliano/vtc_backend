@@ -1,0 +1,308 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Taxi & VTC Calanques Marseille — Excursion privée | ZenCAR{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Taxi et VTC pour les Calanques de Marseille. Excursion privée vers Cassis, Calanque de Morgiou, Sormiou, En-Vau. Prix fixe affiché avant réservation. Appelez le 06 74 03 96 94." />
+<meta name="robots" content="index, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/taxi-calanques-marseille" />
+{% endblock %}
+
+{% block og_title %}Taxi & VTC Calanques Marseille — Excursion privée | ZenCAR{% endblock %}
+{% block og_description %}Excursion privée vers les Calanques de Marseille. Taxi au compteur ou VTC prix fixe. Morgiou, Sormiou, En-Vau, Cassis. Chauffeur disponible 7j/7. 06 74 03 96 94{% endblock %}
+{% block og_url %}https://dzencar.fr/taxi-calanques-marseille{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://dzencar.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://dzencar.fr/services" },
+      { "@type": "ListItem", "position": 3, "name": "Taxi Calanques Marseille" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TaxiService",
+    "name": "ZenCAR — Taxi & VTC Calanques Marseille",
+    "url": "https://dzencar.fr/taxi-calanques-marseille",
+    "telephone": "+33674039694",
+    "description": "Service de taxi et VTC pour les excursions vers les Calanques de Marseille. Morgiou, Sormiou, En-Vau, Calanque de Port-Miou, Cassis.",
+    "areaServed": [
+      { "@type": "City", "name": "Marseille" },
+      { "@type": "Place", "name": "Calanques de Marseille" },
+      { "@type": "City", "name": "Cassis" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment aller aux Calanques de Marseille en taxi ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Appelez le 06 74 03 96 94 ou envoyez un message WhatsApp. Nos chauffeurs vous récupèrent à votre adresse et vous déposent à l'entrée des Calanques de votre choix : Morgiou, Sormiou, En-Vau, Calanque de Port-Miou à Cassis."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Le chauffeur peut-il nous attendre aux Calanques ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, nous proposons une mise à disposition à l'heure. Le chauffeur vous attend sur place pendant votre excursion et vous ramène ensuite. Contactez-nous pour un devis personnalisé."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quel est le prix d'un taxi pour les Calanques depuis Marseille ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pour un VTC, le prix est fixe et affiché avant confirmation. Pour un taxi, le tarif est au compteur selon les tarifs officiels de la Ville de Marseille. Contactez-nous au 06 74 03 96 94 pour un devis."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Peut-on réserver un taxi pour les Calanques pour un groupe ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, notre flotte inclut des vans 7-8 places pour les groupes et familles. Parfait pour une excursion en groupe vers les Calanques depuis Marseille ou Cassis."
+        }
+      }
+    ]
+  }
+]
+</script>
+{% endblock %}
+
+{% block body %}
+
+{# ── Boutons flottants ──────────────────────────────────────── #}
+<div id="floating-contact">
+  <a href="tel:+33674039694" class="btn-call rounded-circle shadow-sm" title="Appeler ZenCAR">
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+  <a href="https://wa.me/33674039694" target="_blank" class="btn-whatsapp rounded-circle shadow-sm" title="WhatsApp ZenCAR">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>
+
+{# ── Fil d'ariane ───────────────────────────────────────────── #}
+{% include 'partials/_breadcrumb.html.twig' with { items: [
+  { label: 'Accueil', url: path('app_home') },
+  { label: 'Services', url: path('app_services') },
+  { label: 'Taxi Calanques Marseille' }
+]} %}
+
+{# ── Hero ───────────────────────────────────────────────────── #}
+<section style="background:linear-gradient(135deg,#0a1628 0%,#0d2a1a 100%);padding:clamp(48px,8vw,100px) 0;text-align:center;">
+  <div class="container">
+    <span style="display:inline-block;background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.35);border-radius:50px;padding:6px 18px;font-size:.9rem;color:#66bb6a;margin-bottom:1.2rem;">
+      🌊 Excursion privée — Calanques de Marseille
+    </span>
+    <h1 style="color:white;font-weight:800;font-size:clamp(1.8rem,4.5vw,3rem);margin-bottom:1rem;">
+      Taxi & VTC pour les Calanques<br>de Marseille
+    </h1>
+    <p style="color:rgba(255,255,255,.75);max-width:620px;margin:0 auto 2rem;font-size:clamp(.95rem,2vw,1.1rem);line-height:1.7;">
+      Excursion privée vers Morgiou, Sormiou, En-Vau, Calanque de Port-Miou et Cassis.
+      Taxi au compteur ou VTC avec <strong style="color:white;">prix fixe affiché avant réservation</strong>.
+    </p>
+    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+      <a href="tel:+33674039694" class="btn btn-light btn-lg fw-bold px-5" style="border-radius:50px;min-height:52px;color:#1a5c2a;font-size:1.05rem;">
+        <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+      </a>
+      <a href="https://wa.me/33674039694" class="btn btn-success btn-lg fw-bold px-5" style="border-radius:50px;min-height:52px;font-size:1.05rem;">
+        <i class="bi bi-whatsapp me-2"></i>WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+{# ── Calanques disponibles ──────────────────────────────────── #}
+<section class="zen-section">
+  <div class="container">
+    <h2 class="zen-section-title text-center" style="color:#66bb6a;">Les Calanques desservies</h2>
+    <p class="zen-section-subtitle text-center">Nous vous déposons à l'entrée de chaque site, ou vous attendons sur place.</p>
+
+    <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+      <div class="col">
+        <div class="zen-card h-100 text-center">
+          <div class="zen-card-icon" style="color:#66bb6a;"><i class="bi bi-water"></i></div>
+          <h3 class="h5 text-white">Calanque de Morgiou</h3>
+          <p>Accès depuis Marseille 9ème. Paysage sauvage, port de pêche typique. Idéale pour la baignade.</p>
+          <div style="color:rgba(255,255,255,.4);font-size:.8rem;">Marseille 9ème — ~25 min</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="zen-card h-100 text-center">
+          <div class="zen-card-icon" style="color:#66bb6a;"><i class="bi bi-water"></i></div>
+          <h3 class="h5 text-white">Calanque de Sormiou</h3>
+          <p>La plus grande calanque de Marseille. Eaux turquoise, plage de galets, restaurants de poissons.</p>
+          <div style="color:rgba(255,255,255,.4);font-size:.8rem;">Marseille 9ème — ~20 min</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="zen-card h-100 text-center">
+          <div class="zen-card-icon" style="color:#66bb6a;"><i class="bi bi-water"></i></div>
+          <h3 class="h5 text-white">Calanque En-Vau</h3>
+          <p>Considérée comme la plus belle calanque. Falaises vertigineuses, eaux cristallines.</p>
+          <div style="color:rgba(255,255,255,.4);font-size:.8rem;">Cassis — ~45 min</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="zen-card h-100 text-center">
+          <div class="zen-card-icon" style="color:#66bb6a;"><i class="bi bi-geo-alt-fill"></i></div>
+          <h3 class="h5 text-white">Cassis</h3>
+          <p>Village provençal au bord de la mer. Départ pour les excursions en bateau vers En-Vau et Port-Pin.</p>
+          <div style="color:rgba(255,255,255,.4);font-size:.8rem;">~40 min depuis Marseille</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="zen-card h-100 text-center">
+          <div class="zen-card-icon" style="color:#66bb6a;"><i class="bi bi-water"></i></div>
+          <h3 class="h5 text-white">Calanque de Port-Miou</h3>
+          <p>La première depuis Cassis. Accessible en voiture, idéale pour familles avec enfants.</p>
+          <div style="color:rgba(255,255,255,.4);font-size:.8rem;">Cassis — ~42 min</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="zen-card h-100 text-center">
+          <div class="zen-card-icon" style="color:#66bb6a;"><i class="bi bi-people-fill"></i></div>
+          <h3 class="h5 text-white">Circuit personnalisé</h3>
+          <p>Plusieurs calanques en une journée ? Mise à disposition du chauffeur à l'heure selon vos envies.</p>
+          <div style="color:rgba(255,255,255,.4);font-size:.8rem;">Sur devis — Appelez-nous</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── Nos options ────────────────────────────────────────────── #}
+<section class="zen-section zen-section-alt">
+  <div class="container">
+    <h2 class="zen-section-title text-center" style="color:#66bb6a;">Nos options pour votre excursion</h2>
+    <div class="row g-4 row-cols-1 row-cols-md-2">
+      <div class="col">
+        <div style="background:#1a1d27;border:1px solid rgba(76,175,80,.2);border-radius:16px;padding:28px;">
+          <div style="color:#66bb6a;font-size:1.8rem;margin-bottom:12px;"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <h3 class="h5 text-white mb-3">Aller simple</h3>
+          <p style="color:rgba(255,255,255,.65);">On vous dépose à l'entrée de la calanque de votre choix. Vous rentrez ensuite par vos propres moyens (bus, autre taxi, covoiturage).</p>
+          <div style="color:#66bb6a;font-weight:600;font-size:.9rem;">✓ Taxi au compteur ou VTC prix fixe</div>
+        </div>
+      </div>
+      <div class="col">
+        <div style="background:#1a1d27;border:1px solid rgba(76,175,80,.2);border-radius:16px;padding:28px;">
+          <div style="color:#66bb6a;font-size:1.8rem;margin-bottom:12px;"><i class="bi bi-arrow-left-right"></i></div>
+          <h3 class="h5 text-white mb-3">Aller-retour</h3>
+          <p style="color:rgba(255,255,255,.65);">Le chauffeur vous attend sur place pendant votre excursion (2h, 3h, demi-journée) et vous ramène ensuite à votre adresse.</p>
+          <div style="color:#66bb6a;font-weight:600;font-size:.9rem;">✓ Tarif à l'heure — Devis sur demande</div>
+        </div>
+      </div>
+      <div class="col">
+        <div style="background:#1a1d27;border:1px solid rgba(76,175,80,.2);border-radius:16px;padding:28px;">
+          <div style="color:#66bb6a;font-size:1.8rem;margin-bottom:12px;"><i class="bi bi-truck-front-fill"></i></div>
+          <h3 class="h5 text-white mb-3">Van pour groupes</h3>
+          <p style="color:rgba(255,255,255,.65);">Jusqu'à 7-8 passagers dans nos vans. Parfait pour famille ou groupe d'amis. Grand coffre pour pique-nique et matériel de plage.</p>
+          <div style="color:#66bb6a;font-weight:600;font-size:.9rem;">✓ Disponible 7j/7</div>
+        </div>
+      </div>
+      <div class="col">
+        <div style="background:#1a1d27;border:1px solid rgba(76,175,80,.2);border-radius:16px;padding:28px;">
+          <div style="color:#66bb6a;font-size:1.8rem;margin-bottom:12px;"><i class="bi bi-calendar-check-fill"></i></div>
+          <h3 class="h5 text-white mb-3">Réservation à l'avance</h3>
+          <p style="color:rgba(255,255,255,.65);">Planifiez votre excursion la veille ou plusieurs jours à l'avance. Le chauffeur vous contacte la veille pour confirmer.</p>
+          <div style="color:#66bb6a;font-weight:600;font-size:.9rem;">✓ Appel ou WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── FAQ ────────────────────────────────────────────────────── #}
+<section class="zen-section">
+  <div class="container">
+    <h2 class="zen-section-title text-center" style="color:#66bb6a;">Questions fréquentes — Taxi Calanques Marseille</h2>
+    <div class="accordion" id="faqCalanques" style="max-width:760px;margin:2rem auto 0;">
+
+      <div class="accordion-item" style="background:#1a1d27;border:1px solid rgba(255,255,255,.1);border-radius:12px;margin-bottom:12px;">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC1" style="background:#1a1d27;color:white;border-radius:12px;font-weight:600;">
+            Comment aller aux Calanques de Marseille en taxi ?
+          </button>
+        </h3>
+        <div id="faqC1" class="accordion-collapse collapse" data-bs-parent="#faqCalanques">
+          <div class="accordion-body" style="color:rgba(255,255,255,.75);">
+            Appelez le <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a> ou envoyez un message WhatsApp. Nous vous récupérons à votre adresse et vous déposons à l'entrée de la calanque de votre choix : Morgiou, Sormiou, En-Vau ou Port-Miou à Cassis.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" style="background:#1a1d27;border:1px solid rgba(255,255,255,.1);border-radius:12px;margin-bottom:12px;">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC2" style="background:#1a1d27;color:white;border-radius:12px;font-weight:600;">
+            Le chauffeur peut-il nous attendre aux Calanques ?
+          </button>
+        </h3>
+        <div id="faqC2" class="accordion-collapse collapse" data-bs-parent="#faqCalanques">
+          <div class="accordion-body" style="color:rgba(255,255,255,.75);">
+            Oui, nous proposons une mise à disposition à l'heure. Le chauffeur vous attend sur place pendant votre excursion (2h, 3h ou demi-journée) et vous ramène ensuite. Contactez-nous pour un devis personnalisé.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" style="background:#1a1d27;border:1px solid rgba(255,255,255,.1);border-radius:12px;margin-bottom:12px;">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC3" style="background:#1a1d27;color:white;border-radius:12px;font-weight:600;">
+            Quel est le prix d'un taxi pour les Calanques depuis Marseille ?
+          </button>
+        </h3>
+        <div id="faqC3" class="accordion-collapse collapse" data-bs-parent="#faqCalanques">
+          <div class="accordion-body" style="color:rgba(255,255,255,.75);">
+            Pour un VTC, le prix est fixe et affiché avant confirmation. Pour un taxi, le tarif est au compteur selon les tarifs officiels de la Ville de Marseille. Appelez-nous au <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a> pour un devis personnalisé selon votre itinéraire.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" style="background:#1a1d27;border:1px solid rgba(255,255,255,.1);border-radius:12px;margin-bottom:0;">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC4" style="background:#1a1d27;color:white;border-radius:12px;font-weight:600;">
+            Peut-on réserver pour un groupe vers les Calanques ?
+          </button>
+        </h3>
+        <div id="faqC4" class="accordion-collapse collapse" data-bs-parent="#faqCalanques">
+          <div class="accordion-body" style="color:rgba(255,255,255,.75);">
+            Oui, notre flotte inclut des vans 7-8 places, parfaits pour les groupes et familles. Grand coffre disponible pour pique-nique, glacières et matériel de plage. Réservez à l'avance pour garantir la disponibilité.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ── CTA final ──────────────────────────────────────────────── #}
+<section style="background:linear-gradient(135deg,#1a5c2a 0%,#0d3d1a 100%);color:white;padding:clamp(40px,6vw,70px) 0;text-align:center;">
+  <div class="container">
+    <h2 style="font-weight:800;font-size:clamp(1.3rem,4vw,2rem);margin-bottom:.5rem;">
+      Réservez votre excursion aux Calanques
+    </h2>
+    <p style="opacity:.85;margin-bottom:2rem;font-size:1rem;">Disponible 7j/7 — Appelez ou envoyez un WhatsApp</p>
+    <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center gap-3">
+      <a href="tel:+33674039694" class="btn btn-light btn-lg fw-bold px-5" style="border-radius:50px;min-height:52px;color:#1a5c2a;">
+        <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+      </a>
+      <a href="https://wa.me/33674039694" class="btn btn-success btn-lg fw-bold px-5" style="border-radius:50px;min-height:52px;border:2px solid rgba(255,255,255,.3);">
+        <i class="bi bi-whatsapp me-2"></i>WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

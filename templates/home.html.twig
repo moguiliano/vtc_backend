@@ -119,13 +119,27 @@
 						ou VTC avec <strong style="color:white;">prix fixe affiché avant réservation</strong>.
 						Plus de 300 chauffeurs professionnels à Marseille, aéroport, gare et alentours.
 					</p>
+
+					{# Numéro mis en avant #}
+					<a href="tel:+33674039694" class="d-flex align-items-center gap-3 mb-4 text-decoration-none"
+					   style="background:rgba(255,86,48,.12);border:1px solid rgba(255,86,48,.35);border-radius:16px;padding:14px 20px;max-width:320px;">
+						<span style="background:var(--zen-orange);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+							<i class="bi bi-telephone-fill text-white" style="font-size:1.1rem;"></i>
+						</span>
+						<div>
+							<div style="color:rgba(255,255,255,.55);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;">Appel immédiat</div>
+							<div style="color:white;font-size:1.3rem;font-weight:800;letter-spacing:.5px;">06 74 03 96 94</div>
+						</div>
+						<span style="margin-left:auto;background:rgba(76,175,80,.2);border:1px solid rgba(76,175,80,.4);border-radius:50px;padding:3px 10px;color:#66bb6a;font-size:.75rem;font-weight:700;">● Disponible</span>
+					</a>
+
 					<div class="d-flex flex-wrap gap-3">
 						<a href="#tab1" class="btn-zen btn-zen-pill px-4" style="min-height:48px;font-size:1rem;">
-							<i class="bi bi-geo-alt-fill"></i> Réserver maintenant
+							<i class="bi bi-geo-alt-fill"></i> Réserver VTC
 						</a>
-						<a href="tel:+33674039694" class="btn btn-outline-light px-4 fw-bold"
+						<a href="https://wa.me/33674039694" target="_blank" class="btn btn-success px-4 fw-bold"
 						   style="border-radius:50px;min-height:48px;font-size:1rem;">
-							<i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+							<i class="bi bi-whatsapp me-2"></i>WhatsApp
 						</a>
 					</div>
 				</div>
@@ -144,6 +158,137 @@
 
 	{# Forfaits VTC #}
 	{% include 'partials/_forfaits.html.twig' %}
+
+	{# ── Section Taxi — Appel immédiat ──────────────────────────── #}
+	<section style="background:#111418;padding:clamp(40px,6vw,70px) 0;border-top:1px solid rgba(255,255,255,.06);">
+		<div class="container">
+			<div class="row align-items-center g-5">
+				<div class="col-lg-6">
+					<span style="display:inline-block;background:rgba(255,86,48,.1);border:1px solid rgba(255,86,48,.3);border-radius:50px;padding:5px 16px;font-size:.8rem;color:var(--zen-orange);margin-bottom:1rem;">
+						🚕 Taxi agréé Ville de Marseille
+					</span>
+					<h2 style="color:white;font-weight:800;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:1rem;">
+						Vous avez besoin d'un taxi maintenant ?
+					</h2>
+					<p style="color:rgba(255,255,255,.6);margin-bottom:1.5rem;font-size:.95rem;line-height:1.7;">
+						Nos taxis sont disponibles <strong style="color:white;">7j/7</strong>. Tarif au compteur, fixé par la Ville de Marseille. Paiement CB ou espèces à bord.
+					</p>
+					<div class="d-flex flex-column flex-sm-row gap-3">
+						<a href="tel:+33674039694"
+						   style="display:flex;align-items:center;gap:12px;background:var(--zen-orange);color:white;text-decoration:none;border-radius:16px;padding:16px 24px;font-weight:700;font-size:1.1rem;">
+							<i class="bi bi-telephone-fill" style="font-size:1.3rem;"></i>
+							<div>
+								<div style="font-size:.7rem;opacity:.8;text-transform:uppercase;letter-spacing:.5px;">Appeler maintenant</div>
+								<div>06 74 03 96 94</div>
+							</div>
+						</a>
+						<a href="https://wa.me/33674039694" target="_blank"
+						   style="display:flex;align-items:center;gap:12px;background:#25D366;color:white;text-decoration:none;border-radius:16px;padding:16px 24px;font-weight:700;font-size:1.1rem;">
+							<i class="bi bi-whatsapp" style="font-size:1.3rem;"></i>
+							<div>
+								<div style="font-size:.7rem;opacity:.8;text-transform:uppercase;letter-spacing:.5px;">Message WhatsApp</div>
+								<div>Réponse rapide</div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="row g-3">
+						<div class="col-6">
+							<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;text-align:center;">
+								<div style="font-size:2rem;font-weight:800;color:var(--zen-orange);">5 min</div>
+								<div style="color:rgba(255,255,255,.5);font-size:.85rem;">Prise en charge</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;text-align:center;">
+								<div style="font-size:2rem;font-weight:800;color:var(--zen-orange);">7j/7</div>
+								<div style="color:rgba(255,255,255,.5);font-size:.85rem;">Disponibilité</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;text-align:center;">
+								<div style="font-size:2rem;font-weight:800;color:var(--zen-orange);">300+</div>
+								<div style="color:rgba(255,255,255,.5);font-size:.85rem;">Chauffeurs</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;text-align:center;">
+								<div style="font-size:2rem;font-weight:800;color:var(--zen-orange);">CB ✓</div>
+								<div style="color:rgba(255,255,255,.5);font-size:.85rem;">Paiement bord</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# ── Avis clients ────────────────────────────────────────────── #}
+	<section style="background:#0d1117;padding:clamp(40px,6vw,70px) 0;border-top:1px solid rgba(255,255,255,.06);">
+		<div class="container">
+			<div class="text-center mb-5">
+				<h2 style="color:white;font-weight:800;font-size:clamp(1.3rem,3vw,1.8rem);">Ce que disent nos clients</h2>
+				<div class="d-flex align-items-center justify-content-center gap-2 mt-2">
+					<span style="color:#fbbf24;font-size:1.2rem;">★★★★★</span>
+					<span style="color:rgba(255,255,255,.6);font-size:.9rem;">4,9/5 — Avis Google vérifiés</span>
+				</div>
+			</div>
+			<div class="row g-4 row-cols-1 row-cols-md-3">
+				<div class="col">
+					<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px;">
+						<div style="color:#fbbf24;margin-bottom:12px;">★★★★★</div>
+						<p style="color:rgba(255,255,255,.75);font-size:.9rem;line-height:1.7;margin-bottom:16px;">
+							"Chauffeur très ponctuel pour mon vol à Marignane. Véhicule propre, conduite douce. Je recommande vivement ZenCAR."
+						</p>
+						<div style="display:flex;align-items:center;gap:10px;">
+							<div style="width:36px;height:36px;background:var(--zen-orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.9rem;">S</div>
+							<div>
+								<div style="color:white;font-weight:600;font-size:.85rem;">Sophie M.</div>
+								<div style="color:rgba(255,255,255,.4);font-size:.75rem;">Aéroport Marseille-Provence</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px;">
+						<div style="color:#fbbf24;margin-bottom:12px;">★★★★★</div>
+						<p style="color:rgba(255,255,255,.75);font-size:.9rem;line-height:1.7;margin-bottom:16px;">
+							"Service impeccable. Mon père âgé a été pris en charge avec beaucoup d'attention. Le chauffeur l'a aidé à monter et descendre du véhicule."
+						</p>
+						<div style="display:flex;align-items:center;gap:10px;">
+							<div style="width:36px;height:36px;background:var(--zen-orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.9rem;">K</div>
+							<div>
+								<div style="color:white;font-weight:600;font-size:.85rem;">Karim B.</div>
+								<div style="color:rgba(255,255,255,.4);font-size:.75rem;">Transport seniors</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px;">
+						<div style="color:#fbbf24;margin-bottom:12px;">★★★★★</div>
+						<p style="color:rgba(255,255,255,.75);font-size:.9rem;line-height:1.7;margin-bottom:16px;">
+							"Disponible en moins de 5 minutes un dimanche matin. Prix correct, chauffeur professionnel. Je n'utilise plus qu'eux."
+						</p>
+						<div style="display:flex;align-items:center;gap:10px;">
+							<div style="width:36px;height:36px;background:var(--zen-orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.9rem;">L</div>
+							<div>
+								<div style="color:white;font-weight:600;font-size:.85rem;">Laura T.</div>
+								<div style="color:rgba(255,255,255,.4);font-size:.75rem;">Marseille 13ème</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-center mt-4">
+				<a href="https://g.page/r/zencar-marseille/review" target="_blank"
+				   style="color:rgba(255,255,255,.4);font-size:.8rem;text-decoration:none;">
+					Voir tous les avis Google →
+				</a>
+			</div>
+		</div>
+	</section>
 
 	<div id="reservation-test-container" class="container">
 

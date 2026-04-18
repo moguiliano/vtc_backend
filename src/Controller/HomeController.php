@@ -107,6 +107,15 @@ final class HomeController extends AbstractController
         return $this->render('transport-seniors-marseille.html.twig');
     }
 
+    // Landing page SEO — "taxi calanques marseille"
+    #[Route('/taxi-calanques-marseille', name: 'app_taxi_calanques', methods: ['GET'])]
+    public function taxiCalanques(ForfaitRepository $forfaitRepo): Response
+    {
+        return $this->render('taxi-calanques-marseille.html.twig', [
+            'forfaits' => $forfaitRepo->findActifs(),
+        ]);
+    }
+
     // Route pour la page de contact
     #[Route('/contact', name: 'app_contact')]
     public function contact(Request $request, EntityManagerInterface $entityManager): Response
