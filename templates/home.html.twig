@@ -3,7 +3,7 @@
 {% block title %}Taxi & VTC Marseille — Disponible en 5 min | ZenCAR{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Taxi ou VTC à Marseille en 5 minutes. Taxi au compteur tarifs Ville de Marseille, VTC prix fixe affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94." />
+<meta name="description" content="Taxi à Marseille disponible en 5 min — appelez le 06 74 03 96 94. Tarifs officiels Ville de Marseille, VTC prix fixe. 7j/7, aéroport, gare, calanques." />
 <meta name="robots" content="index, follow" />
 {% endblock %}
 
@@ -113,24 +113,26 @@
 				{# Colonne texte #}
 				<div class="col-lg-6">
 					<span class="hero-split-badge">⚡ Prise en charge en 5 à 10 min</span>
-					<h1>Taxi & VTC Marseille<br>Disponibles 7j/7</h1>
+					<h1>Taxi Marseille — Appel immédiat<br><span style="color:var(--zen-orange);">06 74 03 96 94</span></h1>
 					<p class="hero-lead">
 						Taxi au compteur tarifs officiels Ville de Marseille,
 						ou VTC avec <strong style="color:white;">prix fixe affiché avant réservation</strong>.
-						Plus de 300 chauffeurs professionnels à Marseille, aéroport, gare et alentours.
+						Disponible 7j/7 — aéroport, gare, calanques.
 					</p>
 
 					{# Numéro mis en avant #}
 					<a href="tel:+33674039694" class="d-flex align-items-center gap-3 mb-4 text-decoration-none"
-					   style="background:rgba(255,86,48,.12);border:1px solid rgba(255,86,48,.35);border-radius:16px;padding:14px 20px;max-width:320px;">
-						<span style="background:var(--zen-orange);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-							<i class="bi bi-telephone-fill text-white" style="font-size:1.1rem;"></i>
+					   style="background:rgba(255,86,48,.12);border:1px solid rgba(255,86,48,.35);border-radius:16px;padding:14px 20px;max-width:340px;">
+						<span style="background:var(--zen-orange);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+							<i class="bi bi-telephone-fill text-white" style="font-size:1.2rem;"></i>
 						</span>
-						<div>
-							<div style="color:rgba(255,255,255,.55);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;">Appel immédiat</div>
-							<div style="color:white;font-size:1.3rem;font-weight:800;letter-spacing:.5px;">06 74 03 96 94</div>
+						<div style="min-width:0;flex:1;">
+							<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+								<span style="color:white;font-size:clamp(1rem,4vw,1.35rem);font-weight:900;letter-spacing:.5px;white-space:nowrap;">06 74 03 96 94</span>
+								<span style="background:rgba(76,175,80,.2);border:1px solid rgba(76,175,80,.4);border-radius:50px;padding:2px 8px;color:#66bb6a;font-size:.7rem;font-weight:700;white-space:nowrap;">● Disponible</span>
+							</div>
+							<div style="color:rgba(255,255,255,.5);font-size:.75rem;margin-top:2px;">Taxi disponible maintenant</div>
 						</div>
-						<span style="margin-left:auto;background:rgba(76,175,80,.2);border:1px solid rgba(76,175,80,.4);border-radius:50px;padding:3px 10px;color:#66bb6a;font-size:.75rem;font-weight:700;">● Disponible</span>
 					</a>
 
 					<div class="d-flex flex-wrap gap-3">
@@ -216,6 +218,53 @@
 							<div style="background:#1a1d27;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;text-align:center;">
 								<div style="font-size:2rem;font-weight:800;color:var(--zen-orange);">CB ✓</div>
 								<div style="color:rgba(255,255,255,.5);font-size:.85rem;">Paiement bord</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# ── SEO paragraph + mini FAQ ───────────────────────────────── #}
+	<section style="background:#0d1117;padding:clamp(30px,5vw,60px) 0;border-top:1px solid rgba(255,255,255,.06);">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<p style="color:rgba(255,255,255,.65);font-size:.95rem;line-height:1.8;margin-bottom:2rem;">
+						ZenCAR est votre service de <strong style="color:white;">taxi à Marseille</strong> disponible 7j/7.
+						Taxi agréé au compteur selon les tarifs officiels de la Ville de Marseille, ou VTC avec prix fixe affiché avant toute réservation.
+						Nous intervenons dans tous les arrondissements de Marseille ainsi qu'à l'aéroport Marseille-Provence, la Gare Saint-Charles et vers les calanques.
+						Pour un taxi immédiat, appelez directement le <a href="tel:+33674039694" style="color:var(--zen-orange);font-weight:700;">06 74 03 96 94</a>.
+					</p>
+
+					<div class="accordion" id="faqHome">
+						<div class="accordion-item" style="background:#1a1d27;border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:10px;">
+							<h3 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+								        data-bs-toggle="collapse" data-bs-target="#faqHome1"
+								        style="background:#1a1d27;color:white;border-radius:12px;font-weight:600;font-size:.95rem;">
+									Comment appeler un taxi à Marseille ?
+								</button>
+							</h3>
+							<div id="faqHome1" class="accordion-collapse collapse" data-bs-parent="#faqHome">
+								<div class="accordion-body" style="color:rgba(255,255,255,.65);font-size:.9rem;line-height:1.7;">
+									Appelez directement le <a href="tel:+33674039694" style="color:var(--zen-orange);font-weight:700;">06 74 03 96 94</a> pour un taxi immédiat à Marseille. Disponible 7j/7, prise en charge en 5 à 10 minutes selon votre localisation.
+								</div>
+							</div>
+						</div>
+						<div class="accordion-item" style="background:#1a1d27;border:1px solid rgba(255,255,255,.08);border-radius:12px;">
+							<h3 class="accordion-header">
+								<button class="accordion-button collapsed" type="button"
+								        data-bs-toggle="collapse" data-bs-target="#faqHome2"
+								        style="background:#1a1d27;color:white;border-radius:12px;font-weight:600;font-size:.95rem;">
+									Quelle est la différence entre taxi et VTC à Marseille ?
+								</button>
+							</h3>
+							<div id="faqHome2" class="accordion-collapse collapse" data-bs-parent="#faqHome">
+								<div class="accordion-body" style="color:rgba(255,255,255,.65);font-size:.9rem;line-height:1.7;">
+									Le taxi fonctionne au compteur selon les tarifs réglementés par la Ville de Marseille — il peut être hélé dans la rue. Le VTC propose un prix fixe affiché avant confirmation, idéal pour les trajets planifiés (aéroport, gare, longue distance).
+								</div>
 							</div>
 						</div>
 					</div>
