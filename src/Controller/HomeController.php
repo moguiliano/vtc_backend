@@ -116,6 +116,15 @@ final class HomeController extends AbstractController
         ]);
     }
 
+    // Landing page SEO — "vtc marseille"
+    #[Route('/vtc-marseille', name: 'app_vtc_marseille', methods: ['GET'])]
+    public function vtcMarseille(ForfaitRepository $forfaitRepo): Response
+    {
+        return $this->render('vtc-marseille.html.twig', [
+            'forfaits' => $forfaitRepo->findActifs(),
+        ]);
+    }
+
     // Route pour la page de contact
     #[Route('/contact', name: 'app_contact')]
     public function contact(Request $request, EntityManagerInterface $entityManager): Response
