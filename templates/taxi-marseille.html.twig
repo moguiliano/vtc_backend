@@ -156,25 +156,31 @@
 
     <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-4">
       <div class="col">
-        <div class="zen-service-card">
-          <div class="icon"><i class="fas fa-plane"></i></div>
-          <h3>Taxi Aéroport Marseille</h3>
-          <p>Transfert vers/depuis l'Aéroport Marseille-Provence (Marignane). Ponctualité garantie.</p>
-        </div>
+        <a href="{{ path('app_taxi_aeroport') }}" style="text-decoration:none;color:inherit;display:block;height:100%;">
+          <div class="zen-service-card h-100">
+            <div class="icon"><i class="fas fa-plane"></i></div>
+            <h3>Taxi Aéroport Marseille</h3>
+            <p>Transfert vers/depuis l'Aéroport Marseille-Provence (Marignane). Ponctualité garantie.</p>
+          </div>
+        </a>
       </div>
       <div class="col">
-        <div class="zen-service-card">
-          <div class="icon"><i class="fas fa-train"></i></div>
-          <h3>Taxi Gare Saint-Charles</h3>
-          <p>Prise en charge et dépose à la gare TGV de Marseille Saint-Charles.</p>
-        </div>
+        <a href="{{ path('app_taxi_gare') }}" style="text-decoration:none;color:inherit;display:block;height:100%;">
+          <div class="zen-service-card h-100">
+            <div class="icon"><i class="fas fa-train"></i></div>
+            <h3>Taxi Gare Saint-Charles</h3>
+            <p>Prise en charge et dépose à la gare TGV de Marseille Saint-Charles.</p>
+          </div>
+        </a>
       </div>
       <div class="col">
-        <div class="zen-service-card">
-          <div class="icon"><i class="fas fa-user-friends"></i></div>
-          <h3>Taxi Personnes Âgées</h3>
-          <p>Accompagnement senior bienveillant : courses, médicaux, balades, EHPAD.</p>
-        </div>
+        <a href="{{ path('app_transport_seniors') }}" style="text-decoration:none;color:inherit;display:block;height:100%;">
+          <div class="zen-service-card h-100">
+            <div class="icon"><i class="fas fa-user-friends"></i></div>
+            <h3>Taxi Personnes Âgées</h3>
+            <p>Accompagnement senior bienveillant : courses, médicaux, balades, EHPAD.</p>
+          </div>
+        </a>
       </div>
       <div class="col">
         <div class="zen-service-card">
@@ -184,11 +190,13 @@
         </div>
       </div>
       <div class="col">
-        <div class="zen-service-card">
-          <div class="icon"><i class="fas fa-water"></i></div>
-          <h3>Balade Calanques</h3>
-          <p>Transfert vers les Calanques de Marseille, Cassis ou La Ciotat avec attente.</p>
-        </div>
+        <a href="{{ path('app_taxi_calanques') }}" style="text-decoration:none;color:inherit;display:block;height:100%;">
+          <div class="zen-service-card h-100">
+            <div class="icon"><i class="fas fa-water"></i></div>
+            <h3>Balade Calanques</h3>
+            <p>Transfert vers les Calanques de Marseille, Cassis ou La Ciotat avec attente.</p>
+          </div>
+        </a>
       </div>
       <div class="col">
         <div class="zen-service-card">

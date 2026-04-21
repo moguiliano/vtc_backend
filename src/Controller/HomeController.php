@@ -125,6 +125,19 @@ final class HomeController extends AbstractController
         ]);
     }
 
+    // Pages légales
+    #[Route('/mentions-legales', name: 'app_mentions_legales', methods: ['GET'])]
+    public function mentionsLegales(): Response
+    {
+        return $this->render('mentions-legales.html.twig');
+    }
+
+    #[Route('/politique-confidentialite', name: 'app_confidentialite', methods: ['GET'])]
+    public function politiqueConfidentialite(): Response
+    {
+        return $this->render('politique-confidentialite.html.twig');
+    }
+
     // Route pour la page de contact
     #[Route('/contact', name: 'app_contact')]
     public function contact(Request $request, EntityManagerInterface $entityManager): Response

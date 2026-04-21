@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales — ZenCAR Taxi & VTC Marseille{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Mentions légales de ZenCAR, service de taxi et VTC à Marseille." />
+<meta name="robots" content="noindex, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/mentions-legales" />
+{% endblock %}
+
+{% block body %}
+
+{% include 'partials/_breadcrumb.html.twig' with { items: [
+  { label: 'Accueil', url: path('app_home') },
+  { label: 'Mentions légales' }
+]} %}
+
+<section style="background:#0d1117;min-height:60vh;padding:60px 0;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <h1 style="color:white;font-size:1.8rem;font-weight:800;margin-bottom:32px;">Mentions légales</h1>
+
+        <div style="color:rgba(255,255,255,.8);line-height:1.9;font-size:.95rem;">
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Éditeur du site</h2>
+          <p>
+            <strong style="color:white;">ZenCAR</strong><br>
+            Service de Taxi &amp; VTC à Marseille<br>
+            Téléphone : <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a><br>
+            Email : <a href="mailto:contact@dzencar.fr" style="color:var(--zen-orange);">contact@dzencar.fr</a><br>
+            Zone d'activité : Marseille et région PACA
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Hébergement</h2>
+          <p>
+            Ce site est hébergé par un prestataire professionnel.<br>
+            Pour toute question relative à l'hébergement, contactez-nous au <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a>.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Propriété intellectuelle</h2>
+          <p>
+            L'ensemble du contenu de ce site (textes, images, logos) est la propriété exclusive de ZenCAR.
+            Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Responsabilité</h2>
+          <p>
+            ZenCAR s'efforce de maintenir les informations de ce site à jour. Nous ne pouvons être tenus responsables
+            des erreurs, omissions ou indisponibilités du site.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Contact</h2>
+          <p>
+            Pour toute question : <a href="{{ path('app_contact') }}" style="color:var(--zen-orange);">formulaire de contact</a>
+            ou <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a>.
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

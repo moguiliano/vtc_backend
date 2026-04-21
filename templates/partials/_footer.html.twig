@@ -1,3 +1,58 @@
-<footer class="bg-dark text-white text-center py-3 mt-5">
-  <p class="mb-0">&copy; 2025 ZenCAR - Tous droits réservés.</p>
+<footer style="background:#0d1117;color:rgba(255,255,255,.75);padding:40px 0 20px;">
+  <div class="container">
+
+    <div class="row g-4 mb-4">
+
+      {# Colonne 1 — Identité #}
+      <div class="col-12 col-md-4">
+        <div style="font-size:1.2rem;font-weight:800;color:white;margin-bottom:10px;">
+          Zen<span style="color:var(--zen-orange);">CAR</span>
+        </div>
+        <p style="font-size:.85rem;line-height:1.7;margin-bottom:12px;">
+          Service Taxi &amp; VTC disponible 24h/24 à Marseille.<br>
+          Chauffeurs locaux agréés, tarifs officiels.
+        </p>
+        <a href="tel:+33674039694"
+           style="display:inline-flex;align-items:center;gap:8px;color:var(--zen-orange);font-weight:700;font-size:1rem;text-decoration:none;">
+          <i class="bi bi-telephone-fill"></i> 06 74 03 96 94
+        </a>
+      </div>
+
+      {# Colonne 2 — Pages #}
+      <div class="col-6 col-md-4">
+        <div style="font-weight:700;color:white;margin-bottom:12px;font-size:.9rem;">Destinations</div>
+        <ul class="list-unstyled" style="font-size:.85rem;">
+          <li class="mb-2"><a href="{{ path('app_taxi_marseille') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Taxi Marseille</a></li>
+          <li class="mb-2"><a href="{{ path('app_vtc_marseille') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">VTC Marseille</a></li>
+          <li class="mb-2"><a href="{{ path('app_taxi_aeroport') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Aéroport Marignane</a></li>
+          <li class="mb-2"><a href="{{ path('app_taxi_gare') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Gare Saint-Charles</a></li>
+          <li class="mb-2"><a href="{{ path('app_taxi_calanques') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Calanques</a></li>
+          <li class="mb-2"><a href="{{ path('app_transport_seniors') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Transport Seniors</a></li>
+        </ul>
+      </div>
+
+      {# Colonne 3 — Infos légales #}
+      <div class="col-6 col-md-4">
+        <div style="font-weight:700;color:white;margin-bottom:12px;font-size:.9rem;">Informations</div>
+        <ul class="list-unstyled" style="font-size:.85rem;">
+          <li class="mb-2"><a href="{{ path('app_services') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Nos services</a></li>
+          <li class="mb-2"><a href="{{ path('app_contact') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Contact</a></li>
+          <li class="mb-2"><a href="{{ path('app_mentions_legales') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Mentions légales</a></li>
+          <li class="mb-2"><a href="{{ path('app_confidentialite') }}" style="color:rgba(255,255,255,.7);text-decoration:none;">Politique de confidentialité</a></li>
+        </ul>
+        <div style="margin-top:16px;font-size:.8rem;color:rgba(255,255,255,.4);">
+          <i class="bi bi-geo-alt-fill me-1"></i> Marseille &amp; région PACA
+        </div>
+      </div>
+
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,.1);margin:0 0 16px;">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2" style="font-size:.8rem;color:rgba(255,255,255,.4);">
+      <span>&copy; {{ "now"|date("Y") }} ZenCAR — Tous droits réservés.</span>
+      <span>Taxi &amp; VTC agréés — Marseille</span>
+    </div>
+
+  </div>
 </footer>

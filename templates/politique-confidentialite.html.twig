@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de confidentialité — ZenCAR Taxi & VTC Marseille{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Politique de confidentialité de ZenCAR, service de taxi et VTC à Marseille." />
+<meta name="robots" content="noindex, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/politique-confidentialite" />
+{% endblock %}
+
+{% block body %}
+
+{% include 'partials/_breadcrumb.html.twig' with { items: [
+  { label: 'Accueil', url: path('app_home') },
+  { label: 'Politique de confidentialité' }
+]} %}
+
+<section style="background:#0d1117;min-height:60vh;padding:60px 0;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <h1 style="color:white;font-size:1.8rem;font-weight:800;margin-bottom:32px;">Politique de confidentialité</h1>
+
+        <div style="color:rgba(255,255,255,.8);line-height:1.9;font-size:.95rem;">
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Données collectées</h2>
+          <p>
+            Dans le cadre de votre réservation, ZenCAR collecte uniquement les données nécessaires :
+            nom, prénom, numéro de téléphone, adresse de départ et d'arrivée, date et heure du trajet.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Finalité</h2>
+          <p>
+            Ces données sont utilisées exclusivement pour la gestion de vos réservations et la relation client.
+            Elles ne sont jamais revendues à des tiers.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Conservation</h2>
+          <p>
+            Vos données sont conservées pendant la durée strictement nécessaire à la prestation,
+            et supprimées à l'issue d'un délai de 3 ans conformément à la réglementation RGPD.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Vos droits</h2>
+          <p>
+            Conformément au RGPD (Règlement Général sur la Protection des Données), vous disposez d'un droit
+            d'accès, de rectification et de suppression de vos données personnelles.<br>
+            Pour exercer ces droits : <a href="{{ path('app_contact') }}" style="color:var(--zen-orange);">formulaire de contact</a>
+            ou <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a>.
+          </p>
+
+          <h2 style="color:white;font-size:1.1rem;font-weight:700;margin:28px 0 10px;">Cookies</h2>
+          <p>
+            Ce site utilise uniquement des cookies techniques nécessaires à son fonctionnement.
+            Aucun cookie publicitaire ou de tracking tiers n'est déposé sans votre consentement.
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
