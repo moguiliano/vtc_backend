@@ -20,11 +20,39 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_taxi_marseille') }}">Taxi & VTC Marseille</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_transport_seniors') }}">Transport Seniors</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button"
+					   data-bs-toggle="dropdown" aria-expanded="false">
+						Destinations
+					</a>
+					<ul class="dropdown-menu dropdown-menu-dark">
+						<li>
+							<a class="dropdown-item" href="{{ path('app_taxi_marseille') }}">
+								<i class="bi bi-geo-alt-fill me-2" style="color:#ff5630;"></i>Taxi & VTC Marseille
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ path('app_taxi_aeroport') }}">
+								<i class="bi bi-airplane-fill me-2" style="color:#ff5630;"></i>Aéroport Marseille
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ path('app_taxi_gare') }}">
+								<i class="bi bi-train-front-fill me-2" style="color:#ff5630;"></i>Gare Saint-Charles
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ path('app_taxi_calanques') }}">
+								<i class="bi bi-water me-2" style="color:#ff5630;"></i>Calanques
+							</a>
+						</li>
+						<li><hr class="dropdown-divider"></li>
+						<li>
+							<a class="dropdown-item" href="{{ path('app_transport_seniors') }}">
+								<i class="bi bi-heart-fill me-2" style="color:#ff5630;"></i>Transport Seniors
+							</a>
+						</li>
+					</ul>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_services') }}">Services</a>
