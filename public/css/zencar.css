@@ -13,7 +13,7 @@
   --zen-green-light: #E1F5EE;
   --zen-bg:          rgba(255, 255, 255, 0.04);
   --zen-border:      rgba(255, 255, 255, 0.15);
-  --zen-muted:       #cccccc;
+  --zen-muted:       #aaaaaa;
   --zen-dark:        #1A1A18;
   --zen-call:        #1976d2;
   --zen-whatsapp:    #25d366;
@@ -101,7 +101,7 @@
   font-size: clamp(1.1rem, 4vw, 1.6rem);
   margin-bottom: 8px;
 }
-.zen-section-subtitle { color: #555; margin-bottom: 36px; }
+.zen-section-subtitle { color: #444; margin-bottom: 36px; }
 
 /* ============================================================
    HÉROS — Dark (page accueil)
