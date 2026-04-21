@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Taxi Marseille — Disponible en 5 min | ZenCAR Taxi & VTC{% endblock %}
+{% block title %}Taxi Marseille — Appel immédiat 06 74 03 96 94 | ZenCAR{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Commandez un taxi à Marseille en 5 minutes. Taxi ou VTC au choix, prise en charge garantie, tarif affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94." />
+<meta name="description" content="Taxi à Marseille en 5 min — appelez le 06 74 03 96 94. Chauffeurs locaux agréés, tarifs officiels Ville de Marseille. Aéroport, gare, seniors, 7j/7." />
 <meta name="robots" content="index, follow" />
 {% endblock %}
 
@@ -129,15 +129,17 @@
     <span class="badge-rapide">⚡ Prise en charge en 5 à 10 min</span>
     <h1>Taxi Marseille — Disponible en 5 min</h1>
     <p class="lead mt-3 mb-4" style="opacity:.9; max-width:600px; margin:auto;">
-      Taxi ou VTC au choix, tarif affiché avant réservation, prise en charge garantie.
-      <strong>Plus de 300 chauffeurs</strong> marseillais disponibles.
+      Taxi agréé, tarifs officiels réglementés par la Ville de Marseille.
+      Prise en charge garantie en <strong>5 à 10 minutes</strong>, chauffeurs locaux 7j/7.
     </p>
     <div class="d-flex flex-wrap justify-content-center gap-3">
-      <a href="#reserver" class="btn btn-lg btn-warning fw-bold px-4" style="border-radius:50px;min-height:44px;">
-        <i class="bi bi-geo-alt-fill me-2"></i>Réserver maintenant
+      <a href="tel:+33674039694"
+         style="display:inline-flex;align-items:center;gap:10px;background:white;color:#111;text-decoration:none;border-radius:50px;padding:14px 28px;font-weight:800;font-size:1.05rem;">
+        <i class="bi bi-telephone-fill" style="color:var(--zen-orange);font-size:1.1rem;"></i>
+        06 74 03 96 94
       </a>
-      <a href="tel:+33674039694" class="zen-cta-tel">
-        <i class="bi bi-telephone-fill me-2"></i>06 74 03 96 94
+      <a href="#reserver" class="btn-zen btn-zen-pill px-4" style="min-height:48px;font-size:1rem;">
+        <i class="bi bi-geo-alt-fill"></i> Réserver VTC
       </a>
     </div>
     <p class="mt-4" style="opacity:.7; font-size:.85rem;">
@@ -149,7 +151,7 @@
 {# ── Services ───────────────────────────────────────────────── #}
 <section class="zen-section" id="services">
   <div class="container">
-    <h2 class="zen-section-title text-center">Nos services Taxi & VTC à Marseille</h2>
+    <h2 class="zen-section-title text-center">Nos services Taxi à Marseille</h2>
     <p class="zen-section-subtitle text-center">Tous vos trajets, un seul numéro : <strong>06 74 03 96 94</strong></p>
 
     <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-4">
@@ -242,8 +244,8 @@
         <div class="zen-diff-item">
           <div class="check"><i class="bi bi-car-front-fill"></i></div>
           <div>
-            <strong>Taxi ET VTC sur une seule plateforme — unique à Marseille</strong>
-            <span>Choisissez entre taxi réglementé et VTC selon votre besoin et budget.</span>
+            <strong>Taxi agréé — tarifs officiels Ville de Marseille</strong>
+            <span>Tarif au compteur, homologué, sans surprises. VTC prix fixe également disponible.</span>
           </div>
         </div>
         <div class="zen-diff-item">
@@ -349,13 +351,12 @@
       <div class="accordion-item">
         <h3 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-            ZenCAR propose-t-il des taxis ET des VTC à Marseille ?
+            Quel est le tarif d'un taxi à Marseille ?
           </button>
         </h3>
         <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
           <div class="accordion-body">
-            Oui, ZenCAR est la seule plateforme à Marseille qui regroupe <strong>taxis et VTC</strong> sur une interface unique.
-            Vous choisissez votre type de véhicule selon vos besoins et votre budget.
+            Les taxis à Marseille fonctionnent au compteur selon les <strong>tarifs officiels réglementés par la Ville de Marseille</strong>. Le tarif varie selon la distance, l'heure (jour/nuit) et le type de course. Il n'y a aucun supplément caché — le montant affiché sur le compteur est le prix final.
           </div>
         </div>
       </div>
@@ -389,6 +390,22 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+{# ── Paragraphe SEO taxi marseille ─────────────────────────── #}
+<section class="zen-section zen-section-alt">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <p style="color:rgba(255,255,255,.65);font-size:.95rem;line-height:1.8;">
+          ZenCAR est votre <strong style="color:white;">numéro de taxi à Marseille</strong> disponible 7j/7.
+          Nos taxis agréés interviennent dans tous les arrondissements : <strong style="color:white;">Vieux-Port, Castellane, La Joliette, Prado, Timone, La Valentine</strong> et quartiers nord et sud.
+          Tarif au compteur, fixé selon les <strong style="color:white;">tarifs officiels réglementés par la Ville de Marseille</strong> — paiement CB ou espèces accepté à bord.
+          Pour appeler un <strong style="color:white;">taxi Marseille</strong> immédiatement, composez le <a href="tel:+33674039694" style="color:var(--zen-orange);font-weight:700;">06 74 03 96 94</a>.
+        </p>
+      </div>
     </div>
   </div>
 </section>
