@@ -15,6 +15,35 @@
 {% block og_description %}Taxi au compteur tarifs officiels Ville de Marseille, ou VTC prix fixe affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94.{% endblock %}
 {% block og_url %}https://dzencar.fr/{% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style>
+  /* ── Swiper ZenCAR — section Pourquoi ── */
+  .zencar-why-swiper {
+    padding: 8px 4px 48px !important;
+    --swiper-theme-color: #ff5630;
+    --swiper-navigation-size: 20px;
+  }
+  .zencar-why-swiper .swiper-slide { height: auto; }
+  /* Override : step-box toujours visible dans le swiper (animation gérée par Swiper) */
+  .zencar-why-swiper .step-box {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  .zencar-why-swiper .swiper-button-prev,
+  .zencar-why-swiper .swiper-button-next {
+    background: rgba(255,255,255,.08);
+    border-radius: 50%;
+    width: 38px; height: 38px;
+    top: 42%;
+  }
+  .zencar-why-swiper .swiper-button-prev::after,
+  .zencar-why-swiper .swiper-button-next::after { font-size: 13px; font-weight: 900; }
+  .zencar-why-swiper .swiper-pagination-bullet { background: rgba(255,255,255,.3); opacity: 1; }
+  .zencar-why-swiper .swiper-pagination-bullet-active { background: #ff5630; }
+</style>
+{% endblock %}
+
 {% block jsonld %}
 <script type="application/ld+json">
 {
@@ -351,84 +380,76 @@
 				<p>Paiement à bord (CB ou espèces), facture disponible sur demande, chauffeurs professionnels et expérimentés, tarification transparente.</p>
 			</div>
 
-			<div
-				class="row mt-4 g-4 align-items-stretch justify-content-center cates-explic row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-				<!-- 1. Commande -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-calendar-check"></i>
-						</div>
-						<h5>1. Commande</h5>
-						<p>Réservez en ligne en 2 clics pour un trajet immédiat ou pour plus tard, ou contactez-nous par téléphone/WhatsApp.</p>
-					</div>
-				</div>
+			<div class="swiper zencar-why-swiper mt-4">
+				<div class="swiper-wrapper">
 
-				<!-- 2. Carte interactive (temps & km) -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-map"></i>
+					<!-- 1. Commande -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-calendar-check"></i></div>
+							<h5>1. Commande</h5>
+							<p>Réservez en ligne en 2 clics pour un trajet immédiat ou pour plus tard, ou contactez-nous par téléphone/WhatsApp.</p>
 						</div>
-						<h5>2. Carte interactive</h5>
-						<p>Itinéraire affiché sur la carte avec distance (km) et durée estimée en temps réel.</p>
 					</div>
-				</div>
 
-				<!-- 3. Options -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-sliders"></i>
+					<!-- 2. Carte interactive -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-map"></i></div>
+							<h5>2. Carte interactive</h5>
+							<p>Itinéraire affiché sur la carte avec distance (km) et durée estimée en temps réel.</p>
 						</div>
-						<h5>3. Options</h5>
-						<p>Départ & arrivée, ajout d’arrêt, siège bébé et besoins spécifiques directement dans le formulaire.</p>
 					</div>
-				</div>
 
-				<!-- 4. Transparence prix -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-cash-coin"></i>
+					<!-- 3. Options -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-sliders"></i></div>
+							<h5>3. Options</h5>
+							<p>Départ & arrivée, ajout d’arrêt, siège bébé et besoins spécifiques directement dans le formulaire.</p>
 						</div>
-						<h5>4. Transparence prix</h5>
-						<p>Distance, durée et tarif affichés clairement avant validation de votre réservation.</p>
 					</div>
-				</div>
 
-				<!-- 5. Bon de commande par SMS -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-receipt-cutoff"></i>
+					<!-- 4. Transparence prix -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-cash-coin"></i></div>
+							<h5>4. Transparence prix</h5>
+							<p>Distance, durée et tarif affichés clairement avant validation de votre réservation.</p>
 						</div>
-						<h5>5. Bon de commande par SMS</h5>
-						<p>Vous recevez un SMS récapitulatif (nom, lieu, heure, prix) une fois la commande confirmée.</p>
 					</div>
-				</div>
 
-				<!-- 6. Notification chauffeur -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-telephone-inbound"></i>
+					<!-- 5. Bon de commande par SMS -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-receipt-cutoff"></i></div>
+							<h5>5. Bon de commande par SMS</h5>
+							<p>Vous recevez un SMS récapitulatif (nom, lieu, heure, prix) une fois la commande confirmée.</p>
 						</div>
-						<h5>6. Notification chauffeur</h5>
-						<p>Le chauffeur vous contacte (appel/SMS) avec les détails du véhicule et la plaque.</p>
 					</div>
-				</div>
 
-				<!-- 7. Facture (à la demande) -->
-				<div class="col">
-					<div class="step-box text-center h-100">
-						<div class="icon-step mb-3">
-							<i class="bi bi-receipt"></i>
+					<!-- 6. Notification chauffeur -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-telephone-inbound"></i></div>
+							<h5>6. Notification chauffeur</h5>
+							<p>Le chauffeur vous contacte (appel/SMS) avec les détails du véhicule et la plaque.</p>
 						</div>
-						<h5>7. Facture à la demande</h5>
-						<p>Une facture peut être fournie sur demande après votre trajet.</p>
 					</div>
+
+					<!-- 7. Facture à la demande -->
+					<div class="swiper-slide">
+						<div class="step-box text-center h-100">
+							<div class="icon-step mb-3"><i class="bi bi-receipt"></i></div>
+							<h5>7. Facture à la demande</h5>
+							<p>Une facture peut être fournie sur demande après votre trajet.</p>
+						</div>
+					</div>
+
 				</div>
+				<div class="swiper-pagination"></div>
+				<div class="swiper-button-prev"></div>
+				<div class="swiper-button-next"></div>
 			</div>
 
 
@@ -459,18 +480,47 @@
 	<script src="{{ asset('/js/map.js') }}"></script>
 	<script src="{{ asset('js/main.js') }}"></script>
 
-	<!-- Animation step-box -->
+	<!-- Animation step-box (hors swiper) -->
 	<script>
 		document.addEventListener("DOMContentLoaded", () => {
-const boxes = document.querySelectorAll('.step-box');
-const observer = new IntersectionObserver(entries => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-entry.target.classList.add('show');
-}
-});
-}, {threshold: 0.2});
-boxes.forEach(box => observer.observe(box));
-});
+			const boxes = document.querySelectorAll('.step-box');
+			const observer = new IntersectionObserver(entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) entry.target.classList.add('show');
+				});
+			}, { threshold: 0.2 });
+			boxes.forEach(box => observer.observe(box));
+		});
+	</script>
+
+	<!-- Swiper.js — section Pourquoi ZenCAR -->
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			new Swiper('.zencar-why-swiper', {
+				slidesPerView: 1,
+				spaceBetween: 16,
+				grabCursor: true,
+				loop: true,
+				speed: 600,
+				autoplay: {
+					delay: 3800,
+					disableOnInteraction: false,
+					pauseOnMouseEnter: true,
+				},
+				pagination: {
+					el: '.zencar-why-swiper .swiper-pagination',
+					clickable: true,
+				},
+				navigation: {
+					nextEl: '.zencar-why-swiper .swiper-button-next',
+					prevEl: '.zencar-why-swiper .swiper-button-prev',
+				},
+				breakpoints: {
+					576: { slidesPerView: 2, spaceBetween: 16 },
+					992: { slidesPerView: 3, spaceBetween: 20 },
+				},
+			});
+		});
 	</script>
 {% endblock %}
