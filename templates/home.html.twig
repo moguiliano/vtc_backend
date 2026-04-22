@@ -25,11 +25,6 @@
     --swiper-navigation-size: 20px;
   }
   .zencar-why-swiper .swiper-slide { height: auto; }
-  /* Override : step-box toujours visible dans le swiper (animation gérée par Swiper) */
-  .zencar-why-swiper .step-box {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
   .zencar-why-swiper .swiper-button-prev,
   .zencar-why-swiper .swiper-button-next {
     background: rgba(255,255,255,.08);
@@ -497,11 +492,11 @@
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			new Swiper('.zencar-why-swiper', {
+			const swiperWhy = new Swiper('.zencar-why-swiper', {
 				slidesPerView: 1,
 				spaceBetween: 16,
 				grabCursor: true,
-				loop: true,
+				rewind: true,
 				speed: 600,
 				autoplay: {
 					delay: 3800,
@@ -521,6 +516,8 @@
 					992: { slidesPerView: 3, spaceBetween: 20 },
 				},
 			});
+			// Force .show sur tous les step-box (y compris clones loop)
+			swiperWhy.el.querySelectorAll('.step-box').forEach(b => b.classList.add('show'));
 		});
 	</script>
 {% endblock %}
