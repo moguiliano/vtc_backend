@@ -19,6 +19,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <style>
   /* ── Swiper ZenCAR — section Pourquoi ── */
+  .pourquoi-choisir-Zencar {
+    background: #111418;
+    border-radius: 16px;
+    padding: clamp(24px, 5vw, 40px);
+  }
   .zencar-why-swiper {
     padding: 8px 4px 48px !important;
     --swiper-theme-color: #ff5630;
@@ -475,24 +480,11 @@
 	<script src="{{ asset('/js/map.js') }}"></script>
 	<script src="{{ asset('js/main.js') }}"></script>
 
-	<!-- Animation step-box (hors swiper) -->
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			const boxes = document.querySelectorAll('.step-box');
-			const observer = new IntersectionObserver(entries => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) entry.target.classList.add('show');
-				});
-			}, { threshold: 0.2 });
-			boxes.forEach(box => observer.observe(box));
-		});
-	</script>
-
 	<!-- Swiper.js — section Pourquoi ZenCAR -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			const swiperWhy = new Swiper('.zencar-why-swiper', {
+			new Swiper('.zencar-why-swiper', {
 				slidesPerView: 1,
 				spaceBetween: 16,
 				grabCursor: true,
@@ -516,8 +508,6 @@
 					992: { slidesPerView: 3, spaceBetween: 20 },
 				},
 			});
-			// Force .show sur tous les step-box (y compris clones loop)
-			swiperWhy.el.querySelectorAll('.step-box').forEach(b => b.classList.add('show'));
 		});
 	</script>
 {% endblock %}

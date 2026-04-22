@@ -15,7 +15,7 @@
 /* ============================================================
    SECTION "POURQUOI CHOISIR" (home)
    ============================================================ */
-.pourquoi-choisir-Zencar { padding: clamp(24px, 5vw, 50px) 8px; }
+.pourquoi-choisir-Zencar { padding: clamp(24px, 5vw, 50px) 8px; width: 100%; }
 .pourquoi-choisir-Zencar .h4 { font-size: clamp(1rem, 3vw, 1.4rem); }
 
 /* ============================================================

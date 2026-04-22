@@ -337,19 +337,16 @@
    STEP BOXES (page accueil)
    ============================================================ */
 .step-box {
-  background: var(--zen-bg);
-  border: 1px solid var(--zen-border);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
   border-radius: 12px;
   padding: 20px 14px;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: transform .3s ease, opacity .5s ease, box-shadow .3s;
+  transition: transform .3s ease, box-shadow .3s;
 }
-.step-box.show  { opacity: 1; transform: translateY(0); }
 .step-box:hover { transform: translateY(-5px); box-shadow: 0 0 12px rgba(255,255,255,.15); }
 .icon-step      { font-size: 2rem; color: var(--zen-orange); }
 .step-box h5    { font-size: clamp(.85rem, 2vw, 1rem); margin: 0; }
