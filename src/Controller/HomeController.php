@@ -33,6 +33,8 @@ use App\Repository\ReservationRepository;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
 use App\Service\SmsNotifier;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 final class HomeController extends AbstractController
 {
@@ -140,21 +142,55 @@ final class HomeController extends AbstractController
 
     // Route pour la page de contact
     #[Route('/contact', name: 'app_contact')]
-    public function contact(Request $request, EntityManagerInterface $entityManager): Response
+    public function contact(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
-
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Créé automatiquement côté serveur
             $contact->setCreatedAt(new \DateTimeImmutable());
-
             $entityManager->persist($contact);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre message a bien été envoyé.');
+            // Envoi email de notification à l'admin
+            try {
+                $adminEmail = (new Email())
+                    ->from('noreply@dzencar.fr')
+                    ->to('mohamedguiliano@yahoo.com')
+                    ->replyTo($contact->getEmail())
+                    ->subject('📩 Nouveau message ZenCAR — ' . $contact->getName())
+                    ->html(
+                        '<h2 style="color:#ff5630;">Nouveau message via le formulaire ZenCAR</h2>'
+                        . '<table style="font-family:Arial,sans-serif;font-size:15px;border-collapse:collapse;width:100%">'
+                        . '<tr><td style="padding:8px;font-weight:bold;width:120px">Nom</td><td style="padding:8px">' . htmlspecialchars($contact->getName()) . '</td></tr>'
+                        . '<tr style="background:#f5f5f5"><td style="padding:8px;font-weight:bold">Email</td><td style="padding:8px"><a href="mailto:' . $contact->getEmail() . '">' . htmlspecialchars($contact->getEmail()) . '</a></td></tr>'
+                        . '<tr><td style="padding:8px;font-weight:bold">Téléphone</td><td style="padding:8px"><a href="tel:' . $contact->getPhone() . '">' . htmlspecialchars($contact->getPhone()) . '</a></td></tr>'
+                        . '<tr style="background:#f5f5f5"><td style="padding:8px;font-weight:bold;vertical-align:top">Message</td><td style="padding:8px">' . nl2br(htmlspecialchars($contact->getMessage())) . '</td></tr>'
+                        . '</table>'
+                        . '<p style="color:#999;font-size:13px;margin-top:20px">Envoyé le ' . $contact->getCreatedAt()->format('d/m/Y à H:i') . '</p>'
+                    );
+
+                $mailer->send($adminEmail);
+
+                // Email de confirmation au client
+                $clientEmail = (new Email())
+                    ->from('noreply@dzencar.fr')
+                    ->to($contact->getEmail())
+                    ->subject('✅ ZenCAR — Votre message a bien été reçu')
+                    ->html(
+                        '<h2 style="color:#ff5630;">Bonjour ' . htmlspecialchars($contact->getName()) . ',</h2>'
+                        . '<p style="font-family:Arial,sans-serif;font-size:15px;">Votre message a bien été reçu. Nous vous répondrons dans les plus brefs délais.</p>'
+                        . '<p style="font-family:Arial,sans-serif;font-size:15px;">Pour toute urgence, appelez directement le <strong><a href="tel:+33674039694">06 74 03 96 94</a></strong>.</p>'
+                        . '<p style="font-family:Arial,sans-serif;font-size:15px;color:#888;">L\'équipe ZenCAR Marseille</p>'
+                    );
+
+                $mailer->send($clientEmail);
+            } catch (\Exception $e) {
+                // Ne pas bloquer si l'email échoue — le message est déjà en BDD
+            }
+
+            $this->addFlash('success', 'Votre message a bien été envoyé. Nous vous répondrons rapidement.');
             return $this->redirectToRoute('app_contact');
         }
 
