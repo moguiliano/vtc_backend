@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin;
+use App\Entity\Contact;
 use App\Entity\Forfait;
 use App\Entity\Reservation;
 use App\Entity\VehicleCategory;
@@ -51,6 +52,10 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::section('Réservations');
             yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
         }
+
+        // Messages de contact
+        yield MenuItem::section('Contact');
+        yield MenuItem::linkToCrud('Messages reçus', 'fa fa-envelope', Contact::class);
 
         // Tarification
         if ($this->isGranted('ROLE_FORFAITS_VIEW') || $this->isGranted('ROLE_VEHICULES_VIEW')) {
