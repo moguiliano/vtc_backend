@@ -76,7 +76,9 @@
             ?.value.trim();
           const stopEnabled =
             document.getElementById("reservation_Stop")?.checked;
-          const heure = new Date().getHours(); // Heure courante (utile pour majoration nuit)
+          // Heure de la réservation (pour majoration nuit) — pas l'heure courante
+          const heureInput = document.getElementById("reservation_heureDepart")?.value;
+          const heure = heureInput ? parseInt(heureInput.split(":")[0], 10) : new Date().getHours();
 
           // ⚠️ Validation minimale des champs requis
           if (!pickup || !dropoff || (stopEnabled && !stop)) {
