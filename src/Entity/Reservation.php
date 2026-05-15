@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Enum\ReservationStatus;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -278,21 +277,9 @@ class Reservation
         return $this->statut;
     }
 
-    public function setStatut(string|ReservationStatus $statut): static
+    public function setStatut(string $statut): static
     {
-        $this->statut = $statut instanceof ReservationStatus ? $statut->value : $statut;
+        $this->statut = $statut;
         return $this;
-    }
-
-    /** Retourne l'enum correspondant au statut courant */
-    public function getStatutEnum(): ReservationStatus
-    {
-        return ReservationStatus::from($this->statut);
-    }
-
-    /** Label lisible du statut */
-    public function getStatutLabel(): string
-    {
-        return ReservationStatus::from($this->statut)->label();
     }
 }

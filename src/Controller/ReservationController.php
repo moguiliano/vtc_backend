@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
-use App\Enum\ReservationStatus;
 use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
