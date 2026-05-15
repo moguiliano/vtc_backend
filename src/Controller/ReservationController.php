@@ -41,6 +41,9 @@ class ReservationController extends AbstractController
 
             // Appel AJAX depuis reservation.js → retourner juste l'ID
             if ($request->isXmlHttpRequest()) {
+                if (!$reservation->getTypeVehicule()) {
+                    return new JsonResponse(['error' => 'Merci de sélectionner un type de véhicule.'], 400);
+                }
                 return new JsonResponse(['id' => $reservation->getId()]);
             }
 

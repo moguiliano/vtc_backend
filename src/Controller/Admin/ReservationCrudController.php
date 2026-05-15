@@ -92,7 +92,7 @@ class ReservationCrudController extends AbstractCrudController
 
         // ── Index ──
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$statut, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone];
+            return [$statut, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos];
         }
 
         // ── Détail ──

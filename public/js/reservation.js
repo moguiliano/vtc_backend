@@ -239,17 +239,15 @@
               headers: { "X-Requested-With": "XMLHttpRequest" },
               body: formData,
             });
-            if (!saveResp.ok) {
-              console.error("Erreur HTTP lors de la sauvegarde :", saveResp.status, await saveResp.text());
-              alert("Erreur lors de la création de la réservation. Veuillez réessayer.");
+            const saved = await saveResp.json();
+            if (!saveResp.ok || saved.error) {
+              alert(saved.error || "Erreur lors de la création de la réservation. Veuillez réessayer.");
               return;
             }
-            const saved = await saveResp.json();
             if (saved.id) {
               const confirmBtn = document.getElementById("confirmReservationBtn");
               if (confirmBtn) confirmBtn.dataset.reservationId = String(saved.id);
             } else {
-              console.error("Réponse sans ID :", saved);
               alert("Erreur : impossible de créer la réservation.");
               return;
             }
