@@ -1,72 +1,135 @@
 {% set bypass_otp = is_granted('ROLE_ADMIN') or is_granted('ROLE_REGULATEUR') %}
 
 <div id="tab3" class="tab-content">
-	<div style="text-align: left; margin-bottom: 16px;">
-		<button type="button" class="nav-main-btn back-btn" onclick="UI.switchToTab('tab2')">Retour</button>
+
+	<div style="text-align:left;margin-bottom:16px;">
+		<button type="button" class="nav-main-btn back-btn" onclick="UI.switchToTab('tab2')">← Retour</button>
 	</div>
+
 	<div class="general-container">
-		<h2 style="color: white;">Récapitulatif</h2>
-		<ul style="color: #ccc; line-height: 1.6;">
-			<li>
-				<strong>Départ :</strong>
-				<span id="recap_depart"></span>
-			</li>
-			<li>
-				<strong>Arrivée :</strong>
-				<span id="recap_arrivee"></span>
-			</li>
-			<li>
-				<strong>Arrêt :</strong>
-				<span id="recap_stop"></span>
-			</li>
-			<li>
-				<strong>Siège bébé :</strong>
-				<span id="recap_siege"></span>
-			</li>
-			<li>
-				<strong>Type de véhicule :</strong>
-				<span id="recap_type"></span>
-			</li>
-		</ul>
 
-		<div id="recapitulatif-trajet" class="text-white text-sm my-2"></div>
-		<div id="recap_prix_list" class="text-white mt-3"></div>
+		{# ═══════════════════════════════════════════════
+		   RÉCAPITULATIF COMPLET
+		═══════════════════════════════════════════════ #}
+		<h2 style="color:white;margin-bottom:1rem;">Récapitulatif de la course</h2>
 
-		<div id="guest-verification-section" class="mt-4">
-			<h5 class="text-white">Informations client</h5>
+		<div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 20px;margin-bottom:1.5rem;">
+			<table style="width:100%;border-collapse:collapse;color:#ccc;font-size:.92rem;">
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+					<td style="padding:9px 6px;width:40%;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						📍 Départ
+					</td>
+					<td style="padding:9px 6px;color:white;font-weight:600;">
+						<span id="recap_depart">—</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						🏁 Arrivée
+					</td>
+					<td style="padding:9px 6px;color:white;font-weight:600;">
+						<span id="recap_arrivee">—</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);" id="recap_row_stop">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						⏸ Arrêt
+					</td>
+					<td style="padding:9px 6px;">
+						<span id="recap_stop">Aucun</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						📅 Date & heure
+					</td>
+					<td style="padding:9px 6px;color:white;font-weight:600;">
+						<span id="recap_date">—</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						📏 Distance
+					</td>
+					<td style="padding:9px 6px;">
+						<span id="recap_distance">—</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						⏱ Durée
+					</td>
+					<td style="padding:9px 6px;">
+						<span id="recap_duree">—</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						🚗 Véhicule
+					</td>
+					<td style="padding:9px 6px;color:white;font-weight:600;">
+						<span id="recap_type">—</span>
+					</td>
+				</tr>
+				<tr style="border-bottom:1px solid rgba(255,255,255,.06);" id="recap_row_siege">
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						🧸 Siège bébé
+					</td>
+					<td style="padding:9px 6px;">
+						<span id="recap_siege">—</span>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding:9px 6px;color:rgba(255,255,255,.45);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">
+						💶 Prix estimé
+					</td>
+					<td style="padding:9px 6px;color:var(--zen-orange);font-weight:700;font-size:1.05rem;">
+						<span id="recap_prix_selected">—</span>
+					</td>
+				</tr>
+			</table>
+		</div>
 
-			{# ── Prénom ── #}
-			<div class="form-group mt-3">
-				<label for="prenom" class="text-white">Prénom</label>
-				<input type="text" id="prenom" name="prenom" class="form-control" autocomplete="given-name" required>
+		{# ═══════════════════════════════════════════════
+		   INFORMATIONS CLIENT
+		═══════════════════════════════════════════════ #}
+		<h5 style="color:white;margin-bottom:1rem;">Vos informations</h5>
+
+		<div id="guest-verification-section">
+
+			{# Prénom #}
+			<div class="form-group mb-3">
+				<label for="prenom" class="text-white mb-1">Prénom <span style="color:var(--zen-orange);">*</span></label>
+				<input type="text" id="prenom" name="prenom" class="form-control"
+					   autocomplete="given-name" placeholder="Votre prénom" required
+					   style="background:#1e2130;color:#fff;border-color:rgba(255,255,255,.2);">
 			</div>
 
-			{# ── Téléphone + OTP ── #}
+			{# Téléphone + OTP #}
 			{% include "./reservation/outilsReservation/phone.html.twig" %}
 
-			{# ── Informations complémentaires ── #}
-			<div class="form-group mt-4">
-				<label for="infosComplementaires" class="text-white">
-					Informations complémentaires <small class="text-muted">(optionnel)</small>
+			{# Informations complémentaires #}
+			<div class="form-group mt-4 mb-3">
+				<label for="infosComplementaires" class="text-white mb-1">
+					Informations complémentaires <small style="color:rgba(255,255,255,.4);">(optionnel)</small>
 				</label>
 				<textarea id="infosComplementaires" name="informationsComplementaires"
 						  class="form-control" rows="3" maxlength="500"
-						  placeholder="Nombre de bagages, instructions spéciales, remarques…"
-						  style="background:#1e2130;color:#fff;border-color:rgba(255,255,255,.2);"></textarea>
-				<small class="d-flex justify-content-end mt-1" style="color:rgba(255,255,255,.4);">
-					<span id="infosCharCount">0</span>/500
-				</small>
+						  placeholder="Nombre de bagages, adresse précise, remarques…"
+						  style="background:#1e2130;color:#fff;border-color:rgba(255,255,255,.2);resize:vertical;"></textarea>
+				<div class="d-flex justify-content-end mt-1">
+					<small style="color:rgba(255,255,255,.35);"><span id="infosCharCount">0</span>/500</small>
+				</div>
 			</div>
 
-			{# ── Mode de règlement ── #}
-			<div class="form-group mt-4">
+			{# Mode de règlement #}
+			<div class="form-group mb-4">
 				<label class="text-white d-block mb-2">Mode de règlement</label>
 				<div class="d-flex gap-2 flex-wrap">
 					<input type="radio" name="modeReglement" id="mr_carte" value="carte_bancaire" class="btn-check" checked autocomplete="off">
 					<label for="mr_carte" class="btn btn-outline-light">
 						<i class="bi bi-credit-card me-1"></i>Carte bancaire
 					</label>
-
 					<input type="radio" name="modeReglement" id="mr_especes" value="especes" class="btn-check" autocomplete="off">
 					<label for="mr_especes" class="btn btn-outline-light">
 						<i class="bi bi-cash-coin me-1"></i>Espèces
@@ -74,27 +137,28 @@
 				</div>
 			</div>
 
-			{# ── OTP (caché si admin/régulateur) ── #}
+			{# Bypass OTP admin/régulateur #}
 			{% if bypass_otp %}
-			<div class="alert mt-4" style="background:rgba(255,193,7,.1);border:1px solid rgba(255,193,7,.3);color:#ffc107;border-radius:10px;font-size:.88rem;">
-				<i class="bi bi-shield-check me-2"></i>Vérification OTP désactivée — réservation en mode régulateur.
+			<div class="mb-3" style="background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.25);border-radius:10px;padding:12px 16px;color:#ffc107;font-size:.85rem;">
+				<i class="bi bi-shield-check me-2"></i>Mode régulateur — vérification OTP désactivée.
 			</div>
 			{% endif %}
 
 		</div>
 
 		<button id="confirmReservationBtn"
-				class="btn btn-success mt-4"
+				class="btn btn-success mt-2 w-100"
+				style="padding:13px;font-size:1rem;font-weight:700;border-radius:50px;"
 				data-reservation-id="{{ reservation is defined and reservation ? reservation.id : '' }}"
 				data-bypass-otp="{{ bypass_otp ? '1' : '0' }}"
 				{% if not bypass_otp %}disabled{% endif %}>
-			✅ Réserver maintenant
+			✅ Confirmer la réservation
 		</button>
 
 	</div>
 </div>
 
-{# ── Auto-switch to Tab3 when reservation was just created ── #}
+{# Auto-switch to tab3 after form submit #}
 {% if show_tab3 is defined and show_tab3 %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -107,14 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 (function () {
-	// ── helpers ──
-	function $(sel) { return document.querySelector(sel); }
-
-	function getFirstName() {
-		const el = $('#prenom') || $('#guestFirstName') || $('input[name="prenom"]');
-		return el ? el.value.trim() : '';
-	}
-
+	// ── helpers ──────────────────────────────────────────────────────────────
 	function normalizeFrPhone(raw) {
 		const digits = (raw || '').replace(/[^\d+]/g, '');
 		if (/^\+/.test(digits)) return digits;
@@ -123,10 +180,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function getFullPhone() {
-		const input = $('#guestPhone') || $('input[type="tel"]');
+		const input = document.getElementById('guestPhone') || document.querySelector('input[type="tel"]');
 		if (!input) return '';
 		try {
-			const iti = window.intlTelInputGlobals && window.intlTelInputGlobals.getInstance(input);
+			const iti = window.intlTelInputGlobals?.getInstance(input);
 			if (iti) {
 				if (typeof iti.isValidNumber === 'function' && !iti.isValidNumber()) return '';
 				if (typeof iti.getNumber === 'function') return iti.getNumber();
@@ -135,32 +192,32 @@ document.addEventListener('DOMContentLoaded', function () {
 		return normalizeFrPhone(input.value.trim());
 	}
 
-	// ── character counter ──
-	const infosArea = document.getElementById('infosComplementaires');
+	// ── Compteur infos complémentaires ───────────────────────────────────────
+	const infosArea  = document.getElementById('infosComplementaires');
 	const infosCount = document.getElementById('infosCharCount');
 	if (infosArea && infosCount) {
 		infosArea.addEventListener('input', () => { infosCount.textContent = infosArea.value.length; });
 	}
 
-	// ── confirm button ──
+	// ── Bouton confirmer ─────────────────────────────────────────────────────
 	const btn = document.getElementById('confirmReservationBtn');
 	if (!btn) return;
 
-	const resId = btn.dataset.reservationId || '';
-	if (!resId) return; // no reservation yet
-
+	const resId     = btn.dataset.reservationId || '';
 	const bypassOtp = btn.dataset.bypassOtp === '1';
+	if (!resId) return;
 
 	btn.addEventListener('click', async () => {
-		const prenom = getFirstName();
-		const clientPhone = getFullPhone();
-		const informationsComplementaires = (document.getElementById('infosComplementaires')?.value || '').trim();
-		const modeReglement = (document.querySelector('input[name="modeReglement"]:checked')?.value) || 'carte_bancaire';
+		const prenom        = (document.getElementById('prenom')?.value || '').trim();
+		const clientPhone   = getFullPhone();
+		const informationsComplementaires = (infosArea?.value || '').trim();
+		const modeReglement = document.querySelector('input[name="modeReglement"]:checked')?.value || 'carte_bancaire';
 
 		if (!prenom) { alert('Merci de renseigner votre prénom.'); return; }
 		if (!bypassOtp && !clientPhone) { alert('Merci de renseigner un numéro de téléphone valide.'); return; }
 
 		btn.disabled = true;
+		btn.textContent = '⏳ Confirmation…';
 
 		try {
 			const resp = await fetch(`/reservation/${resId}/confirm`, {
@@ -168,38 +225,36 @@ document.addEventListener('DOMContentLoaded', function () {
 				headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 				body: JSON.stringify({ prenom, clientPhone, informationsComplementaires, modeReglement, bypassOtp }),
 			});
-
 			const data = await resp.json();
 			if (data.ok && data.redirect) {
 				window.location.href = data.redirect;
 			} else {
 				alert(data.error || 'Erreur lors de la confirmation.');
 				btn.disabled = false;
+				btn.textContent = '✅ Confirmer la réservation';
 			}
 		} catch (e) {
 			alert('Impossible de confirmer la réservation pour le moment.');
 			btn.disabled = false;
+			btn.textContent = '✅ Confirmer la réservation';
 		}
 	});
 })();
 
 
 document.addEventListener('DOMContentLoaded', function () {
-	const countryCode = document.getElementById('countryCode');
 	const guestPhone  = document.getElementById('guestPhone');
+	const countryCode = document.getElementById('countryCode');
 	const sendOtpBtn  = document.getElementById('sendOtpBtn');
 	const otpField    = document.getElementById('otpField');
 	const otpInput    = document.getElementById('otpInput');
 	const otpFeedback = document.getElementById('otpFeedback');
 	const confirmBtn  = document.getElementById('confirmReservationBtn');
+	const bypassOtp   = confirmBtn?.dataset?.bypassOtp === '1';
 
-	const bypassOtp = confirmBtn?.dataset?.bypassOtp === '1';
-
-	// Hide OTP section entirely when bypassed
 	if (bypassOtp) {
 		if (sendOtpBtn) sendOtpBtn.style.display = 'none';
 		if (otpField)   otpField.style.display   = 'none';
-		// Button already enabled via template (no `disabled` attr when bypass_otp)
 		return;
 	}
 
@@ -213,42 +268,40 @@ document.addEventListener('DOMContentLoaded', function () {
 	if (sendOtpBtn) {
 		sendOtpBtn.addEventListener('click', function () {
 			const phone = getFullPhoneNumber();
-			if (!phone || phone.length < 6) { alert("Merci de saisir un numéro de téléphone valide."); return; }
-
+			if (!phone || phone.length < 6) { alert('Merci de saisir un numéro de téléphone valide.'); return; }
 			fetch('/otp/send', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body: `phone=${encodeURIComponent(phone)}`,
-			}).then(res => res.json()).then(data => {
+			}).then(r => r.json()).then(data => {
 				if (data.status === 'sent') {
 					otpField.classList.remove('d-none');
-					otpFeedback.innerText = "📲 Un code a été envoyé par SMS. Veuillez le saisir ci-dessous.";
+					otpFeedback.innerText = '📲 Code envoyé par SMS. Saisissez-le ci-dessous.';
 				} else {
-					otpFeedback.innerText = "❌ Une erreur est survenue lors de l'envoi du code.";
+					otpFeedback.innerText = '❌ Erreur lors de l\'envoi du code.';
 				}
-			}).catch(() => { otpFeedback.innerText = "❌ Une erreur réseau est survenue."; });
+			}).catch(() => { otpFeedback.innerText = '❌ Erreur réseau.'; });
 		});
 	}
 
 	otpInput?.addEventListener('input', () => {
 		const code  = otpInput.value.trim();
 		const phone = getFullPhoneNumber();
-
 		if (code.length === 6) {
 			fetch('/otp/verify', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body: `phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`,
-			}).then(res => res.json()).then(data => {
+			}).then(r => r.json()).then(data => {
 				if (data.valid) {
-					otpFeedback.innerText = "✅ Vérification réussie. Vous pouvez réserver.";
+					otpFeedback.innerText = '✅ Vérification réussie. Vous pouvez confirmer.';
 					confirmBtn.disabled = false;
 				} else {
-					otpFeedback.innerText = "❌ Code incorrect. Réessayez.";
+					otpFeedback.innerText = '❌ Code incorrect. Réessayez.';
 					confirmBtn.disabled = true;
 				}
 			}).catch(() => {
-				otpFeedback.innerText = "❌ Impossible de vérifier le code. Problème réseau.";
+				otpFeedback.innerText = '❌ Impossible de vérifier le code.';
 				confirmBtn.disabled = true;
 			});
 		}

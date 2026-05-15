@@ -83,9 +83,12 @@ class ReservationController extends AbstractController
         }
 
         // Persist client info and new fields
+        $reservation->setGuestPrenom($prenom ? mb_substr($prenom, 0, 100) : null);
+        $reservation->setGuestTelephone($clientPhone ? mb_substr($clientPhone, 0, 25) : null);
         $reservation->setGuestInfo(json_encode(['prenom' => $prenom, 'phone' => $clientPhone]));
         $reservation->setInformationsComplementaires($infos ? mb_substr($infos, 0, 500) : null);
         $reservation->setModeReglement(in_array($modeReglement, ['especes', 'carte_bancaire'], true) ? $modeReglement : 'carte_bancaire');
+        $reservation->setIsGuest(true);
         $em->flush();
 
         $smsNotifier->notifyReservation($reservation, $clientPhone);

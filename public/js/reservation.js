@@ -108,6 +108,7 @@
               window.TrajetInfos = {
                 distance: data.distance_km,
                 duree: data.duration_min,
+                prix: data.prix,
               };
 
               // 📝 Remplissage des champs cachés pour soumission finale
@@ -204,6 +205,29 @@
               ? "Oui"
               : "Non";
           document.getElementById("recap_type").textContent = type;
+
+          // 📅 Date & Heure
+          const dateVal  = document.getElementById("reservation_dateDepart")?.value;
+          const heureVal = document.getElementById("reservation_heureDepart")?.value;
+          const recapDate = document.getElementById("recap_date");
+          if (recapDate && dateVal && heureVal) {
+            const [y, m, d] = dateVal.split("-");
+            recapDate.textContent = `${d}/${m}/${y} à ${heureVal}`;
+          }
+
+          // 📏 Distance & Durée
+          const ti = window.TrajetInfos;
+          const recapDist  = document.getElementById("recap_distance");
+          const recapDuree = document.getElementById("recap_duree");
+          if (recapDist  && ti) recapDist.textContent  = `${ti.distance.toFixed(2)} km`;
+          if (recapDuree && ti) recapDuree.textContent = `${Math.round(ti.duree)} min`;
+
+          // 💶 Prix du véhicule sélectionné
+          const recapPrix = document.getElementById("recap_prix_selected");
+          if (recapPrix && ti?.prix?.[type]) {
+            const p = ti.prix[type];
+            recapPrix.textContent = `${parseFloat(p.prix_total).toFixed(2)} €${p.majoration_nuit ? " ✦ tarif nuit" : ""}`;
+          }
 
           // 🔄 Passage à l'onglet final (onglet 3)
           window.UI.unlockTab(2);

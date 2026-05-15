@@ -34,9 +34,6 @@ class ReservationCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        if (!$this->isGranted('ROLE_RESERVATIONS_EDIT')) {
-            $actions->disable(Action::NEW);
-        }
         if (!$this->isGranted('ROLE_RESERVATIONS_DELETE')) {
             $actions->disable(Action::DELETE, Action::BATCH_DELETE);
         }
@@ -45,7 +42,7 @@ class ReservationCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        // ── Status choices array (label → value string for EasyAdmin) ──
+        // ── Statut badges ──
         $statutChoices = [];
         $statutBadges  = [];
         foreach (ReservationStatus::cases() as $case) {
@@ -58,14 +55,15 @@ class ReservationCrudController extends AbstractCrudController
             ->renderAsBadges($statutBadges)
             ->setRequired(true);
 
+        // ── Trajet ──
         $depart          = TextField::new('depart', 'Lieu de départ');
         $arrivee         = TextField::new('arrivee', 'Lieu d\'arrivée');
         $dateHeureDepart = DateTimeField::new('dateHeureDepart', 'Date & Heure')->setFormat('dd/MM/yyyy HH:mm');
-        $stopOption      = BooleanField::new('stopOption', 'Stop');
-        $stopLieu        = TextField::new('stopLieu', 'Lieu de stop')->onlyOnForms();
-        $siegeBebe       = BooleanField::new('siegeBebe', 'Siège bébé');
-        $distance        = NumberField::new('distance', 'Distance (km)')->setNumDecimals(2)->onlyOnDetail();
-        $duree           = NumberField::new('duree', 'Durée (min)')->onlyOnDetail();
+        $stopOption      = BooleanField::new('stopOption', 'Stop en route')->renderAsSwitch(false);
+        $stopLieu        = TextField::new('stopLieu', 'Lieu de stop');
+        $siegeBebe       = BooleanField::new('siegeBebe', 'Siège bébé')->renderAsSwitch(false);
+        $distance        = NumberField::new('distance', 'Distance (km)')->setNumDecimals(2);
+        $duree           = NumberField::new('duree', 'Durée (min)');
         $typeVehicule    = ChoiceField::new('typeVehicule', 'Véhicule')
             ->setChoices([
                 'Eco Berline'  => 'eco_berline',
@@ -73,53 +71,54 @@ class ReservationCrudController extends AbstractCrudController
                 'Grand Coffre' => 'grand_coffre',
                 'Van'          => 'van',
             ]);
-        $prix            = NumberField::new('prix', 'Prix (€)')->setNumDecimals(2);
-        $modeReglement   = ChoiceField::new('modeReglement', 'Règlement')
+        $prix = NumberField::new('prix', 'Prix (€)')->setNumDecimals(2);
+
+        // ── Règlement ──
+        $modeReglement = ChoiceField::new('modeReglement', 'Règlement')
             ->setChoices(['Carte bancaire' => 'carte_bancaire', 'Espèces' => 'especes'])
             ->renderAsBadges(['carte_bancaire' => 'info', 'especes' => 'success']);
-        $infos           = TextareaField::new('informationsComplementaires', 'Notes client')
-            ->setNumOfRows(3)->onlyOnDetail();
-        $user            = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
-        $isGuest         = BooleanField::new('isGuest', 'Invité')->onlyOnDetail();
-        $guestInfo       = TextField::new('guestInfo', 'Info invité')->onlyOnDetail();
 
+        // ── Client ──
+        $guestPrenom    = TextField::new('guestPrenom', 'Prénom client');
+        $guestTelephone = TextField::new('guestTelephone', 'Téléphone client');
+        $infos          = TextareaField::new('informationsComplementaires', 'Informations complémentaires')
+            ->setNumOfRows(3)
+            ->setRequired(false);
+
+        // ── Détail seulement ──
+        $user     = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
+        $isGuest  = BooleanField::new('isGuest', 'Réservation invité')->onlyOnDetail();
+        $guestInfo = TextField::new('guestInfo', 'guestInfo (legacy)')->onlyOnDetail();
+
+        // ── Index ──
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$statut, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement];
+            return [$statut, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone];
         }
 
+        // ── Détail ──
         if (Crud::PAGE_DETAIL === $pageName) {
             return [
                 $statut,
-                $depart,
-                $arrivee,
-                $dateHeureDepart,
-                $stopOption,
-                $stopLieu,
-                $siegeBebe,
-                $distance,
-                $duree,
-                $typeVehicule,
-                $prix,
-                $modeReglement,
+                $depart, $arrivee, $dateHeureDepart,
+                $stopOption, $stopLieu, $siegeBebe,
+                $distance, $duree,
+                $typeVehicule, $prix, $modeReglement,
+                $guestPrenom, $guestTelephone,
                 $infos,
-                $user,
-                $isGuest,
-                $guestInfo,
+                $user, $isGuest, $guestInfo,
             ];
         }
 
-        // PAGE_NEW / PAGE_EDIT
+        // ── Création / Édition ──
         return [
             $statut,
-            $depart,
-            $arrivee,
-            $dateHeureDepart,
-            $stopOption,
-            $stopLieu,
-            $siegeBebe,
-            $typeVehicule,
-            $prix,
-            $modeReglement,
+            $depart, $arrivee, $dateHeureDepart,
+            $stopOption, $stopLieu, $siegeBebe,
+            $distance, $duree,
+            $typeVehicule, $prix, $modeReglement,
+            $guestPrenom,
+            $guestTelephone,
+            $infos,
         ];
     }
 }

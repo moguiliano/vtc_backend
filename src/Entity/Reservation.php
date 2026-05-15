@@ -36,14 +36,14 @@ class Reservation
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $distance = null;
 
-    #[ORM\Column(type: 'integer' ,nullable: true)]
-    private int $duree;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private int $duree = 0;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $typeVehicule = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private float $prix;
+    private float $prix = 0.0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -54,6 +54,12 @@ class Reservation
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $guestInfo = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $guestPrenom = null;
+
+    #[ORM\Column(length: 25, nullable: true)]
+    private ?string $guestTelephone = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $informationsComplementaires = null;
@@ -211,6 +217,28 @@ class Reservation
     public function setGuestInfo(?string $guestInfo): static
     {
         $this->guestInfo = $guestInfo;
+        return $this;
+    }
+
+    public function getGuestPrenom(): ?string
+    {
+        return $this->guestPrenom;
+    }
+
+    public function setGuestPrenom(?string $guestPrenom): static
+    {
+        $this->guestPrenom = $guestPrenom;
+        return $this;
+    }
+
+    public function getGuestTelephone(): ?string
+    {
+        return $this->guestTelephone;
+    }
+
+    public function setGuestTelephone(?string $guestTelephone): static
+    {
+        $this->guestTelephone = $guestTelephone;
         return $this;
     }
 
