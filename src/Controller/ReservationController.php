@@ -39,7 +39,12 @@ class ReservationController extends AbstractController
             $entityManager->persist($reservation);
             $entityManager->flush();
 
-            // Re-render with the new reservation so Tab3 can show the ID
+            // Appel AJAX depuis reservation.js → retourner juste l'ID
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['id' => $reservation->getId()]);
+            }
+
+            // Appel normal (fallback) → re-render avec tab3
             return $this->render('reservation/index.html.twig', [
                 'form'         => $form->createView(),
                 'here_api_key' => $this->getParameter('here_api_key'),

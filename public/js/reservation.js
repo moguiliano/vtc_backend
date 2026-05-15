@@ -187,10 +187,8 @@
       // - Passe à l’onglet 3
       // =========================================================================
       if (nextBtn) {
-        nextBtn.addEventListener("click", () => {
-          const type = document.getElementById(
-            "reservation_typeVehicule"
-          )?.value;
+        nextBtn.addEventListener("click", async () => {
+          const type = document.getElementById("reservation_typeVehicule")?.value;
 
           // ⚠️ Empêche d’aller au récap sans avoir choisi un véhicule
           if (!type) {
@@ -206,9 +204,7 @@
           document.getElementById("recap_stop").textContent =
             document.getElementById("reservation_stopLieu").value || "Aucun";
           document.getElementById("recap_siege").textContent =
-            document.getElementById("reservation_siegeBebe").checked
-              ? "Oui"
-              : "Non";
+            document.getElementById("reservation_siegeBebe").checked ? "Oui" : "Non";
           document.getElementById("recap_type").textContent = type;
 
           // 📅 Date & Heure
@@ -234,7 +230,25 @@
             recapPrix.textContent = `${parseFloat(p.prix_total).toFixed(2)} €${p.majoration_nuit ? " ✦ tarif nuit" : ""}`;
           }
 
-          // 🔄 Passage à l'onglet final (onglet 3)
+          // 💾 Sauvegarde AJAX de la réservation pour obtenir l’ID
+          try {
+            const formEl  = document.querySelector("form");
+            const formData = new FormData(formEl);
+            const saveResp = await fetch(formEl.action || "/reservation", {
+              method: "POST",
+              headers: { "X-Requested-With": "XMLHttpRequest" },
+              body: formData,
+            });
+            const saved = await saveResp.json();
+            if (saved.id) {
+              const confirmBtn = document.getElementById("confirmReservationBtn");
+              if (confirmBtn) confirmBtn.dataset.reservationId = saved.id;
+            }
+          } catch (err) {
+            console.warn("Impossible de sauvegarder la réservation :", err);
+          }
+
+          // 🔄 Passage à l’onglet final (onglet 3)
           window.UI.unlockTab(2);
           window.UI.switchToTab("tab3");
         });
