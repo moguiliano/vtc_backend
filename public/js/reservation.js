@@ -232,20 +232,31 @@
 
           // 💾 Sauvegarde AJAX de la réservation pour obtenir l’ID
           try {
-            const formEl  = document.querySelector("form");
+            const formEl   = document.querySelector("form");
             const formData = new FormData(formEl);
-            const saveResp = await fetch(formEl.action || "/reservation", {
+            const saveResp = await fetch("/reservation", {
               method: "POST",
               headers: { "X-Requested-With": "XMLHttpRequest" },
               body: formData,
             });
+            if (!saveResp.ok) {
+              console.error("Erreur HTTP lors de la sauvegarde :", saveResp.status, await saveResp.text());
+              alert("Erreur lors de la création de la réservation. Veuillez réessayer.");
+              return;
+            }
             const saved = await saveResp.json();
             if (saved.id) {
               const confirmBtn = document.getElementById("confirmReservationBtn");
-              if (confirmBtn) confirmBtn.dataset.reservationId = saved.id;
+              if (confirmBtn) confirmBtn.dataset.reservationId = String(saved.id);
+            } else {
+              console.error("Réponse sans ID :", saved);
+              alert("Erreur : impossible de créer la réservation.");
+              return;
             }
           } catch (err) {
-            console.warn("Impossible de sauvegarder la réservation :", err);
+            console.error("Impossible de sauvegarder la réservation :", err);
+            alert("Erreur réseau lors de la création de la réservation.");
+            return;
           }
 
           // 🔄 Passage à l’onglet final (onglet 3)

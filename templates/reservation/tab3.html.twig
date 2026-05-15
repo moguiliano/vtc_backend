@@ -204,12 +204,18 @@ document.addEventListener('DOMContentLoaded', function () {
 	const btn = document.getElementById('confirmReservationBtn');
 	if (!btn) return;
 
-	const resId     = btn.dataset.reservationId || '';
-	const bypassOtp = btn.dataset.bypassOtp === '1';
-	if (!resId) return;
-
 	btn.addEventListener('click', async (e) => {
 		e.preventDefault();
+
+		// resId lu au moment du clic (peut avoir été injecté par le AJAX de nextRecapBtn)
+		const resId     = btn.dataset.reservationId || '';
+		const bypassOtp = btn.dataset.bypassOtp === '1';
+
+		if (!resId) {
+			alert('La réservation n\'est pas encore créée. Veuillez revenir à l\'étape précédente.');
+			return;
+		}
+
 		const prenom        = (document.getElementById('prenom')?.value || '').trim();
 		const clientPhone   = getFullPhone();
 		const informationsComplementaires = (infosArea?.value || '').trim();
