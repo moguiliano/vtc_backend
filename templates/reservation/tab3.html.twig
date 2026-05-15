@@ -147,6 +147,7 @@
 		</div>
 
 		<button id="confirmReservationBtn"
+				type="button"
 				class="btn btn-success mt-2 w-100"
 				style="padding:13px;font-size:1rem;font-weight:700;border-radius:50px;"
 				data-reservation-id="{{ reservation is defined and reservation ? reservation.id : '' }}"
@@ -207,7 +208,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	const bypassOtp = btn.dataset.bypassOtp === '1';
 	if (!resId) return;
 
-	btn.addEventListener('click', async () => {
+	btn.addEventListener('click', async (e) => {
+		e.preventDefault();
 		const prenom        = (document.getElementById('prenom')?.value || '').trim();
 		const clientPhone   = getFullPhone();
 		const informationsComplementaires = (infosArea?.value || '').trim();
