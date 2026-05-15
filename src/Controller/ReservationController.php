@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
+use App\Enum\ReservationStatus;
 use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
@@ -34,10 +35,19 @@ class ReservationController extends AbstractController
             $dateHeureDepart = new \DateTime();
             $dateHeureDepart->setDate($date->format('Y'), $date->format('m'), $date->format('d'));
             $dateHeureDepart->setTime($heure->format('H'), $heure->format('i'));
+            $reservation->setDateHeureDepart($dateHeureDepart);
 
             $entityManager->persist($reservation);
             $entityManager->flush();
-            return $this->redirectToRoute('reservation_success');
+
+            // Re-render with the new reservation so Tab3 can show the ID
+            return $this->render('reservation/index.html.twig', [
+                'form'         => $form->createView(),
+                'here_api_key' => $this->getParameter('here_api_key'),
+                'vehicles'     => $vehicleRepo->findAllActive(),
+                'reservation'  => $reservation,
+                'show_tab3'    => true,
+            ]);
         }
 
         return $this->render('reservation/index.html.twig', [
@@ -52,6 +62,7 @@ class ReservationController extends AbstractController
         int $id,
         Request $request,
         ReservationRepository $repo,
+        EntityManagerInterface $em,
         SmsNotifier $smsNotifier
     ): JsonResponse {
         $reservation = $repo->find($id);
@@ -61,6 +72,21 @@ class ReservationController extends AbstractController
 
         $payload     = json_decode($request->getContent() ?: '[]', true) ?? [];
         $clientPhone = $payload['clientPhone'] ?? null;
+        $prenom      = $payload['prenom'] ?? null;
+        $infos       = $payload['informationsComplementaires'] ?? null;
+        $modeReglement = $payload['modeReglement'] ?? 'carte_bancaire';
+        $bypassOtp   = (bool) ($payload['bypassOtp'] ?? false);
+
+        // OTP bypass: only allowed for authenticated ROLE_ADMIN or ROLE_REGULATEUR
+        if ($bypassOtp && !$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_REGULATEUR')) {
+            return new JsonResponse(['ok' => false, 'error' => 'Non autorisé'], 403);
+        }
+
+        // Persist client info and new fields
+        $reservation->setGuestInfo(json_encode(['prenom' => $prenom, 'phone' => $clientPhone]));
+        $reservation->setInformationsComplementaires($infos ? mb_substr($infos, 0, 500) : null);
+        $reservation->setModeReglement(in_array($modeReglement, ['especes', 'carte_bancaire'], true) ? $modeReglement : 'carte_bancaire');
+        $em->flush();
 
         $smsNotifier->notifyReservation($reservation, $clientPhone);
 

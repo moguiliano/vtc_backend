@@ -18,6 +18,11 @@ security:
             - ROLE_FORFAITS_EDIT
             - ROLE_VEHICULES_VIEW
             - ROLE_VEHICULES_EDIT
+        ROLE_ADMIN:
+            - ROLE_REGULATEUR
+        ROLE_REGULATEUR:
+            - ROLE_RESERVATIONS_VIEW
+            - ROLE_RESERVATIONS_EDIT
 
     firewalls:
         dev:
@@ -37,7 +42,7 @@ security:
 
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_REGULATEUR] }
 
 when@test:
     security:

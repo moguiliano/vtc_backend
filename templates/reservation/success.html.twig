@@ -189,6 +189,22 @@
         <td>{{ reservation.prix|number_format(2, ',', ' ') }} €</td>
       </tr>
       {% endif %}
+      <tr>
+        <td>Règlement</td>
+        <td>
+          {% if reservation.modeReglement == 'especes' %}
+            <i class="bi bi-cash-coin me-1" style="color:#66bb6a;"></i>Espèces
+          {% else %}
+            <i class="bi bi-credit-card me-1" style="color:#42a5f5;"></i>Carte bancaire
+          {% endif %}
+        </td>
+      </tr>
+      {% if reservation.informationsComplementaires %}
+      <tr>
+        <td>Notes</td>
+        <td style="white-space:pre-wrap;">{{ reservation.informationsComplementaires }}</td>
+      </tr>
+      {% endif %}
     </table>
     {% endif %}
 

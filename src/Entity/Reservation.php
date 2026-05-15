@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Enum\ReservationStatus;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -53,6 +54,15 @@ class Reservation
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $guestInfo = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $informationsComplementaires = null;
+
+    #[ORM\Column(length: 20)]
+    private string $modeReglement = 'carte_bancaire';
+
+    #[ORM\Column(length: 30, enumType: ReservationStatus::class)]
+    private ReservationStatus $statut = ReservationStatus::EN_ATTENTE;
 
     // --- Getters and setters ---
     
@@ -201,6 +211,48 @@ class Reservation
     public function setGuestInfo(?string $guestInfo): static
     {
         $this->guestInfo = $guestInfo;
+        return $this;
+    }
+
+    public function getInformationsComplementaires(): ?string
+    {
+        return $this->informationsComplementaires;
+    }
+
+    public function setInformationsComplementaires(?string $informationsComplementaires): static
+    {
+        $this->informationsComplementaires = $informationsComplementaires;
+        return $this;
+    }
+
+    public function getModeReglement(): string
+    {
+        return $this->modeReglement;
+    }
+
+    public function setModeReglement(string $modeReglement): static
+    {
+        $this->modeReglement = $modeReglement;
+        return $this;
+    }
+
+    public function getModeReglementLabel(): string
+    {
+        return match ($this->modeReglement) {
+            'especes'       => 'Espèces',
+            'carte_bancaire'=> 'Carte bancaire',
+            default         => $this->modeReglement,
+        };
+    }
+
+    public function getStatut(): ReservationStatus
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(ReservationStatus $statut): static
+    {
+        $this->statut = $statut;
         return $this;
     }
 }
