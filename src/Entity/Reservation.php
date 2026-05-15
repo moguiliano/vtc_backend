@@ -37,13 +37,13 @@ class Reservation
     private ?float $distance = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private int $duree = 0;
+    private ?int $duree = 0;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $typeVehicule = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private float $prix = 0.0;
+    private ?float $prix = 0.0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -143,23 +143,23 @@ class Reservation
         return $this;
     }
 
-    public function getDistance(): float
+    public function getDistance(): ?float
     {
         return $this->distance;
     }
 
-    public function setDistance(float $distance): static
+    public function setDistance(?float $distance): static
     {
         $this->distance = $distance;
         return $this;
     }
 
-    public function getDuree(): int
+    public function getDuree(): ?int
     {
         return $this->duree;
     }
 
-    public function setDuree(int $duree): static
+    public function setDuree(?int $duree): static
     {
         $this->duree = $duree;
         return $this;
@@ -176,12 +176,12 @@ class Reservation
         return $this;
     }
 
-    public function getPrix(): float
+    public function getPrix(): ?float
     {
         return $this->prix;
     }
 
-    public function setPrix(float $prix): static
+    public function setPrix(?float $prix): static
     {
         $this->prix = $prix;
         return $this;
