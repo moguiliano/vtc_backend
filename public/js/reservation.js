@@ -117,11 +117,14 @@
               document.getElementById("reservation_distance").value =
                 data.distance_km.toFixed(2);
 
-              // 🖼️ Récapitulatif visuel (distance/durée)
-              document.getElementById("recapitulatif-trajet").innerHTML = `
-                <div><strong>Distance estimée :</strong> ${data.distance_km} km</div>
-                <div><strong>Durée estimée :</strong> ${data.duration_min} minutes</div>
-              `;
+              // 🖼️ Récapitulatif visuel (distance/durée) — optionnel si l'élément existe
+              const recapTrajet = document.getElementById("recapitulatif-trajet");
+              if (recapTrajet) {
+                recapTrajet.innerHTML = `
+                  <div><strong>Distance estimée :</strong> ${data.distance_km} km</div>
+                  <div><strong>Durée estimée :</strong> ${data.duration_min} minutes</div>
+                `;
+              }
 
               // ➕ Mise à jour des infos sous la carte (spans + inputs hidden)
               afficherInfosCarte();
