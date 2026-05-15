@@ -67,8 +67,8 @@ class Reservation
     #[ORM\Column(length: 20)]
     private string $modeReglement = 'carte_bancaire';
 
-    #[ORM\Column(length: 30, enumType: ReservationStatus::class)]
-    private ReservationStatus $statut = ReservationStatus::EN_ATTENTE;
+    #[ORM\Column(length: 30)]
+    private string $statut = 'en_attente';
 
     // --- Getters and setters ---
     
@@ -273,14 +273,26 @@ class Reservation
         };
     }
 
-    public function getStatut(): ReservationStatus
+    public function getStatut(): string
     {
         return $this->statut;
     }
 
-    public function setStatut(ReservationStatus $statut): static
+    public function setStatut(string|ReservationStatus $statut): static
     {
-        $this->statut = $statut;
+        $this->statut = $statut instanceof ReservationStatus ? $statut->value : $statut;
         return $this;
+    }
+
+    /** Retourne l'enum correspondant au statut courant */
+    public function getStatutEnum(): ReservationStatus
+    {
+        return ReservationStatus::from($this->statut);
+    }
+
+    /** Label lisible du statut */
+    public function getStatutLabel(): string
+    {
+        return ReservationStatus::from($this->statut)->label();
     }
 }
