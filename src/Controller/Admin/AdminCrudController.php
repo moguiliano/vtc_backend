@@ -14,12 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -55,7 +49,7 @@ class AdminCrudController extends AbstractCrudController
             ->setFormType(RepeatedType::class)
             ->setFormTypeOptions([
                 'type'            => PasswordType::class,
-                'mapped'          => false,
+                'mapped'          => true,
                 'required'        => $pageName === Crud::PAGE_NEW,
                 'first_options'   => ['label' => 'Mot de passe', 'attr' => ['autocomplete' => 'new-password']],
                 'second_options'  => ['label' => 'Confirmer le mot de passe'],
@@ -110,13 +104,10 @@ class AdminCrudController extends AbstractCrudController
 
     private function hashPasswordIfProvided(Admin $admin): void
     {
-        // Récupère le mot de passe en clair depuis le formulaire
-        $plain = $this->container->get('request_stack')
-            ->getCurrentRequest()
-            ?->request->all('Admin')['plainPassword']['first'] ?? null;
-
+        $plain = $admin->getPlainPassword();
         if (!empty($plain)) {
             $admin->setPassword($this->hasher->hashPassword($admin, $plain));
+            $admin->eraseCredentials();
         }
     }
 }
