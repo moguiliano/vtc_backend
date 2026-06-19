@@ -60,6 +60,8 @@ class AdminCrudController extends AbstractCrudController
         yield ChoiceField::new('roles', 'Droits')
             ->setChoices([
                 'Super Admin (accès total)'   => 'ROLE_SUPER_ADMIN',
+                'Admin (accès /admin)'        => 'ROLE_ADMIN',
+                'Régulateur (réservations)'   => 'ROLE_REGULATEUR',
                 '— Voir réservations'         => 'ROLE_RESERVATIONS_VIEW',
                 '— Modifier réservations'     => 'ROLE_RESERVATIONS_EDIT',
                 '— Supprimer réservations'    => 'ROLE_RESERVATIONS_DELETE',
@@ -71,6 +73,8 @@ class AdminCrudController extends AbstractCrudController
             ->allowMultipleChoices()
             ->renderAsBadges([
                 'ROLE_SUPER_ADMIN'         => 'danger',
+                'ROLE_ADMIN'               => 'warning',
+                'ROLE_REGULATEUR'          => 'primary',
                 'ROLE_RESERVATIONS_VIEW'   => 'info',
                 'ROLE_RESERVATIONS_EDIT'   => 'warning',
                 'ROLE_RESERVATIONS_DELETE' => 'danger',
