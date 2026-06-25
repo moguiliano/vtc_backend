@@ -34,10 +34,18 @@ class ReservationCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $pdfAction = Action::new('downloadPdf', 'Bon de commande PDF', 'fa fa-file-pdf')
+            ->linkToRoute('reservation_pdf', fn(\App\Entity\Reservation $r) => ['id' => $r->getId()])
+            ->setHtmlAttributes(['target' => '_blank'])
+            ->addCssClass('btn btn-secondary');
+
         if (!$this->isGranted('ROLE_RESERVATIONS_DELETE')) {
             $actions->disable(Action::DELETE, Action::BATCH_DELETE);
         }
-        return $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_DETAIL, $pdfAction)
+            ->add(Crud::PAGE_INDEX, $pdfAction);
     }
 
     public function configureFields(string $pageName): iterable

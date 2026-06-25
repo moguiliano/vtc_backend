@@ -213,6 +213,12 @@
       Votre chauffeur vous contactera avant la prise en charge pour confirmer sa venue, son véhicule et sa plaque d'immatriculation.
     </div>
 
+    {% if reservation is defined %}
+    <a href="{{ path('reservation_pdf', {id: reservation.id}) }}" target="_blank"
+       class="btn-call-cta" style="margin-bottom:.8rem;border-color:rgba(255,86,48,.4);color:rgba(255,255,255,.8);">
+      <i class="bi bi-file-earmark-pdf-fill" style="color:#ff5630;"></i>Télécharger le bon de commande (PDF)
+    </a>
+    {% endif %}
     <a href="{{ path('app_home') }}" class="btn-new-resa">
       <i class="bi bi-plus-circle me-2"></i>Nouvelle réservation
     </a>

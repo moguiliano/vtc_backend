@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Helvetica, Arial, sans-serif; font-size: 11px; color: #1a1a2e; background: #fff; }
+
+    /* En-tête */
+    .header { width: 100%; border-bottom: 3px solid #ff5630; padding-bottom: 14px; margin-bottom: 18px; }
+    .header-inner { width: 100%; }
+    .header-left { display: inline-block; width: 60%; vertical-align: top; }
+    .header-right { display: inline-block; width: 38%; vertical-align: top; text-align: right; }
+    .brand-name { font-size: 26px; font-weight: bold; color: #ff5630; letter-spacing: -0.5px; }
+    .brand-sub { font-size: 9px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+    .doc-title { font-size: 18px; font-weight: bold; color: #1a1a2e; text-transform: uppercase; letter-spacing: 1px; }
+    .doc-num { font-size: 11px; color: #555; margin-top: 4px; }
+    .doc-date { font-size: 10px; color: #888; margin-top: 3px; }
+
+    /* Sections */
+    .section { margin-bottom: 16px; }
+    .section-title {
+        font-size: 9px; font-weight: bold; text-transform: uppercase;
+        letter-spacing: 1.5px; color: #ff5630; border-bottom: 1px solid #ffe0d6;
+        padding-bottom: 4px; margin-bottom: 8px;
+    }
+
+    /* Grille 2 colonnes */
+    .row { width: 100%; margin-bottom: 14px; }
+    .col-left { display: inline-block; width: 48%; vertical-align: top; }
+    .col-right { display: inline-block; width: 48%; vertical-align: top; margin-left: 2%; }
+
+    /* Table infos */
+    .info-table { width: 100%; border-collapse: collapse; }
+    .info-table tr td { padding: 5px 6px; font-size: 10.5px; border-bottom: 1px solid #f0f0f0; }
+    .info-table tr:last-child td { border-bottom: none; }
+    .info-table td.label { color: #888; width: 48%; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .info-table td.value { color: #1a1a2e; font-weight: 600; }
+
+    /* Box colorée */
+    .box { background: #fff9f7; border: 1px solid #ffe0d6; border-radius: 6px; padding: 10px 14px; }
+    .box-blue { background: #f0f7ff; border: 1px solid #c8dff8; border-radius: 6px; padding: 10px 14px; }
+
+    /* Prix */
+    .prix-block { background: #ff5630; border-radius: 6px; padding: 12px 16px; text-align: center; margin-bottom: 14px; }
+    .prix-label { color: rgba(255,255,255,0.7); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
+    .prix-value { color: #fff; font-size: 24px; font-weight: bold; margin-top: 2px; }
+    .prix-mode { color: rgba(255,255,255,0.8); font-size: 9.5px; margin-top: 4px; }
+
+    /* Mention légale */
+    .legal-banner {
+        background: #f8f8f8; border-left: 3px solid #ff5630;
+        padding: 10px 14px; margin-bottom: 14px; font-size: 10px;
+        color: #444; line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        border-top: 1px solid #eee; padding-top: 8px;
+        font-size: 8.5px; color: #aaa; text-align: center; line-height: 1.7;
+    }
+
+    /* Badge statut */
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-confirmee { background: #e8f5e9; color: #2e7d32; }
+    .badge-en_attente { background: #fff3e0; color: #e65100; }
+    .badge-terminee { background: #e3f2fd; color: #1565c0; }
+    .badge-annulee { background: #fce4ec; color: #c62828; }
+</style>
+</head>
+<body>
+
+{# ── EN-TÊTE ── #}
+<div class="header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="brand-name">ZenCAR</div>
+            <div class="brand-sub">SIMPLICI CAB — Taxi &amp; VTC Marseille</div>
+            <div style="margin-top:8px;font-size:9.5px;color:#555;line-height:1.7;">
+                12 Rue Antoine Re, 13010 Marseille<br>
+                Tél : 06 74 03 96 94<br>
+                SIREN : 982 953 382 &nbsp;|&nbsp; REVTC : EVTC094240137
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="doc-title">Bon de commande</div>
+            <div class="doc-num">N° {{ reservation.id|e }}</div>
+            <div class="doc-date">
+                Réservé le {{ reservation.createdAt|date('d/m/Y à H:i') }}
+            </div>
+            <div style="margin-top:8px;">
+                {% set s = reservation.statut %}
+                <span class="badge badge-{{ s }}">
+                    {% if s == 'confirmee' %}Confirmée
+                    {% elseif s == 'terminee' %}Terminée
+                    {% elseif s == 'annulee' %}Annulée
+                    {% elseif s == 'chauffeur_assigne' %}Chauffeur assigné
+                    {% elseif s == 'chauffeur_arrive' %}Chauffeur arrivé
+                    {% elseif s == 'client_a_bord' %}Client à bord
+                    {% else %}En attente{% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ── MENTION LÉGALE ── #}
+<div class="legal-banner">
+    <strong>Course effectuée sur réservation préalable</strong> — Conformément à l'article L3122-9 du Code des transports.
+    Ce document constitue le bon de commande de la prestation de transport. À conserver 3 ans.
+</div>
+
+{# ── EXPLOITANT + CLIENT ── #}
+<div class="row">
+    <div class="col-left">
+        <div class="section">
+            <div class="section-title">Exploitant VTC</div>
+            <div class="box">
+                <table class="info-table">
+                    <tr><td class="label">Raison sociale</td><td class="value">SIMPLICI CAB</td></tr>
+                    <tr><td class="label">SIREN</td><td class="value">982 953 382</td></tr>
+                    <tr><td class="label">SIRET</td><td class="value">982 953 382 00024</td></tr>
+                    <tr><td class="label">N° REVTC</td><td class="value">EVTC094240137</td></tr>
+                    <tr><td class="label">N° TVA</td><td class="value">FR18 982 953 382</td></tr>
+                    <tr><td class="label">Code NAF</td><td class="value">49.32Z</td></tr>
+                    <tr><td class="label">Adresse</td><td class="value">12 Rue Antoine Re<br>13010 Marseille</td></tr>
+                    <tr><td class="label">Téléphone</td><td class="value">06 74 03 96 94</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-right">
+        <div class="section">
+            <div class="section-title">Client</div>
+            <div class="box-blue">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Prénom</td>
+                        <td class="value">{{ reservation.guestPrenom ?: '—' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Téléphone</td>
+                        <td class="value">{{ reservation.guestTelephone ?: '—' }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        {# ── PRIX ── #}
+        <div class="prix-block">
+            <div class="prix-label">Prix forfait</div>
+            <div class="prix-value">{{ reservation.prix ? reservation.prix|number_format(2, ',', ' ') ~ ' €' : '—' }}</div>
+            <div class="prix-mode">
+                {% if reservation.modeReglement == 'especes' %}Règlement en espèces{% else %}Règlement par carte bancaire{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ── DÉTAILS DE LA COURSE ── #}
+<div class="section">
+    <div class="section-title">Détails de la course</div>
+    <div class="box">
+        <table class="info-table">
+            <tr>
+                <td class="label">Lieu de prise en charge</td>
+                <td class="value">{{ reservation.depart }}</td>
+            </tr>
+            <tr>
+                <td class="label">Destination</td>
+                <td class="value">{{ reservation.arrivee }}</td>
+            </tr>
+            {% if reservation.stopOption and reservation.stopLieu %}
+            <tr>
+                <td class="label">Arrêt en route</td>
+                <td class="value">{{ reservation.stopLieu }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td class="label">Date &amp; heure de réservation</td>
+                <td class="value">{{ reservation.createdAt|date('d/m/Y à H:i') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Prise en charge souhaitée</td>
+                <td class="value">
+                    {% if reservation.dateHeureDepart %}
+                        {{ reservation.dateHeureDepart|date('d/m/Y à H:i') }}
+                    {% else %}—{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Véhicule</td>
+                <td class="value">
+                    {% if reservation.typeVehicule == 'eco_berline' %}Eco Berline
+                    {% elseif reservation.typeVehicule == 'berline' %}Berline
+                    {% elseif reservation.typeVehicule == 'grand_coffre' %}Grand Coffre
+                    {% elseif reservation.typeVehicule == 'van' %}Van
+                    {% else %}{{ reservation.typeVehicule ?: '—' }}{% endif %}
+                </td>
+            </tr>
+            {% if reservation.distance %}
+            <tr>
+                <td class="label">Distance estimée</td>
+                <td class="value">{{ reservation.distance|number_format(1, ',', ' ') }} km</td>
+            </tr>
+            {% endif %}
+            {% if reservation.duree %}
+            <tr>
+                <td class="label">Durée estimée</td>
+                <td class="value">{{ reservation.duree }} min</td>
+            </tr>
+            {% endif %}
+            {% if reservation.siegeBebe %}
+            <tr>
+                <td class="label">Option</td>
+                <td class="value">Siège bébé inclus</td>
+            </tr>
+            {% endif %}
+            {% if reservation.informationsComplementaires %}
+            <tr>
+                <td class="label">Notes client</td>
+                <td class="value">{{ reservation.informationsComplementaires }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+
+{# ── FOOTER ── #}
+<div class="footer">
+    SIMPLICI CAB — SAS au capital variable — 12 Rue Antoine Re, 13010 Marseille<br>
+    SIREN 982 953 382 &nbsp;|&nbsp; SIRET 982 953 382 00024 &nbsp;|&nbsp; REVTC EVTC094240137 &nbsp;|&nbsp; TVA FR18 982 953 382 &nbsp;|&nbsp; NAF 49.32Z<br>
+    Document généré le {{ "now"|date('d/m/Y à H:i') }} — À conserver 3 ans
+</div>
+
+</body>
+</html>

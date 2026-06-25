@@ -7,6 +7,8 @@ use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
 use App\Service\SmsNotifier;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -163,6 +165,37 @@ class ReservationController extends AbstractController
         return new JsonResponse([
             'redirect' => $this->generateUrl('reservation_success', ['id' => $reservation->getId()]),
         ]);
+    }
+
+    #[Route('/{id}/bon-commande.pdf', name: 'reservation_pdf', methods: ['GET'])]
+    public function pdf(int $id, ReservationRepository $repo): Response
+    {
+        $reservation = $repo->find($id);
+        if (!$reservation) {
+            throw $this->createNotFoundException('Réservation introuvable.');
+        }
+
+        $html = $this->renderView('pdf/bon_commande.html.twig', [
+            'reservation' => $reservation,
+        ]);
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+        $options->set('isRemoteEnabled', false);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html, 'UTF-8');
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return new Response(
+            $dompdf->output(),
+            200,
+            [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="bon-commande-' . $id . '.pdf"',
+            ]
+        );
     }
 
     #[Route('/calculate-trip', name: 'reservation_calculate_trip', methods: ['POST'])]
