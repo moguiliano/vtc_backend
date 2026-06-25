@@ -43,6 +43,9 @@ class AdminCrudController extends AbstractCrudController
     {
         yield TextField::new('nom', 'Nom / Prénom');
         yield EmailField::new('email', 'Email');
+        yield \EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField::new('createdAt', 'Créé le')
+            ->setFormat('dd/MM/yyyy HH:mm')
+            ->hideOnForm();
 
         // Mot de passe — champ virtuel, non mappé
         yield TextField::new('plainPassword', 'Mot de passe')

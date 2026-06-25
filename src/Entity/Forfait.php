@@ -37,6 +37,14 @@ class Forfait
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $duree = null;
 
+    #[ORM\Column]
+    private \DateTimeImmutable $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int { return $this->id; }
 
     public function getDepart(): ?string { return $this->depart; }
@@ -62,4 +70,6 @@ class Forfait
 
     public function getDuree(): ?int { return $this->duree; }
     public function setDuree(?int $duree): static { $this->duree = $duree; return $this; }
+
+    public function getCreatedAt(): \DateTimeImmutable { return $this->createdAt; }
 }

@@ -69,6 +69,14 @@ class Reservation
     #[ORM\Column(length: 30)]
     private string $statut = 'en_attente';
 
+    #[ORM\Column]
+    private \DateTimeImmutable $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     // --- Getters and setters ---
     
     public function getId(): ?int
@@ -281,5 +289,10 @@ class Reservation
     {
         $this->statut = $statut;
         return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

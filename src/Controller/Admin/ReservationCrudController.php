@@ -85,6 +85,9 @@ class ReservationCrudController extends AbstractCrudController
             ->setNumOfRows(3)
             ->setRequired(false);
 
+        // ── Dates ──
+        $createdAt = DateTimeField::new('createdAt', 'Créé le')->setFormat('dd/MM/yyyy HH:mm')->hideOnForm();
+
         // ── Détail seulement ──
         $user     = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
         $isGuest  = BooleanField::new('isGuest', 'Réservation invité')->onlyOnDetail();
@@ -92,13 +95,13 @@ class ReservationCrudController extends AbstractCrudController
 
         // ── Index ──
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$statut, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos];
+            return [$statut, $createdAt, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos];
         }
 
         // ── Détail ──
         if (Crud::PAGE_DETAIL === $pageName) {
             return [
-                $statut,
+                $statut, $createdAt,
                 $depart, $arrivee, $dateHeureDepart,
                 $stopOption, $stopLieu, $siegeBebe,
                 $distance, $duree,

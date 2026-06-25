@@ -47,5 +47,8 @@ class ForfaitCrudController extends AbstractCrudController
         yield IntegerField::new('duree', 'Durée estimée (min)')->setRequired(false);
         yield IntegerField::new('ordre', 'Ordre d\'affichage');
         yield BooleanField::new('actif', 'Actif');
+        yield \EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField::new('createdAt', 'Créé le')
+            ->setFormat('dd/MM/yyyy HH:mm')
+            ->hideOnForm();
     }
 }
