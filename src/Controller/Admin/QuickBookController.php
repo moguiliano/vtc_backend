@@ -32,6 +32,7 @@ class QuickBookController extends AbstractController
             $phone     = trim($request->request->get('telephone', ''));
             $mode      = in_array($request->request->get('modeReglement'), ['especes', 'carte_bancaire'], true)
                          ? $request->request->get('modeReglement') : 'carte_bancaire';
+            $offset    = max(-60, min(0, (int) $request->request->get('offsetMinutes', 0)));
 
             $forfait = $this->forfaitRepo->find($forfaitId);
 
@@ -43,7 +44,7 @@ class QuickBookController extends AbstractController
                 $reservation->setDistance($forfait->getDistance());
                 $reservation->setDuree($forfait->getDuree());
                 $reservation->setTypeVehicule('eco_berline');
-                $reservation->setDateHeureDepart(new \DateTime());
+                $reservation->setDateHeureDepart(new \DateTime("{$offset} minutes"));
                 $reservation->setStopOption(false);
                 $reservation->setSiegeBebe(false);
                 $reservation->setGuestPrenom(mb_substr($prenom, 0, 100));

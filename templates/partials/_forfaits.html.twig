@@ -80,6 +80,22 @@
                            inputmode="tel" pattern="[0-9+\s().-]*"
                            style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:white;">
                 </div>
+                <div class="mb-3">
+                    <label class="form-label" style="color:rgba(255,255,255,.7);font-size:.85rem;">Heure de prise en charge</label>
+                    <div class="d-flex gap-2 align-items-center">
+                        <button type="button" class="btn flex-fill qb-offset active" data-offset="0"
+                                style="border-radius:10px;border:1px solid rgba(255,255,255,.2);color:white;background:rgba(255,255,255,.15);">
+                            <i class="bi bi-clock me-1"></i>Maintenant
+                        </button>
+                        <button type="button" class="btn flex-fill qb-offset" data-offset="-10"
+                                style="border-radius:10px;border:1px solid rgba(255,255,255,.2);color:white;background:rgba(255,255,255,.04);">
+                            <i class="bi bi-clock-history me-1"></i>- 10 min
+                        </button>
+                    </div>
+                    <div class="mt-2 text-center" style="color:#ff5630;font-size:.95rem;font-weight:600;">
+                        <i class="bi bi-alarm me-1"></i>Prise en charge à <span id="qbHeureAffichee"></span>
+                    </div>
+                </div>
                 <div class="mb-2">
                     <label class="form-label" style="color:rgba(255,255,255,.7);font-size:.85rem;">Règlement</label>
                     <div class="d-flex gap-2">
@@ -107,6 +123,7 @@
 (function () {
     let qbForfaitId = null;
     let qbMode = 'carte_bancaire';
+    let qbOffset = 0;
 
     document.querySelectorAll('.qb-open-modal').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -121,7 +138,35 @@
             sb.disabled = false;
             sb.innerHTML = '<i class="bi bi-check-lg me-2"></i>Confirmer la réservation';
             qbMode = 'carte_bancaire';
+            qbOffset = 0;
             document.querySelectorAll('.qb-mode').forEach(b => b.classList.toggle('active', b.dataset.mode === 'carte_bancaire'));
+            document.querySelectorAll('.qb-offset').forEach(b => {
+                const isNow = b.dataset.offset === '0';
+                b.classList.toggle('active', isNow);
+                b.style.background = isNow ? 'rgba(255,255,255,.15)' : 'rgba(255,255,255,.04)';
+            });
+            updateHeureAffichee();
+        });
+    });
+
+    function updateHeureAffichee() {
+        const d = new Date(Date.now() + qbOffset * 60000);
+        const h = String(d.getHours()).padStart(2, '0');
+        const m = String(d.getMinutes()).padStart(2, '0');
+        const el = document.getElementById('qbHeureAffichee');
+        if (el) el.textContent = h + 'h' + m;
+    }
+
+    document.querySelectorAll('.qb-offset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.qb-offset').forEach(b => {
+                b.classList.remove('active');
+                b.style.background = 'rgba(255,255,255,.04)';
+            });
+            btn.classList.add('active');
+            btn.style.background = 'rgba(255,255,255,.15)';
+            qbOffset = parseInt(btn.dataset.offset, 10);
+            updateHeureAffichee();
         });
     });
 
@@ -152,7 +197,7 @@
             const resp = await fetch('/reservation/quick-book', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ forfaitId: qbForfaitId, prenom, telephone, modeReglement: qbMode }),
+                body: JSON.stringify({ forfaitId: qbForfaitId, prenom, telephone, modeReglement: qbMode, offsetMinutes: qbOffset }),
             });
             const data = await resp.json();
             if (resp.ok && data.redirect) {

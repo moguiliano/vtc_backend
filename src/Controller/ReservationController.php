@@ -146,7 +146,8 @@ class ReservationController extends AbstractController
         $reservation->setDistance($forfait->getDistance());
         $reservation->setDuree($forfait->getDuree());
         $reservation->setTypeVehicule('eco_berline');
-        $reservation->setDateHeureDepart(new \DateTime());
+        $offset = max(-60, min(0, (int) ($data['offsetMinutes'] ?? 0)));
+        $reservation->setDateHeureDepart(new \DateTime("{$offset} minutes"));
         $reservation->setStopOption(false);
         $reservation->setSiegeBebe(false);
         $reservation->setGuestPrenom(mb_substr($prenom, 0, 100));
