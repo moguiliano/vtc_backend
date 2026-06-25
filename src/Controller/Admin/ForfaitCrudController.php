@@ -6,6 +6,7 @@ use App\Entity\Forfait;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -42,6 +43,8 @@ class ForfaitCrudController extends AbstractCrudController
         yield TextField::new('icone', 'Icône Bootstrap')
             ->setHelp('Ex: bi bi-airplane-fill, bi bi-train-front-fill')
             ->setRequired(false);
+        yield NumberField::new('distance', 'Distance (km)')->setNumDecimals(1)->setRequired(false);
+        yield IntegerField::new('duree', 'Durée estimée (min)')->setRequired(false);
         yield IntegerField::new('ordre', 'Ordre d\'affichage');
         yield BooleanField::new('actif', 'Actif');
     }

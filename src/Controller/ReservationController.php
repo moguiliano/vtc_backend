@@ -7,6 +7,7 @@ use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
 use App\Service\SmsNotifier;
+use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -117,6 +118,50 @@ class ReservationController extends AbstractController
         }
 
         return $this->render('reservation/success.html.twig', ['reservation' => $reservation]);
+    }
+
+    #[Route('/quick-book', name: 'reservation_quick_book', methods: ['POST'])]
+    public function quickBook(Request $request, EntityManagerInterface $em, ForfaitRepository $forfaitRepo): JsonResponse
+    {
+        $data      = json_decode($request->getContent(), true) ?? [];
+        $forfaitId = (int) ($data['forfaitId'] ?? 0);
+        $prenom    = trim($data['prenom'] ?? '');
+        $phone     = trim($data['telephone'] ?? '');
+        $mode      = in_array($data['modeReglement'] ?? '', ['especes', 'carte_bancaire'], true)
+                     ? $data['modeReglement'] : 'carte_bancaire';
+
+        if (!$forfaitId || !$prenom || !$phone) {
+            return new JsonResponse(['error' => 'Prénom, téléphone et forfait sont obligatoires.'], 400);
+        }
+
+        $forfait = $forfaitRepo->find($forfaitId);
+        if (!$forfait || !$forfait->isActif()) {
+            return new JsonResponse(['error' => 'Forfait introuvable.'], 404);
+        }
+
+        $reservation = new Reservation();
+        $reservation->setDepart($forfait->getDepart());
+        $reservation->setArrivee($forfait->getArrivee());
+        $reservation->setPrix((float) $forfait->getPrix());
+        $reservation->setDistance($forfait->getDistance());
+        $reservation->setDuree($forfait->getDuree());
+        $reservation->setTypeVehicule('eco_berline');
+        $reservation->setDateHeureDepart(new \DateTime());
+        $reservation->setStopOption(false);
+        $reservation->setSiegeBebe(false);
+        $reservation->setGuestPrenom(mb_substr($prenom, 0, 100));
+        $reservation->setGuestTelephone(mb_substr($phone, 0, 25));
+        $reservation->setGuestInfo(json_encode(['prenom' => $prenom, 'phone' => $phone]));
+        $reservation->setModeReglement($mode);
+        $reservation->setIsGuest(true);
+        $reservation->setStatut('confirmee');
+
+        $em->persist($reservation);
+        $em->flush();
+
+        return new JsonResponse([
+            'redirect' => $this->generateUrl('reservation_success', ['id' => $reservation->getId()]),
+        ]);
     }
 
     #[Route('/calculate-trip', name: 'reservation_calculate_trip', methods: ['POST'])]

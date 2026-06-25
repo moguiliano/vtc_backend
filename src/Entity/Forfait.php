@@ -31,6 +31,12 @@ class Forfait
     #[ORM\Column(length: 60, nullable: true)]
     private ?string $icone = null;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $distance = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $duree = null;
+
     public function getId(): ?int { return $this->id; }
 
     public function getDepart(): ?string { return $this->depart; }
@@ -50,4 +56,10 @@ class Forfait
 
     public function getIcone(): ?string { return $this->icone; }
     public function setIcone(?string $icone): static { $this->icone = $icone; return $this; }
+
+    public function getDistance(): ?float { return $this->distance; }
+    public function setDistance(?float $distance): static { $this->distance = $distance; return $this; }
+
+    public function getDuree(): ?int { return $this->duree; }
+    public function setDuree(?int $duree): static { $this->duree = $duree; return $this; }
 }
