@@ -158,6 +158,7 @@ class ReservationController extends AbstractController
         $reservation->setModeReglement($mode);
         $reservation->setIsGuest(true);
         $reservation->setStatut('confirmee');
+        $reservation->setCreatedAt(new \DateTimeImmutable('-10 minutes'));
 
         $em->persist($reservation);
         $em->flush();
