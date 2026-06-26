@@ -94,7 +94,7 @@ class ReservationCrudController extends AbstractCrudController
             ->setRequired(false);
 
         // ── Dates ──
-        $createdAt = DateTimeField::new('createdAt', 'Créé le')->setFormat('dd/MM/yyyy HH:mm')->hideOnForm();
+        $createdAt = DateTimeField::new('createdAt', 'Créé le')->setFormat('dd/MM/yyyy HH:mm');
 
         // ── Détail seulement ──
         $user     = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
@@ -123,6 +123,7 @@ class ReservationCrudController extends AbstractCrudController
         // ── Création / Édition ──
         return [
             $statut,
+            $createdAt,
             $depart, $arrivee, $dateHeureDepart,
             $stopOption, $stopLieu, $siegeBebe,
             $distance, $duree,
