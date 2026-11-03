@@ -23,6 +23,17 @@
         // Ajoute un listener sur la checkbox
         checkbox.addEventListener("change", () => {
           field.style.display = checkbox.checked ? "block" : "none";
+
+          // 🧹 Si on décoche l'arrêt : on vide le champ, on retire le marqueur
+          // et on recalcule l'itinéraire sans l'arrêt (sinon le km affiché
+          // sous la carte reste celui calculé AVEC l'arrêt).
+          if (!checkbox.checked) {
+            const stopInput = document.getElementById("reservation_stopLieu");
+            if (stopInput) stopInput.value = "";
+            const list = document.getElementById("reservation_stopLieu-suggestions");
+            if (list) list.innerHTML = "";
+            window.ZenMap?.removeStop?.();
+          }
         });
 
         // Applique l’état initial (au chargement de la page)

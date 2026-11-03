@@ -314,6 +314,19 @@
       // 🔧 Active les écouteurs sur les champs d’adresse
       setupInputListeners();
 
+      // -----------------------------------------------------------------------
+      // 🧹 removeStop() – retire le marqueur "Arrêt" et recalcule l'itinéraire
+      // - Appelé quand la case "Ajouter un arrêt" est décochée
+      // -----------------------------------------------------------------------
+      window.ZenMap.removeStop = function () {
+        if (markers["Arrêt"]) {
+          map.removeObject(markers["Arrêt"]);
+          delete markers["Arrêt"];
+        }
+        delete allPoints["Arrêt"];
+        updateRouteLine();
+      };
+
       // 🧹 Expose un utilitaire pour nettoyer les listeners (si besoin)
       return {
         destroy: function () {

@@ -9,6 +9,9 @@
 (function () {
   window.Autocomplete = {
     apiKey: "", // 🔑 Stocke la clé API HERE (initialisée via initApiKey)
+    _debounceTimers: {}, // ⏱️ Un timer par champ, pour ne requêter qu'après une pause de saisie
+    _abortControllers: {}, // 🚫 Permet d'annuler une requête devenue obsolète
+    _lastDispatchedValue: {}, // 🔁 Évite de redéclencher un recalcul déjà fait (clic sur suggestion)
 
     // =========================================================================
     // ⚙️ Initialise la clé API HERE
@@ -41,16 +44,34 @@
         query
       )}&at=43.2965,5.3698&apiKey=${this.apiKey}`;
 
+      // 🚫 Annule la requête précédente pour ce champ si elle est encore en vol
+      // (évite qu'une réponse tardive et obsolète n'écrase des suggestions plus récentes)
+      this._abortControllers[inputId]?.abort();
+      const controller = new AbortController();
+      this._abortControllers[inputId] = controller;
+
       try {
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: controller.signal });
         if (!res.ok) throw new Error("Erreur API HERE");
         const data = await res.json();
 
         // Affichage des suggestions récupérées
         this.displaySuggestions(data.items, inputId);
       } catch (err) {
+        if (err.name === "AbortError") return;
         console.error("Erreur lors de la récupération des suggestions :", err);
       }
+    },
+
+    // =========================================================================
+    // ⏳ debouncedFetchSuggestions – attend une pause de 300ms dans la saisie
+    // avant d'appeler l'API HERE, pour ne pas consommer un token par frappe.
+    // =========================================================================
+    debouncedFetchSuggestions: function (inputId) {
+      clearTimeout(this._debounceTimers[inputId]);
+      this._debounceTimers[inputId] = setTimeout(() => {
+        this.fetchSuggestions(inputId);
+      }, 300);
     },
 
     // =========================================================================
@@ -88,6 +109,7 @@
         li.addEventListener("click", () => {
           input.value = li.textContent;
           list.innerHTML = "";
+          this._lastDispatchedValue[inputId] = input.value;
 
           // 🔁 Notifie les autres modules (ex: la carte) qu’une adresse a changé
           const event = new CustomEvent("addressUpdated", {
@@ -109,7 +131,22 @@
     setupAutocomplete: function (id) {
       const input = document.getElementById(id);
       if (input) {
-        input.addEventListener("input", () => this.fetchSuggestions(id));
+        input.addEventListener("input", () => this.debouncedFetchSuggestions(id));
+
+        // 🧭 Si l'utilisateur tape/colle une adresse complète sans cliquer sur
+        // une suggestion (puis quitte le champ), on recalcule quand même le
+        // trajet avec le texte saisi — sinon le km sous la carte reste figé.
+        input.addEventListener("blur", () => {
+          setTimeout(() => {
+            const list = document.getElementById(`${id}-suggestions`);
+            if (list) list.innerHTML = "";
+            const value = input.value.trim();
+            if (value && value !== this._lastDispatchedValue[id]) {
+              this._lastDispatchedValue[id] = value;
+              input.dispatchEvent(new CustomEvent("addressUpdated", { detail: { inputId: id } }));
+            }
+          }, 150);
+        });
       }
     },
 
@@ -148,6 +185,7 @@
           if (label) {
             const input = document.getElementById(inputId);
             input.value = label;
+            this._lastDispatchedValue[inputId] = label;
 
             // 🔁 Notifie les autres modules qu’une adresse a changé
             const event = new CustomEvent("addressUpdated", {
