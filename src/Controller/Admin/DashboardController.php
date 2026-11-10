@@ -4,10 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin;
 use App\Entity\Contact;
+use App\Entity\Facture;
 use App\Entity\Forfait;
 use App\Entity\Reservation;
+use App\Entity\Societe;
 use App\Entity\VehicleCategory;
 use App\Repository\ContactRepository;
+use App\Repository\SocieteRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -22,6 +26,7 @@ class DashboardController extends AbstractDashboardController
     public function __construct(
         private AdminUrlGenerator $adminUrlGenerator,
         private ContactRepository $contactRepo,
+        private SocieteRepository $societeRepo,
     ) {}
 
     #[Route('/admin', name: 'admin_dashboard')]
@@ -55,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         if ($this->isGranted('ROLE_RESERVATIONS_VIEW')) {
             yield MenuItem::section('Réservations');
             yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
+            yield MenuItem::linkToCrud('Factures', 'fa fa-file-invoice', Facture::class);
         }
         if ($this->isGranted('ROLE_RESERVATIONS_EDIT')) {
             yield MenuItem::linkToRoute('Réservation rapide', 'fa fa-bolt', 'admin_quick_book');
@@ -81,6 +87,9 @@ class DashboardController extends AbstractDashboardController
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             yield MenuItem::section('Administration');
             yield MenuItem::linkToCrud('Administrateurs', 'fa fa-users', Admin::class);
+            yield MenuItem::linkToCrud('Ma société', 'fa fa-building', Societe::class)
+                ->setAction(Action::EDIT)
+                ->setEntityId($this->societeRepo->get()->getId());
         }
 
         // Mon compte (tous)

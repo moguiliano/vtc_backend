@@ -11,6 +11,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
+use App\Repository\SocieteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -169,7 +170,7 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/{id}/bon-commande.pdf', name: 'reservation_pdf', methods: ['GET'])]
-    public function pdf(int $id, ReservationRepository $repo): Response
+    public function pdf(int $id, ReservationRepository $repo, SocieteRepository $societeRepo): Response
     {
         $reservation = $repo->find($id);
         if (!$reservation) {
@@ -178,6 +179,7 @@ class ReservationController extends AbstractController
 
         $html = $this->renderView('pdf/bon_commande.html.twig', [
             'reservation' => $reservation,
+            'societe'     => $societeRepo->get(),
         ]);
 
         $options = new Options();

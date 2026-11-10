@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+    @page { margin: 40px 45px 70px 45px; }
+    * { box-sizing: border-box; }
+    body, table, td, th { margin: 0; padding: 0; }
+    body { font-family: Helvetica, Arial, sans-serif; font-size: 11px; color: #111; }
+    .title { text-align: center; font-size: 13px; margin-bottom: 28px; }
+    .parties { width: 100%; margin-bottom: 18px; border-collapse: collapse; }
+    .parties td { vertical-align: top; width: 50%; line-height: 1.6; }
+    .parties .right { padding-left: 40px; }
+    .meta { line-height: 1.7; margin-bottom: 22px; }
+    table.lines { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+    table.lines th { text-align: left; font-weight: bold; padding: 4px 6px 6px 0; border-bottom: 1px solid #111; vertical-align: bottom; }
+    table.lines td { padding: 8px 6px 8px 0; border-bottom: 1px solid #111; }
+    table.totals { width: 45%; margin-left: 55%; border-collapse: collapse; }
+    table.totals td { padding: 6px 6px 6px 0; }
+    table.totals td.amount { text-align: left; width: 40%; }
+    .footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; font-size: 9.5px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="title">Facture fiscale</div>
+
+<table class="parties">
+    <tr>
+        <td>
+            {{ facture.clientNom }}<br>
+            {% if facture.clientAdresse %}{{ facture.clientAdresse|nl2br }}<br>{% endif %}
+            {% if facture.clientSiret %}SIRET : {{ facture.clientSiret }}<br>{% endif %}
+            {% if facture.clientTva %}n° TVA : {{ facture.clientTva }}<br>{% endif %}
+        </td>
+        <td class="right">
+            {{ societe.raisonSociale }}<br>
+            {{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}<br>
+            France<br>
+            n° TVA : {{ societe.tvaIntra }}<br>
+            SIREN/SIRET : {{ societe.siret }}<br>
+            N° REVTC : {{ societe.numeroRevtc }}
+        </td>
+    </tr>
+</table>
+
+<div class="meta">
+    Numéro de facture : &nbsp;{{ facture.numero }}<br>
+    Date de facturation: &nbsp;{{ facture.dateFacture|date('d/m/Y') }}
+</div>
+
+{% set taux = facture.tauxTva == facture.tauxTva|round ? facture.tauxTva|round : facture.tauxTva|number_format(1, ',', ' ') %}
+
+<table class="lines">
+    <thead>
+        <tr>
+            <th>Date de la<br>transaction</th>
+            <th>Description</th>
+            <th>Qté</th>
+            <th>TVA</th>
+            <th>TVA Montant</th>
+            <th>Montant net</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ facture.dateTransaction|date('d/m/Y') }}</td>
+            <td>{{ facture.description }}</td>
+            <td>1</td>
+            <td>{{ taux }}%</td>
+            <td>{{ facture.montantTva|number_format(2, ',', ' ') }} €</td>
+            <td>{{ facture.montantHt|number_format(2, ',', ' ') }} €</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="totals">
+    <tr><td>Total HT</td><td class="amount">{{ facture.montantHt|number_format(2, ',', ' ') }} €</td></tr>
+    <tr><td>Total TVA {{ taux }}%</td><td class="amount">{{ facture.montantTva|number_format(2, ',', ' ') }} €</td></tr>
+    <tr><td>Montant total TTC</td><td class="amount">{{ facture.prixTtc|number_format(2, ',', ' ') }} €</td></tr>
+    <tr><td>Réglé par</td><td class="amount">{{ facture.modeReglement == 'especes' ? 'espèces' : 'carte bancaire' }}</td></tr>
+</table>
+
+<div class="footer">
+    {{ societe.raisonSociale }} — {{ societe.formeJuridique }}{% if societe.capitalSocial %} au capital de {{ societe.capitalSocial }}{% endif %} — {{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}{% if societe.rcs %} — {{ societe.rcs }}{% endif %}<br>
+    SIREN {{ societe.siren }} &nbsp;|&nbsp; SIRET {{ societe.siret }} &nbsp;|&nbsp; TVA {{ societe.tvaIntra }} &nbsp;|&nbsp; REVTC {{ societe.numeroRevtc }} &nbsp;|&nbsp; NAF {{ societe.codeNaf }}
+</div>
+
+</body>
+</html>

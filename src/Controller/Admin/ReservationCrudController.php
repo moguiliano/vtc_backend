@@ -15,9 +15,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class ReservationCrudController extends AbstractCrudController
 {
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator) {}
+
     public static function getEntityFqcn(): string
     {
         return Reservation::class;
@@ -39,13 +42,24 @@ class ReservationCrudController extends AbstractCrudController
             ->setHtmlAttributes(['target' => '_blank'])
             ->addCssClass('btn btn-secondary');
 
+        $factureAction = Action::new('createFacture', 'Créer une facture', 'fa fa-file-invoice')
+            ->linkToUrl(fn(Reservation $r) => $this->adminUrlGenerator
+                ->setController(FactureCrudController::class)
+                ->setAction(Action::NEW)
+                ->set('reservationId', $r->getId())
+                ->generateUrl())
+            ->displayIf(fn() => $this->isGranted('ROLE_RESERVATIONS_EDIT'))
+            ->addCssClass('btn btn-secondary');
+
         if (!$this->isGranted('ROLE_RESERVATIONS_DELETE')) {
             $actions->disable(Action::DELETE, Action::BATCH_DELETE);
         }
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_DETAIL, $pdfAction)
-            ->add(Crud::PAGE_INDEX, $pdfAction);
+            ->add(Crud::PAGE_INDEX, $pdfAction)
+            ->add(Crud::PAGE_DETAIL, $factureAction)
+            ->add(Crud::PAGE_INDEX, $factureAction);
     }
 
     public function configureFields(string $pageName): iterable

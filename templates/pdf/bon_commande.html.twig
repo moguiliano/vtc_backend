@@ -75,12 +75,12 @@
 <div class="header">
     <div class="header-inner">
         <div class="header-left">
-            <div class="brand-name">ZenCAR</div>
-            <div class="brand-sub">SIMPLICI CAB — Taxi &amp; VTC Marseille</div>
+            <div class="brand-name">{{ societe.nomCommercial }}</div>
+            <div class="brand-sub">{{ societe.raisonSociale }} — Taxi &amp; VTC {{ societe.ville }}</div>
             <div style="margin-top:8px;font-size:9.5px;color:#555;line-height:1.7;">
-                12 Rue Antoine Re, 13010 Marseille<br>
-                Tél : 06 74 03 96 94<br>
-                SIREN : 982 953 382 &nbsp;|&nbsp; REVTC : EVTC094240137
+                {{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}<br>
+                Tél : {{ societe.telephone }}<br>
+                SIREN : {{ societe.siren }} &nbsp;|&nbsp; REVTC : {{ societe.numeroRevtc }}
             </div>
         </div>
         <div class="header-right">
@@ -118,14 +118,14 @@
             <div class="section-title">Exploitant VTC</div>
             <div class="box">
                 <table class="info-table">
-                    <tr><td class="label">Raison sociale</td><td class="value">SIMPLICI CAB</td></tr>
-                    <tr><td class="label">SIREN</td><td class="value">982 953 382</td></tr>
-                    <tr><td class="label">SIRET</td><td class="value">982 953 382 00024</td></tr>
-                    <tr><td class="label">N° REVTC</td><td class="value">EVTC094240137</td></tr>
-                    <tr><td class="label">N° TVA</td><td class="value">FR18 982 953 382</td></tr>
-                    <tr><td class="label">Code NAF</td><td class="value">49.32Z</td></tr>
-                    <tr><td class="label">Adresse</td><td class="value">12 Rue Antoine Re<br>13010 Marseille</td></tr>
-                    <tr><td class="label">Téléphone</td><td class="value">06 74 03 96 94</td></tr>
+                    <tr><td class="label">Raison sociale</td><td class="value">{{ societe.raisonSociale }}</td></tr>
+                    <tr><td class="label">SIREN</td><td class="value">{{ societe.siren }}</td></tr>
+                    <tr><td class="label">SIRET</td><td class="value">{{ societe.siret }}</td></tr>
+                    <tr><td class="label">N° REVTC</td><td class="value">{{ societe.numeroRevtc }}</td></tr>
+                    <tr><td class="label">N° TVA</td><td class="value">{{ societe.tvaIntra }}</td></tr>
+                    <tr><td class="label">Code NAF</td><td class="value">{{ societe.codeNaf }}</td></tr>
+                    <tr><td class="label">Adresse</td><td class="value">{{ societe.adresse }}<br>{{ societe.codePostal }} {{ societe.ville }}</td></tr>
+                    <tr><td class="label">Téléphone</td><td class="value">{{ societe.telephone }}</td></tr>
                 </table>
             </div>
         </div>
@@ -229,8 +229,8 @@
 
 {# ── FOOTER ── #}
 <div class="footer">
-    SIMPLICI CAB — SAS au capital variable — 12 Rue Antoine Re, 13010 Marseille<br>
-    SIREN 982 953 382 &nbsp;|&nbsp; SIRET 982 953 382 00024 &nbsp;|&nbsp; REVTC EVTC094240137 &nbsp;|&nbsp; TVA FR18 982 953 382 &nbsp;|&nbsp; NAF 49.32Z<br>
+    {{ societe.raisonSociale }} — {{ societe.formeJuridique }}{% if societe.capitalSocial %} au capital de {{ societe.capitalSocial }}{% endif %} — {{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}{% if societe.rcs %} — {{ societe.rcs }}{% endif %}<br>
+    SIREN {{ societe.siren }} &nbsp;|&nbsp; SIRET {{ societe.siret }} &nbsp;|&nbsp; REVTC {{ societe.numeroRevtc }} &nbsp;|&nbsp; TVA {{ societe.tvaIntra }} &nbsp;|&nbsp; NAF {{ societe.codeNaf }}<br>
     Document généré le {{ "now"|date('d/m/Y à H:i') }} — À conserver 3 ans
 </div>
 
