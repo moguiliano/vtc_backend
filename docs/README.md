@@ -6,6 +6,7 @@ Tout ce qu'il faut savoir pour reprendre le projet sans rien chercher.
 |---|---|---|
 | [ROADMAP.md](ROADMAP.md) | Les 3 objectifs en cours + la liste d'attente | Lire en ouvrant le Pilote |
 | [JOURNAL.md](JOURNAL.md) | Ce qui a été fait, session par session | Écrire à chaque « clôture » |
+| [DECISIONS.md](DECISIONS.md) | Choix business : à trancher / tranchés, avec la raison | Séance `/decisions` |
 | [deploiement.md](deploiement.md) | Mettre en production sur Infomaniak | Avant chaque mise en prod |
 | [git.md](git.md) | Les branches et les commandes de base | Quand tu hésites |
 | [marketing/google-ads.md](marketing/google-ads.md) | Campagne Google Ads | Session Marketing |
@@ -18,4 +19,5 @@ Les tables : les entités dans `src/Entity/` sont la référence.
 
 - **📌 ZenCar — Pilote** (épinglée) : faire le point, choisir la prochaine tâche, lancer les sessions.
 - Une session par tâche, rangée dans sa section : 🧩 Fonctionnalités · ⚛️ React · 📣 Marketing · 🚀 Infra.
+- Pour trancher des questions business : taper **`/decisions`** (une question à la fois, tout est noté dans `DECISIONS.md`).
 - En fin de session, dire **« clôture »** → mise à jour de `JOURNAL.md` (+ `ROADMAP.md` si besoin), commit, archivage.

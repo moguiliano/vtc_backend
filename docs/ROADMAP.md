@@ -18,6 +18,7 @@
 - [ ] Séparer prénom / nom sur `User` (`getFirstname()` manquant dans SmsNotifier — à vérifier)
 - [ ] Supprimer les données de test fictives dans `ReservationController` (fallback « Karim ») — à vérifier
 - [ ] Page À propos
+- [ ] Tests PHPUnit : PhoneNormalizerService, calcul de prix HereMapsService, Mailer
 
 ### 🗄️ Données
 - [ ] `PricingRule` (majoration nuit, commission) en BDD au lieu de `services.yaml`
