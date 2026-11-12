@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Nouvelle réservation (téléphone) — ZenCAR Admin</title>
+
+    {# Mêmes feuilles de style que le formulaire public (base.html.twig) #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('build/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/zencar.css') }}?v=3">
+    <link rel="stylesheet" href="{{ asset('css/reservationStyles.css') }}?v=3">
+
+    <style>
+        :root { --zen-orange: #ff5630; }
+        body { background: linear-gradient(135deg, #0d1117 0%, #1a2332 100%); min-height: 100vh; }
+        .admin-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; padding:1.2rem 0 .8rem; }
+        .admin-header h1 { color:#fff; font-size:1.25rem; font-weight:700; margin:0; }
+        .admin-header h1 span { color:var(--zen-orange); }
+        .admin-header a { color:rgba(255,255,255,.5); font-size:.85rem; text-decoration:none; }
+        .admin-header a:hover { color:var(--zen-orange); }
+        .admin-errors { background:rgba(220,53,69,.15); border:1px solid rgba(220,53,69,.35); border-radius:10px; color:#ff8080; padding:12px 16px; font-size:.9rem; margin-bottom:1rem; }
+        .admin-errors ul { margin:0; padding-left:1.2rem; }
+
+        /* Course réservée à l'avance : on masque « Immédiat / Plus tard » et on affiche toujours date + heure */
+        #tab1 .form-group:has(#immediateBtn) { display:none !important; }
+        #dateTimeGroup { display:flex !important; }
+        /* La position GPS de l'admin n'a pas de sens ici */
+        .btn-geoloc { display:none !important; }
+    </style>
+</head>
+<body>
+<div class="container" style="max-width:1100px;">
+
+    <div class="admin-header">
+        <h1><i class="bi bi-telephone-fill me-2" style="color:var(--zen-orange);"></i><span>ZenCAR</span> · Nouvelle réservation (téléphone)</h1>
+        <a href="{{ path('admin') }}"><i class="bi bi-arrow-left me-1"></i>Retour au tableau de bord</a>
+    </div>
+
+    {% if errors %}
+        <div class="admin-errors">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>La réservation n’a pas été enregistrée :
+            <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+        </div>
+    {% endif %}
+
+    <div class="tabs">
+        <button class="tab-button active" data-tab="tab1" data-step="1">1. Trajet</button>
+        <button class="tab-button" data-tab="tab2" data-step="2">2. Véhicule</button>
+        <button class="tab-button" data-tab="tab3" data-step="3">3. Client</button>
+    </div>
+
+    {# data-admin-mode : reservation.js ne fait pas la sauvegarde AJAX publique, la réservation est créée à l'envoi #}
+    {{ form_start(form, {attr: {class: 'w-100', style: 'display: contents;', 'data-admin-mode': 'phone', novalidate: 'novalidate'}}) }}
+        {% include 'reservation/tab1.html.twig' %}
+        {% include 'reservation/tab2.html.twig' %}
+        {% include 'admin/phone_booking/_tab3.html.twig' %}
+        {{ form_widget(form.duree, {'type': 'hidden', 'attr': {'id': 'reservation_duree'}}) }}
+        {{ form_widget(form.distance, {'type': 'hidden', 'attr': {'id': 'reservation_distance'}}) }}
+        {{ form_widget(form.typeVehicule, {'type': 'hidden', 'attr': {'id': 'reservation_typeVehicule'}}) }}
+    {{ form_end(form) }}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" charset="utf-8"></script>
+<script src="{{ asset('/js/autocomplete.js') }}?v=2"></script>
+<script src="{{ asset('/js/ui.js') }}?v=2"></script>
+<script src="{{ asset('/js/reservation.js') }}?v=3"></script>
+<script src="{{ asset('/js/map.js') }}?v=2"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+</body>
+</html>
