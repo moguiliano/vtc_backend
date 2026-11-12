@@ -18,7 +18,7 @@
   numéro `FAC-AAAA-0001` attribué à l'émission (pas à la création), avoir pour corriger une facture émise
 - [ ] TVA des factures : en attente de la réponse du comptable (D-002)
 - [ ] **Statut de réservation** (D-005) : en attente → confirmée (auto à la validation SMS) → terminée / annulée ;
-  bouton « Annuler » dans EasyAdmin (admin seulement), filtre par statut ; passage à « Terminée » selon D-010
+  boutons « Annuler » et « Terminée » dans EasyAdmin (admin seulement, D-010), filtre par statut
 - [ ] Service Mailer : confirmation client, notification admin, accusé contact
 - [ ] Séparer prénom / nom sur `User` (`getFirstname()` manquant dans SmsNotifier — à vérifier)
 - [ ] Supprimer les données de test fictives dans `ReservationController` (fallback « Karim ») — à vérifier

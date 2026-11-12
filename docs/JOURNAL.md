@@ -6,7 +6,7 @@
 ---
 
 ### 2026-11-12 — Séance de décisions Facturation + Réservation (Pilote)
-- **Fait** : D-001 (brouillon → émise, avoir), D-003 (`FAC-AAAA-0001`, numéro à l'émission), D-004 (client complété dans l'admin), D-005 (statuts, confirmation auto, annulation admin gratuite) tranchées ; tâches ajoutées à la roadmap ; nouvelle question D-010.
+- **Fait** : D-001 (brouillon → émise, avoir), D-003 (`FAC-AAAA-0001`, numéro à l'émission), D-004 (client complété dans l'admin), D-005 (statuts, confirmation auto, annulation admin gratuite), D-010 (« Terminée » à la main par l'admin) tranchées ; tâches ajoutées à la roadmap.
 - **Bloqué** : D-002 (TVA 10 % / 20 %) en attente du comptable.
 - **Prochaine étape** : demander au comptable pour la TVA ; tester `feature/facturation` dans EasyAdmin.
 

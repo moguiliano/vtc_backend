@@ -57,13 +57,12 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 - **Options** : A) Copier à la main quelques vrais avis (avec prénom et date) / B) Widget ou API Google (automatique, plus technique, clé API) / C) Bouton « Voir nos avis sur Google » seulement
 - **Avis de Claude** : A + C, rapide, sans dépendance externe.
 
-### D-010 — Qui passe une réservation à « Terminée » ?
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : apparue avec D-005. Une fois la course faite, la réservation doit passer de « Confirmée » à « Terminée ».
-- **Options** : A) L'admin clique « Terminée » à la main / B) Automatique quelques heures après l'heure de départ / C) Le chauffeur la clôture (si un jour il a un accès)
-- **Avis de Claude** : B, pour ne rien avoir à faire ; l'admin peut toujours corriger à la main.
-
 ## ✅ Tranché
+
+### D-010 — Qui passe une réservation à « Terminée » ? — 2026-11-12
+- **Décision** : pour l'instant, **l'admin** passe la réservation à « Terminée » à la main, dans EasyAdmin.
+- **Raison** : simple, pas d'automatisme à construire ; on pourra automatiser plus tard (passage auto quelques heures après le départ).
+- **Impact** : bouton « Terminée » ajouté à la tâche « Statut de réservation » dans `ROADMAP.md`.
 
 ### D-005 — Statuts d'une réservation et annulation — 2026-11-12
 - **Décision** :
