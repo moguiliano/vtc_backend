@@ -33,12 +33,6 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 - **Avis de Claude** : C puis A ou B ; c'est une question fiscale, ton comptable tranche.
 - **⏸ En attente (2026-11-12)** : demander au comptable dans quels cas facturer à 20 %. D'ici là, rien ne change : 10 % par défaut, 20 % possible.
 
-### D-005 — Statuts d'une réservation et annulation
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : une réservation n'a aucun statut aujourd'hui. Proposition : en attente → confirmée → terminée / annulée.
-- **Options** : A) Seul l'admin change le statut / B) Le client peut aussi annuler, jusqu'à X heures avant le départ / C) Autre
-- **Avis de Claude** : A d'abord ; B quand le Mailer existera. Il faut aussi trancher la valeur de X et l'existence de frais d'annulation.
-
 ### D-006 — Commission et majoration de nuit : qui peut les changer ?
 - **Chantier** : 🗄️ Données
 - **Contexte** : commission 20 %, majoration de nuit 20 % entre 23 h et 7 h. Ces valeurs sont aujourd'hui dans `config/services.yaml` : les changer demande une mise en prod.
@@ -63,7 +57,22 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 - **Options** : A) Copier à la main quelques vrais avis (avec prénom et date) / B) Widget ou API Google (automatique, plus technique, clé API) / C) Bouton « Voir nos avis sur Google » seulement
 - **Avis de Claude** : A + C, rapide, sans dépendance externe.
 
+### D-010 — Qui passe une réservation à « Terminée » ?
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : apparue avec D-005. Une fois la course faite, la réservation doit passer de « Confirmée » à « Terminée ».
+- **Options** : A) L'admin clique « Terminée » à la main / B) Automatique quelques heures après l'heure de départ / C) Le chauffeur la clôture (si un jour il a un accès)
+- **Avis de Claude** : B, pour ne rien avoir à faire ; l'admin peut toujours corriger à la main.
+
 ## ✅ Tranché
+
+### D-005 — Statuts d'une réservation et annulation — 2026-11-12
+- **Décision** :
+  - Statuts : **En attente** (code SMS pas encore validé) → **Confirmée** → **Terminée**, ou **Annulée**.
+  - Confirmation **automatique** dès que le client valide son code SMS ; l'admin reçoit un SMS, comme aujourd'hui.
+  - **Seul l'admin annule**, dans EasyAdmin ; le client le demande par téléphone ou WhatsApp.
+  - Annulation **gratuite**, sans frais.
+- **Raison** : rien à construire côté client ; le paiement se fait au chauffeur, donc des frais seraient difficiles à encaisser. À revoir si les annulations de dernière minute deviennent un problème.
+- **Impact** : tâche « Statut de réservation » précisée dans `ROADMAP.md` ; nouvelle question D-010 (passage à « Terminée »).
 
 ### D-004 — Nom du client sur la facture — 2026-11-12
 - **Décision** : le prénom est pré-rempli depuis la réservation ; l'admin complète nom, adresse, SIRET et TVA dans le brouillon avant d'émettre. Le formulaire de réservation ne change pas.
