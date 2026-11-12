@@ -6,13 +6,17 @@
 
 | # | Objectif | Chantier | Branche | Prochaine étape |
 |---|---|---|---|---|
-| 1 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | Tester dans EasyAdmin → PR vers `main` → mise en prod |
+| 1 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | Tester dans EasyAdmin → PR vers `main` → mise en prod. Puis `feature/facturation-emission` (voir En attente) |
 | 2 | Migration React — formulaire de réservation | ⚛️ React | `feature/react` | ux-react installé ; premier vrai composant à écrire (c'est toi qui codes) |
 | 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
 
 ## ⏳ En attente
 
 ### 🧩 Fonctionnalités
+- [ ] **Facture brouillon → émise** (D-001, D-003) — branche `feature/facturation-emission` :
+  statut brouillon/émise, bouton « Émettre », facture verrouillée une fois émise,
+  numéro `FAC-AAAA-0001` attribué à l'émission (pas à la création), avoir pour corriger une facture émise
+- [ ] TVA des factures : en attente de la réponse du comptable (D-002)
 - [ ] Statut de réservation (pending / confirmed / completed / cancelled)
 - [ ] Service Mailer : confirmation client, notification admin, accusé contact
 - [ ] Séparer prénom / nom sur `User` (`getFirstname()` manquant dans SmsNotifier — à vérifier)

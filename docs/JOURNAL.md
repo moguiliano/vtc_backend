@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-12 — Séance de décisions Facturation (Pilote)
+- **Fait** : D-001 (brouillon → émise, avoir), D-003 (`FAC-AAAA-0001`, numéro à l'émission), D-004 (client complété dans l'admin) tranchées ; tâche « Facture brouillon → émise » ajoutée à la roadmap.
+- **Bloqué** : D-002 (TVA 10 % / 20 %) en attente du comptable.
+- **Prochaine étape** : demander au comptable pour la TVA ; tester `feature/facturation` dans EasyAdmin.
+
 ### 2026-11-10 — Organisation du projet (Pilote)
 - **Fait** : sections de conversations par chantier + Pilote épinglé ; travail non commité séparé en 2 branches poussées sur GitHub (`feature/facturation` depuis `main`, `feature/react`) ; création de `docs/`.
 - **Bloqué** : copies d'annonces Google Ads introuvables (ancienne session terminal) ; procédure de déploiement Infomaniak pas encore écrite.

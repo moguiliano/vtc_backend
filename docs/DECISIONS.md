@@ -26,29 +26,12 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 
 ## ❓ À trancher
 
-### D-001 — Une facture émise peut-elle encore être modifiée ?
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : sur `feature/facturation`, la suppression d'une facture est bloquée, mais la modification reste possible après création. En France, une facture émise ne doit plus être modifiée : on la corrige par un avoir.
-- **Options** : A) Verrouiller la facture dès sa création ; les erreurs sont corrigées par un avoir / B) Laisser modifiable tant qu'elle n'est pas envoyée au client (statut « brouillon » → « émise ») / C) Laisser comme aujourd'hui
-- **Avis de Claude** : B, souple pour corriger une faute de frappe et conforme une fois la facture émise.
-
 ### D-002 — Taux de TVA des factures
 - **Chantier** : 🧩 Fonctionnalités
 - **Contexte** : le formulaire propose 10 % (transport de personnes, par défaut) ou 20 %. Il faut savoir dans quels cas le 20 % s'applique : mise à disposition, frais annexes ?
 - **Options** : A) Toujours 10 %, retirer le choix 20 % / B) Garder les deux, 10 % par défaut / C) À valider avec ton comptable
 - **Avis de Claude** : C puis A ou B ; c'est une question fiscale, ton comptable tranche.
-
-### D-003 — Format des numéros de facture
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : le code génère `FAC-2026-0001`, avec une numérotation qui repart à 1 chaque année. La loi exige une suite continue, sans trou.
-- **Options** : A) Garder `FAC-AAAA-0001`, remise à zéro annuelle / B) Numérotation continue sans remise à zéro / C) Autre format (préciser)
-- **Avis de Claude** : A, format courant et accepté.
-
-### D-004 — Nom du client sur la facture
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : une facture créée depuis une réservation reprend uniquement le **prénom** du client invité. Pour une entreprise (SIRET, TVA), il faut une raison sociale et une adresse.
-- **Options** : A) Demander nom + prénom dans le formulaire de réservation / B) Saisie manuelle dans l'admin au moment de facturer / C) Les deux
-- **Avis de Claude** : B pour l'instant (simple), A plus tard avec la refonte React.
+- **⏸ En attente (2026-11-12)** : demander au comptable dans quels cas facturer à 20 %. D'ici là, rien ne change : 10 % par défaut, 20 % possible.
 
 ### D-005 — Statuts d'une réservation et annulation
 - **Chantier** : 🧩 Fonctionnalités
@@ -82,4 +65,17 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 
 ## ✅ Tranché
 
-_(rien pour l'instant)_
+### D-004 — Nom du client sur la facture — 2026-11-12
+- **Décision** : le prénom est pré-rempli depuis la réservation ; l'admin complète nom, adresse, SIRET et TVA dans le brouillon avant d'émettre. Le formulaire de réservation ne change pas.
+- **Raison** : simple, pas de friction pour le client ; les factures entreprise sont rares.
+- **Impact** : aucun code, les champs existent déjà dans le formulaire de facture (EasyAdmin).
+
+### D-003 — Format des numéros de facture — 2026-11-12
+- **Décision** : on garde `FAC-AAAA-0001`, avec une remise à 0001 chaque 1er janvier. Le numéro est attribué **à l'émission** (cf. D-001), pas à la création du brouillon.
+- **Raison** : format courant et lisible ; numéroter à l'émission évite les trous si un brouillon est abandonné.
+- **Impact** : format déjà en place dans le code ; le moment d'attribution est ajouté à la tâche D-001 dans `ROADMAP.md`.
+
+### D-001 — Une facture émise peut-elle encore être modifiée ? — 2026-11-12
+- **Décision** : une facture naît en **brouillon** (modifiable), puis passe à **émise** via un bouton « Émettre » : elle est alors verrouillée. Une erreur sur une facture émise se corrige par un **avoir**.
+- **Raison** : souple pour corriger une faute de frappe avant envoi, conforme à la loi une fois la facture envoyée au client.
+- **Impact** : tâche ajoutée dans `ROADMAP.md` (🧩 statut brouillon/émise + verrouillage + avoir).
