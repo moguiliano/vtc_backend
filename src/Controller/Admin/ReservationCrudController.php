@@ -102,7 +102,8 @@ class ReservationCrudController extends AbstractCrudController
 
         // ── Détail seulement ──
         $user     = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
-        $isGuest  = BooleanField::new('isGuest', 'Réservation invité')->onlyOnDetail();
+        $isGuest  = BooleanField::new('isGuest', 'Réservation invité')->onlyOnDetail()
+            ->setCssClass('')->setTemplatePath('admin/field/oui.html.twig');
         $guestInfo = TextField::new('guestInfo', 'guestInfo (legacy)')->onlyOnDetail();
 
         // ── Index ──
@@ -114,6 +115,11 @@ class ReservationCrudController extends AbstractCrudController
         // (pas de ligne « Siège bébé : Non », « Lieu de stop : Null »… ;
         //  « Stop en route » est sous-entendu par le lieu de stop)
         if (Crud::PAGE_DETAIL === $pageName) {
+            // Sur la fiche, une case cochée s'affiche « Oui » comme les autres lignes
+            // (par défaut EasyAdmin met un badge « YES » devant le libellé)
+            $siegeBebe = BooleanField::new('siegeBebe', 'Siège bébé')
+                ->setCssClass('')->setTemplatePath('admin/field/oui.html.twig');
+
             return $this->sansChampsVides([
                 $statut, $createdAt,
                 $depart, $stopLieu, $arrivee, $dateHeureDepart,
