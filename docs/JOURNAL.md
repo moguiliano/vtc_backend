@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-13 — Mise en prod réservation téléphone (Pilote, 🚀 Infra)
+- **Fait** : sauvegarde BDD (844 Ko) ; `git pull` 353a2dc → 393df89 ; `serverVersion` corrigé (MariaDB réelle : 10.6.28) ; registre des migrations réparé (4 migrations déjà appliquées à la main, marquées faites ; 1 jouée : 20260412000000) ; `APP_DEBUG=1` trouvé en prod et coupé ; accueil et calcul de trajet vérifiés en ligne. `deploiement.md` complété avec tout ça.
+- **Bloqué** : 7 retouches de schéma en attente (voir ROADMAP Infra) ; test de la page admin « réservation téléphone » en prod à faire par toi (connexion admin).
+- **Prochaine étape** : tester l'admin en prod ; puis Facturation (test EasyAdmin → PR → mise en prod).
+
 ### 2026-11-13 — Réservation admin par téléphone (🧩 Fonctionnalités)
 - **Fait** : page `/admin/reservation-telephone` (menu « Nouvelle réservation (téléphone) ») : onglets 1-2 du site public réutilisés, onglet 3 admin sans OTP, prix calculé modifiable, SMS client optionnel, statut « Confirmée » ; récap partagé dans `reservation/_recap.html.twig` ; testée dans le navigateur, formulaire public OK. Branche `feature/reservation-admin` (non poussée).
 - **Bloqué** : rien. L'envoi réel du SMS n'a pas été testé (même `SmsNotifier` que le site public). Réservation de test n° 169 « TestClaude » à supprimer dans la base locale.

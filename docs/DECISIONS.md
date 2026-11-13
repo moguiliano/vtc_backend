@@ -72,6 +72,7 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
   - Annulation **gratuite**, sans frais.
 - **Raison** : rien à construire côté client ; le paiement se fait au chauffeur, donc des frais seraient difficiles à encaisser. À revoir si les annulations de dernière minute deviennent un problème.
 - **Impact** : tâche « Statut de réservation » précisée dans `ROADMAP.md` ; nouvelle question D-010 (passage à « Terminée »).
+- **Correction (2026-11-13)** : le contexte de départ (« aucun statut ») était faux, il venait d'un ancien prompt. Le code avait déjà 7 statuts (`ReservationStatus` : en attente, confirmée, chauffeur assigné, chauffeur arrivé, client à bord, terminée, annulée) et la confirmation automatique. La décision reste valable et est en grande partie déjà appliquée.
 
 ### D-004 — Nom du client sur la facture — 2026-11-12
 - **Décision** : le prénom est pré-rempli depuis la réservation ; l'admin complète nom, adresse, SIRET et TVA dans le brouillon avant d'émettre. Le formulaire de réservation ne change pas.
