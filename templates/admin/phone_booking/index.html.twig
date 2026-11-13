@@ -72,7 +72,7 @@
 <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" charset="utf-8"></script>
 <script src="{{ asset('/js/autocomplete.js') }}?v=2"></script>
 <script src="{{ asset('/js/ui.js') }}?v=2"></script>
-<script src="{{ asset('/js/reservation.js') }}?v=3"></script>
+<script src="{{ asset('/js/reservation.js') }}?v=4"></script>
 <script src="{{ asset('/js/map.js') }}?v=2"></script>
 <script src="{{ asset('js/main.js') }}"></script>
 
@@ -81,14 +81,14 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const val = id => document.getElementById(id)?.value || '';
-    const put = (id, text) => { const el = document.getElementById(id); if (el && text) el.textContent = text; };
+    const put = Reservation.setRecap; // valeur vide → ligne masquée
     const labels = Object.fromEntries((window.ZenCarVehicles || []).map(v => [v.slug, v.label]));
     const [y, m, d] = val('reservation_dateDepart').split('-');
 
     put('recap_depart', val('reservation_depart'));
     put('recap_arrivee', val('reservation_arrivee'));
-    put('recap_stop', val('reservation_stopLieu') || 'Aucun');
-    put('recap_siege', document.getElementById('reservation_siegeBebe')?.checked ? 'Oui' : 'Non');
+    put('recap_stop', val('reservation_stopLieu'));
+    put('recap_siege', document.getElementById('reservation_siegeBebe')?.checked ? 'Oui' : '');
     put('recap_date', d ? `${d}/${m}/${y} à ${val('reservation_heureDepart')}` : '');
     put('recap_distance', val('reservation_distance') && `${val('reservation_distance')} km`);
     put('recap_duree', val('reservation_duree') && `${Math.round(val('reservation_duree'))} min`);

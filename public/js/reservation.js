@@ -12,6 +12,19 @@
 (function () {
   window.Reservation = {
     // =========================================================================
+    // 🧾 setRecap(id, text) – remplit une valeur du récapitulatif (_recap.html.twig)
+    // -------------------------------------------------------------------------
+    // - Texte vide → la ligne entière (#recap_row_…) est masquée
+    // =========================================================================
+    setRecap: function (id, text) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text || "";
+      const row = document.getElementById(id.replace("recap_", "recap_row_"));
+      if (row) row.hidden = !text;
+    },
+
+    // =========================================================================
     // 🚀 Initialise les événements liés à la réservation
     // -------------------------------------------------------------------------
     // - Bouton "goToVehicle" (passage à l’étape 2 + calcul trajet/prix)
@@ -197,43 +210,47 @@
           }
 
           // 🧾 Injection des infos dans le récapitulatif final (onglet 3)
-          document.getElementById("recap_depart").textContent =
-            document.getElementById("reservation_depart").value;
-          document.getElementById("recap_arrivee").textContent =
-            document.getElementById("reservation_arrivee").value;
-          document.getElementById("recap_stop").textContent =
-            document.getElementById("reservation_stopLieu").value || "Aucun";
-          document.getElementById("recap_siege").textContent =
-            document.getElementById("reservation_siegeBebe").checked ? "Oui" : "Non";
-          document.getElementById("recap_type").textContent = type;
+          // Une valeur vide masque la ligne (arrêt non coché, pas de siège bébé…)
+          const val = (id) => document.getElementById(id)?.value?.trim() || "";
+          const set = window.Reservation.setRecap;
+          const formEl = document.querySelector("form");
+          const isAdmin = formEl?.dataset.adminMode === "phone";
 
-          // 📅 Date & Heure
-          const dateVal  = document.getElementById("reservation_dateDepart")?.value;
-          const heureVal = document.getElementById("reservation_heureDepart")?.value;
-          const recapDate = document.getElementById("recap_date");
-          if (recapDate && dateVal && heureVal) {
+          set("recap_depart", val("reservation_depart"));
+          set("recap_arrivee", val("reservation_arrivee"));
+          set("recap_stop",
+            document.getElementById("reservation_Stop")?.checked ? val("reservation_stopLieu") : "");
+          set("recap_siege",
+            document.getElementById("reservation_siegeBebe")?.checked ? "Oui" : "");
+          const vehicule = (window.ZenCarVehicles || []).find((v) => v.slug === type);
+          set("recap_type", vehicule?.label || type);
+
+          // 📅 Date & Heure (« Immédiat » côté public si l’utilisateur n’a pas choisi « Plus tard »)
+          const dateVal  = val("reservation_dateDepart");
+          const heureVal = val("reservation_heureDepart");
+          const immediat = !isAdmin && document.getElementById("immediateBtn")?.classList.contains("active");
+          if (immediat) {
+            set("recap_date", "Immédiat");
+          } else if (dateVal && heureVal) {
             const [y, m, d] = dateVal.split("-");
-            recapDate.textContent = `${d}/${m}/${y} à ${heureVal}`;
+            set("recap_date", `${d}/${m}/${y} à ${heureVal}`);
+          } else {
+            set("recap_date", "");
           }
 
           // 📏 Distance & Durée
           const ti = window.TrajetInfos;
-          const recapDist  = document.getElementById("recap_distance");
-          const recapDuree = document.getElementById("recap_duree");
-          if (recapDist  && ti) recapDist.textContent  = `${ti.distance.toFixed(2)} km`;
-          if (recapDuree && ti) recapDuree.textContent = `${Math.round(ti.duree)} min`;
+          set("recap_distance", ti ? `${ti.distance.toFixed(2)} km` : "");
+          set("recap_duree", ti ? `${Math.round(ti.duree)} min` : "");
 
           // 💶 Prix du véhicule sélectionné
-          const recapPrix = document.getElementById("recap_prix_selected");
-          if (recapPrix && ti?.prix?.[type]) {
-            const p = ti.prix[type];
-            recapPrix.textContent = `${parseFloat(p.prix_total).toFixed(2)} €${p.majoration_nuit ? " ✦ tarif nuit" : ""}`;
-          }
+          const p = ti?.prix?.[type];
+          set("recap_prix_selected",
+            p ? `${parseFloat(p.prix_total).toFixed(2)} €${p.majoration_nuit ? " ✦ tarif nuit" : ""}` : "");
 
           // 🛎️ Saisie admin (réservation par téléphone) : pas de sauvegarde AJAX,
           // la réservation est créée à l’envoi du formulaire de l’onglet 3.
-          const formEl = document.querySelector("form");
-          if (formEl?.dataset.adminMode === "phone") {
+          if (isAdmin) {
             window.UI.unlockTab(2);
             window.UI.switchToTab("tab3");
             return;
