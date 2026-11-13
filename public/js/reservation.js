@@ -230,9 +230,17 @@
             recapPrix.textContent = `${parseFloat(p.prix_total).toFixed(2)} €${p.majoration_nuit ? " ✦ tarif nuit" : ""}`;
           }
 
+          // 🛎️ Saisie admin (réservation par téléphone) : pas de sauvegarde AJAX,
+          // la réservation est créée à l’envoi du formulaire de l’onglet 3.
+          const formEl = document.querySelector("form");
+          if (formEl?.dataset.adminMode === "phone") {
+            window.UI.unlockTab(2);
+            window.UI.switchToTab("tab3");
+            return;
+          }
+
           // 💾 Sauvegarde AJAX de la réservation pour obtenir l’ID
           try {
-            const formEl   = document.querySelector("form");
             const formData = new FormData(formEl);
             const saveResp = await fetch("/reservation", {
               method: "POST",

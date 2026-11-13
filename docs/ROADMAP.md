@@ -33,6 +33,7 @@
 ### ⚛️ React
 - [ ] Nettoyer `assets/styles/app.css` (thème sombre en cours, non commité, erreurs CSS)
 - [ ] Remplacer `public/js/reservation.js` (vanilla) par des composants React, étape par étape
+  (attention : il sert aussi à la page admin « réservation téléphone », mode `data-admin-mode="phone"`)
 
 ### 📣 Marketing / SEO
 - [ ] Compléter le footer (mentions légales, RGPD, liens, téléphone)
@@ -43,6 +44,7 @@
 - [ ] Mettre Git à jour (`brew install git`, version actuelle 2.15 de 2017)
 
 ## ✅ Terminé (récent)
+- 2026-11-13 — Réservation admin par téléphone (`feature/reservation-admin`, testée) — reste : PR vers `main` + mise en prod
 - 2026-11-10 — Organisation : Pilote + sections, dossier `docs/`, branches Facturation / React séparées
 - 2026-11 — Retrait AssetMapper et Turbo, Webpack Encore seul outil JS
 - 2026-11 — `createdAt` éditable sur les réservations, bon de commande horodaté

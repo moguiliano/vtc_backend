@@ -57,6 +57,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
         }
         if ($this->isGranted('ROLE_RESERVATIONS_EDIT')) {
+            yield MenuItem::linkToRoute('Nouvelle réservation (téléphone)', 'fa fa-phone', 'admin_phone_booking');
             yield MenuItem::linkToRoute('Réservation rapide', 'fa fa-bolt', 'admin_quick_book');
         }
 
