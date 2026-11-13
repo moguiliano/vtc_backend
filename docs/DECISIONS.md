@@ -57,6 +57,71 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 - **Options** : A) Copier à la main quelques vrais avis (avec prénom et date) / B) Widget ou API Google (automatique, plus technique, clé API) / C) Bouton « Voir nos avis sur Google » seulement
 - **Avis de Claude** : A + C, rapide, sans dépendance externe.
 
+<!-- ─── Bloc « Plateforme multi-entreprises » (ajouté le 2026-11-13) ───
+Projet : chauffeurs / régulateurs abonnés avec leur propre espace (tarifs, société validée par l'admin ZenCar,
+bons de commande, factures) + collaborateurs (établissements partenaires avec prix convenus).
+Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres. -->
+
+### D-011 — Quel modèle de plateforme ?
+- **Chantier** : 🗄️ Données (architecture)
+- **Contexte** : deux visions très différentes derrière « chaque chauffeur a son propre admin ».
+- **Options** : A) **Logiciel de gestion** (SaaS) : chaque abonné gère *ses propres* clients et courses avec l'outil ZenCar ; ZenCar ne lui envoie pas de courses / B) **Place de marché** : les clients réservent sur dzencar.fr et ZenCar distribue les courses aux abonnés / C) Les deux
+- **Avis de Claude** : A d'abord ; le modèle le plus simple et le plus clair juridiquement (tu vends un outil). B pourra s'ajouter ensuite.
+
+### D-012 — Le site public de réservation pour les abonnés
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : si un abonné a ses propres clients (D-011 A), comment ses clients réservent-ils en ligne ?
+- **Options** : A) Pas de site public pour les abonnés : ils saisissent les courses dans leur espace (comme ta « réservation téléphone ») / B) Une page de réservation par abonné (ex. `dzencar.fr/r/nom-du-chauffeur`) / C) Leur propre nom de domaine
+- **Avis de Claude** : A pour démarrer, B ensuite ; C est coûteux et rarement nécessaire.
+
+### D-013 — Rôles : qui est qui ?
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : il faut définir précisément chaque rôle et ce qu'il peut faire.
+- **Options** : proposition à valider : **Super-admin** (toi : valide les sociétés, gère les abonnements) / **Régulateur** (une entreprise avec plusieurs chauffeurs, voit et attribue toutes les courses de son entreprise) / **Chauffeur** (indépendant = une entreprise d'un seul chauffeur, ou salarié d'un régulateur : ne voit que ses courses) / **Collaborateur** (établissement partenaire : commande des courses aux prix convenus)
+- **Avis de Claude** : garder ces 4 rôles ; un chauffeur indépendant est simplement un régulateur avec un seul chauffeur, ce qui évite deux systèmes.
+
+### D-014 — Abonnement : prix et paiement
+- **Chantier** : 🗄️ Données
+- **Contexte** : l'espace perso s'ouvre « suite à abonnement ».
+- **Options** : prix et périodicité (mensuel / annuel) ? Période d'essai ? Paiement : A) en ligne automatique (Stripe) / B) manuel (virement, tu actives le compte à la main) ? Que se passe-t-il en cas d'impayé (lecture seule, blocage) ?
+- **Avis de Claude** : B pour les premiers abonnés (aucun développement de paiement), A quand il y en aura plus de 5-10.
+
+### D-015 — Validation de la société d'un abonné
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : l'abonné saisit les données de sa société, tu les valides.
+- **Options** : quelles pièces exiger (Kbis, carte VTC ou taxi, inscription REVTC, assurance) ? Que peut faire l'abonné **avant** validation : A) rien / B) configurer ses tarifs mais pas émettre de bons ni de factures ?
+- **Avis de Claude** : B, et pas de bons de commande ni de factures tant que la société n'est pas validée, car ils portent ses mentions légales.
+
+### D-016 — Tarifs des abonnés
+- **Chantier** : 🗄️ Données
+- **Contexte** : chaque abonné décide de ses tarifs (« véhicules et prix »).
+- **Options** : A) Chaque abonné part de zéro / B) Il part d'une copie de la grille ZenCar et la modifie / C) Il choisit ses catégories de véhicules parmi une liste commune et fixe ses prix
+- **Avis de Claude** : C, avec une liste commune de catégories (éco-berline, berline, van…) et des prix propres à chaque abonné. Ça garde les slugs cohérents.
+
+### D-017 — Factures et bons de commande des abonnés
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : aujourd'hui, la facturation suppose **une seule** société (la tienne). Avec des abonnés, chaque facture est émise **au nom de l'abonné**.
+- **Options** : confirmer : A) chaque abonné a sa propre numérotation (`FAC-AAAA-0001` par abonné) et ses mentions légales ; ZenCar n'est que l'éditeur du logiciel / B) autre
+- **Avis de Claude** : A, c'est la règle légale : la numérotation est propre à chaque entreprise émettrice. Il faudra aussi que ZenCar facture l'abonnement à chaque abonné.
+
+### D-018 — Collaborateurs : à qui sont-ils rattachés ?
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : un collaborateur est un établissement (hôtel, clinique, entreprise) avec des prix négociés.
+- **Options** : A) Collaborateurs de ZenCar uniquement (toi) / B) Chaque abonné peut avoir ses propres collaborateurs / C) Les deux
+- **Avis de Claude** : A d'abord, faisable **sur le site actuel** sans attendre le multi-entreprises ; B ensuite.
+
+### D-019 — Collaborateurs : forme des prix convenus et paiement
+- **Chantier** : 🧩 Fonctionnalités
+- **Contexte** : « on se met d'accord sur les prix ».
+- **Options** : prix sous quelle forme : A) forfaits par trajet (comme tes forfaits VTC) / B) remise en % sur la grille / C) les deux ? Paiement : à chaque course, ou **facture mensuelle groupée** au collaborateur ? Qui monte dans la voiture : le collaborateur saisit le nom de son client ?
+- **Avis de Claude** : A + B, avec une facture mensuelle groupée (c'est l'usage avec les hôtels).
+
+### D-020 — Par quoi commencer ?
+- **Chantier** : 🗄️ Données
+- **Contexte** : le multi-entreprises est le plus gros chantier de ZenCar ; les collaborateurs (D-018 A) sont faisables plus vite. La Facturation actuelle (`feature/facturation`) n'est pas encore en prod.
+- **Options** : A) Facturation actuelle en prod → Collaborateurs → Multi-entreprises / B) Tout de suite le multi-entreprises (et reprendre la Facturation dedans) / C) Autre ordre
+- **Avis de Claude** : A ; chaque étape apporte une valeur réelle tout de suite, et le multi-entreprises se construit sur des bases déjà testées.
+
 ## ✅ Tranché
 
 ### D-010 — Qui passe une réservation à « Terminée » ? — 2026-11-12
