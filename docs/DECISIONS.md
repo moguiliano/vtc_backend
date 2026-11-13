@@ -62,59 +62,17 @@ Projet : chauffeurs / régulateurs abonnés avec leur propre espace (tarifs, soc
 bons de commande, factures) + collaborateurs (établissements partenaires avec prix convenus).
 Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres. -->
 
-### D-011 — Quel modèle de plateforme ?
-- **Chantier** : 🗄️ Données (architecture)
-- **Contexte** : deux visions très différentes derrière « chaque chauffeur a son propre admin ».
-- **Options** : A) **Logiciel de gestion** (SaaS) : chaque abonné gère *ses propres* clients et courses avec l'outil ZenCar ; ZenCar ne lui envoie pas de courses / B) **Place de marché** : les clients réservent sur dzencar.fr et ZenCar distribue les courses aux abonnés / C) Les deux
-- **Avis de Claude** : A d'abord ; le modèle le plus simple et le plus clair juridiquement (tu vends un outil). B pourra s'ajouter ensuite.
-
-### D-012 — Le site public de réservation pour les abonnés
+### D-021 — Que peut voir et faire le régulateur ?
 - **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : si un abonné a ses propres clients (D-011 A), comment ses clients réservent-ils en ligne ?
-- **Options** : A) Pas de site public pour les abonnés : ils saisissent les courses dans leur espace (comme ta « réservation téléphone ») / B) Une page de réservation par abonné (ex. `dzencar.fr/r/nom-du-chauffeur`) / C) Leur propre nom de domaine
-- **Avis de Claude** : A pour démarrer, B ensuite ; C est coûteux et rarement nécessaire.
+- **Contexte** : apparue avec D-013. Le régulateur travaille pour SIMPLICI CAB et dispatche tes courses dans des groupes WhatsApp.
+- **Options** : voit-il les prix ? la commission ? les factures ? Peut-il créer, modifier, annuler une réservation ? Changer les statuts ? Quel message WhatsApp préparer (départ, arrivée, heure, véhicule, prix chauffeur…) ?
+- **Avis de Claude** : il voit et gère les réservations (statuts, création téléphone), voit le **prix chauffeur** mais pas la commission ni les factures ; bouton « Partager sur WhatsApp » qui prépare le message.
 
-### D-013 — Rôles : qui est qui ?
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : il faut définir précisément chaque rôle et ce qu'il peut faire.
-- **Options** : proposition à valider : **Super-admin** (toi : valide les sociétés, gère les abonnements) / **Régulateur** (une entreprise avec plusieurs chauffeurs, voit et attribue toutes les courses de son entreprise) / **Chauffeur** (indépendant = une entreprise d'un seul chauffeur, ou salarié d'un régulateur : ne voit que ses courses) / **Collaborateur** (établissement partenaire : commande des courses aux prix convenus)
-- **Avis de Claude** : garder ces 4 rôles ; un chauffeur indépendant est simplement un régulateur avec un seul chauffeur, ce qui évite deux systèmes.
-
-### D-014 — Abonnement : prix et paiement
-- **Chantier** : 🗄️ Données
-- **Contexte** : l'espace perso s'ouvre « suite à abonnement ».
-- **Options** : prix et périodicité (mensuel / annuel) ? Période d'essai ? Paiement : A) en ligne automatique (Stripe) / B) manuel (virement, tu actives le compte à la main) ? Que se passe-t-il en cas d'impayé (lecture seule, blocage) ?
-- **Avis de Claude** : B pour les premiers abonnés (aucun développement de paiement), A quand il y en aura plus de 5-10.
-
-### D-015 — Validation de la société d'un abonné
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : l'abonné saisit les données de sa société, tu les valides.
-- **Options** : quelles pièces exiger (Kbis, carte VTC ou taxi, inscription REVTC, assurance) ? Que peut faire l'abonné **avant** validation : A) rien / B) configurer ses tarifs mais pas émettre de bons ni de factures ?
-- **Avis de Claude** : B, et pas de bons de commande ni de factures tant que la société n'est pas validée, car ils portent ses mentions légales.
-
-### D-016 — Tarifs des abonnés
-- **Chantier** : 🗄️ Données
-- **Contexte** : chaque abonné décide de ses tarifs (« véhicules et prix »).
-- **Options** : A) Chaque abonné part de zéro / B) Il part d'une copie de la grille ZenCar et la modifie / C) Il choisit ses catégories de véhicules parmi une liste commune et fixe ses prix
-- **Avis de Claude** : C, avec une liste commune de catégories (éco-berline, berline, van…) et des prix propres à chaque abonné. Ça garde les slugs cohérents.
-
-### D-017 — Factures et bons de commande des abonnés
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : aujourd'hui, la facturation suppose **une seule** société (la tienne). Avec des abonnés, chaque facture est émise **au nom de l'abonné**.
-- **Options** : confirmer : A) chaque abonné a sa propre numérotation (`FAC-AAAA-0001` par abonné) et ses mentions légales ; ZenCar n'est que l'éditeur du logiciel / B) autre
-- **Avis de Claude** : A, c'est la règle légale : la numérotation est propre à chaque entreprise émettrice. Il faudra aussi que ZenCar facture l'abonnement à chaque abonné.
-
-### D-018 — Collaborateurs : à qui sont-ils rattachés ?
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : un collaborateur est un établissement (hôtel, clinique, entreprise) avec des prix négociés.
-- **Options** : A) Collaborateurs de ZenCar uniquement (toi) / B) Chaque abonné peut avoir ses propres collaborateurs / C) Les deux
-- **Avis de Claude** : A d'abord, faisable **sur le site actuel** sans attendre le multi-entreprises ; B ensuite.
-
-### D-019 — Collaborateurs : forme des prix convenus et paiement
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : « on se met d'accord sur les prix ».
-- **Options** : prix sous quelle forme : A) forfaits par trajet (comme tes forfaits VTC) / B) remise en % sur la grille / C) les deux ? Paiement : à chaque course, ou **facture mensuelle groupée** au collaborateur ? Qui monte dans la voiture : le collaborateur saisit le nom de son client ?
-- **Avis de Claude** : A + B, avec une facture mensuelle groupée (c'est l'usage avec les hôtels).
+### D-022 — Prix de l'abonnement
+- **Chantier** : 📣 Marketing
+- **Contexte** : apparue avec D-014. Le paiement est manuel, donc le prix ne bloque pas le développement.
+- **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ?
+- **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
 
 ### D-020 — Par quoi commencer ?
 - **Chantier** : 🗄️ Données
@@ -123,6 +81,57 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 - **Avis de Claude** : A ; chaque étape apporte une valeur réelle tout de suite, et le multi-entreprises se construit sur des bases déjà testées.
 
 ## ✅ Tranché
+
+### D-019 — Collaborateurs : prix convenus et paiement — 2026-11-13
+- **Décision** :
+  - Prix : des **forfaits propres au collaborateur** (ex. Hôtel X → Aéroport = 55 €) **+ une remise en %** sur la grille SIMPLICI CAB pour les autres trajets.
+  - Paiement : **au choix à chaque commande** : « sur le compte » du collaborateur (regroupé sur une **facture mensuelle**) ou **payé par le passager** au chauffeur.
+- **Raison** : couvre les trajets récurrents (forfaits) et les trajets ponctuels (remise) ; le choix par course s'adapte aux hôtels (course offerte au client ou non).
+- **Impact** : le collaborateur a un compte de connexion, ses forfaits, son taux de remise ; chaque réservation note le mode « compte collaborateur » ou « passager » ; il faut une **facture mensuelle** des courses « sur le compte ». À préciser au développement : saisie du nom et du téléphone du passager à la commande.
+
+### D-018 — Collaborateurs : à qui sont-ils rattachés ? — 2026-11-13
+- **Décision** : au démarrage, les collaborateurs sont ceux de **SIMPLICI CAB uniquement**. Les abonnés pourront avoir les leurs plus tard.
+- **Raison** : faisable **sur le site actuel**, sans attendre le multi-entreprises ; valeur commerciale immédiate.
+- **Impact** : module Collaborateurs construit avant le multi-entreprises, en prévoyant qu'un collaborateur sera un jour rattaché à un abonné.
+
+### D-017 — Factures et bons de commande des abonnés — 2026-11-13
+- **Décision** : les bons de commande et factures d'un abonné sont émis **à son nom** (sa société validée, ses mentions légales), avec **sa propre numérotation** (`FAC-AAAA-0001` propre à chaque abonné). Les règles D-001 à D-004 s'appliquent à chacun. ZenCar n'est que l'éditeur du logiciel et **facture l'abonnement** à chaque abonné.
+- **Raison** : obligation légale, la numérotation est propre à chaque entreprise émettrice.
+- **Impact** : `Facture` et la numérotation deviennent **par abonné** ; `Societe` (aujourd'hui unique) devient une société par abonné.
+
+### D-016 — Tarifs des abonnés — 2026-11-13
+- **Décision** : une **liste commune de catégories** de véhicules (éco-berline, berline, grand coffre, van…, gérée par le super-admin). Chaque abonné **coche** celles qu'il propose et fixe **ses propres prix** (prise en charge, prix au km, seuil).
+- **Raison** : les slugs restent cohérents dans tout le code (convention underscore) ; chaque abonné garde la main sur ses prix.
+- **Impact** : séparer la *catégorie* (commune) de la *grille de prix* (par abonné ; SIMPLICI CAB a la sienne). Majoration de nuit et commission par abonné : à voir avec D-006.
+
+### D-015 — Validation de la société d'un abonné — 2026-11-13
+- **Décision** : **aucune pièce justificative** demandée. L'abonné saisit **une fois** les informations de sa société (raison sociale, SIREN/SIRET, adresse, TVA, REVTC…), puis le super-admin les **valide**. Avant validation, l'abonné n'a accès **qu'à ce formulaire** ; le reste de son espace est fermé.
+- **Raison** : ZenCar vend un outil, l'abonné reste responsable de ses informations légales ; la validation sert à vérifier la cohérence avant qu'elles apparaissent sur ses bons et factures.
+- **Impact** : états d'un abonné : **en attente de validation** → **actif** → **lecture seule** (D-014). Les infos validées alimentent ses bons de commande et factures (comme `Societe` aujourd'hui, mais une par abonné).
+
+### D-014 — Abonnement : paiement et impayés — 2026-11-13
+- **Décision** : paiement **manuel** (virement…) au démarrage ; le super-admin **active / désactive** le compte à la main. En cas d'impayé, le compte passe en **lecture seule** : consultation et téléchargement des factures et bons passés, mais plus de création.
+- **Raison** : aucun développement de paiement pour les premiers abonnés ; la lecture seule respecte l'obligation de conservation des factures. Stripe pourra venir au-delà de 5-10 abonnés.
+- **Impact** : un abonné a un **état** (en attente de validation / actif / lecture seule). Prix : question D-022.
+
+### D-013 — Rôles : qui est qui ? — 2026-11-13
+- **Décision** : 4 rôles.
+  - **Super-admin** (toi) : valide les sociétés des abonnés, gère les abonnements, voit tout ce qui concerne SIMPLICI CAB.
+  - **Régulateur** : travaille **pour SIMPLICI CAB** (pas un abonné). Il voit **uniquement les courses de SIMPLICI CAB** (dzencar.fr, réservations téléphone) et les **dispatche dans des groupes WhatsApp**. L'outil l'aide à partager (message prêt à envoyer).
+  - **Abonné** : un chauffeur ou une société qui paie l'abonnement ; **1 abonnement = 1 seul compte** au démarrage (pas de sous-comptes chauffeurs). Il ne voit que ses propres données (D-011).
+  - **Collaborateur** : établissement partenaire qui commande aux prix convenus (D-018, D-019).
+- **Raison** : le dispatch WhatsApp est déjà la pratique réelle ; un seul compte par abonné garde le démarrage simple. Des comptes chauffeurs pour les sociétés abonnées pourront venir plus tard.
+- **Impact** : le rôle Régulateur ne dépend pas du multi-entreprises et peut être construit **sur le site actuel** ; nouvelle question D-021 (droits du régulateur).
+
+### D-012 — Le site public de réservation pour les abonnés — 2026-11-13
+- **Décision** : au démarrage, **pas de réservation en ligne** pour les clients des abonnés : l'abonné saisit lui-même les courses dans son espace (sur le modèle de la « réservation téléphone »). Une page publique par abonné pourra venir plus tard.
+- **Raison** : rien de public à construire ni à sécuriser au départ ; réutilise un écran qui existe déjà.
+- **Impact** : la page « réservation téléphone » devient la base de la saisie de course dans l'espace abonné.
+
+### D-011 — Quel modèle de plateforme ? — 2026-11-13
+- **Décision** : ZenCar devient un **outil de gestion** (SaaS) : chaque abonné (chauffeur, régulateur) gère **ses propres** clients, courses, tarifs, bons de commande et factures dans son espace. ZenCar **ne distribue pas** de courses aux abonnés ; les clients de dzencar.fr restent ceux de SIMPLICI CAB.
+- **Raison** : modèle le plus simple et le plus clair juridiquement (ZenCar vend un logiciel, pas des courses). Une place de marché pourra s'ajouter plus tard.
+- **Impact** : les données de chaque abonné doivent être **séparées** (un abonné ne voit jamais les clients ni les courses d'un autre).
 
 ### D-010 — Qui passe une réservation à « Terminée » ? — 2026-11-12
 - **Décision** : pour l'instant, **l'admin** passe la réservation à « Terminée » à la main, dans EasyAdmin.
