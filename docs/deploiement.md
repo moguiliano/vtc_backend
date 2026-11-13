@@ -20,57 +20,60 @@
 ## Avant de commencer (sur ton Mac)
 
 1. La branche est **fusionnée dans `main`** sur GitHub (Pull Request « Merged »).
-2. Construire les fichiers CSS/JS (le dossier `public/build/` n'est pas dans Git) :
+2. **Seulement si le dossier `assets/` a changé** : construire et envoyer les fichiers CSS/JS.
+   > Aujourd'hui, ce n'est **pas nécessaire** : `assets/` n'a pas bougé depuis le premier commit (nov. 2025).
+   > Le style du site vient de `public/css/` et le JS de `public/js/`, qui sont dans Git et arrivent avec le `git pull`.
+   > Cela deviendra utile avec Webpack Encore / React, qui écrivent dans `public/build/` (dossier hors de Git).
+
+   Pour savoir si `assets/` a changé depuis la dernière mise en prod :
    ```bash
-   git checkout main
-   git pull
+   git log --oneline -5 -- assets/
+   ```
+   Si un commit récent apparaît, construire puis envoyer `public/build/` :
+   ```bash
    npm ci
    npm run build
-   ```
-3. Envoyer `public/build/` sur le serveur :
-   ```bash
    scp -r public/build <identifiant>@<serveur>.ftp.infomaniak.com:<chemin-du-site>/public/
    ```
-   > Si le CSS/JS n'a pas changé depuis la dernière mise en prod, tu peux sauter les étapes 2 et 3.
 
 ## Sur le serveur (en SSH)
 
-4. Se connecter et aller dans le dossier du site :
+3. Se connecter et aller dans le dossier du site :
    ```bash
    ssh <identifiant>@<serveur>.ftp.infomaniak.com
    cd <chemin-du-site>
    ```
-5. **Sauvegarder la base** (seulement s'il y a de nouvelles migrations, mais c'est plus sûr de le faire à chaque fois) :
+4. **Sauvegarder la base** (seulement s'il y a de nouvelles migrations, mais c'est plus sûr de le faire à chaque fois) :
    ```bash
    mysqldump -h <hote-bdd> -u <utilisateur-bdd> -p <nom-bdd> > ~/sauvegarde-$(date +%Y%m%d-%H%M).sql
    ```
    Les valeurs `<hote-bdd>`, `<utilisateur-bdd>`, `<nom-bdd>` sont dans la ligne `DATABASE_URL` du `.env.local`. Le mot de passe est demandé.
-6. Récupérer le code :
+5. Récupérer le code :
    ```bash
    git status          # doit dire « On branch main » et rien de modifié
    git pull origin main
    ```
-7. Installer les dépendances PHP (lance aussi `cache:clear`, `assets:install` et `importmap:install`) :
+6. Installer les dépendances PHP (lance aussi `cache:clear`, `assets:install` et `importmap:install`) :
    ```bash
    composer install --no-dev --optimize-autoloader
    ```
-8. Appliquer les migrations (s'il n'y en a pas, la commande le dit et ne fait rien) :
+7. Appliquer les migrations (s'il n'y en a pas, la commande le dit et ne fait rien) :
    ```bash
    php bin/console doctrine:migrations:migrate --no-interaction
    ```
-9. Vider le cache de prod :
+8. Vider le cache de prod :
    ```bash
    php bin/console cache:clear --env=prod
    ```
 
 ## Vérifier (dans le navigateur)
 
-10. Sur `https://dzencar.fr` :
+9. Sur `https://dzencar.fr` :
     - [ ] la page d'accueil s'affiche avec son style ;
     - [ ] calcul d'un trajet dans le formulaire (onglet 2 : les prix apparaissent) ;
     - [ ] `/admin` : connexion et liste des réservations OK ;
     - [ ] la nouveauté de cette mise en prod fonctionne.
-11. Noter la mise en prod dans `docs/JOURNAL.md`.
+10. Noter la mise en prod dans `docs/JOURNAL.md`.
 
 ---
 
@@ -79,10 +82,10 @@
 | Symptôme | À faire |
 |---|---|
 | Page blanche / erreur 500 | En SSH : `tail -50 var/log/prod.log` pour lire l'erreur |
-| Site sans style | Refaire les étapes 2-3 (`public/build/`) puis 9 |
-| Admin sans style | `php bin/console assets:install public` puis étape 9 |
+| Site sans style | Vérifier que `public/css/` est bien à jour (`git status`), puis étape 8 |
+| Admin sans style | `php bin/console assets:install public` puis étape 8 |
 | `git pull` refuse (fichiers modifiés sur le serveur) | **Ne rien forcer** : `git status`, noter les fichiers, demander de l'aide |
-| Migration en erreur | Ne pas relancer en boucle ; la sauvegarde de l'étape 5 permet de revenir en arrière |
+| Migration en erreur | Ne pas relancer en boucle ; la sauvegarde de l'étape 4 permet de revenir en arrière |
 
 **Revenir à la version précédente** (si la nouvelle version casse le site) :
 ```bash
