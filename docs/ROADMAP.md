@@ -7,7 +7,7 @@
 | # | Objectif | Chantier | Branche | Prochaine étape |
 |---|---|---|---|---|
 | 1 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | Tester dans EasyAdmin → PR vers `main` → mise en prod. Puis `feature/facturation-emission` (voir En attente) |
-| 2 | Migration React — formulaire de réservation | ⚛️ React | `feature/react` | ux-react installé ; premier vrai composant à écrire (c'est toi qui codes) |
+| 2 | Procédure de déploiement Infomaniak | 🚀 Infra | `docs/deploiement` | Écrire la check-list dans `deploiement.md`, puis mettre en prod la réservation téléphone |
 | 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
 
 ## ⏳ En attente
@@ -30,7 +30,8 @@
 - [ ] `SiteSettings` (téléphone, textes SMS…) en BDD
 - [ ] `GuestInfo` : sortir le JSON `guestInfo` de `Reservation`
 
-### ⚛️ React
+### ⚛️ React — en pause (décision du 2026-11-13)
+- [ ] Reprendre la migration React (`feature/react`) : ux-react installé, premier vrai composant à écrire (c'est toi qui codes)
 - [ ] Nettoyer `assets/styles/app.css` (thème sombre en cours, non commité, erreurs CSS)
 - [ ] Remplacer `public/js/reservation.js` (vanilla) par des composants React, étape par étape
   (attention : il sert aussi à la page admin « réservation téléphone », mode `data-admin-mode="phone"`)
@@ -40,7 +41,6 @@
 - [ ] Remplacer les 3 avis statiques par de vrais avis Google
 
 ### 🚀 Infra
-- [ ] Écrire la procédure de déploiement réelle dans `deploiement.md`
 - [ ] Mettre Git à jour (`brew install git`, version actuelle 2.15 de 2017)
 
 ## ✅ Terminé (récent)
