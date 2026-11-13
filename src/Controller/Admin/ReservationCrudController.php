@@ -15,6 +15,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ReservationCrudController extends AbstractCrudController
 {
@@ -29,7 +31,9 @@ class ReservationCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Réservation')
             ->setEntityLabelInPlural('Réservations')
             ->setPageTitle(Crud::PAGE_INDEX, 'Liste des réservations')
-            ->setDefaultSort(['id' => 'DESC']);
+            ->setDefaultSort(['id' => 'DESC'])
+            // Liste : une case vide reste vide (pas de badge « Null »)
+            ->hideNullValues();
     }
 
     public function configureActions(Actions $actions): Actions
@@ -98,7 +102,8 @@ class ReservationCrudController extends AbstractCrudController
 
         // ── Détail seulement ──
         $user     = AssociationField::new('user', 'Utilisateur')->onlyOnDetail();
-        $isGuest  = BooleanField::new('isGuest', 'Réservation invité')->onlyOnDetail();
+        $isGuest  = BooleanField::new('isGuest', 'Réservation invité')->onlyOnDetail()
+            ->setCssClass('')->setTemplatePath('admin/field/oui.html.twig');
         $guestInfo = TextField::new('guestInfo', 'guestInfo (legacy)')->onlyOnDetail();
 
         // ── Index ──
@@ -106,18 +111,25 @@ class ReservationCrudController extends AbstractCrudController
             return [$statut, $createdAt, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos];
         }
 
-        // ── Détail ──
+        // ── Détail : seuls les champs renseignés sont affichés ──
+        // (pas de ligne « Siège bébé : Non », « Lieu de stop : Null »… ;
+        //  « Stop en route » est sous-entendu par le lieu de stop)
         if (Crud::PAGE_DETAIL === $pageName) {
-            return [
+            // Sur la fiche, une case cochée s'affiche « Oui » comme les autres lignes
+            // (par défaut EasyAdmin met un badge « YES » devant le libellé)
+            $siegeBebe = BooleanField::new('siegeBebe', 'Siège bébé')
+                ->setCssClass('')->setTemplatePath('admin/field/oui.html.twig');
+
+            return $this->sansChampsVides([
                 $statut, $createdAt,
-                $depart, $arrivee, $dateHeureDepart,
-                $stopOption, $stopLieu, $siegeBebe,
+                $depart, $stopLieu, $arrivee, $dateHeureDepart,
+                $siegeBebe,
                 $distance, $duree,
                 $typeVehicule, $prix, $modeReglement,
                 $guestPrenom, $guestTelephone,
                 $infos,
                 $user, $isGuest, $guestInfo,
-            ];
+            ]);
         }
 
         // ── Création / Édition ──
@@ -132,5 +144,31 @@ class ReservationCrudController extends AbstractCrudController
             $guestTelephone,
             $infos,
         ];
+    }
+
+    /**
+     * Retire les champs sans valeur utile pour la réservation affichée :
+     * null, texte vide, false (case non cochée) ou 0.
+     *
+     * @param FieldInterface[] $fields
+     * @return FieldInterface[]
+     */
+    private function sansChampsVides(array $fields): array
+    {
+        $reservation = $this->getContext()?->getEntity()->getInstance();
+        if (!$reservation instanceof Reservation) {
+            return $fields;
+        }
+
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        return array_values(array_filter($fields, function (FieldInterface $field) use ($reservation, $accessor) {
+            $value = $accessor->getValue($reservation, $field->getAsDto()->getProperty());
+
+            return !(null === $value
+                || false === $value
+                || (is_string($value) && '' === trim($value))
+                || (is_numeric($value) && 0.0 === (float) $value));
+        }));
     }
 }
