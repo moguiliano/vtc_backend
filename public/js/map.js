@@ -47,23 +47,25 @@
       const ui = H.ui.UI.createDefault(map, defaultLayers);
 
       // -----------------------------------------------------------------------
-      // 📐 getResponsivePadding() – marges adaptatives pour le recentrage
-      // - Sur mobile : marges fixes réduites
-      // - Sinon : marges proportionnelles à la taille du viewport
+      // 📐 getResponsivePadding() – marge intérieure (px) autour du trajet
+      // - Assez large pour que les étiquettes Départ/Arrivée (90×30 px,
+      //   centrées sur le point) ne touchent pas les bords
+      // - Plus de marge à droite : boutons de zoom HERE (~50 px) en bas à droite
+      // - Desktop : au moins 10 % de la carte de chaque côté
       // -----------------------------------------------------------------------
       function getResponsivePadding() {
         if (window.innerWidth <= 767) {
-          return { top: 20, left: 20, bottom: 20, right: 20 };
+          return { top: 40, right: 100, bottom: 40, left: 56 };
         }
         const vp = map.getViewPort();
-        return vp.getHeight && vp.getWidth
-          ? {
-              top: vp.getHeight() * 0.15,
-              left: vp.getWidth() * 0.15,
-              bottom: vp.getHeight() * 0.15,
-              right: vp.getWidth() * 0.15,
-            }
-          : { top: 50, left: 50, bottom: 50, right: 50 };
+        const w = vp.width || mapContainer.clientWidth;
+        const h = vp.height || mapContainer.clientHeight;
+        return {
+          top: Math.max(50, h * 0.1),
+          right: Math.max(64, w * 0.1) + 50,
+          bottom: Math.max(50, h * 0.1),
+          left: Math.max(64, w * 0.1),
+        };
       }
 
       // -----------------------------------------------------------------------
@@ -174,26 +176,21 @@
       }
 
       // -----------------------------------------------------------------------
-      // 🎯 centerMapOnPoints() – recentre la vue pour contenir tous les points
-      // - Calcule une bounding box (H.geo.Rect) sur l’ensemble des points
-      // - Applique un padding responsive
+      // 🎯 centerMapOnPoints() – cadre la vue sur les marqueurs ET le tracé
+      // - Zone = marqueurs + emprise de l’itinéraire (qui peut déborder des points)
+      // - La marge passe par viewPort.setPadding() : HERE 3.1 ignore les clés
+      //   « padding » et « animate » dans setLookAtData()
       // -----------------------------------------------------------------------
       function centerMapOnPoints() {
         const coords = Object.values(allPoints);
         if (!coords.length) return;
 
-        const bbox = new H.geo.Rect(
-          Math.min(...coords.map((p) => p.lat)),
-          Math.min(...coords.map((p) => p.lng)),
-          Math.max(...coords.map((p) => p.lat)),
-          Math.max(...coords.map((p) => p.lng))
-        );
+        let bbox = H.geo.Rect.coverPoints(coords);
+        if (routeLine) bbox = bbox.mergeRect(routeLine.getBoundingBox());
 
-        map.getViewModel().setLookAtData({
-          bounds: bbox,
-          animate: true,
-          padding: getResponsivePadding(),
-        });
+        const pad = getResponsivePadding();
+        map.getViewPort().setPadding(pad.top, pad.right, pad.bottom, pad.left);
+        map.getViewModel().setLookAtData({ bounds: bbox });
       }
 
       // -----------------------------------------------------------------------
