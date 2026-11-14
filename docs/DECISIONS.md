@@ -76,9 +76,12 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
   - **Voit** : prix client, prix chauffeur, commission, factures.
   - **Fait** : changer les statuts, créer une réservation (téléphone), modifier ou annuler une course, télécharger les bons de commande.
   - **Interdit** (réservé au super-admin) : tarifs et forfaits, « Ma société », comptes admin, **création et émission des factures**.
-  - **Bouton « Partager sur WhatsApp »** : message prêt à envoyer avec départ, arrivée, date et heure, véhicule, **prix client et prix chauffeur**.
-- **Raison** : le régulateur gère toute l'exploitation quotidienne ; la configuration, le légal et la facturation restent au super-admin.
-- **Impact** : nouveau rôle `ROLE_REGULATEUR` dans EasyAdmin (s'appuyer sur les rôles existants `ROLE_RESERVATIONS_*`). À savoir : les deux prix dans le message permettent aux chauffeurs de déduire la commission (choix assumé).
+  - **Partage des courses en 2 temps, sur WhatsApp et Telegram** (complément validé par l'utilisateur dans une autre conversation, 2026-11-14 ; remplace « prix client + prix chauffeur dans le message ») :
+    1. **Annonce dans les groupes** : zone **approximative** de prise en charge (pas d'adresse exacte), date et heure, véhicule, **prix chauffeur uniquement** (pas le prix client).
+    2. Les chauffeurs répondent dans le groupe avec leur **temps d'approche**.
+    3. Au chauffeur retenu, la **course complète en message privé** : nom, prénom, téléphone, adresse exacte, infos complémentaires, prix, commission, etc.
+- **Raison** : le régulateur gère toute l'exploitation quotidienne ; la configuration, le légal et la facturation restent au super-admin. Le partage en 2 temps garde les données client chez le seul chauffeur retenu, et les chauffeurs du groupe ne voient plus la commission.
+- **Impact** : nouveau rôle `ROLE_REGULATEUR` dans EasyAdmin (s'appuyer sur les rôles existants `ROLE_RESERVATIONS_*`) ; deux boutons de partage par course (« Annonce groupe » et « Envoi au chauffeur retenu »), pour WhatsApp et Telegram. **À préciser plus tard** : qui choisit le chauffeur parmi les réponses (a priori le régulateur).
 
 ### D-020 — Par quoi commencer ? — 2026-11-14
 - **Décision** : **fondation d'abord** (« coller les étiquettes »), puis les fonctionnalités, dans cet ordre :
