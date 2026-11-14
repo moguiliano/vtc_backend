@@ -4,6 +4,7 @@
 > Rédigé le 2026-11-14 à partir du code et des docs du projet (tarifs, pages SEO, Google Ads, roadmap).
 > **Avant de l'utiliser** : compléter les `[crochets]` (données absentes du code) et vérifier que les tarifs n'ont pas changé en BDD.
 > Conseil : lancer d'abord le prompt complet pour le diagnostic, puis demander les livrables chantier par chantier.
+> **Version plus puissante** : les [5 prompts enchaînés](prompts/README.md) (un chantier par prompt, données à joindre, auto-critique).
 
 ```
 # RÔLE
