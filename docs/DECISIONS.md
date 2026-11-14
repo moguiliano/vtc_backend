@@ -62,25 +62,33 @@ Projet : chauffeurs / régulateurs abonnés avec leur propre espace (tarifs, soc
 bons de commande, factures) + collaborateurs (établissements partenaires avec prix convenus).
 Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres. -->
 
-### D-021 — Que peut voir et faire le régulateur ?
-- **Chantier** : 🧩 Fonctionnalités
-- **Contexte** : apparue avec D-013. Le régulateur travaille pour SIMPLICI CAB et dispatche tes courses dans des groupes WhatsApp.
-- **Options** : voit-il les prix ? la commission ? les factures ? Peut-il créer, modifier, annuler une réservation ? Changer les statuts ? Quel message WhatsApp préparer (départ, arrivée, heure, véhicule, prix chauffeur…) ?
-- **Avis de Claude** : il voit et gère les réservations (statuts, création téléphone), voit le **prix chauffeur** mais pas la commission ni les factures ; bouton « Partager sur WhatsApp » qui prépare le message.
 
 ### D-022 — Prix de l'abonnement
 - **Chantier** : 📣 Marketing
-- **Contexte** : apparue avec D-014. Le paiement est manuel, donc le prix ne bloque pas le développement.
+- **Contexte** : apparue avec D-014. Le paiement est manuel, donc le prix ne bloque pas le développement. **Reportée** le 2026-11-14 : à fixer quand les espaces abonnés approcheront (étape 4 de D-020).
 - **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ?
 - **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
 
-### D-020 — Par quoi commencer ?
-- **Chantier** : 🗄️ Données
-- **Contexte** : le multi-entreprises est le plus gros chantier de ZenCar ; les collaborateurs (D-018 A) sont faisables plus vite. La Facturation actuelle (`feature/facturation`) n'est pas encore en prod.
-- **Options** : A) Facturation actuelle en prod → Collaborateurs → Multi-entreprises / B) Tout de suite le multi-entreprises (et reprendre la Facturation dedans) / C) Autre ordre
-- **Avis de Claude** : A ; chaque étape apporte une valeur réelle tout de suite, et le multi-entreprises se construit sur des bases déjà testées.
-
 ## ✅ Tranché
+
+### D-021 — Que peut voir et faire le régulateur ? — 2026-11-14
+- **Décision** :
+  - **Voit** : prix client, prix chauffeur, commission, factures.
+  - **Fait** : changer les statuts, créer une réservation (téléphone), modifier ou annuler une course, télécharger les bons de commande.
+  - **Interdit** (réservé au super-admin) : tarifs et forfaits, « Ma société », comptes admin, **création et émission des factures**.
+  - **Bouton « Partager sur WhatsApp »** : message prêt à envoyer avec départ, arrivée, date et heure, véhicule, **prix client et prix chauffeur**.
+- **Raison** : le régulateur gère toute l'exploitation quotidienne ; la configuration, le légal et la facturation restent au super-admin.
+- **Impact** : nouveau rôle `ROLE_REGULATEUR` dans EasyAdmin (s'appuyer sur les rôles existants `ROLE_RESERVATIONS_*`). À savoir : les deux prix dans le message permettent aux chauffeurs de déduire la commission (choix assumé).
+
+### D-020 — Par quoi commencer ? — 2026-11-14
+- **Décision** : **fondation d'abord** (« coller les étiquettes »), puis les fonctionnalités, dans cet ordre :
+  0. **Fondation** : notion d'**Entreprise** (SIMPLICI CAB = entreprise n°1, seule pour l'instant) ; chaque réservation, facture, bon de commande, société et grille de prix **appartient à une entreprise**. Briques centralisées et réutilisables : *créer une réservation* (site, téléphone, collaborateur, abonné), *générer un PDF* (bon ou facture au nom de l'entreprise), *calculer un prix* (grille de l'entreprise). **Aucun changement visible** pour les clients.
+  1. **Facturation** en prod, posée sur la fondation.
+  2. **Régulateur** + partage WhatsApp.
+  3. **Collaborateurs**.
+  4. **Espaces abonnés** (inscription, validation, leur admin).
+- **Raison** : idée de l'utilisateur : centraliser une seule fois pour ne pas refaire la Facturation et les Collaborateurs au moment du multi-entreprises (gain de temps et de tokens). La fondation reste invisible et sans risque pour le site.
+- **Impact** : roadmap réorganisée ; `feature/facturation` (pas encore en prod) sera adaptée à la fondation avant sa mise en prod.
 
 ### D-019 — Collaborateurs : prix convenus et paiement — 2026-11-13
 - **Décision** :
