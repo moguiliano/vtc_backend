@@ -6,9 +6,17 @@
 
 | # | Objectif | Chantier | Branche | Prochaine étape |
 |---|---|---|---|---|
-| 1 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | Tester dans EasyAdmin → PR vers `main` → mise en prod. Puis `feature/facturation-emission` (voir En attente) |
-| 2 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
-| 3 | _(libre)_ | | | |
+| 1 | **Fondation « Entreprise »** (D-020 étape 0) | 🗄️ Données | `feature/fondation-entreprise` | Concevoir le plan (entités, migration, briques) avant de coder ; SIMPLICI CAB = entreprise n°1 ; rien de visible ne change |
+| 2 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | **Attend la fondation** : l'adapter (société et numérotation par entreprise), tester dans EasyAdmin → PR → mise en prod |
+| 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
+
+## 🏗️ Plateforme multi-entreprises (D-011 à D-021) — ordre décidé (D-020)
+
+0. **Fondation** : entité Entreprise ; réservations, factures, bons, société, grille de prix rattachés à une entreprise ; briques centrales *créer une réservation* / *générer un PDF* / *calculer un prix* → **En cours n°1**
+1. **Facturation** en prod sur la fondation → **En cours n°2**
+2. [ ] **Régulateur** (D-013, D-021) : `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; bouton « Partager sur WhatsApp » (prix client + prix chauffeur)
+3. [ ] **Collaborateurs** (D-018, D-019) : comptes établissements de SIMPLICI CAB, forfaits propres + remise %, paiement « sur le compte » (facture mensuelle) ou par le passager, au choix par commande
+4. [ ] **Espaces abonnés** (D-011 à D-017) : outil de gestion, 1 compte par abonné, saisie société une fois puis validation super-admin (rien d'accessible avant), états en attente / actif / lecture seule, paiement manuel, catégories communes + prix propres, bons et factures à son nom avec sa numérotation. Prix de l'abonnement : D-022 (reporté)
 
 ## ⏳ En attente
 

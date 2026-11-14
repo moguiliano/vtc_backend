@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-14 — Séance de décisions « Plateforme multi-entreprises » (Pilote)
+- **Fait** : D-011 à D-021 tranchées : outil de gestion (SaaS), pas de réservation en ligne pour les clients des abonnés au départ, 4 rôles (super-admin, régulateur interne + WhatsApp, abonné à compte unique, collaborateur), paiement manuel + lecture seule si impayé, validation société sans pièces, catégories communes + prix propres, factures au nom de l'abonné, collaborateurs SIMPLICI CAB d'abord (forfaits + remise, paiement au choix), droits du régulateur. **Ordre (D-020) : fondation « Entreprise » d'abord**, puis Facturation, Régulateur, Collaborateurs, Espaces abonnés. En parallèle, corrections d'affichage fusionnées (PR #3).
+- **Bloqué** : D-022 (prix de l'abonnement) reporté ; D-002 (TVA) toujours chez le comptable. Mise en prod de la PR #3 à faire en SSH.
+- **Prochaine étape** : mise en prod PR #3 ; puis session 🗄️ « Fondation Entreprise » : plan d'abord, code ensuite.
+
 ### 2026-11-13 — Mise en prod réservation téléphone (Pilote, 🚀 Infra)
 - **Fait** : sauvegarde BDD (844 Ko) ; `git pull` 353a2dc → 393df89 ; `serverVersion` corrigé (MariaDB réelle : 10.6.28) ; registre des migrations réparé (4 migrations déjà appliquées à la main, marquées faites ; 1 jouée : 20260412000000) ; `APP_DEBUG=1` trouvé en prod et coupé ; accueil et calcul de trajet vérifiés en ligne. `deploiement.md` complété avec tout ça.
 - **Bloqué** : 7 retouches de schéma en attente (voir ROADMAP Infra) ; test de la page admin « réservation téléphone » en prod à faire par toi (connexion admin).
