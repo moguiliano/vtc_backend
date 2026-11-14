@@ -14,7 +14,7 @@
 
 0. **Fondation** : entité Entreprise ; réservations, factures, bons, société, grille de prix rattachés à une entreprise ; briques centrales *créer une réservation* / *générer un PDF* / *calculer un prix* → **En cours n°1**
 1. **Facturation** en prod sur la fondation → **En cours n°2**
-2. [ ] **Régulateur** (D-013, D-021) : `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; partage en 2 temps sur WhatsApp et Telegram : annonce groupe (zone approximative, date/heure, véhicule, prix chauffeur seul) → réponses avec temps d'approche → course complète en message privé au chauffeur retenu
+2. [ ] **Régulateur** (D-013, D-021) : `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; partage en 2 temps sur WhatsApp et Telegram : annonce groupe (zone approximative, date/heure, véhicule, prix chauffeur seul) → réponses avec temps d'approche → le régulateur choisit → course complète en message privé au chauffeur retenu
 3. [ ] **Collaborateurs** (D-018, D-019) : comptes établissements de SIMPLICI CAB, forfaits propres + remise %, paiement « sur le compte » (facture mensuelle) ou par le passager, au choix par commande
 4. [ ] **Espaces abonnés** (D-011 à D-017) : outil de gestion, 1 compte par abonné, saisie société une fois puis validation super-admin (rien d'accessible avant), états en attente / actif / lecture seule, paiement manuel, catégories communes + prix propres, bons et factures à son nom avec sa numérotation. Prix de l'abonnement : D-022 (reporté)
 

@@ -79,9 +79,9 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
   - **Partage des courses en 2 temps, sur WhatsApp et Telegram** (complément validé par l'utilisateur dans une autre conversation, 2026-11-14 ; remplace « prix client + prix chauffeur dans le message ») :
     1. **Annonce dans les groupes** : zone **approximative** de prise en charge (pas d'adresse exacte), date et heure, véhicule, **prix chauffeur uniquement** (pas le prix client).
     2. Les chauffeurs répondent dans le groupe avec leur **temps d'approche**.
-    3. Au chauffeur retenu, la **course complète en message privé** : nom, prénom, téléphone, adresse exacte, infos complémentaires, prix, commission, etc.
+    3. Le **régulateur choisit** le chauffeur parmi ceux qui ont répondu, puis lui envoie la **course complète en message privé** : nom, prénom, téléphone, adresse exacte, infos complémentaires, prix, commission, etc.
 - **Raison** : le régulateur gère toute l'exploitation quotidienne ; la configuration, le légal et la facturation restent au super-admin. Le partage en 2 temps garde les données client chez le seul chauffeur retenu, et les chauffeurs du groupe ne voient plus la commission.
-- **Impact** : nouveau rôle `ROLE_REGULATEUR` dans EasyAdmin (s'appuyer sur les rôles existants `ROLE_RESERVATIONS_*`) ; deux boutons de partage par course (« Annonce groupe » et « Envoi au chauffeur retenu »), pour WhatsApp et Telegram. **À préciser plus tard** : qui choisit le chauffeur parmi les réponses (a priori le régulateur).
+- **Impact** : nouveau rôle `ROLE_REGULATEUR` dans EasyAdmin (s'appuyer sur les rôles existants `ROLE_RESERVATIONS_*`) ; deux boutons de partage par course (« Annonce groupe » et « Envoi au chauffeur retenu »), pour WhatsApp et Telegram. Le choix du chauffeur est fait par le régulateur (précision confirmée par l'utilisateur, 2026-11-14).
 
 ### D-020 — Par quoi commencer ? — 2026-11-14
 - **Décision** : **fondation d'abord** (« coller les étiquettes »), puis les fonctionnalités, dans cet ordre :
