@@ -8,6 +8,7 @@ use App\Entity\Facture;
 use App\Entity\Forfait;
 use App\Entity\Reservation;
 use App\Entity\Societe;
+use App\Entity\SiteSettings;
 use App\Entity\VehicleCategory;
 use App\Repository\ContactRepository;
 use App\Repository\SocieteRepository;
@@ -63,6 +64,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Factures', 'fa fa-file-invoice', Facture::class);
         }
         if ($this->isGranted('ROLE_RESERVATIONS_EDIT')) {
+            yield MenuItem::linkToRoute('Nouvelle réservation (téléphone)', 'fa fa-phone', 'admin_phone_booking');
             yield MenuItem::linkToRoute('Réservation rapide', 'fa fa-bolt', 'admin_quick_book');
         }
 
@@ -81,6 +83,12 @@ class DashboardController extends AbstractDashboardController
         }
         if ($this->isGranted('ROLE_FORFAITS_VIEW')) {
             yield MenuItem::linkToCrud('Forfaits VTC', 'fa fa-tag', Forfait::class);
+        }
+
+        // Réglages du site visibles par les clients (super admin uniquement)
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            yield MenuItem::section('Site');
+            yield MenuItem::linkToCrud('Avis Google', 'fa fa-star', SiteSettings::class);
         }
 
         // Gestion des admins (super admin uniquement)

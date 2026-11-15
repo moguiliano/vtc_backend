@@ -1,0 +1,70 @@
+{# Onglet 3 de la saisie admin : récap + infos client, sans OTP. Envoi classique du formulaire (pas d'AJAX). #}
+{% set fieldStyle = 'background:#1e2130;color:#fff;border-color:rgba(255,255,255,.2);' %}
+
+<div id="tab3" class="tab-content">
+
+	<div style="text-align:left;margin-bottom:16px;">
+		<button type="button" class="nav-main-btn back-btn" onclick="UI.switchToTab('tab2')">← Retour</button>
+	</div>
+
+	<div class="general-container">
+
+		{% include 'reservation/_recap.html.twig' %}
+
+		{# ── Prix proposé, modifiable ─────────────────────────────── #}
+		<div class="form-group mb-4" style="background:rgba(255,86,48,.08);border:1px solid rgba(255,86,48,.3);border-radius:14px;padding:14px 18px;">
+			<label for="reservation_prix" class="text-white fw-bold mb-1">💶 Prix de la course (€) <span style="color:var(--zen-orange);">*</span></label>
+			<div class="input-group" style="max-width:260px;">
+				{{ form_widget(form.prix, {type: 'number', attr: {step: '0.01', min: '0', class: 'form-control', style: fieldStyle ~ 'font-weight:700;font-size:1.1rem;', required: 'required'}}) }}
+				<span class="input-group-text">€</span>
+			</div>
+			<small style="color:rgba(255,255,255,.5);">Prix calculé automatiquement selon le véhicule choisi. Vous pouvez le modifier avant d’enregistrer.</small>
+		</div>
+
+		<h5 style="color:white;margin-bottom:1rem;">Informations du client</h5>
+
+		<div class="row g-3">
+			<div class="col-md-6">
+				<label for="prenom" class="text-white mb-1">Prénom <span style="color:var(--zen-orange);">*</span></label>
+				<input type="text" id="prenom" name="prenom" class="form-control" required maxlength="100"
+					   value="{{ client.prenom }}" placeholder="Prénom du client" style="{{ fieldStyle }}">
+			</div>
+			<div class="col-md-6">
+				<label for="telephone" class="text-white mb-1">Téléphone <span style="color:var(--zen-orange);">*</span></label>
+				<input type="tel" id="telephone" name="telephone" class="form-control" required inputmode="tel"
+					   value="{{ client.telephone }}" placeholder="06 12 34 56 78 ou +44…" style="{{ fieldStyle }}">
+			</div>
+			<div class="col-md-6">
+				<label for="email" class="text-white mb-1">Email <small style="color:rgba(255,255,255,.4);">(facultatif)</small></label>
+				<input type="email" id="email" name="email" class="form-control"
+					   value="{{ client.email }}" placeholder="client@exemple.fr" style="{{ fieldStyle }}">
+			</div>
+			<div class="col-md-6">
+				<label class="text-white d-block mb-1">Mode de règlement</label>
+				<div class="d-flex gap-2 flex-wrap">
+					<input type="radio" name="modeReglement" id="mr_carte" value="carte_bancaire" class="btn-check" autocomplete="off" {{ client.mode != 'especes' ? 'checked' }}>
+					<label for="mr_carte" class="btn btn-outline-light"><i class="bi bi-credit-card me-1"></i>Carte bancaire</label>
+					<input type="radio" name="modeReglement" id="mr_especes" value="especes" class="btn-check" autocomplete="off" {{ client.mode == 'especes' ? 'checked' }}>
+					<label for="mr_especes" class="btn btn-outline-light"><i class="bi bi-cash-coin me-1"></i>Espèces</label>
+				</div>
+			</div>
+			<div class="col-12">
+				<label for="infosComplementaires" class="text-white mb-1">Informations complémentaires <small style="color:rgba(255,255,255,.4);">(facultatif)</small></label>
+				<textarea id="infosComplementaires" name="informationsComplementaires" class="form-control" rows="2" maxlength="500"
+						  placeholder="N° de vol, bagages, remarques…" style="{{ fieldStyle }}resize:vertical;">{{ client.infos }}</textarea>
+			</div>
+		</div>
+
+		<div class="form-check mt-4 mb-3">
+			<input class="form-check-input" type="checkbox" id="sendSms" name="sendSms" value="1"
+				   {{ client.sendSms or not form.vars.submitted ? 'checked' }} style="width:18px;height:18px;">
+			<label class="form-check-label text-white ms-1" for="sendSms">
+				<i class="bi bi-chat-dots me-1"></i>Envoyer un SMS de confirmation au client
+			</label>
+		</div>
+
+		<button type="submit" class="btn btn-success w-100" style="padding:13px;font-size:1rem;font-weight:700;border-radius:50px;">
+			✅ Enregistrer la réservation (confirmée)
+		</button>
+	</div>
+</div>

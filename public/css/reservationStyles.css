@@ -142,6 +142,17 @@ textarea::placeholder {
   font-size: clamp(.78rem, 1.8vw, .9rem) !important;
 }
 
+/* Écrans tactiles : iOS zoome tout seul sur un champ dont le texte fait moins
+   de 16px (au moment où on tape l'adresse) et ne dézoome pas ensuite.
+   16px minimum = plus de zoom automatique ; le zoom au doigt reste possible. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea { font-size: 16px !important; }
+  input::placeholder,
+  textarea::placeholder { font-size: 15px !important; }
+}
+
 .input-group { display: flex; width: 100%; }
 .input-group-text {
   display: flex;
