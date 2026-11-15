@@ -51,12 +51,6 @@ Règles : numéro D-XXX unique et jamais réutilisé ; une question tranchée es
 - **Options** : A) Tu les retrouves (interface Google Ads, notes) et tu les colles / B) On les réécrit en session Marketing
 - **Avis de Claude** : regarder d'abord dans Google Ads (les annonces déjà saisies y sont), sinon B.
 
-### D-009 — Vrais avis Google sur le site
-- **Chantier** : 📣 Marketing
-- **Contexte** : la page d'accueil affiche 3 avis statiques.
-- **Options** : A) Copier à la main quelques vrais avis (avec prénom et date) / B) Widget ou API Google (automatique, plus technique, clé API) / C) Bouton « Voir nos avis sur Google » seulement
-- **Avis de Claude** : A + C, rapide, sans dépendance externe.
-
 <!-- ─── Bloc « Plateforme multi-entreprises » (ajouté le 2026-11-13) ───
 Projet : chauffeurs / régulateurs abonnés avec leur propre espace (tarifs, société validée par l'admin ZenCar,
 bons de commande, factures) + collaborateurs (établissements partenaires avec prix convenus).
@@ -70,6 +64,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 - **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
 
 ## ✅ Tranché
+
+### D-009 — Vrais avis Google sur le site — 2026-11-15
+- **Décision** : les 3 faux avis de l'accueil sont retirés. Le site affiche **uniquement la note globale et le nombre d'avis Google** (aujourd'hui 5,0 · 124 avis) avec le bouton « Voir nos avis Google ». **Pas d'avis individuels.** La note et le nombre d'avis se modifient dans **EasyAdmin**, sans passer par le code. Pas d'API Google payante.
+- **Raison** : les avis affichés étaient fictifs (rédigés par Claude), donc risque de pratique commerciale trompeuse ; la vraie fiche a 124 avis à 5,0, invisibles sur le site. Mise à jour manuelle simple et gratuite.
+- **Impact** : code sur `feature/marketing` : réglage « note Google + nombre d'avis » en base (début de la table `SiteSettings` prévue dans la ROADMAP), écran EasyAdmin, bloc avis de l'accueil. Registre marketing S-05 et C-01.
 
 ### D-021 — Que peut voir et faire le régulateur ? — 2026-11-14
 - **Décision** :

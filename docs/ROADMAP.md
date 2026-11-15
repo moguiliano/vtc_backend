@@ -35,7 +35,7 @@
 
 ### 🗄️ Données
 - [ ] `PricingRule` (majoration nuit, commission) en BDD au lieu de `services.yaml`
-- [ ] `SiteSettings` (téléphone, textes SMS…) en BDD
+- [ ] `SiteSettings` (téléphone, textes SMS…) en BDD — **commencé** : la table existe avec la note et le nombre d'avis Google (D-009)
 - [ ] `GuestInfo` : sortir le JSON `guestInfo` de `Reservation`
 
 ### ⚛️ React — en pause (décision du 2026-11-13)
@@ -46,7 +46,8 @@
 
 ### 📣 Marketing / SEO
 - [ ] Compléter le footer (mentions légales, RGPD, liens, téléphone)
-- [ ] Remplacer les 3 avis statiques par de vrais avis Google
+- [x] Remplacer les 3 avis statiques par la vraie note Google (D-009) — `feature/marketing`, 2026-11-15 : note + nombre d'avis modifiables dans EasyAdmin > Avis Google (table `site_settings`, **migration à lancer en prod**)
+- [x] Urgences de la priorisation marketing (2026-11-15, `feature/marketing`) : promesses « taxi agréé », « plateforme », photo, horaires et zone des données structurées, FAQ seniors « non remboursé », bannière cookies + Consent Mode v2 (GTM chargé seulement après accord)
 
 ### 🚀 Infra
 - [ ] Mettre Git à jour (`brew install git`, version actuelle 2.15 de 2017)

@@ -48,7 +48,7 @@
 ## 3. Les 5 actions urgentes de cette semaine (moins de 2 h chacune)
 
 1. **Retirer les 3 faux avis et la mention « Avis Google vérifiés »** de l'accueil, et afficher la vraie note (5,0 · 124 avis, recopiée le jour même) avec un lien vers la fiche. *Risque juridique.*
-2. **Corriger les promesses fausses** sur le site : « 24h/24 » → horaires réels ; « Taxi agréé Ville de Marseille » et « nos taxis » → formulation exacte (VTC, et taxis partenaires agréés) ; légende de la photo d'illustration ; « plateforme » dans les données structurées. *Risque juridique.*
+2. **Corriger les promesses fausses** sur le site : « 24h/24 » conservé (régulateur de nuit en place la semaine du 16 novembre, décidé en séance) mais horaires des données structurées unifiés à 00:00 – 23:59 ; « Taxi agréé Ville de Marseille » et « nos taxis » → « Réseau de taxis partenaires agréés » ; légende de la photo d'illustration ; « plateforme » dans les données structurées. *Risque juridique.*
 3. **Google Ads, 3 réglages** : diffusion de 7 h à 21 h ; URL de l'annonce aéroport corrigée (/taxi-aeroport-marseille) ; Aubagne retiré des zones.
 4. **Bannière de consentement aux cookies** avec Consent Mode. *Risque juridique.*
 5. **Fiche Google** : horaires réels, nom écrit « ZenCAR » si c'est le nom utilisé partout, lien vers dzencar.fr. (Le choix de catégorie attend l'étape 04, Q-11.)

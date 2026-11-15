@@ -6,6 +6,7 @@ use App\Entity\Admin;
 use App\Entity\Contact;
 use App\Entity\Forfait;
 use App\Entity\Reservation;
+use App\Entity\SiteSettings;
 use App\Entity\VehicleCategory;
 use App\Repository\ContactRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,6 +77,12 @@ class DashboardController extends AbstractDashboardController
         }
         if ($this->isGranted('ROLE_FORFAITS_VIEW')) {
             yield MenuItem::linkToCrud('Forfaits VTC', 'fa fa-tag', Forfait::class);
+        }
+
+        // Réglages du site visibles par les clients (super admin uniquement)
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            yield MenuItem::section('Site');
+            yield MenuItem::linkToCrud('Avis Google', 'fa fa-star', SiteSettings::class);
         }
 
         // Gestion des admins (super admin uniquement)
