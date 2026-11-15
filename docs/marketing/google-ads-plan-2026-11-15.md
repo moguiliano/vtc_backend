@@ -259,6 +259,172 @@ Appliqué par Claude dans le compte 522-918-7346, à la demande du fondateur.
 | 6 | **Liste partagée « ctr faible » (269 exclusions, dont ~190 recherches utiles : vtc marseille, taxi aéroport marseille, taxi gare saint charles…) détachée de la campagne** — décision du fondateur ; la liste reste dans le compte | ✅ fait, vérifié |
 | 7 | 6 négatifs repris de cette liste : navette, shuttle, allauch, ameli, securite sociale, sécurité sociale | ✅ fait, vérifié |
 | 8 | Groupe **C - Gare Saint-Charles** créé : 6 mots-clés, annonce (URL /taxi-gare-saint-charles), CPA 7 € | ✅ fait — annonce « Éligible » après correction (flèche, téléphone) |
+| 9 | Groupe **B - Alternative aux applis** créé (7 mots-clés, annonce) ; [numero uber marseille] supprimé, titre « Un Vrai Numéro à Appeler » → « Réservez par Téléphone » | ✅ fait — annonce « Éligible » |
+| 10 | Groupe A (Groupe d'annonces 1) : **nouvelle annonce A** créée ; 5 mots-clés concurrents mis en veille (uber taxi, uber marseille, bolt marseille, [taxi uber marseille], "uber taxi marseille") ; « taxi marseille telephone » et « appeler taxi marseille » ajoutés (repris d'« appel direct ») | ✅ fait — annonce « Éligible » |
+| 10b | **Incident corrigé** : un clic décalé a changé le type de correspondance de « taxi marseille 13003 » (expression → large) ; rétabli en expression exacte | ✅ corrigé |
+| 11 | Groupe D (aeroport / Marignane) : **nouvelle annonce D** (URL /taxi-aeroport-marseille) ; ancienne annonce (URL /taxi/aeroport en 404) **mise en veille** | ✅ fait |
+| 12 | Groupe « appel direct » **mis en veille** ; négatifs « aix » et « aixois » ajoutés aux groupes A, B et C (pas D) | ✅ fait |
+| 13 | Composants : liens annexes (les actuels générés par Google parlent de « 24/7 », « prise en charge immédiate »), accroches, prix, appel planifié | ⏳ à faire |
+| 14a | Règle **« ZenCAR - Accélérer budget (coût/conv ≤ 7 €) »** : chaque lundi 8 h, données des 7 derniers jours, si Coût/conv. ≤ 7 € **et** Conversions > 1,9 → budget quotidien +20 %, plafond 20 € | ✅ enregistrée |
+| 14b | Règle « Freiner » coût/conv. > 12 € → budget -20 %, plancher 6 € (lundi 8 h, 7 jours) | ⏳ à faire |
+| 14c | Règle « Freiner » coût ≥ 30 € et conversions < 0,5 → budget -20 %, plancher 6 € (indispensable : avec 0 conversion, le coût/conv. vaut 0) | ⏳ à faire |
+| 15 |
+| 7 | Réservation en Ligne Rapide | 27 |
+| 8 | Appelez le 06 74 03 96 94 | 25 |
+| 9 | Paiement CB ou Espèces | 22 |
+| 10 | Taxis Partenaires Agréés | 24 |
+| 11 | Chauffeurs Locaux Marseillais | 29 |
+| 12 | Aéroport, Gare, Calanques | 25 |
+| 13 | Sans Application à Installer | 28 |
+| 14 | VTC Prix Fixe Avant Départ | 26 |
+| 15 | Partout dans Marseille | 22 |
+
+| # | Description (≤ 90) | Car. |
+|---|---|---|
+| 1 | VTC à prix affiché avant de réserver, ou taxi partenaire agréé au compteur. 7j/7. | 81 |
+| 2 | Prise en charge en 5 à 10 min dans Marseille. Paiement à bord, CB ou espèces. | 77 |
+| 3 | Noté 5,0/5 sur Google par nos clients. Appelez ou réservez en ligne en quelques clics. | 86 |
+| 4 | Aéroport, gare Saint-Charles, calanques : forfaits VTC à prix fixe, réservables en ligne. | 89 |
+
+### Groupe B Alternative aux applis
+
+URL finale : `https://dzencar.fr/` · Titre à épingler en position 1 : **Sans Application à Installer**
+
+| # | Titre (≤ 30) | Car. |
+|---|---|---|
+| 1 | Sans Application à Installer | 28 |
+| 2 | Prix VTC Affiché d'Avance | 25 |
+| 3 | Chauffeur en 5 à 10 min | 23 |
+| 4 | Un Vrai Numéro à Appeler | 24 |
+| 5 | Taxi & VTC Marseille | 20 |
+| 6 | Prix Connu Avant le Départ | 26 |
+| 7 | ZenCAR Taxi & VTC | 17 |
+| 8 | Noté 5,0/5 sur Google | 21 |
+| 9 | Appelez le 06 74 03 96 94 | 25 |
+| 10 | Réservation en Ligne Rapide | 27 |
+| 11 | Paiement CB ou Espèces | 22 |
+| 12 | Chauffeurs Locaux Marseillais | 29 |
+| 13 | Disponible 7j/7 | 15 |
+| 14 | Alternative Locale | 18 |
+| 15 | Réservez sans Compte | 20 |
+
+| # | Description (≤ 90) | Car. |
+|---|---|---|
+| 1 | Pas d'application ni de compte : appelez ou réservez en ligne, prix VTC affiché d'avance. | 89 |
+| 2 | Chauffeurs marseillais disponibles 7j/7, prise en charge en 5 à 10 minutes à Marseille. | 87 |
+| 3 | Noté 5,0/5 sur Google. Paiement à bord par carte ou en espèces. | 63 |
+| 4 | Aéroport, gare Saint-Charles, calanques : forfaits VTC à prix fixe, réservables en ligne. | 89 |
+
+### Groupe C Gare Saint-Charles
+
+URL finale : `https://dzencar.fr/taxi-gare-saint-charles` · Titre à épingler en position 1 : **Taxi Gare Saint-Charles**
+
+| # | Titre (≤ 30) | Car. |
+|---|---|---|
+| 1 | Taxi Gare Saint-Charles | 23 |
+| 2 | VTC Gare Saint-Charles | 22 |
+| 3 | Forfait VTC Gare : 25 € | 23 |
+| 4 | Prise en Charge à la Gare | 25 |
+| 5 | Chauffeur en 5 à 10 min | 23 |
+| 6 | Évitez la File d'Attente | 24 |
+| 7 | Taxi & VTC Marseille | 20 |
+| 8 | Noté 5,0/5 sur Google | 21 |
+| 9 | Appelez le 06 74 03 96 94 | 25 |
+| 10 | Réservez Avant d'Arriver | 24 |
+| 11 | Paiement CB ou Espèces | 22 |
+| 12 | Véhicules Grand Coffre | 22 |
+| 13 | Van jusqu'à 8 Places | 20 |
+| 14 | Disponible 7j/7 | 15 |
+| 15 | ZenCAR Taxi & VTC | 17 |
+
+| # | Description (≤ 90) | Car. |
+|---|---|---|
+| 1 | Arrivée en gare Saint-Charles ? VTC à prix affiché d'avance ou taxi partenaire agréé. | 85 |
+| 2 | Forfait VTC Marseille centre → gare Saint-Charles : 25 €. Taxi partenaire au compteur. | 86 |
+| 3 | Prise en charge rapide à la sortie de la gare. Paiement à bord, CB ou espèces. | 78 |
+| 4 | Noté 5,0/5 sur Google. Berline, grand coffre ou van jusqu'à 8 places, 7j/7. | 75 |
+
+### Groupe D Aéroport Marseille-Provence
+
+URL finale : `https://dzencar.fr/taxi-aeroport-marseille` · Titre à épingler en position 1 : **Taxi Aéroport Marseille**
+
+| # | Titre (≤ 30) | Car. |
+|---|---|---|
+| 1 | Taxi Aéroport Marseille | 23 |
+| 2 | VTC Aéroport Marignane | 22 |
+| 3 | Forfait VTC Aéroport : 59 € | 27 |
+| 4 | Suivi de Votre Vol | 18 |
+| 5 | Transfert Marignane 7j/7 | 24 |
+| 6 | Aix → Aéroport en VTC 59 € | 26 |
+| 7 | Réservez à l'Avance | 19 |
+| 8 | Noté 5,0/5 sur Google | 21 |
+| 9 | Appelez le 06 74 03 96 94 | 25 |
+| 10 | Taxi & VTC Marseille | 20 |
+| 11 | Grand Coffre pour Bagages | 25 |
+| 12 | Van jusqu'à 8 Places | 20 |
+| 13 | Paiement CB ou Espèces | 22 |
+| 14 | ZenCAR Taxi & VTC | 17 |
+| 15 | Chauffeur à l'Heure | 19 |
+
+| # | Description (≤ 90) | Car. |
+|---|---|---|
+| 1 | Forfait VTC Marseille → aéroport Marseille-Provence : 59 €, prix fixé avant de réserver. | 88 |
+| 2 | Suivi de votre vol. Grand coffre et van jusqu'à 8 places disponibles sur réservation. | 85 |
+| 3 | Forfait VTC Aix-en-Provence → aéroport Marignane : 59 €. Réservez en ligne ou par appel. | 88 |
+| 4 | Noté 5,0/5 sur Google. Paiement à bord par carte ou espèces. Taxi partenaire au compteur. | 89 |
+
+## 8. Objectifs à 30 jours
+
+| Indicateur | Aujourd'hui | Cible à 30 jours |
+|---|---|---|
+| Coût par conversion | ~16 € (sept. – nov.) | ≤ 7 € |
+| Conversions par mois | 1 à 5 | ≥ 25 |
+| Part des enchères remportées | 25 % | ≥ 40 % |
+| Pauses manuelles | ~20 par mois | 0 |
+| Conversions du site mesurées | 0 | clic téléphone, WhatsApp, réservation |
+
+Repère : avril – mai 2026 a atteint 21 à 45 conversions par mois à moins de 5 € l'une.
+
+## 9. Ordre de mise en place
+
+1. Suivi des conversions dans GTM (§ 1).
+2. Réglages : calendrier 7 h – 21 h, zones, CPA 7 € (§ 2).
+3. Mots-clés négatifs et conflits (§ 4).
+4. Nouveaux groupes et annonces (§ 3, § 7), puis mise en veille des anciens groupes.
+5. Composants (§ 6).
+6. Règle de budget (§ 5).
+7. **Ne plus toucher pendant 14 jours** (apprentissage), sauf incident.
+
+## Non analysé
+
+| Point | Pourquoi |
+|---|---|
+| Durée minimale d'appel comptée comme conversion | Réglage de l'action « Calls from Smart Campaign Ads » non ouvert |
+| Part des appels Google Ads devenus des courses | Non mesuré (Q-01) |
+| 527 € de termes de recherche masqués par Google | Non communiqués par Google |
+| Score de qualité des mots-clés | Colonne non affichée |
+
+## Auto-critique
+
+- Les coûts par conversion par intention reposent sur des volumes faibles (4 à 43,5 conversions par catégorie) : ce sont des tendances, pas des certitudes.
+- Une « conversion » est un appel, pas une course : le seuil de 7 € par appel suppose 5 à 7 appels sur 10 transformés (C-10, déclaré).
+- La meilleure période (avril – mai) a aussi pu profiter d'une saison favorable ; la comparaison avec septembre – novembre n'isole pas la seule cause « pauses manuelles ».
+
+
+## Journal d'application (2026-11-15)
+
+Appliqué par Claude dans le compte 522-918-7346, à la demande du fondateur.
+
+| # | Action | État |
+|---|---|---|
+| 1 | Calendrier de diffusion : 7 h – 21 h, 7j/7 (anciens créneaux supprimés) | ✅ fait, vérifié |
+| 2 | CPA cible de la campagne : 4,70 € → **7 €** (hérité par les groupes) | ✅ fait, vérifié |
+| 3 | Zones : **Aubagne retirée**, **ville de Marseille entière ajoutée** (seuls quelques arrondissements étaient ciblés) | ✅ fait, vérifié |
+| 4 | 46 mots-clés négatifs ajoutés (villes hors zone, conventionné, hôtel, location…) | ✅ fait, vérifié (116 → 162) |
+| 5 | Négatif « heetch » retiré (conflit avec Q-05) | ✅ fait |
+| 6 | **Liste partagée « ctr faible » (269 exclusions, dont ~190 recherches utiles : vtc marseille, taxi aéroport marseille, taxi gare saint charles…) détachée de la campagne** — décision du fondateur ; la liste reste dans le compte | ✅ fait, vérifié |
+| 7 | 6 négatifs repris de cette liste : navette, shuttle, allauch, ameli, securite sociale, sécurité sociale | ✅ fait, vérifié |
+| 8 | Groupe **C - Gare Saint-Charles** créé : 6 mots-clés, annonce (URL /taxi-gare-saint-charles), CPA 7 € | ✅ fait — annonce « Éligible » après correction (flèche, téléphone) |
 | 9 | Groupe **B - Alternative aux applis** créé : 8 mots-clés, annonce | ⚠️ « diffusion limitée » (renseignements téléphoniques) : reste à retirer [numero uber marseille] et à remplacer le titre « Un Vrai Numéro à Appeler » |
 | 10 | Groupe A (Groupe d'annonces 1) : nouvelle annonce A, mots-clés « uber » à mettre en veille (déplacés en B) | ⏳ à faire |
 | 11 | Groupe D (aeroport / Marignane) : nouvelle annonce D (URL corrigée), ancienne annonce (404) en veille | ⏳ à faire |
