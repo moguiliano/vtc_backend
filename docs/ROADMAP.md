@@ -50,6 +50,7 @@
 - [x] Urgences de la priorisation marketing (2026-11-15, `feature/marketing`) : promesses « taxi agréé », « plateforme », photo, horaires et zone des données structurées, FAQ seniors « non remboursé », bannière cookies + Consent Mode v2 (GTM chargé seulement après accord)
 
 ### 🚀 Infra
+- [ ] 🔴 **Confidentialité (prioritaire)** : `/reservation/{id}/bon-commande.pdf` est **public** et les numéros se suivent → n'importe qui peut télécharger le bon de commande d'un autre client (nom, téléphone, adresses) en changeant le numéro. Le lien est donné au client sur la page de succès. Correction : lien **signé** (`UriSigner`) ou identifiant aléatoire, et accès libre seulement pour l'admin. Vérifier aussi `/reservation/{id}/confirm` et `/success`.
 - [ ] Formulaire admin EasyAdmin : choix `typeVehicule` codés en dur dans `ReservationCrudController` → les lire depuis `VehicleCategory`
 - [ ] Mettre Git à jour (`brew install git`, version actuelle 2.15 de 2017)
 - [ ] **Aligner la base de prod sur le code** : `doctrine:schema:update --dump-sql` montre 7 retouches (champs NULL/NOT NULL, 2 index sur `verification_code`).

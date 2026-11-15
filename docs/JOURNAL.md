@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-15 — Facturation en prod (PR #5, Pilote)
+- **Fait** : Facturation mise en prod **avant** la fondation (D-020 modifiée) : `feature/facturation` mise à jour avec `main` (2 conflits d'imports résolus), testée en local sur un dossier séparé, PR #5 fusionnée ; en prod : sauvegarde, `git pull`, 3 migrations (`created_at`, tables `facture` et `societe`), cache vidé, sans erreur. Accueil, calcul de trajet et redirection `/admin` vérifiés en ligne.
+- **Bloqué** : D-001/D-003 pas encore appliqués (ne pas modifier une facture envoyée) ; fuite possible des bons de commande PDF (voir ROADMAP Infra, prioritaire) ; session Fondation bloquée par le manque de place disque.
+- **Prochaine étape** : tester « Ma société » et une facture dans l'admin de prod ; corriger le lien public des bons de commande ; libérer de la place puis relancer la Fondation.
+
 ### 2026-11-15 — Corrections d'affichage en prod (PR #3, 🧩 Fonctionnalités)
 - **Fait** : PR #3 mise en prod (SSH, procédure `deploiement.md`) et vérifiée en ligne sur dzencar.fr : récap (site + admin téléphone) et fiche EasyAdmin n'affichent que les champs remplis ; plus de zoom auto iOS (champs à 16px sur écran tactile) ; plus de débordement horizontal de l'accueil sur mobile ; marge autour du trajet sur la carte (`viewPort.setPadding`).
 - **Bloqué** : test sur un vrai iPhone (zoom au toucher du champ adresse) à faire par toi ; réservations de test n° 172 et 173 dans la base locale à supprimer.
