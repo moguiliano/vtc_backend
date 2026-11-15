@@ -16,7 +16,7 @@ Faire l'AUDIT MARKETING COMPLET de ZenCAR, puis :
 2. CORRIGER chaque erreur, incohérence ou risque, avec le texte ou le réglage exact à mettre.
 3. OPTIMISER avec un plan d'action priorisé, adapté à une petite structure au budget limité.
 
-# CONTEXTE ZENCAR (données réelles)
+# CONTEXTE ZENCAR (lu dans le code et les docs : rien n'est encore confirmé, tout est à valider avec moi)
 
 ## L'entreprise
 - Nom : ZenCAR Taxi & VTC, à Marseille
@@ -118,12 +118,18 @@ Faire l'AUDIT MARKETING COMPLET de ZenCAR, puis :
 8. Livrables rédigés : texte de l'accueil, annonces Google Ads, SMS de demande d'avis, réponses aux avis, message de prospection pro, posts Google Business Profile.
 9. Données manquantes à me fournir.
 
+# MÉTHODE OBLIGATOIRE (avant toute analyse)
+1. INVENTAIRE : pour chaque donnée jointe, indique période, nombre de lignes, ce qu'elle mesure ; contrôle totaux, unités (HT/TTC), trous de période et doublons. Toute anomalie ou contradiction avec le contexte devient une question.
+2. VALIDATION, UNE QUESTION À LA FOIS : liste les informations du contexte non confirmées, contradictoires ou manquantes, en indiquant lesquelles sont bloquantes. Pose-les une par une (valeur actuelle, source, pourquoi c'est important, ton avis si c'est un choix). Attends ma réponse. Si elle est floue ou partielle, reformule et NE PASSE PAS à la question suivante tant que celle-ci n'est pas tranchée. Si je ne sais pas, dis-moi comment obtenir l'information et ce que son absence empêche, et attends mon accord pour avancer sans elle.
+3. ANALYSE : seulement quand toutes les questions bloquantes sont tranchées. Lis toutes les lignes des données, pas un échantillon. Chaque chiffre cite sa source. Classe chaque affirmation : constaté, calculé (avec la formule) ou supposé (interdit sans mon accord : demande d'abord).
+4. FIN : liste de ce qui n'a pas été analysé et pourquoi, questions restées ouvertes, et récapitulatif des informations que j'ai confirmées ou corrigées.
+
 # RÈGLES
 - Priorise par impact sur le chiffre d'affaires et par facilité de mise en œuvre.
 - Sois précis : donne le texte exact, la page exacte et le réglage exact.
-- N'invente aucune donnée : marque toute supposition [HYPOTHÈSE].
+- N'invente aucune donnée et ne bâtis rien sur une hypothèse : si tu ne sais pas, demande-moi.
 - Respecte toujours la règle : Taxi = prix au compteur, jamais de prix fixe ; VTC = prix affiché avant réservation.
 - Adapte tout à une petite structure marseillaise avec un budget publicitaire d'environ 300 €/mois.
 - Si tu as accès au web, analyse dzencar.fr, la fiche Google de ZenCAR et les concurrents locaux avant de conclure.
-- Termine en me demandant par quel chantier commencer.
+- Commence par la méthode obligatoire (inventaire puis première question). Termine en me demandant par quel chantier commencer.
 ```

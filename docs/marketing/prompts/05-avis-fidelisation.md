@@ -16,6 +16,14 @@
 
 Données jointes : [liste].
 
+Applique la méthode du contexte, dans cet ordre.
+
+PHASE A — INVENTAIRE : nombre d'avis joints, période, répartition des notes. Vérifie que la note moyenne calculée correspond à celle affichée par Google. Lis chaque avis en entier.
+
+PHASE B — VALIDATION, une question à la fois, sans passer à la suivante tant qu'elle n'est pas tranchée. Au minimum : origine des avis de l'accueil (S-05, V-01), note et nombre d'avis Google (C-01), clients qui reviennent (C-04), clients professionnels (C-05), ce que je peux offrir. Si un avis décrit un incident que tu ne peux pas interpréter, demande-moi ce qui s'est passé avant de rédiger la réponse.
+
+PHASE C — ANALYSE, seulement quand les questions bloquantes sont tranchées.
+
 1. AVIS SUR LE SITE (urgent, risque juridique) :
    - les avis affichés aujourd'hui sont-ils conformes ? Que dit la loi française sur l'affichage d'avis ?
    - ce qu'il faut afficher à la place : texte exact, avec un lien vers la fiche Google.
@@ -43,5 +51,7 @@ Données jointes : [liste].
    - une séquence de prospection rédigée : email, relance, script d'appel, message à laisser lors d'une visite ;
    - une page « Entreprises » pour le site : plan et texte.
 
-AUTO-CRITIQUE : vérifie que chaque proposition respecte la règle taxi/VTC et la loi sur les avis, et qu'elle est réaliste pour une petite équipe.
+AUTO-CRITIQUE : vérifie que chaque proposition respecte la règle taxi/VTC et la loi sur les avis, et qu'elle est réaliste pour une petite équipe. Vérifie que chaque thème tiré des avis cite le nombre d'avis qui le mentionnent.
+
+FIN DE L'ÉTAPE : ce qui n'a pas été analysé, questions restées ouvertes, puis le bloc « REGISTRE MIS À JOUR ».
 ```

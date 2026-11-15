@@ -17,6 +17,14 @@
 
 Données jointes : [liste].
 
+Applique la méthode du contexte, dans cet ordre.
+
+PHASE A — INVENTAIRE de chaque export et capture : période, nombre de requêtes et de pages, filtres appliqués (pays, appareil, type de recherche). Compare la fiche Google avec le registre (nom, téléphone, horaires, zone, catégories) : chaque différence devient une question.
+
+PHASE B — VALIDATION, une question à la fois, sans passer à la suivante tant qu'elle n'est pas tranchée. Au minimum : horaires réels (E-10), zone desservie (E-09), modèle exploitant ou plateforme (E-05), Search Console installée (S-06). Avant de recommander une catégorie, un service ou une page, demande-moi si ZenCAR propose réellement ce service.
+
+PHASE C — ANALYSE, seulement quand les questions bloquantes sont tranchées. Analyse TOUTES les requêtes de Search Console, pas seulement les premières.
+
 1. FICHE GOOGLE BUSINESS PROFILE — la priorité pour un taxi local :
    - catégorie principale et secondaires recommandées ;
    - services à déclarer, avec leur description ;
@@ -41,5 +49,7 @@ Données jointes : [liste].
 
 6. LIENS LOCAUX : 10 sites marseillais où obtenir un lien ou une mention (partenaires, hôtels, offices de tourisme, associations seniors…).
 
-AUTO-CRITIQUE : retire toute recommandation qui n'est pas justifiée par Search Console ou par les captures jointes.
+AUTO-CRITIQUE : retire toute recommandation qui n'est pas justifiée par Search Console ou par les captures jointes. Vérifie que les horaires, la zone et les services recommandés correspondent aux données ✅ du registre.
+
+FIN DE L'ÉTAPE : ce qui n'a pas été analysé, questions restées ouvertes, puis le bloc « REGISTRE MIS À JOUR ».
 ```

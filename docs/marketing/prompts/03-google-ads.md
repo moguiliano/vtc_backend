@@ -18,6 +18,14 @@
 
 Données jointes : [liste].
 
+Applique la méthode du contexte, dans cet ordre.
+
+PHASE A — INVENTAIRE de chaque export (période, lignes, colonnes, totaux). Vérifie que la somme des lignes correspond aux totaux affichés par Google Ads, que la période est la même dans tous les exports, et que les montants sont bien en € HT. Toute différence devient une question.
+
+PHASE B — VALIDATION, une question à la fois, sans passer à la suivante tant qu'elle n'est pas tranchée. Au minimum : A-01 à A-08 du registre, ce que recouvre exactement chaque action de conversion, le taux d'appels qui deviennent une course et le prix moyen d'une course (O-14). Pour chaque terme de recherche ambigu (intention incertaine, lieu hors zone ?), demande-moi plutôt que de deviner.
+
+PHASE C — ANALYSE, seulement quand les questions bloquantes sont tranchées. Analyse TOUS les termes de recherche, pas un échantillon.
+
 1. SUIVI DES CONVERSIONS (d'abord, car sans lui tout le reste est faussé) :
    - ce qui est compté aujourd'hui, et ce qui manque (appels depuis l'annonce, clics sur le numéro du site, clics WhatsApp, réservations en ligne validées par SMS) ;
    - le plan de suivi exact via Google Tag Manager : déclencheurs, balises, valeur attribuée à chaque conversion ;
@@ -42,5 +50,7 @@ Données jointes : [liste].
 
 7. Cible à 30 jours : coût par appel, nombre d'appels, coût par course.
 
-AUTO-CRITIQUE : vérifie le nombre de caractères de chaque titre et de chaque description. Vérifie qu'aucune annonce taxi n'affiche de prix fixe.
+AUTO-CRITIQUE : vérifie le nombre de caractères de chaque titre et de chaque description. Vérifie qu'aucune annonce taxi n'affiche de prix fixe. Vérifie que chaque décision (mot-clé exclu, budget déplacé) cite les lignes de l'export qui la justifient, et qu'aucune ne repose sur un volume trop faible pour conclure.
+
+FIN DE L'ÉTAPE : ce qui n'a pas été analysé, questions restées ouvertes, puis le bloc « REGISTRE MIS À JOUR ».
 ```
