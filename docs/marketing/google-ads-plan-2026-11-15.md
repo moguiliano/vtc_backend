@@ -274,7 +274,10 @@ Appliqué par Claude dans le compte 522-918-7346, à la demande du fondateur.
 | 14a | Règle **« ZenCAR - Accélérer budget (coût/conv ≤ 7 €) »** : chaque lundi 8 h, données des 7 derniers jours, si Coût/conv. ≤ 7 € **et** Conversions > 1,9 → budget quotidien +20 %, plafond 20 € | ✅ enregistrée, vérifiée |
 | 14b | Règle **« ZenCAR - Freiner budget (coût/conv > 12 €) »** : chaque lundi 8 h, données des 7 derniers jours, si Coût/conv. > 12 € → budget quotidien -20 %, plancher 6 € | ✅ enregistrée, vérifiée |
 | 14c | Règle **« ZenCAR - Freiner budget (30 € sans conversion) »** : chaque lundi 8 h, données des 7 derniers jours, si Coût > 30 € **et** Conversions < 0,5 → budget quotidien -20 %, plancher 6 € (indispensable : avec 0 conversion, la règle 14b ne se déclenche pas) | ✅ enregistrée, vérifiée |
-| 15 | Suivi des conversions dans GTM (§ 1) | ⏳ hors Google Ads (accès GTM) — numéro : on garde le 06 74 03 96 94 (Q-08) |
+| 15a | Constat : le suivi du site existait déjà dans GTM (balise Google AW-17446986356, Conversion Linker, conversions « clique telephone » `tel:` et « clique whatsapp » `wa.me`), créé en avril 2026. Google Ads : « Clic telephone » active (49), « Clic what's app » 8 mais aucune récente (déclencheur correct, sans doute peu de clics) | ✅ vérifié |
+| 15b | **Nouvelle conversion Google Ads « Réservation en ligne »** (objectif Contact, source site web, action principale, une par clic, fenêtre 90 jours) ; source « Site Web » incluse dans l'objectif Contact par défaut du compte. Suivi avancé des conversions **non activé** (conditions Google non acceptées à la place du fondateur) | ✅ créée |
+| 15c | **GTM : balise « reservation en ligne »** (ID 17446986356, libellé YmQaCJG2ibkdEPTEr_9A) + déclencheur « reservation reussie » (Page vue, Page Path contient `/success` = page `/reservation/{id}/success` des deux formulaires publics). **Version 4 publiée**, présente dans gtm.js en ligne | ✅ publiée — non testée par une vraie réservation (créerait une course et un SMS) |
+| 15d | Numéro : on garde le 06 74 03 96 94 (Q-08) | ✅ tranché |
 
 Les 3 règles (14a, 14b, 14c) apparaissent dans Outils → Règles, toutes sur la seule campagne « Google Search-SIte Web Zencar CL », avec un e-mail en cas de changement ou d'erreur. Première exécution : lundi 16 nov. 2026, 8 h.
 
