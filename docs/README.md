@@ -11,6 +11,7 @@ Tout ce qu'il faut savoir pour reprendre le projet sans rien chercher.
 | [git.md](git.md) | Les branches et les commandes de base | Quand tu hésites |
 | [marketing/google-ads.md](marketing/google-ads.md) | Campagne Google Ads | Session Marketing |
 | [marketing/seo.md](marketing/seo.md) | Pages SEO et mots-clés ciblés | Session Marketing |
+| [marketing/diagnostic-2026-11-15.md](marketing/diagnostic-2026-11-15.md) | Diagnostic marketing (étape 01) : constats, notes, 29/100 | Avant la priorisation (étape 02) |
 | [marketing/prompts/](marketing/prompts/README.md) | 5 prompts marketing enchaînés (diagnostic, priorisation, Google Ads, SEO local, avis) | Pour un audit marketing — version recommandée |
 | [marketing/prompt-audit-marketing.md](marketing/prompt-audit-marketing.md) | Prompt d'audit marketing tout-en-un, pré-rempli avec les données du projet | Pour un audit rapide en une seule fois |
 
