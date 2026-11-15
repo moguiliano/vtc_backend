@@ -1,13 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WXJ6V2W4');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Consentement cookies + Google Tag Manager (chargé uniquement après « Tout accepter ») -->
+    <script>
+    (function (w, d) {
+      var KEY = 'zc_consent', MAX_AGE = 1000 * 60 * 60 * 24 * 182; // choix conservé 6 mois
+      w.dataLayer = w.dataLayer || [];
+      function gtag() { w.dataLayer.push(arguments); }
+      w.gtag = w.gtag || gtag;
+      // Consent Mode v2 : tout est refusé par défaut
+      gtag('consent', 'default', {
+        ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+        analytics_storage: 'denied', functionality_storage: 'granted', security_storage: 'granted'
+      });
+      var gtmLoaded = false;
+      function loadGtm() {
+        if (gtmLoaded) { return; }
+        gtmLoaded = true;
+        w.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var j = d.createElement('script');
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-WXJ6V2W4';
+        d.head.appendChild(j);
+      }
+      function current() {
+        try {
+          var raw = JSON.parse(w.localStorage.getItem(KEY) || 'null');
+          if (raw && raw.v && (Date.now() - raw.t) < MAX_AGE) { return raw.v; }
+        } catch (e) {}
+        return null;
+      }
+      function apply(value) {
+        if (value !== 'granted') { return; }
+        gtag('consent', 'update', {
+          ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted'
+        });
+        loadGtm();
+      }
+      w.zcConsent = {
+        current: current,
+        save: function (value) {
+          try { w.localStorage.setItem(KEY, JSON.stringify({ v: value, t: Date.now() })); } catch (e) {}
+          if (value !== 'granted' && gtmLoaded) { w.location.reload(); return; } // retrait du consentement
+          apply(value);
+        }
+      };
+      apply(current());
+    })(window, document);
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Permissions-Policy" content="geolocation=*">
@@ -50,10 +90,6 @@
   </head>
 
   <body class="bg-light">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXJ6V2W4"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     {% include 'partials/_navbar.html.twig' %}
 
     <!-- ✅ Boutons Appel / WhatsApp visibles sur toutes tailles d'écran -->
@@ -63,6 +99,7 @@
     </main>
 
     {% include 'partials/_footer.html.twig' %}
+    {% include 'partials/_cookie_consent.html.twig' %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>

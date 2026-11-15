@@ -1,0 +1,41 @@
+{#
+  Bannière de consentement aux cookies (RGPD / CNIL).
+  - Google Tag Manager n'est chargé qu'après « Tout accepter » (voir base.html.twig, bloc head).
+  - « Tout refuser » est aussi visible et simple que « Tout accepter ».
+  - Le choix est conservé 6 mois, puis redemandé. Le lien « Gérer les cookies » du pied de page rouvre la bannière.
+#}
+<div id="zc-consent" role="dialog" aria-live="polite" aria-label="Gestion des cookies" hidden
+     style="position:fixed;left:12px;right:12px;bottom:12px;z-index:2000;max-width:640px;margin:0 auto;background:#111418;color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.45);font-size:.88rem;line-height:1.6;">
+  <p style="margin:0 0 14px;">
+    Avec votre accord, nous utilisons des cookies de mesure d'audience et de publicité (Google) pour savoir comment vous nous trouvez et améliorer nos annonces.
+    Vous pouvez refuser : le site fonctionne de la même façon.
+    <a href="{{ path('app_confidentialite') }}" style="color:var(--zen-orange,#ff5630);">En savoir plus</a>
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button type="button" data-zc-consent="denied"
+            style="flex:1 1 140px;min-height:44px;border-radius:50px;border:1px solid rgba(255,255,255,.4);background:transparent;color:white;font-weight:700;">
+      Tout refuser
+    </button>
+    <button type="button" data-zc-consent="granted"
+            style="flex:1 1 140px;min-height:44px;border-radius:50px;border:1px solid rgba(255,255,255,.4);background:transparent;color:white;font-weight:700;">
+      Tout accepter
+    </button>
+  </div>
+</div>
+<script>
+(function () {
+  var box = document.getElementById('zc-consent');
+  if (!box) { return; }
+  function choose(value) {
+    window.zcConsent.save(value);
+    box.hidden = true;
+  }
+  box.querySelectorAll('[data-zc-consent]').forEach(function (btn) {
+    btn.addEventListener('click', function () { choose(btn.getAttribute('data-zc-consent')); });
+  });
+  document.querySelectorAll('[data-zc-open-consent]').forEach(function (link) {
+    link.addEventListener('click', function (e) { e.preventDefault(); box.hidden = false; });
+  });
+  if (!window.zcConsent.current()) { box.hidden = false; }
+})();
+</script>

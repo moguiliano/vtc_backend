@@ -10,7 +10,12 @@ Tout ce qu'il faut savoir pour reprendre le projet sans rien chercher.
 | [deploiement.md](deploiement.md) | Mettre en production sur Infomaniak | Avant chaque mise en prod |
 | [git.md](git.md) | Les branches et les commandes de base | Quand tu hésites |
 | [marketing/google-ads.md](marketing/google-ads.md) | Campagne Google Ads | Session Marketing |
+| [marketing/google-ads-plan-2026-11-15.md](marketing/google-ads-plan-2026-11-15.md) | Plan Google Ads (étape 03) : suivi, réglages, 4 groupes, annonces rédigées, budget variable | Avant de modifier la campagne |
 | [marketing/seo.md](marketing/seo.md) | Pages SEO et mots-clés ciblés | Session Marketing |
+| [marketing/diagnostic-2026-11-15.md](marketing/diagnostic-2026-11-15.md) | Diagnostic marketing (étape 01) : constats, notes, 29/100 | Avant la priorisation (étape 02) |
+| [marketing/priorisation-2026-11-15.md](marketing/priorisation-2026-11-15.md) | Priorisation (étape 02) : 5 chantiers, urgences de la semaine, plan 90 jours | Avant chaque session Marketing |
+| [marketing/prompts/](marketing/prompts/README.md) | 5 prompts marketing enchaînés (diagnostic, priorisation, Google Ads, SEO local, avis) | Pour un audit marketing — version recommandée |
+| [marketing/prompt-audit-marketing.md](marketing/prompt-audit-marketing.md) | Prompt d'audit marketing tout-en-un, pré-rempli avec les données du projet | Pour un audit rapide en une seule fois |
 
 Les règles techniques du code (slugs, OTP, tarification…) sont dans [`CLAUDE.md`](../CLAUDE.md) à la racine.
 Les tables : les entités dans `src/Entity/` sont la référence.

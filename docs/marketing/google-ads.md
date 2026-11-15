@@ -1,5 +1,7 @@
 # Campagne Google Ads
 
+> ⚠️ **2026-11-15 : ce fichier décrit le plan d'avril 2026, qui n'a jamais été mis en place.** L'état réel du compte (1 campagne, 4 groupes, mots-clés « uber » achetés, CPA cible 4,70 €, diffusion 24h/24…) est dans le registre [`prompts/00-contexte.md`](prompts/00-contexte.md) (A-01 à A-11) et dans le [diagnostic](diagnostic-2026-11-15.md). **Le nouveau plan (structure, annonces, réglages, budget) est dans [google-ads-plan-2026-11-15.md](google-ads-plan-2026-11-15.md).**
+
 ## Contexte
 
 - **Budget** : 10 €/jour
