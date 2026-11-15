@@ -8,7 +8,7 @@
 > **Le registre est la seule source de vérité.** À la fin de chaque séance, recopier ici les lignes validées par Claude
 > (statut, valeur, date). Une donnée ⚠️ n'est jamais utilisée comme un fait tant qu'elle n'est pas passée en ✅.
 >
-> Dernière mise à jour du registre : 2026-11-15 — toutes les données viennent du code et des docs, **aucune n'est encore confirmée**.
+> Dernière mise à jour du registre : 2026-11-15 — première séance de validation terminée : toutes les données du registre sont confirmées par le fondateur ou constatées (code, site en ligne, Google Ads, Search Console). Restent ouvertes les questions « À trancher » non bloquantes.
 
 ```
 # CONTEXTE ET MÉTHODE — À APPLIQUER PENDANT TOUTE LA CONVERSATION
@@ -81,53 +81,53 @@ J'enverrai ensuite le prompt de l'étape 1.
 ## Entreprise
 | ID | Donnée | Valeur enregistrée | Source | Statut |
 |---|---|---|---|---|
-| E-01 | Nom commercial | ZenCAR Taxi & VTC | site, README | ⚠️ |
-| E-02 | Ville | Marseille | site | ⚠️ |
-| E-03 | Site | https://dzencar.fr | sitemap | ⚠️ |
-| E-04 | Téléphone et WhatsApp | 06 74 03 96 94 | site | ⚠️ |
+| E-01 | Nom commercial | **ZenCAR Taxi & VTC** (nom du site). Société exploitante : **SIMPLICI CAB** (voir E-08). | site + mémoire projet | ✅ 2026-11-15 |
+| E-02 | Ville | Marseille ; siège au 12 rue Antoine Ré, 13010 Marseille | mémoire projet | ✅ 2026-11-15 |
+| E-03 | Site | https://dzencar.fr (répond en ligne ; voir S-09 pour les doublons http/www) | test HTTP | ✅ constaté |
+| E-04 | Téléphone et WhatsApp | 06 74 03 96 94, **partagé avec l'activité réparation de smartphones** (Q-06) | site + séance | ✅ 2026-11-15 |
 | E-05 | Modèle | **Mixte : chauffeur + dispatcheur.** Le fondateur conduit lui-même (Eco-Berline) et garde pour lui les réservations qu'il peut honorer. Il dispatche au chauffeur le plus proche, dans des groupes de chauffeurs partenaires VTC et taxi : (1) les courses qui arrivent pendant qu'il est déjà en course ; (2) les courses demandant une autre gamme que l'Eco-Berline (Grand Coffre, Berline Premium, Van) ; (3) les courses taxi. (Le site disait « nos taxis agréés, nos chauffeurs » et les données structurées « plateforme de mise en relation » : les deux sont à corriger.) | confirmé en séance | ✅ 2026-11-15 |
 | E-06 | Licence(s) taxi détenue(s) | **Aucune : la société est uniquement VTC.** Les courses taxi sont réalisées par des taxis partenaires des groupes de dispatch. Toute formule laissant croire que ZenCAR est un taxi (« Taxi agréé Ville de Marseille », « nos taxis ») est à reformuler. | confirmé en séance | ✅ 2026-11-15 |
-| E-07 | Nombre de chauffeurs et de véhicules, salariés ou partenaires | En propre : 1 véhicule (Eco-Berline) conduit par le fondateur. Partenaires : groupes de chauffeurs VTC et taxi (nombre inconnu) | E-05 | ❓ (nombre de partenaires) |
-| E-08 | Statut juridique et ancienneté | — | — | ❓ |
-| E-09 | Zone desservie | **Prise en charge : Marseille + aéroport Marseille-Provence (Marignane) uniquement.** Destinations hors zone possibles (Aix, Nice…). Aix est à retirer de la zone desservie des données structurées. | confirmé en séance | ✅ 2026-11-15 |
+| E-07 | Nombre de chauffeurs et de véhicules, salariés ou partenaires | En propre : 1 véhicule (Toyota hybride, Eco-Berline) conduit par le fondateur, aucun salarié. **Partenaires : plus de 50 chauffeurs VTC et taxi** dans les groupes de dispatch : il y a presque toujours quelqu'un de disponible en journée. | confirmé en séance | ✅ 2026-11-15 |
+| E-08 | Statut juridique et ancienneté | **SAS SIMPLICI CAB**, créée le 01/01/2024 (moins de 2 ans), SIREN 982 953 382, registre VTC EVTC094240137, code NAF 49.32Z | mémoire projet (infos fournies par le fondateur) | ✅ 2026-11-15 |
+| E-09 | Zone desservie | **Prise en charge : Marseille + aéroport Marseille-Provence (Marignane) uniquement.** Destinations hors zone possibles et à développer (longue distance, voir O-11). **Exception (Q-09) : le forfait Aix → aéroport (59 €) est maintenu.** Aix est à retirer de la zone desservie générale des données structurées. | confirmé en séance | ✅ 2026-11-15 |
 | E-10 | Horaires réels | **Aujourd'hui : environ 7 h – 21 h, réponse quand le fondateur le peut (pas garantie, il conduit aussi) ; la nuit, personne ne répond.** Le « 24h/24 » du site et le 6 h – 23 h des données structurées sont faux. À terme : régulateur + 24h/24 une fois l'algorithme « Quick Talk » lancé (voir Q-04). | confirmé en séance | ✅ 2026-11-15 |
 | E-11 | Délai de prise en charge réel | **5 à 10 min à Marseille en journée, tenu la plupart du temps** (fondateur ou partenaire). Promesse valable dans les horaires de E-10 seulement. | confirmé en séance | ✅ 2026-11-15 |
 
 ## Offre et prix
 | ID | Donnée | Valeur enregistrée | Source | Statut |
 |---|---|---|---|---|
-| O-01 | Taxi | Compteur, tarifs Ville de Marseille, CB ou espèces à bord | templates | ⚠️ |
-| O-02 | VTC | Prix calculé (HERE Maps) et affiché avant réservation | code | ⚠️ |
-| O-03 | Eco-Berline (4 pl., 2 bag.) | < 10 km : 20 € + 2,50 €/km ; > 10 km : 45 € + 2 €/km | fixtures (la BDD de prod peut différer) | ⚠️ |
-| O-04 | Grand Coffre (4 pl., 4 bag.) | < 10 km : 30 € + 2,50 €/km ; > 10 km : 55 € + 2 €/km | fixtures | ⚠️ |
-| O-05 | Berline Premium (4 pl., 3 bag.) | 35 € jusqu'à 4 km, puis 3,10 €/km | fixtures | ⚠️ |
-| O-06 | Van (8 pl., 6 bag.) | 63 € jusqu'à 7 km, puis 3,20 €/km | fixtures | ⚠️ |
-| O-07 | Majoration de nuit | +20 % de 23 h à 7 h | config | ⚠️ |
+| O-01 | Taxi | Courses taxi réalisées par des **taxis partenaires** (E-06) : compteur, tarifs Ville de Marseille, CB ou espèces à bord. Jamais de prix fixe affiché. | templates + E-06 | ✅ 2026-11-15 |
+| O-02 | VTC | Prix calculé (HERE Maps, grille O-03 à O-07) et affiché avant réservation | code | ✅ constaté |
+| O-03 | Eco-Berline (4 pl., 2 bag.) | < 10 km : 20 € + 2,50 €/km ; > 10 km : 45 € + 2 €/km | fixtures, confirmé en séance | ✅ 2026-11-15 |
+| O-04 | Grand Coffre (4 pl., 4 bag.) | < 10 km : 30 € + 2,50 €/km ; > 10 km : 55 € + 2 €/km | fixtures, confirmé en séance | ✅ 2026-11-15 |
+| O-05 | Berline Premium (4 pl., 3 bag.) | 35 € jusqu'à 4 km, puis 3,10 €/km | fixtures, confirmé en séance | ✅ 2026-11-15 |
+| O-06 | Van (8 pl., 6 bag.) | 63 € jusqu'à 7 km, puis 3,20 €/km | fixtures, confirmé en séance | ✅ 2026-11-15 |
+| O-07 | Majoration de nuit | +20 % de 23 h à 7 h | config, confirmé en séance | ✅ 2026-11-15 |
 | O-08 | Commission | **Environ 20 % du prix de la course, reversés à ZenCAR par le partenaire (VTC ou taxi) qui fait une course dispatchée.** Une course faite par le fondateur lui rapporte 100 % du prix. | confirmé en séance (Q-02) | ✅ 2026-11-15 |
-| O-09 | Forfaits VTC à prix fixe | gérés en BDD, liste inconnue | code | ❓ |
-| O-10 | Véhicules réellement utilisés | Mercedes Viano et Classe S montrés sur le site | home | ⚠️ |
-| O-11 | Services | aéroport (suivi de vol), gare Saint-Charles, Calanques et Cassis, seniors, longue distance | templates | ⚠️ |
-| O-12 | Options | siège bébé, réservation pour un tiers | code | ⚠️ |
-| O-13 | Hors offre | taxi conventionné, VSL | google-ads.md | ⚠️ |
+| O-09 | Forfaits VTC à prix fixe | Affichés sur l'accueil le 2026-11-15 : **Marseille centre → Gare Saint-Charles 25 €** · **Marseille → Aéroport Marignane 59 €** · **Aix-en-Provence → Aéroport Marignane 59 €** · **Marseille → Calanques 59 €** · « chemin de sormiou → chateau sormiou, calanque de sormiou » 30 € · « chateau sormiou, calanque de sormiou 13009 marseille → chemin de sormiou 13009 marseille » 40 €. Un formulaire « Réservation rapide » propose une prise en charge « Maintenant – 10 min ». À noter : le forfait Aix → Aéroport sort de la zone E-09 (Q-09) ; les deux forfaits Sormiou ont des libellés bruts (minuscules, adresses complètes) et des prix différents à l'aller et au retour (Q-10). | site en ligne | ✅ constaté |
+| O-10 | Véhicules réellement utilisés | **Véhicule du fondateur : Toyota hybride (gamme Prius / Corolla / C-HR), catégorie Eco-Berline.** Les autres gammes (Grand Coffre, Berline Premium, Van) sont assurées par des partenaires. **La photo « Mercedes Viano et Classe S — Flotte ZenCAR » de l'accueil est une image d'illustration** : ce ne sont ni les véhicules du fondateur ni ceux des partenaires. Légende et image à remplacer (promesse trompeuse). | confirmé en séance | ✅ 2026-11-15 |
+| O-11 | Services | **Tous réels :** aéroport avec suivi de vol, gare Saint-Charles, Calanques et Cassis, **service spécial seniors** (aide à monter et descendre, accompagnement, attente), **longue distance au départ de Marseille, à mettre davantage en avant** (aucune page dédiée aujourd'hui). (Première réponse incomplète, corrigée par confirmation dans la même séance.) | confirmé en séance | ✅ 2026-11-15 |
+| O-12 | Options | Siège bébé, réservation pour un tiers (invité) : champs présents dans le formulaire | code | ✅ constaté |
+| O-13 | Hors offre | **Aucun transport conventionné** (taxi conventionné CPAM, VSL) : ni ZenCAR ni via les partenaires. Le service seniors (O-11) n'est donc pas remboursé par la Sécurité sociale : à dire clairement sur la page seniors. | confirmé en séance | ✅ 2026-11-15 |
 | O-14 | Prix moyen réel d'une course (taxi, VTC, aéroport) | **Moins de 30 € en moyenne, toutes courses confondues** (surtout des courses courtes dans Marseille). Ordre de grandeur, pas un calcul. Conséquence calculée : avec Q-01 et Q-02, une course rapporte au plus 0,6 × 30 + 0,4 × (20 % × 30) ≈ 20 € de chiffre d'affaires à ZenCAR en moyenne (avant carburant et charges). | confirmé en séance | ✅ 2026-11-15 |
 
 ## Parcours de réservation
 | ID | Donnée | Valeur enregistrée | Source | Statut |
 |---|---|---|---|---|
-| P-01 | Réservation en ligne | 3 étapes → récapitulatif → code SMS → confirmation automatique → SMS à l'admin | code | ⚠️ |
-| P-02 | Paiement | au chauffeur, pas de paiement en ligne | DECISIONS D-005 | ⚠️ |
-| P-03 | Annulation | gratuite, par téléphone ou WhatsApp uniquement | DECISIONS D-005 | ⚠️ |
-| P-04 | Email de confirmation au client | n'existe pas encore | ROADMAP | ⚠️ |
-| P-05 | Application mobile | aucune | code | ⚠️ |
-| P-06 | Part des courses par canal (appel, WhatsApp, site, plateformes) | — | — | ❓ |
+| P-01 | Réservation en ligne | 3 étapes → récapitulatif → code SMS → confirmation automatique → SMS à l'admin. Plus un formulaire « Réservation rapide » des forfaits (prise en charge « Maintenant – 10 min ») | code + site | ✅ constaté |
+| P-02 | Paiement | Au chauffeur (CB ou espèces), pas de paiement en ligne | décision D-005 du fondateur | ✅ 2026-11-12 |
+| P-03 | Annulation | Gratuite, par téléphone ou WhatsApp uniquement ; seul l'admin annule | décision D-005 du fondateur | ✅ 2026-11-12 |
+| P-04 | Email de confirmation au client | N'existe pas (tâche « Service Mailer » en attente dans la ROADMAP) | code + ROADMAP | ✅ constaté |
+| P-05 | Application mobile | Aucune | code | ✅ constaté |
+| P-06 | Part des courses par canal (appel, WhatsApp, site, plateformes) | **Sources actives : clients réguliers, Google (pub, fiche, site), groupes de chauffeurs, plateformes (Uber, Bolt, Heetch…). La source n° 1 de l'activité du fondateur, ce sont les plateformes.** Les courses plateformes sont **en plus** des < 50 courses ZenCAR par mois (C-02) et ne sont pas des clients ZenCAR. Enjeu marketing : transformer une partie de cette activité plateforme en clients directs ZenCAR (sans commission plateforme). **Pour les courses ZenCAR en direct, la source n° 1 est Google** (annonce, fiche Google Maps ou site, sans détail entre les trois). | confirmé en séance | ✅ 2026-11-15 |
 
 ## Site
 | ID | Donnée | Valeur enregistrée | Source | Statut |
 |---|---|---|---|---|
-| S-01 | Pages | /, /taxi-marseille, /vtc-marseille, /taxi-aeroport-marseille, /taxi-gare-saint-charles, /transport-seniors-marseille, /taxi-calanques-marseille, /services, /contact | sitemap | ⚠️ |
-| S-02 | SEO technique | OG, JSON-LD TaxiService, FAQ (seniors), sitemap d'avril 2026, robots.txt | seo.md | ⚠️ |
-| S-03 | Suivi | Google Tag Manager installé ; contenu des balises inconnu | base.html.twig | ⚠️ |
-| S-04 | Bannière de consentement aux cookies | absente du code | templates | ⚠️ |
+| S-01 | Pages | /, /taxi-marseille, /vtc-marseille, /taxi-aeroport-marseille, /taxi-gare-saint-charles, /transport-seniors-marseille, /taxi-calanques-marseille, /services, /contact (toutes en ligne, code 200). Aucune page longue distance ni entreprises. | sitemap + test HTTP | ✅ constaté |
+| S-02 | SEO technique | OG, JSON-LD TaxiService (accueil, services), canonical + robots index/follow, FAQ (seniors), sitemap daté d'avril 2026, robots.txt. Pas de redirection http/www (S-09). | code + site | ✅ constaté |
+| S-03 | Suivi | Google Tag Manager GTM-WXJ6V2W4 chargé sur toutes les pages ; aucune conversion du site ne remonte dans Google Ads (A-07). Contenu du conteneur GTM non vérifié. | code + Google Ads | ✅ constaté |
+| S-04 | Bannière de consentement aux cookies | **Absente du site en ligne** (aucun outil de consentement détecté) alors que GTM est chargé | site en ligne | ✅ constaté |
 | S-05 | Avis sur l'accueil | **Fictifs : les 3 avis et la mention « 4,9/5 — Avis Google vérifiés » ont été rédigés par Claude lors d'une session précédente ; ce ne sont pas de vrais avis.** À retirer en priorité (pratique commerciale trompeuse). | confirmé en séance | ✅ 2026-11-15 |
 | S-06 | Search Console installée ? | **Oui, dzencar.fr est déclaré dans Search Console** (propriété de domaine). | confirmé en séance | ✅ 2026-11-15 |
 | S-07 | Résultats Google naturels (13 août – 12 nov. 2026, 3 mois, les 167 requêtes lues) | **61 clics, 7 600 impressions, CTR 0,8 %, position moyenne 11,5.** Clics : surtout la marque (« zencar » 14, « dzen car » 3, « zen car » 2, « dzencar » 1 = 20 clics) et la gare (« taxi marseille saint charles » 4 clics / 508 impressions, position 9,2). **Gare Saint-Charles = le plus gros volume, en position 8 à 10** (bas de 1re page) : ~20 variantes, plus de 1 800 impressions, presque aucun clic. **Aéroport : position 20 à 37** (2e à 4e page) : « taxi aéroport marseille » 104 impr. pos. 20,6 ; « taxi marignane » 72 impr. pos. 29,2 ; « prix taxi aeroport marseille » 61 impr. pos. 34,5. **« taxi marseille » : position 31.** Presque toutes les recherches contiennent « taxi », très peu « vtc ». | Search Console | ✅ constaté |
@@ -154,14 +154,14 @@ J'enverrai ensuite le prompt de l'étape 1.
 | ID | Donnée | Valeur enregistrée | Source | Statut |
 |---|---|---|---|---|
 | C-01 | Fiche Google : note et nombre d'avis | **La fiche existe : 125 avis, tous 5 étoiles (note 5/5).** Atout majeur, aujourd'hui invisible sur le site. Avant d'afficher le chiffre sur le site : le recopier exactement depuis la fiche (capture) au jour de la mise en ligne. | confirmé en séance | ✅ 2026-11-15 |
-| C-02 | Par mois : appels, WhatsApp, réservations en ligne, courses | — | — | ❓ |
-| C-03 | CA mensuel et répartition (taxi, VTC, aéroport, seniors, calanques, pros) | — | — | ❓ |
-| C-04 | Clients qui reviennent | — | — | ❓ |
-| C-05 | Clients professionnels | — | — | ❓ |
-| C-06 | Concurrents principaux | — | — | ❓ |
-| C-07 | Objectifs à 3, 6 et 12 mois | — | — | ❓ |
+| C-02 | Par mois : appels, WhatsApp, réservations en ligne, courses | **Moins de 50 courses ZenCAR par mois au total** (faites + dispatchées, clients ZenCAR en direct, **hors courses Uber/Bolt/Heetch**), soit moins de 2 par jour. Ordre de grandeur. Calculé : avec O-14 (< 30 €), Q-01 et Q-02, cela représente au plus ~1 000 € de chiffre d'affaires par mois pour ZenCAR (50 × ~20 €). Détail des appels, WhatsApp et réservations en ligne : inconnu. | confirmé en séance | ✅ 2026-11-15 |
+| C-03 | CA mensuel et répartition (taxi, VTC, aéroport, seniors, calanques, pros) | **Trajet ZenCAR le plus fréquent : Gare Saint-Charles.** Cohérent avec Search Console (S-07 : la gare est la page la plus vue). CA mensuel : au plus ~1 000 € (calculé, voir C-02). Répartition détaillée : inconnue. | confirmé en séance | ✅ 2026-11-15 |
+| C-04 | Clients qui reviennent | **Presque aucun : les courses ZenCAR directes viennent surtout de nouveaux clients.** Aucune fidélisation aujourd'hui (voir V-10). Pourtant la fiche Google affiche 125 avis 5 étoiles : les clients sont satisfaits mais ne reviennent pas, ou ne repassent pas par ZenCAR. | confirmé en séance | ✅ 2026-11-15 |
+| C-05 | Clients professionnels | **Aucun : uniquement des particuliers.** | confirmé en séance | ✅ 2026-11-15 |
+| C-06 | Concurrents principaux | **N° 1 : les autres VTC locaux** (chauffeurs et petites sociétés VTC marseillaises). Également présents : Uber / Bolt / Heetch, taxis classiques (ex. Taxi Radio Marseille), navettes et transports en commun. Noms des VTC locaux : non donnés (à relever dans les résultats Google pour l'étape 01). | confirmé en séance | ✅ 2026-11-15 |
+| C-07 | Objectifs à 3, 6 et 12 mois | **À 6 mois : ~200 courses ZenCAR en direct par mois (contre < 50 aujourd'hui, soit ×4).** Stratégie : d'abord remplir le véhicule du fondateur avec des clients directs (moins de plateformes), puis dispatcher le surplus (commission), en vue du régulateur et du 24h/24. Objectifs à 3 et 12 mois : non fixés. | confirmé en séance | ✅ 2026-11-15 |
 | C-08 | Budget marketing total et temps disponible par semaine | **Temps : 3 à 6 h par semaine. Budget publicitaire : plus de 600 €/mois possible, à condition que ce soit rentable** (une course rapporte au plus ~20 € en moyenne, voir O-14). | confirmé en séance | ✅ 2026-11-15 |
-| C-09 | Réseaux sociaux | aucun lien sur le site | templates | ⚠️ |
+| C-09 | Réseaux sociaux | **Aucun compte** (ni Instagram, ni Facebook, ni TikTok). Le site n'a aucun lien vers des réseaux sociaux ni vers la fiche Google. | confirmé en séance + site | ✅ 2026-11-15 |
 
 # POINTS À VÉRIFIER (repérés dans le code — à confirmer, pas des faits)
 | ID | Point | Données liées |
@@ -169,13 +169,13 @@ J'enverrai ensuite le prompt de l'étape 1.
 | V-01 | **CONFIRMÉ (2026-11-15)** : les avis de l'accueil sont fictifs → risque de pratique commerciale trompeuse, à retirer en priorité | S-05, C-01 |
 | V-02 | **CONFIRMÉ (2026-11-15)** : « 24h/24 » et « 6 h – 23 h » sont faux tous les deux ; réalité 7 h – 21 h sans garantie | E-10 |
 | V-03 | **TRANCHÉ (2026-11-15)** : modèle mixte, chauffeur + dispatcheur ; ni « plateforme » ni « nos taxis » | E-05, E-06, E-07 |
-| V-04 | Promesse « appel immédiat » : concerne-t-elle uniquement le taxi ? (un VTC exige une réservation préalable) | E-06, O-01, O-02 |
+| V-04 | **TRANCHÉ (2026-11-15)** : ZenCAR n'a pas de licence taxi (E-06) ; la promesse « appel immédiat » du site et des annonces doit être reformulée (taxi partenaire ou VTC réservé) — voir Q-07 | E-06, O-01, O-02 |
 | V-05 | **INFIRMÉ (2026-11-15)** : la promesse « 5 à 10 min » est tenue en journée à Marseille ; à limiter aux horaires réels (E-10) | E-11 |
 | V-06 | **TRANCHÉ (2026-11-15)** : Marseille + aéroport ; Aix à retirer des données structurées | E-09, A-03 |
-| V-07 | Consentement aux cookies et Consent Mode v2 | S-03, S-04 |
+| V-07 | **CONFIRMÉ (2026-11-15)** : aucune bannière de consentement sur le site en ligne alors que GTM est chargé | S-03, S-04 |
 | V-08 | **CONFIRMÉ (2026-11-15)** : seuls les appels depuis l'annonce sont comptés ; rien sur le site, ni WhatsApp, ni réservation, ni lien avec les courses réelles | A-07, S-03 |
-| V-09 | Pas de lien vers la fiche Google ni vers des réseaux sociaux | C-01, C-09 |
-| V-10 | Aucune relance après la course (avis, fidélisation) | P-04 |
+| V-09 | **CONFIRMÉ (2026-11-15)** : aucun lien vers la fiche Google (125 avis 5 étoiles) et aucun réseau social | C-01, C-09 |
+| V-10 | **CONFIRMÉ (2026-11-15)** : aucune relance après la course, et presque aucun client ne revient (C-04) | P-04, C-04 |
 
 # À TRANCHER (questions apparues en séance)
 | ID | Question | Étape | Bloquante ? |
@@ -187,5 +187,7 @@ J'enverrai ensuite le prompt de l'étape 1.
 | Q-06 | Campagne « réparation smartphone à domicile » dans le même compte et avec le même numéro 06 74 03 96 94 : quelle activité ? **✅ (2026-11-15) : autre activité du fondateur, toujours active, qui utilise le même numéro.** Conséquence : un appel reçu sur ce numéro peut concerner l'une ou l'autre activité. | Diagnostic | Tranché |
 | Q-08 | Faut-il séparer les deux activités (numéro distinct, compte Google Ads ou campagnes distinctes) pour que les appels et les conversions de ZenCAR soient mesurables ? | Google Ads | Non (étape 03) |
 | Q-07 | 3 annonces sur 4 vendent du « Taxi immédiat » alors que ZenCAR est VTC (E-06) et dispatche les courses taxi : les reformuler ou les couper ? | Google Ads | Non (étape 03) |
-| Q-03 | Le site montre une Mercedes Viano et une Classe S alors que le véhicule en propre est une Eco-Berline : ces véhicules sont-ils ceux des partenaires ? (photos et promesses à aligner) | Diagnostic | Non |
+| Q-09 | Le forfait « Aix-en-Provence → Aéroport 59 € » contredit-il la zone E-09 ? **✅ (2026-11-15) : on garde le forfait, comme exception.** Zone = Marseille + aéroport, plus le seul transfert Aix → aéroport en forfait. Pas d'autres prises en charge à Aix. | Diagnostic | Tranché |
+| Q-10 | Forfaits Sormiou (30 € à l'aller, 40 € au retour, libellés bruts) : volontaire ? À garder sur l'accueil ? | Diagnostic | Non |
+| Q-03 | Le site montre une Mercedes Viano et une Classe S : véhicules des partenaires ? **✅ (2026-11-15) : non, photo d'illustration (voir O-10).** | Diagnostic | Tranché |
 ```
