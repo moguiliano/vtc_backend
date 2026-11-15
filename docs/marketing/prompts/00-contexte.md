@@ -164,6 +164,8 @@ J'enverrai ensuite le prompt de l'étape 1.
 | C-07 | Objectifs à 3, 6 et 12 mois | **À 6 mois : ~200 courses ZenCAR en direct par mois (contre < 50 aujourd'hui, soit ×4).** Stratégie : d'abord remplir le véhicule du fondateur avec des clients directs (moins de plateformes), puis dispatcher le surplus (commission), en vue du régulateur et du 24h/24. Objectifs à 3 et 12 mois : non fixés. | confirmé en séance | ✅ 2026-11-15 |
 | C-08 | Budget marketing total et temps disponible par semaine | **Temps : 3 à 6 h par semaine. Budget publicitaire : plus de 600 €/mois possible, à condition que ce soit rentable** (une course rapporte au plus ~20 € en moyenne, voir O-14). | confirmé en séance | ✅ 2026-11-15 |
 | C-09 | Réseaux sociaux | **Aucun compte** (ni Instagram, ni Facebook, ni TikTok). Le site n'a aucun lien vers des réseaux sociaux ni vers la fiche Google. | confirmé en séance + site | ✅ 2026-11-15 |
+| C-10 | Taux de transformation des demandes | **5 à 7 demandes sur 10 (appel ou WhatsApp d'un inconnu) deviennent une course.** Ordre de grandeur, pas un comptage. | confirmé en séance | ✅ 2026-11-15 |
+| C-11 | Actions refusées | **Pas de vidéos ni de réseaux sociaux.** Accepté : prospection pro, demande d'avis, nouveau numéro. | confirmé en séance | ✅ 2026-11-15 |
 
 # POINTS À VÉRIFIER (repérés dans le code — à confirmer, pas des faits)
 | ID | Point | Données liées |
