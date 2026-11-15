@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-15 — Corrections d'affichage en prod (PR #3, 🧩 Fonctionnalités)
+- **Fait** : PR #3 mise en prod (SSH, procédure `deploiement.md`) et vérifiée en ligne sur dzencar.fr : récap (site + admin téléphone) et fiche EasyAdmin n'affichent que les champs remplis ; plus de zoom auto iOS (champs à 16px sur écran tactile) ; plus de débordement horizontal de l'accueil sur mobile ; marge autour du trajet sur la carte (`viewPort.setPadding`).
+- **Bloqué** : test sur un vrai iPhone (zoom au toucher du champ adresse) à faire par toi ; réservations de test n° 172 et 173 dans la base locale à supprimer.
+- **Prochaine étape** : session 🗄️ « Fondation Entreprise » (plan d'abord).
+
 ### 2026-11-14 — Séance de décisions « Plateforme multi-entreprises » (Pilote)
 - **Fait** : D-011 à D-021 tranchées : outil de gestion (SaaS), pas de réservation en ligne pour les clients des abonnés au départ, 4 rôles (super-admin, régulateur interne + WhatsApp, abonné à compte unique, collaborateur), paiement manuel + lecture seule si impayé, validation société sans pièces, catégories communes + prix propres, factures au nom de l'abonné, collaborateurs SIMPLICI CAB d'abord (forfaits + remise, paiement au choix), droits du régulateur. **Ordre (D-020) : fondation « Entreprise » d'abord**, puis Facturation, Régulateur, Collaborateurs, Espaces abonnés. En parallèle, corrections d'affichage fusionnées (PR #3).
 - **Bloqué** : D-022 (prix de l'abonnement) reporté ; D-002 (TVA) toujours chez le comptable. Mise en prod de la PR #3 à faire en SSH.

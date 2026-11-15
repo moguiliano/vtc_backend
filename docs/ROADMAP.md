@@ -49,6 +49,7 @@
 - [ ] Remplacer les 3 avis statiques par de vrais avis Google
 
 ### 🚀 Infra
+- [ ] Formulaire admin EasyAdmin : choix `typeVehicule` codés en dur dans `ReservationCrudController` → les lire depuis `VehicleCategory`
 - [ ] Mettre Git à jour (`brew install git`, version actuelle 2.15 de 2017)
 - [ ] **Aligner la base de prod sur le code** : `doctrine:schema:update --dump-sql` montre 7 retouches (champs NULL/NOT NULL, 2 index sur `verification_code`).
   Vérifier d'abord en local la taille du champ `verification_code.code` (VARCHAR(6) alors que le code OTP est hashé ?), puis écrire une vraie migration.
@@ -56,6 +57,7 @@
 - [ ] Vérifier que le `.env` local ne pointe pas vers la base de prod (seul `.env.local` doit définir la base locale)
 
 ## ✅ Terminé (récent)
+- 2026-11-15 — **Mise en prod** des corrections d'affichage (PR #3) : champs vides masqués (récap + fiche admin), zoom mobile, débordement mobile, marge de la carte
 - 2026-11-13 — **Mise en prod** de la réservation admin par téléphone + registre des migrations réparé + mode debug coupé en prod
 - 2026-11-13 — Procédure de déploiement Infomaniak (`docs/deploiement.md`), testée en vrai
 - 2026-11-13 — Réservation admin par téléphone (PR #1)
