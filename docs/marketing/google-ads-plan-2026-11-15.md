@@ -2,7 +2,7 @@
 
 > Étape 03 de la [série de prompts](prompts/README.md). Fondé sur 15 mois d'historique lus en entier (7 août 2025 – 15 nov. 2026 : 2 084 termes de recherche, mois, heures, enchères, pages d'arrivée, historique des modifications) — registre A-01 à A-11.
 > Décisions prises en séance : Q-05, Q-07, Q-13, Q-14 à Q-17 (registre [00-contexte.md](prompts/00-contexte.md)).
-> **Rien n'est encore appliqué dans le compte Google Ads.** Ce document est la liste exacte des réglages à faire.
+> **Application en cours** — voir le [journal d'application](#journal-dapplication-2026-11-15) en fin de document.
 
 ## 0. Ce que dit l'historique (rappel)
 
@@ -84,7 +84,12 @@ Règle : **jamais de prix fixe pour le taxi** ; les prix affichés sont des forf
 
 ## 7. Annonces (une annonce responsive par groupe)
 
-Toutes vérifiées par script : titres ≤ 30 caractères, descriptions ≤ 90, 15 titres distincts par groupe. Aucune marque concurrente dans les textes. Le mot « taxi » n'est jamais utilisé pour prétendre que ZenCAR est un taxi (Q-07).
+Toutes vérifiées par script : titres ≤ 30 caractères, descriptions ≤ 90, 15 titres distincts par groupe.
+
+> **Corrections imposées par les règles Google (constatées à la mise en ligne, 2026-11-15)** :
+> - **Pas de numéro de téléphone dans le texte** : le titre « Appelez le 06 74 03 96 94 » est remplacé partout par **« Appelez-Nous 7j/7 »** (le numéro passe par le composant Appel).
+> - **Pas de flèche « → »** : remplacée par « vers » (descriptions) ; le titre D « Aix → Aéroport en VTC 59 € » devient **« Aix-Aéroport en VTC : 59 € »**.
+> - **Pas de mot-clé visant le numéro d'un autre service** (« services de renseignements téléphoniques ») : [numero uber marseille] est retiré du groupe B, et le titre B « Un Vrai Numéro à Appeler » devient **« Réservez par Téléphone »**. Aucune marque concurrente dans les textes. Le mot « taxi » n'est jamais utilisé pour prétendre que ZenCAR est un taxi (Q-07).
 
 ### Groupe A Taxi & VTC Marseille
 
@@ -238,3 +243,28 @@ Repère : avril – mai 2026 a atteint 21 à 45 conversions par mois à moins de
 - Les coûts par conversion par intention reposent sur des volumes faibles (4 à 43,5 conversions par catégorie) : ce sont des tendances, pas des certitudes.
 - Une « conversion » est un appel, pas une course : le seuil de 7 € par appel suppose 5 à 7 appels sur 10 transformés (C-10, déclaré).
 - La meilleure période (avril – mai) a aussi pu profiter d'une saison favorable ; la comparaison avec septembre – novembre n'isole pas la seule cause « pauses manuelles ».
+
+
+## Journal d'application (2026-11-15)
+
+Appliqué par Claude dans le compte 522-918-7346, à la demande du fondateur.
+
+| # | Action | État |
+|---|---|---|
+| 1 | Calendrier de diffusion : 7 h – 21 h, 7j/7 (anciens créneaux supprimés) | ✅ fait, vérifié |
+| 2 | CPA cible de la campagne : 4,70 € → **7 €** (hérité par les groupes) | ✅ fait, vérifié |
+| 3 | Zones : **Aubagne retirée**, **ville de Marseille entière ajoutée** (seuls quelques arrondissements étaient ciblés) | ✅ fait, vérifié |
+| 4 | 46 mots-clés négatifs ajoutés (villes hors zone, conventionné, hôtel, location…) | ✅ fait, vérifié (116 → 162) |
+| 5 | Négatif « heetch » retiré (conflit avec Q-05) | ✅ fait |
+| 6 | **Liste partagée « ctr faible » (269 exclusions, dont ~190 recherches utiles : vtc marseille, taxi aéroport marseille, taxi gare saint charles…) détachée de la campagne** — décision du fondateur ; la liste reste dans le compte | ✅ fait, vérifié |
+| 7 | 6 négatifs repris de cette liste : navette, shuttle, allauch, ameli, securite sociale, sécurité sociale | ✅ fait, vérifié |
+| 8 | Groupe **C - Gare Saint-Charles** créé : 6 mots-clés, annonce (URL /taxi-gare-saint-charles), CPA 7 € | ✅ fait — annonce « Éligible » après correction (flèche, téléphone) |
+| 9 | Groupe **B - Alternative aux applis** créé : 8 mots-clés, annonce | ⚠️ « diffusion limitée » (renseignements téléphoniques) : reste à retirer [numero uber marseille] et à remplacer le titre « Un Vrai Numéro à Appeler » |
+| 10 | Groupe A (Groupe d'annonces 1) : nouvelle annonce A, mots-clés « uber » à mettre en veille (déplacés en B) | ⏳ à faire |
+| 11 | Groupe D (aeroport / Marignane) : nouvelle annonce D (URL corrigée), ancienne annonce (404) en veille | ⏳ à faire |
+| 12 | Groupe « appel direct » en veille, ses mots-clés repris dans A ; négatifs « aix / aixois » sur A, B, C | ⏳ à faire |
+| 13 | Composants : liens annexes (les actuels générés par Google parlent de « 24/7 », « prise en charge immédiate »), accroches, prix, appel planifié | ⏳ à faire |
+| 14 | Règles automatiques de budget (§ 5) | ⏳ à faire |
+| 15 | Suivi des conversions dans GTM (§ 1) et numéro dédié | ⏳ hors Google Ads (accès GTM / opérateur) |
+
+Effet attendu le plus important : le détachement de « ctr faible » rouvre la diffusion sur les recherches principales bloquées depuis le 14 oct. 2026 — à surveiller dans les 7 premiers jours (dépense, coût par conversion).
