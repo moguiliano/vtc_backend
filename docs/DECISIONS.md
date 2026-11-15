@@ -91,6 +91,7 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
   4. **Espaces abonnés** (inscription, validation, leur admin).
 - **Raison** : idée de l'utilisateur : centraliser une seule fois pour ne pas refaire la Facturation et les Collaborateurs au moment du multi-entreprises (gain de temps et de tokens). La fondation reste invisible et sans risque pour le site.
 - **Impact** : roadmap réorganisée ; `feature/facturation` (pas encore en prod) sera adaptée à la fondation avant sa mise en prod.
+- **Modification (2026-11-15)** : la **Facturation passe en prod seule, avant la fondation** (demande de l'utilisateur : besoin de facturer tout de suite ; la fondation était bloquée par le manque de place disque). Elle sera rattachée à l'entreprise n°1 lors de la fondation (coût faible). En attendant, D-001 (brouillon → émise) et D-003 (numéro à l'émission) **ne sont pas encore appliqués** : une facture reste modifiable après création, donc **ne jamais modifier une facture déjà envoyée** à un client.
 
 ### D-019 — Collaborateurs : prix convenus et paiement — 2026-11-13
 - **Décision** :

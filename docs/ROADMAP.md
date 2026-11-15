@@ -6,14 +6,14 @@
 
 | # | Objectif | Chantier | Branche | Prochaine étape |
 |---|---|---|---|---|
-| 1 | **Fondation « Entreprise »** (D-020 étape 0) | 🗄️ Données | `feature/fondation-entreprise` | Concevoir le plan (entités, migration, briques) avant de coder ; SIMPLICI CAB = entreprise n°1 ; rien de visible ne change |
-| 2 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | **Attend la fondation** : l'adapter (société et numérotation par entreprise), tester dans EasyAdmin → PR → mise en prod |
+| 1 | **Fondation « Entreprise »** (D-020 étape 0) | 🗄️ Données | `feature/fondation-entreprise` | Libérer de la place disque (session bloquée), puis plan avant code ; inclut le rattachement des factures et de la société déjà en prod à l'entreprise n°1 |
+| 2 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | **Mise en prod seule le 2026-11-15** (D-020 modifiée) ; ensuite : « brouillon → émise » (D-001, D-003) |
 | 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
 
 ## 🏗️ Plateforme multi-entreprises (D-011 à D-021) — ordre décidé (D-020)
 
 0. **Fondation** : entité Entreprise ; réservations, factures, bons, société, grille de prix rattachés à une entreprise ; briques centrales *créer une réservation* / *générer un PDF* / *calculer un prix* → **En cours n°1**
-1. **Facturation** en prod sur la fondation → **En cours n°2**
+1. **Facturation** → mise en prod **avant** la fondation (modification du 2026-11-15) ; sera rattachée à l'entreprise n°1 à l'étape 0
 2. [ ] **Régulateur** (D-013, D-021) : `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; partage en 2 temps sur WhatsApp et Telegram : annonce groupe (zone approximative, date/heure, véhicule, prix chauffeur seul) → réponses avec temps d'approche → le régulateur choisit → course complète en message privé au chauffeur retenu
 3. [ ] **Collaborateurs** (D-018, D-019) : comptes établissements de SIMPLICI CAB, forfaits propres + remise %, paiement « sur le compte » (facture mensuelle) ou par le passager, au choix par commande
 4. [ ] **Espaces abonnés** (D-011 à D-017) : outil de gestion, 1 compte par abonné, saisie société une fois puis validation super-admin (rien d'accessible avant), états en attente / actif / lecture seule, paiement manuel, catégories communes + prix propres, bons et factures à son nom avec sa numérotation. Prix de l'abonnement : D-022 (reporté)
