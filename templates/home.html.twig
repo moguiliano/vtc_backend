@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Taxi & VTC Marseille — Disponible en 5 min | ZenCAR{% endblock %}
+{% block title %}Taxi & VTC Marseille — Gare, Aéroport | ZenCAR{% endblock %}
 
 {% block meta %}
-<meta name="description" content="Taxi à Marseille disponible en 5 min — appelez le 06 74 03 96 94. Tarifs officiels Ville de Marseille, VTC prix fixe. 7j/7, aéroport, gare, calanques." />
+<meta name="description" content="Taxi & VTC à Marseille en 5 à 10 min. Prix VTC annoncé avant le départ, taxis partenaires agréés. Gare, aéroport, calanques. 06 74 03 96 94." />
 <meta name="robots" content="index, follow" />
 {% endblock %}
 
@@ -11,8 +11,8 @@
 <link rel="canonical" href="https://dzencar.fr/" />
 {% endblock %}
 
-{% block og_title %}Taxi & VTC Marseille — Disponible en 5 min | ZenCAR{% endblock %}
-{% block og_description %}Taxi au compteur tarifs officiels Ville de Marseille, ou VTC prix fixe affiché avant réservation. Aéroport, gare, calanques, seniors. Appelez le 06 74 03 96 94.{% endblock %}
+{% block og_title %}Taxi & VTC Marseille — Gare, Aéroport | ZenCAR{% endblock %}
+{% block og_description %}Taxi & VTC à Marseille en 5 à 10 min. Prix VTC annoncé avant le départ, taxis partenaires agréés. Gare, aéroport, calanques. 06 74 03 96 94.{% endblock %}
 {% block og_url %}https://dzencar.fr/{% endblock %}
 
 {% block stylesheets %}
@@ -49,10 +49,19 @@
 {
   "@context": "https://schema.org",
   "@type": "TaxiService",
+  "@id": "https://dzencar.fr/#service",
   "name": "ZenCAR — Taxi & VTC Marseille",
-  "url": "https://dzencar.fr",
+  "url": "https://dzencar.fr/",
   "telephone": "+33674039694",
-  "description": "Chauffeur VTC à Marseille et réseau de chauffeurs VTC et de taxis partenaires agréés. Prise en charge rapide, prix VTC affiché avant réservation, taxi au compteur.",
+  "description": "Chauffeur VTC à Marseille et réseau de chauffeurs VTC et de taxis partenaires agréés. Prise en charge en 5 à 10 minutes, prix VTC annoncé avant le départ, taxi au compteur.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "ZenCAR",
+    "legalName": "SIMPLICI CAB",
+    "url": "https://dzencar.fr/",
+    "telephone": "+33674039694",
+    "address": {"@type": "PostalAddress", "addressLocality": "Marseille", "addressCountry": "FR"}
+  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Marseille",
@@ -141,7 +150,7 @@
 				{# Colonne texte #}
 				<div class="col-lg-6">
 					<span class="hero-split-badge">⚡ Prise en charge en 5 à 10 min</span>
-					<h1>Taxi & VTC Marseille — Appel immédiat<br><span style="color:var(--zen-orange);">06 74 03 96 94</span></h1>
+					<h1>Taxi & VTC à Marseille<br><span style="color:var(--zen-orange);">06 74 03 96 94</span></h1>
 					<p class="hero-lead">
 						Taxi au compteur tarifs officiels Ville de Marseille,
 						ou VTC avec <strong style="color:white;">prix fixe affiché avant réservation</strong>.
