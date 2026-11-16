@@ -1,0 +1,51 @@
+date,concurrent,indicateur,valeur,source,lieu,appareil,remarque
+2026-11-16,Taxi Marseille 13,annonces actives 30 j,3,Centre de transparence (domaine taximarseille13.fr),France,-,annonceur = entrepreneur individuel ; 1re diffusion avr. 2023 ; dernière 15/11/2026
+2026-11-16,Drive Allure,annonces actives 30 j,14,Centre de transparence (domaine driveallure.com),France,-,11 sur 7 j ; 16 au total ; format surtout « appel uniquement »
+2026-11-16,Taxi VTC Marseille,annonces actives 30 j,42,Centre de transparence (domaine taxivtcmarseille.com),France,-,2 comptes annonceurs (Auto confort ; TAXI GO 13)
+2026-11-16,LH Transport,annonces actives 30 j,13,Centre de transparence (domaine lh-transport.com),France,-,2 comptes annonceurs
+2026-11-16,Driver Plus,annonces actives 30 j,3,Centre de transparence (domaine driver-plus.com),France,-,réseau multi-villes (annonce Béziers même compte)
+2026-11-16,allo-taxi-marseille.fr,annonces actives 30 j,0,Centre de transparence (domaine allo-taxi-marseille.fr),France,-,aucune annonce vers ce domaine
+2026-11-16,ZenCAR,annonces actives 30 j,3,Centre de transparence (domaine dzencar.fr),France,-,pour comparaison
+2026-11-16,Taxi Marseille 13,présence annonce « taxi marseille »,oui (1re),Google simulé 10:45-10:52,Marseille,mobile,seul annonceur visible
+2026-11-16,Taxi Marseille 13,présence annonce « vtc marseille »,oui (1re),Google simulé,Marseille,mobile,seul annonceur visible
+2026-11-16,Taxi Marseille 13,présence annonce « taxi aéroport marseille »,oui (1re),Google simulé,Marseille,mobile,seul annonceur visible
+2026-11-16,Taxi Marseille 13,présence annonce « taxi gare saint charles »,oui (1re),Google simulé,Marseille,mobile,seul annonceur visible
+2026-11-16,Taxi Marseille 13,présence annonce « taxi marseille »,oui (1re),Google simulé,Aéroport,mobile,Naveco en 2e
+2026-11-16,Taxi Marseille 13,présence annonce « vtc marseille »,oui (1re),Google simulé,Aéroport,mobile,seul annonceur visible
+2026-11-16,Taxi Marseille 13,présence annonce « taxi aéroport marseille »,oui (1re),Google simulé,Aéroport,mobile,seul annonceur visible
+2026-11-16,Taxi Marseille 13,présence annonce « taxi gare saint charles »,oui (1re),Google simulé,Aéroport,mobile,seul annonceur visible
+2026-11-16,ZenCAR,présence annonce (8 recherches),0 sur 8,Google simulé,Marseille + Aéroport,mobile,absent partout lundi 10:45-10:52 (cause à trouver dans Google Ads)
+2026-11-16,Drive Allure,présence annonce (8 recherches),0 sur 8,Google simulé,Marseille + Aéroport,mobile,
+2026-11-16,Taxi VTC Marseille,présence annonce (8 recherches),0 sur 8,Google simulé,Marseille + Aéroport,mobile,
+2026-11-16,LH Transport,présence annonce (8 recherches),0 sur 8,Google simulé,Marseille + Aéroport,mobile,
+2026-11-16,Naveco (nav-eco.fr),présence annonce (5 recherches ordinateur),5 sur 5,Google simulé,Marseille + Aéroport,ordinateur,non suivi : plateforme nationale
+2026-11-16,Allocab,présence annonce (5 recherches ordinateur),5 sur 5,Google simulé,Marseille + Aéroport,ordinateur,non suivi : plateforme nationale
+2026-11-16,ZenCAR,PageSpeed mobile accueil,30,pagespeed.web.dev,-,mobile,LCP 22,7 s ; TBT 5 860 ms ; page de 4 470 Kio ; c'est la page de destination des annonces
+2026-11-16,ZenCAR,PageSpeed mobile /taxi-aeroport-marseille,97,pagespeed.web.dev,-,mobile,LCP 2,1 s
+2026-11-16,Taxi Marseille 13,PageSpeed mobile accueil,49,pagespeed.web.dev,-,mobile,LCP 4,4 s
+2026-11-16,Drive Allure,PageSpeed mobile accueil,100,pagespeed.web.dev,-,mobile,LCP 1,0 s
+2026-11-16,Taxi VTC Marseille,PageSpeed mobile accueil,93,pagespeed.web.dev,-,mobile,LCP 2,9 s
+2026-11-16,LH Transport,PageSpeed mobile accueil,70,pagespeed.web.dev,-,mobile,LCP 7,0 s
+2026-11-16,Driver Plus,PageSpeed mobile accueil,63,pagespeed.web.dev,-,mobile,LCP 6,6 s
+2026-11-16,Taxi Marseille 13,note fiche Google (dans l'annonce),"5,0 (4 avis)",Centre de transparence (extension de lieu),-,-,fiche « Boulevard Lazer »
+2026-11-16,ZenCAR,taux d'impressions (90 j),"17,53 %",Google Ads > Insights sur les enchères (19/08 – 16/11),toutes campagnes,-,haut de page 46,41 % ; tout en haut 7,29 % ; campagne souvent inactive sur la période
+2026-11-16,Taxi Marseille 13,insights enchères 90 j,"IS 15,64 % · superp. 14,24 % · pos. sup. 85,83 % · haut 88,69 % · tout en haut 45,10 % · surclass. 15,39 %",Google Ads > Insights sur les enchères,toutes campagnes,-,n° 1 en « tout en haut de page »
+2026-11-16,rezervao.com,insights enchères 90 j,"IS 17,78 % · superp. 15,47 % · pos. sup. 73,19 % · haut 86,85 % · tout en haut 39,78 % · surclass. 15,54 %",Google Ads > Insights sur les enchères,toutes campagnes,-,conciergerie (écartée de la liste le 16/11) mais 2e sur « tout en haut »
+2026-11-16,Drive Allure,insights enchères 90 j,"IS 11,57 % · superp. 9,75 % · pos. sup. 79,31 % · haut 86,42 % · tout en haut 36,50 % · surclass. 16,17 %",Google Ads > Insights sur les enchères,toutes campagnes,-,
+2026-11-16,allo-taxi-marseille.fr,insights enchères 90 j,"IS 13,19 % · superp. 10,76 % · pos. sup. 86,46 % · haut 87,48 % · tout en haut 31,59 % · surclass. 15,90 %",Google Ads > Insights sur les enchères,toutes campagnes,-,présent dans les enchères mais 0 annonce au Centre de transparence le 16/11 : a arrêté récemment ?
+2026-11-16,uber.com,insights enchères 90 j,"IS 20,06 % · superp. 21,08 % · pos. sup. 72,87 % · haut 90,01 % · tout en haut 23,41 % · surclass. 14,84 %",Google Ads > Insights sur les enchères,toutes campagnes,-,
+2026-11-16,taximagdi.com,insights enchères 90 j,"IS < 10 % · superp. 5,16 % · pos. sup. 71,74 % · haut 77,97 % · tout en haut 21,69 % · surclass. 16,88 %",Google Ads > Insights sur les enchères,toutes campagnes,-,
+2026-11-16,marseillevtcnumero1.fr,insights enchères 90 j,"IS 10,96 % · superp. 14,01 % · pos. sup. 75,20 % · haut 80,82 % · tout en haut 21,33 % · surclass. 15,68 %",Google Ads > Insights sur les enchères,toutes campagnes,-,nouveau nom
+2026-11-16,chauffeur-24h24-marseille-vtc.com,insights enchères 90 j,"IS < 10 % · superp. 5,61 % · pos. sup. 70,00 % · haut 77,68 % · tout en haut 21,19 % · surclass. 16,84 %",Google Ads > Insights sur les enchères,toutes campagnes,-,nouveau nom
+2026-11-16,vercel.app,insights enchères 90 j,"IS < 10 % · superp. 8,41 % · pos. sup. 77,33 % · haut 86,06 % · tout en haut 20,91 % · surclass. 16,39 %",Google Ads > Insights sur les enchères,toutes campagnes,-,site hébergé sur Vercel (annonceur non identifiable)
+2026-11-16,google.com,insights enchères 90 j,"IS 27,71 % · superp. 28,92 % · pos. sup. 75,97 % · haut 76,74 % · tout en haut 20,78 % · surclass. 13,68 %",Google Ads > Insights sur les enchères,toutes campagnes,-,annonceurs sans site (fiches Google / annonces d'appel)
+2026-11-16,allocab.com,insights enchères 90 j,"IS 11,79 % · superp. 6,50 % · pos. sup. 51,72 % · haut 72,67 % · tout en haut 13,83 % · surclass. 16,94 %",Google Ads > Insights sur les enchères,toutes campagnes,-,
+2026-11-16,nav-eco.fr,insights enchères 90 j,"IS < 10 % · superp. 3,25 % · pos. sup. 68,97 % · haut 66,48 % · tout en haut 13,46 % · surclass. 17,13 %",Google Ads > Insights sur les enchères,toutes campagnes,-,
+2026-11-16,3itaxi.fr,insights enchères 90 j,"IS < 10 % · superp. 9,30 % · pos. sup. 86,75 % · haut 73,96 % · tout en haut 13,28 % · surclass. 16,11 %",Google Ads > Insights sur les enchères,toutes campagnes,-,nouveau nom
+2026-11-16,ecobusinessvtc.fr,insights enchères 90 j,"IS < 10 % · superp. 5,49 % · pos. sup. 53,06 % · haut 59,92 % · tout en haut 11,28 % · surclass. 17,02 %",Google Ads > Insights sur les enchères,toutes campagnes,-,nouveau nom
+2026-11-16,taxis-marseille.fr,insights enchères 90 j,"IS < 10 % · superp. 5,49 % · pos. sup. 67,35 % · haut 83,64 % · tout en haut 2,97 % · surclass. 16,88 %",Google Ads > Insights sur les enchères,toutes campagnes,-,
+2026-11-16,ZenCAR,campagnes Recherche (90 j),"1 115 impr. · 66 clics · CTR 5,92 % · 80,37 € · 5 conv. · 16,07 €/conv.",Google Ads > Campagnes (totaux),toutes campagnes,-,19/08 – 16/11
+2026-11-16,ZenCAR,pages de destination (90 j),"accueil https://dzencar.fr/ : 33 clics / 656 impr. (27,81 €) · /taxi-marseille : 12 / 1 047 (10,80 €) · https://dzencar.fr (sans /) : 1 / 436 · /taxi-aeroport-marseille : 0 / 428",Google Ads > Pages de destination,toutes campagnes,-,l'accueil (30/100 sur mobile) reçoit la moitié des clics
+2026-11-16,ZenCAR,visibilité Recherche (90 j),"taux d'impr. 17,58 % · perdu (classement) 54,69 % · perdu (budget) ≈ 27,7 % (calculé : 100 − 17,58 − 54,69) · tout en haut < 10 % · requêtes exactes 20,05 %",Google Ads > Groupes d'annonces (colonnes Visibilité),toutes campagnes,-,le classement (enchère × niveau de qualité) freine 2 fois plus que le budget
+2026-11-16,ZenCAR,niveau de qualité mots-clés (90 j),"uber taxi 8/10 · uber marseille 8/10 · [taxi uber marseille] 8/10 · [taxi marseille] 7/10 · ""appeler taxi marseille"" 6/10 ; expérience page de destination = Moyenne sur 4 des 5 mots-clés notés",Google Ads > Mots clés (colonnes Niveau de qualité),toutes campagnes,-,"uber taxi + uber marseille = 38 clics sur 66 et 5 conversions sur 5 (dont 3 + 2) ; ces 2 mots-clés sont « En veille »"
+2026-11-16,ZenCAR,action Google Ads,« uber taxi » + « uber marseille » réactivés,Google Ads > Mots clés (Claude, accord du fondateur),-,-,statut Éligible vérifié ; à comparer au relevé du 23/11
