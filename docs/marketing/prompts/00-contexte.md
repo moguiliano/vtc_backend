@@ -218,5 +218,6 @@ J'enverrai ensuite le prompt de l'étape 1.
 | Q-27 | Prise en charge au terminal croisières ? **✅ (2026-11-16) : oui.** | Étape 04 | Tranché |
 | Q-28 | Prise en charge à la gare TGV d'Aix ? **✅ (2026-11-16) : non.** | Étape 04 | Tranché |
 | Q-29 | Conductrice dans le réseau (« taxi femme marseille ») ? **✅ (2026-11-16) : non** → rien à faire. | Étape 04 | Tranché |
+| Q-30 | Forfait Aix → aéroport 59 € (site, annonce D, composant Prix) avec « on reste sur Marseille » (Q-26) ? **✅ (2026-11-16) : on le garde** (exception Q-09) ; pas de mise en avant SEO (ni zone, ni page, ni texte de fiche). | Étape 04 | Tranché |
 | Q-03 | Le site montre une Mercedes Viano et une Classe S : véhicules des partenaires ? **✅ (2026-11-15) : non, photo d'illustration (voir O-10).** | Diagnostic | Tranché |
 ```
