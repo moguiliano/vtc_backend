@@ -6,6 +6,7 @@ use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
+use App\Service\ReservationAccess;
 use App\Service\SmsNotifier;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -22,7 +23,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
-    public function __construct(private HereMapsService $hereMapsService) {}
+    public function __construct(
+        private HereMapsService $hereMapsService,
+        private ReservationAccess $access,
+    ) {}
 
     #[Route('', name: 'reservation_index', methods: ['GET', 'POST'])]
     public function index(Request $request, EntityManagerInterface $entityManager, VehicleCategoryRepository $vehicleRepo): Response
@@ -42,6 +46,7 @@ class ReservationController extends AbstractController
 
             $entityManager->persist($reservation);
             $entityManager->flush();
+            $this->access->grant($reservation->getId());
 
             // Appel AJAX depuis reservation.js → retourner juste l'ID
             if ($request->isXmlHttpRequest()) {
@@ -77,7 +82,7 @@ class ReservationController extends AbstractController
         SmsNotifier $smsNotifier
     ): JsonResponse {
         $reservation = $repo->find($id);
-        if (!$reservation) {
+        if (!$reservation || !($this->access->ownsInSession($id) || $this->access->isAdmin())) {
             return new JsonResponse(['ok' => false, 'error' => 'Reservation introuvable'], 404);
         }
 
@@ -106,21 +111,24 @@ class ReservationController extends AbstractController
 
         return new JsonResponse([
             'ok'       => true,
-            'redirect' => $this->generateUrl('reservation_success', ['id' => $reservation->getId()]),
+            'redirect' => $this->access->url('reservation_success', $reservation->getId()),
         ]);
     }
 
     #[Route('/{id}/success', name: 'reservation_success', methods: ['GET'])]
-    public function reservationSuccess(int $id, ReservationRepository $repo): Response
+    public function reservationSuccess(int $id, Request $request, ReservationRepository $repo): Response
     {
         $reservation = $repo->find($id);
 
-        if (!$reservation) {
+        if (!$reservation || !$this->access->isAllowed($request, $id)) {
             $this->addFlash('error', 'Reservation introuvable.');
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('reservation/success.html.twig', ['reservation' => $reservation]);
+        return $this->render('reservation/success.html.twig', [
+            'reservation' => $reservation,
+            'pdf_url'     => $this->access->url('reservation_pdf', $id),
+        ]);
     }
 
     #[Route('/quick-book', name: 'reservation_quick_book', methods: ['POST'])]
@@ -163,17 +171,18 @@ class ReservationController extends AbstractController
 
         $em->persist($reservation);
         $em->flush();
+        $this->access->grant($reservation->getId());
 
         return new JsonResponse([
-            'redirect' => $this->generateUrl('reservation_success', ['id' => $reservation->getId()]),
+            'redirect' => $this->access->url('reservation_success', $reservation->getId()),
         ]);
     }
 
     #[Route('/{id}/bon-commande.pdf', name: 'reservation_pdf', methods: ['GET'])]
-    public function pdf(int $id, ReservationRepository $repo, SocieteRepository $societeRepo): Response
+    public function pdf(int $id, Request $request, ReservationRepository $repo, SocieteRepository $societeRepo): Response
     {
         $reservation = $repo->find($id);
-        if (!$reservation) {
+        if (!$reservation || !$this->access->isAllowed($request, $id)) {
             throw $this->createNotFoundException('Réservation introuvable.');
         }
 

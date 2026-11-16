@@ -32,12 +32,15 @@ use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
+use App\Service\ReservationAccess;
 use App\Service\SmsNotifier;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 final class HomeController extends AbstractController
 {
+    public function __construct(private ReservationAccess $access) {}
+
     // Route pour la page des services
     #[Route('/services', name: 'app_services')]
     public function services(): Response
@@ -75,7 +78,8 @@ final class HomeController extends AbstractController
             $entityManager->flush();
             $smsNotifier->notifyReservation($reservation, $clientPhone, $prenom);
 
-            return $this->redirectToRoute('reservation_success_with_id', ['id' => $reservation->getId()]);
+            $this->access->grant($reservation->getId());
+            return $this->redirect($this->access->url('reservation_success_with_id', $reservation->getId()));
         }
 
         return $this->render('taxi-marseille.html.twig', [
@@ -235,7 +239,8 @@ final class HomeController extends AbstractController
             $smsNotifier->notifyReservation($reservation, $clientPhone, $prenom);
 
             // ✅ Redirection vers la page succès AVEC ID
-            return $this->redirectToRoute('reservation_success_with_id', ['id' => $reservation->getId()]);
+            $this->access->grant($reservation->getId());
+            return $this->redirect($this->access->url('reservation_success_with_id', $reservation->getId()));
         }
 
         // Affichage du formulaire
@@ -258,14 +263,21 @@ final class HomeController extends AbstractController
     #[Route('/reservation/{id}/success', name: 'reservation_success_with_id', methods: ['GET'])]
     public function reservationSuccessWithId(
         int $id,                            // ID de la réservation à afficher
+        Request $request,
         ReservationRepository $repo         // Repository pour la charger depuis la BDD
     ): Response {
         // On charge la réservation correspondante
         $reservation = $repo->find($id);
 
+        // Lien protégé : même session, jeton ?t= valide, ou admin
+        if (!$reservation || !$this->access->isAllowed($request, $id)) {
+            return $this->redirectToRoute('app_home');
+        }
+
         // On passe l'entité au template pour affichage
         return $this->render('reservation/success.html.twig', [
             'reservation' => $reservation,  // Dans Twig => {{ reservation.id }}, etc.
+            'pdf_url'     => $this->access->url('reservation_pdf', $id),
         ]);
     }
 
@@ -280,7 +292,7 @@ final class HomeController extends AbstractController
         SmsNotifier $smsNotifier
     ): JsonResponse {
         $reservation = $repo->find($id);
-        if (!$reservation) {
+        if (!$reservation || !($this->access->ownsInSession($id) || $this->access->isAdmin())) {
             return new JsonResponse(['ok' => false, 'error' => 'Reservation introuvable'], 404);
         }
 
@@ -292,7 +304,7 @@ final class HomeController extends AbstractController
 
         return new JsonResponse([
             'ok' => true,
-            'redirect' => $this->generateUrl('reservation_success_with_id', ['id' => $reservation->getId()])
+            'redirect' => $this->access->url('reservation_success_with_id', $reservation->getId())
         ]);
     }
 }
