@@ -50,7 +50,8 @@
 - [x] Urgences de la priorisation marketing (2026-11-15, `feature/marketing`) : promesses « taxi agréé », « plateforme », photo, horaires et zone des données structurées, FAQ seniors « non remboursé », bannière cookies + Consent Mode v2 (GTM chargé seulement après accord)
 
 ### 🚀 Infra
-- [ ] 🔴 **Confidentialité (prioritaire)** : `/reservation/{id}/bon-commande.pdf` est **public** et les numéros se suivent → n'importe qui peut télécharger le bon de commande d'un autre client (nom, téléphone, adresses) en changeant le numéro. Le lien est donné au client sur la page de succès. Correction : lien **signé** (`UriSigner`) ou identifiant aléatoire, et accès libre seulement pour l'admin. Vérifier aussi `/reservation/{id}/confirm` et `/success`.
+- [x] 🔴 **Confidentialité** (2026-11-16, branche `docs/prod-facturation`, **à mettre en prod**) : bon de commande PDF et page de succès protégés par un jeton secret dans le lien (`?t=…`, `App\Service\ReservationAccess`) ; confirmation (`/reservation/{id}/confirm`) acceptée seulement depuis le navigateur qui a créé la réservation ; l'admin et le régulateur gardent l'accès libre. Les anciens liens sans jeton ne marchent plus (sauf pour l'admin).
+- [ ] Sécurité : le code OTP n'est vérifié que dans le navigateur ; `/confirm` ne vérifie pas côté serveur que le téléphone a été validé → lier la vérification OTP à la réservation
 - [ ] Formulaire admin EasyAdmin : choix `typeVehicule` codés en dur dans `ReservationCrudController` → les lire depuis `VehicleCategory`
 - [ ] Mettre Git à jour (`brew install git`, version actuelle 2.15 de 2017)
 - [ ] **Aligner la base de prod sur le code** : `doctrine:schema:update --dump-sql` montre 7 retouches (champs NULL/NOT NULL, 2 index sur `verification_code`).

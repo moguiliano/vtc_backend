@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-16 — Bons de commande protégés (Pilote)
+- **Fait** : jeton secret dans les liens du bon de commande PDF et de la page de succès ; confirmation limitée au navigateur qui a créé la réservation ; testé en local (sans jeton → refusé, faux jeton → refusé, bon jeton → PDF, admin libre).
+- **Bloqué** : rien.
+- **Prochaine étape** : PR vers `main` puis mise en prod (pas de migration) ; plus tard, vérifier l'OTP côté serveur.
+
 ### 2026-11-15 — Facturation en prod (PR #5, Pilote)
 - **Fait** : Facturation mise en prod **avant** la fondation (D-020 modifiée) : `feature/facturation` mise à jour avec `main` (2 conflits d'imports résolus), testée en local sur un dossier séparé, PR #5 fusionnée ; en prod : sauvegarde, `git pull`, 3 migrations (`created_at`, tables `facture` et `societe`), cache vidé, sans erreur. Accueil, calcul de trajet et redirection `/admin` vérifiés en ligne.
 - **Bloqué** : D-001/D-003 pas encore appliqués (ne pas modifier une facture envoyée) ; fuite possible des bons de commande PDF (voir ROADMAP Infra, prioritaire) ; session Fondation bloquée par le manque de place disque.
