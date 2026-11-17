@@ -24,7 +24,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  *  - pas d'OTP ;
  *  - prix calculé proposé mais modifiable ;
  *  - SMS de confirmation au client optionnel ;
- *  - réservation créée directement au statut « confirmée ».
+ *  - réservation créée directement au statut « confirmée » ;
+ *  - date et heure préremplies avec maintenant, date passée acceptée (D-032).
  */
 #[IsGranted('ROLE_RESERVATIONS_EDIT')]
 class PhoneBookingController extends AbstractController
@@ -139,10 +140,10 @@ class PhoneBookingController extends AbstractController
         }
 
         $dateHeure = $this->buildDateHeure($form);
+        // Date passée acceptée (D-032) : course oubliée puis dispatchée à la main, saisie après coup.
+        // Le champ est prérempli avec « maintenant » (ReservationType).
         if (!$dateHeure) {
             $errors[] = 'Date et heure de départ obligatoires.';
-        } elseif ($dateHeure <= new \DateTime()) {
-            $errors[] = 'La date et l’heure de départ doivent être dans le futur.';
         }
 
         if ($client['prenom'] === '') {
