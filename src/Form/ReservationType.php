@@ -57,7 +57,7 @@ class ReservationType extends AbstractType
             ->add('dateDepart', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
-                'data' => new \DateTime(), // <-- aujourd’hui
+                'data' => new \DateTime('now', new \DateTimeZone('Europe/Paris')), // aujourd’hui, heure de Marseille (comme l’heure)
                 'mapped' => false, // <- important
                 'attr' => ['class' => 'form-control'],
                 'required' => true,
