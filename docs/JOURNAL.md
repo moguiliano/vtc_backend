@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-17 — Partager la course + réservation téléphone (🧩 Fonctionnalités)
+- **Fait** : décisions D-023 à D-032. **`feature/partage-course`** (commit c047458) : bouton « Partager la course » (`/admin/reservation/{id}/partager`) avec partage complet / partiel (zone approximative, sans le client) / message client ; boutons SMS, WhatsApp, Copier ; commission modifiable en € ou % et enregistrée (`reservation.commission`) ; sous-menu Messages (catégories libres + modèles en base, 5 prêts) ; zone de texte auto + étirable. **`fix/reservation-telephone`** (commit 48b8eb4) : date passée acceptée, date du jour à l'heure de Marseille. Les deux testés en local par toi : ça marche.
+- **Bloqué** : rien. Migration `Version20261117100000` à lancer en prod avec Partager. La session « Fondation Entreprise » touchera aussi `Reservation` : surveiller l'ordre des migrations à la fusion.
+- **Prochaine étape** : pousser les 2 branches et ouvrir 2 PR vers `main` (avec ton accord), puis mise en prod (`deploiement.md`, migration comprise).
+
 ### 2026-11-16 — Bons de commande protégés (Pilote)
 - **Fait** : jeton secret dans les liens du bon de commande PDF et de la page de succès ; confirmation limitée au navigateur qui a créé la réservation ; testé en local (sans jeton → refusé, faux jeton → refusé, bon jeton → PDF, admin libre).
 - **Bloqué** : rien.
