@@ -21,6 +21,12 @@
 ## ⏳ En attente
 
 ### 🧩 Fonctionnalités
+- [ ] **Réservation par téléphone : date/heure = maintenant par défaut, date passée acceptée** (D-032) — branche `fix/reservation-telephone` (depuis `main`)
+- [ ] **Partager la course** (D-023 à D-028) — branche `feature/partage-course` : bouton EasyAdmin sur une réservation,
+  partage complet (chauffeur, commission modifiable € ou % enregistrée) / partiel (groupe, zone approximative) / message client ;
+  boutons SMS, WhatsApp, Copier ; sous-menu « Messages » : catégories libres + modèles en base, variables (D-029, D-030) ; zone de texte auto + étirable (D-031). Pas de Twilio.
+  Ensuite, idées en attente : lien GPS Waze/Maps dans le partage complet ; trace des envois (« Remerciement envoyé le… ») ;
+  champ « chauffeur assigné » sur la réservation (anti-détournement de clients, prépare D-021)
 - [ ] **Facture brouillon → émise** (D-001, D-003) — branche `feature/facturation-emission` :
   statut brouillon/émise, bouton « Émettre », facture verrouillée une fois émise,
   numéro `FAC-AAAA-0001` attribué à l'émission (pas à la création), avoir pour corriger une facture émise

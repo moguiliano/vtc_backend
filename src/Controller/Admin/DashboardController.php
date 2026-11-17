@@ -8,6 +8,8 @@ use App\Entity\Facture;
 use App\Entity\Forfait;
 use App\Entity\Reservation;
 use App\Entity\Societe;
+use App\Entity\MessageCategory;
+use App\Entity\MessageTemplate;
 use App\Entity\SiteSettings;
 use App\Entity\VehicleCategory;
 use App\Repository\ContactRepository;
@@ -89,6 +91,11 @@ class DashboardController extends AbstractDashboardController
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             yield MenuItem::section('Site');
             yield MenuItem::linkToCrud('Avis Google', 'fa fa-star', SiteSettings::class);
+            // Textes de « Partager la course » (D-030)
+            yield MenuItem::subMenu('Messages', 'fa fa-comment-dots')->setSubItems([
+                MenuItem::linkToCrud('Catégories', 'fa fa-folder', MessageCategory::class),
+                MenuItem::linkToCrud('Modèles de messages', 'fa fa-file-alt', MessageTemplate::class),
+            ]);
         }
 
         // Gestion des admins (super admin uniquement)

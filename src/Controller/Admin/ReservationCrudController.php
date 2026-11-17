@@ -3,7 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Reservation;
+use App\Enum\MessageTemplateType;
 use App\Enum\ReservationStatus;
+use App\Repository\MessageTemplateRepository;
+use App\Service\PartageCourseService;
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminAction;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -55,11 +63,18 @@ class ReservationCrudController extends AbstractCrudController
             ->displayIf(fn() => $this->isGranted('ROLE_RESERVATIONS_EDIT'))
             ->addCssClass('btn btn-secondary');
 
+        // « Partager la course » (D-023) : toujours visible (D-027)
+        $partagerAction = Action::new('partager', 'Partager la course', 'fa fa-share-alt')
+            ->linkToCrudAction('partager')
+            ->addCssClass('btn btn-primary');
+
         if (!$this->isGranted('ROLE_RESERVATIONS_DELETE')) {
             $actions->disable(Action::DELETE, Action::BATCH_DELETE);
         }
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_DETAIL, $partagerAction)
+            ->add(Crud::PAGE_INDEX, $partagerAction)
             ->add(Crud::PAGE_DETAIL, $pdfAction)
             ->add(Crud::PAGE_INDEX, $pdfAction)
             ->add(Crud::PAGE_DETAIL, $factureAction)
@@ -98,6 +113,8 @@ class ReservationCrudController extends AbstractCrudController
                 'Van'          => 'van',
             ]);
         $prix = NumberField::new('prix', 'Prix (€)')->setNumDecimals(2);
+        $commission = NumberField::new('commission', 'Commission (€)')->setNumDecimals(2)
+            ->setHelp('Fixée dans « Partager la course ». Vide = taux par défaut.');
 
         // ── Règlement ──
         $modeReglement = ChoiceField::new('modeReglement', 'Règlement')
@@ -139,7 +156,7 @@ class ReservationCrudController extends AbstractCrudController
                 $depart, $stopLieu, $arrivee, $dateHeureDepart,
                 $siegeBebe,
                 $distance, $duree,
-                $typeVehicule, $prix, $modeReglement,
+                $typeVehicule, $prix, $commission, $modeReglement,
                 $guestPrenom, $guestTelephone,
                 $infos,
                 $user, $isGuest, $guestInfo,
@@ -158,6 +175,101 @@ class ReservationCrudController extends AbstractCrudController
             $guestTelephone,
             $infos,
         ];
+    }
+
+    /**
+     * Écran « Partager la course » (D-023 à D-028) : partage complet (chauffeur),
+     * partiel (groupe) et messages client, avec SMS / WhatsApp / Copier.
+     * POST : enregistre la commission choisie sur la réservation (D-024).
+     *
+     * #[AdminAction] : déclare la route « jolie » /admin/reservation/{id}/partager
+     * (sans elle, EasyAdmin ne charge pas la réservation → erreur 500).
+     */
+    #[AdminAction(routePath: '/{entityId}/partager', routeName: 'partager', methods: ['GET', 'POST'])]
+    public function partager(
+        AdminContext $context,
+        Request $request,
+        PartageCourseService $partage,
+        MessageTemplateRepository $templateRepo,
+        EntityManagerInterface $em,
+    ): Response {
+        $reservation = $context->getEntity()->getInstance();
+        if (!$reservation instanceof Reservation) {
+            throw $this->createNotFoundException();
+        }
+
+        $url = $this->adminUrlGenerator
+            ->setController(self::class)
+            ->setAction('partager')
+            ->setEntityId($reservation->getId())
+            ->generateUrl();
+
+        if ($request->isMethod('POST')) {
+            $this->enregistrerCommission($request, $reservation, $em);
+            return $this->redirect($url);
+        }
+
+        $modeles = [];
+        foreach (MessageTemplateType::cases() as $type) {
+            $modeles[$type->value] = array_map(
+                fn($t) => ['id' => $t->getId(), 'nom' => $t->getNom(), 'categorie' => $t->getCategorie()->getNom(), 'contenu' => $t->getContenu()],
+                $templateRepo->findActifsParType($type)
+            );
+        }
+
+        $prix       = (float) $reservation->getPrix();
+        $commission = $partage->commission($reservation);
+        $statut     = ReservationStatus::tryFrom($reservation->getStatut());
+
+        return $this->render('admin/partage/index.html.twig', [
+            'reservation'   => $reservation,
+            'statut'        => $statut,
+            'avertissements'=> $partage->avertissements($reservation),
+            'peutModifier'  => $this->isGranted('ROLE_RESERVATIONS_EDIT'),
+            'peutModeles'   => $this->isGranted('ROLE_SUPER_ADMIN'),
+            'urlDetail'     => $this->adminUrlGenerator->setController(self::class)->setAction(Action::DETAIL)->setEntityId($reservation->getId())->generateUrl(),
+            'urlModeles'    => $this->adminUrlGenerator->setController(MessageTemplateCrudController::class)->setAction(Action::INDEX)->unset('entityId')->generateUrl(),
+            'commissionEnregistree' => $reservation->getCommission() !== null,
+            'donnees'       => [
+                'variables'       => $partage->variables($reservation),
+                'prix'            => $prix,
+                'commission'      => $commission,
+                'pourcentDefaut'  => $partage->getCommissionPercentDefaut(),
+                'telephoneClient' => $partage->telephoneClient($reservation),
+                'modeles'         => $modeles,
+            ],
+        ]);
+    }
+
+    private function enregistrerCommission(Request $request, Reservation $reservation, EntityManagerInterface $em): void
+    {
+        if (!$this->isGranted('ROLE_RESERVATIONS_EDIT')) {
+            throw $this->createAccessDeniedException();
+        }
+        if (!$this->isCsrfTokenValid('partage_commission_' . $reservation->getId(), (string) $request->request->get('_token'))) {
+            $this->addFlash('danger', 'Session expirée, recommencez.');
+            return;
+        }
+
+        if ($request->request->has('reinitialiser')) {
+            $reservation->setCommission(null);
+            $em->flush();
+            $this->addFlash('success', 'Commission remise au taux par défaut.');
+            return;
+        }
+
+        $saisie = str_replace([',', ' ', '€'], ['.', '', ''], trim((string) $request->request->get('commission')));
+        $prix   = (float) $reservation->getPrix();
+        if (!is_numeric($saisie) || (float) $saisie < 0 || (float) $saisie > $prix) {
+            $this->addFlash('danger', sprintf('Commission invalide : entre 0 et %s.', PartageCourseService::euros($prix)));
+            return;
+        }
+
+        $reservation->setCommission(round((float) $saisie, 2));
+        $em->flush();
+        $this->addFlash('success', sprintf('Commission enregistrée : %s (net chauffeur %s).',
+            PartageCourseService::euros($reservation->getCommission()),
+            PartageCourseService::euros($prix - $reservation->getCommission())));
     }
 
     /**

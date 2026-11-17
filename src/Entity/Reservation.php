@@ -48,6 +48,10 @@ class Reservation
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
+    /** Commission en € (D-024). Null tant que l'admin ne l'a pas fixée au partage. */
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $commission = null;
+
     #[ORM\Column(type: 'boolean')]
     private bool $isGuest = false;
 
@@ -224,6 +228,18 @@ class Reservation
     public function setGuestInfo(?string $guestInfo): static
     {
         $this->guestInfo = $guestInfo;
+        return $this;
+    }
+
+    public function getCommission(): ?float
+    {
+        return $this->commission;
+    }
+
+    /** Commission en € enregistrée au partage (D-024) ; null = taux par défaut (services.yaml). */
+    public function setCommission(?float $commission): static
+    {
+        $this->commission = $commission;
         return $this;
     }
 

@@ -65,6 +65,57 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-032 — Réservation par téléphone : date et heure par défaut — 2026-11-17
+- **Décision** : sur `/admin/reservation-telephone`, le champ date/heure est **prérempli avec maintenant**, modifiable. Une **date passée est acceptée** (course oubliée puis dispatchée à la main sur les groupes, à saisir après coup).
+- **Raison** : la plupart des appels sont pour tout de suite ; garder une trace complète des courses, même saisies en retard.
+- **Impact** : correction sur une **branche séparée** `fix/reservation-telephone` partie de `main` (sans lien avec Partager), sa propre PR.
+
+### D-031 — Partager : zone de texte réglable — 2026-11-17
+- **Décision** : la zone de texte de « Partager la course » **s'agrandit toute seule** pour montrer tout le message, et reste **étirable à la souris**.
+- **Raison** : la zone était trop petite pour relire le message avant l'envoi.
+- **Impact** : `feature/partage-course`.
+
+### D-030 — Menu « Messages » dans l'admin — 2026-11-17
+- **Décision** : un **sous-menu « Messages »** qui se déplie en 2 entrées : « Catégories » et « Modèles de messages ». Il reste séparé de « Messages reçus » (formulaire de contact).
+- **Raison** : ranger les textes de partage au même endroit, sans les confondre avec les messages des clients.
+- **Impact** : `feature/partage-course`.
+
+### D-029 — Catégories de messages libres — 2026-11-17
+- **Décision** : l'admin **crée ses propres catégories** (ex. « Rappel », « Remerciement + promo », « Confirmation »), chacune rangée dans un des 3 onglets de Partager (Chauffeur, Groupe, Client). Chaque modèle de message appartient à une catégorie. Complète D-028.
+- **Raison** : classer librement les messages au fil des besoins (promos, rappels…), sans passer par le code.
+- **Impact** : nouvelle table des catégories + lien depuis les modèles, sur `feature/partage-course` (migration à adapter avant la mise en prod).
+
+### D-023 — Partager une course : comment envoyer ? — 2026-11-17
+- **Décision** : bouton « Partager la course » dans EasyAdmin, avec 3 modes : **complet** (chauffeur), **partiel** (groupe de chauffeurs), **message client**. Sous chaque texte prêt, 3 boutons : **SMS** (app Messages, numéro + texte remplis), **WhatsApp** (texte rempli), **Copier**. **Pas de Twilio** : l'admin envoie lui-même.
+- **Raison** : envoi depuis le smartphone comme depuis l'ordinateur, sans coût SMS ; Copier couvre Telegram et les groupes.
+- **Impact** : tâche « Partager la course » ajoutée dans `ROADMAP.md` (🧩 Fonctionnalités). Brique réutilisable pour le régulateur (D-021).
+
+### D-024 — Commission modifiable au partage — 2026-11-17
+- **Décision** : dans le partage complet et partiel, la commission se modifie en **€ ou en %** (l'autre valeur et le net chauffeur se recalculent). La valeur choisie est **enregistrée sur la réservation**. Sans saisie, on reste sur le taux par défaut (20 %, D-006).
+- **Raison** : garder une trace de ce qui a été promis au chauffeur (factures, futur régulateur).
+- **Impact** : nouveau champ commission sur `Reservation` + migration à lancer en prod.
+
+### D-025 — Partage partiel : zone approximative — 2026-11-17
+- **Décision** : le partage partiel montre une **zone approximative** préremplie automatiquement (code postal + ville tirés de l'adresse, ou nom du lieu connu : aéroport, gare), **modifiable avant l'envoi**. Ni nom ni téléphone du client.
+- **Raison** : éviter qu'un chauffeur contacte le client en direct ; pas d'appel HERE Maps en plus.
+- **Impact** : inclus dans la tâche « Partager la course ».
+
+### D-026 — Remise de 10 % sur le trajet retour — 2026-11-17
+- **Décision** : la remise est **appliquée à la main** par l'admin (prix modifiable de la réservation par téléphone). Pas de code promo. Elle récompense la réservation, **jamais l'avis Google** (règle Google : pas d'avis contre récompense) ; la demande d'avis reste une phrase à part dans le message.
+- **Raison** : rien à coder en plus pour démarrer ; un code unique reste possible plus tard.
+- **Impact** : aucun code ; texte du modèle « Remerciement ».
+
+### D-027 — Bouton « Partager » toujours visible — 2026-11-17
+- **Décision** : le bouton est visible quel que soit le statut, avec un **avertissement** quand le statut ne colle pas (ex. remerciement alors que la course n'est pas « Terminée », partage chauffeur d'une course annulée).
+- **Raison** : l'admin garde la main, même s'il a oublié de changer le statut.
+- **Impact** : inclus dans la tâche « Partager la course ».
+
+### D-028 — Modèles de messages en base — 2026-11-17
+- **Décision** : nouvelle sous-section EasyAdmin **« Messages »** : modèles de textes en base, modifiables, pour les 3 modes (chauffeur complet, groupe partiel, client). Variables remplacées automatiquement (`{prenom}`, `{date_course}`, `{lien_avis_google}`, `{telephone}`, `{depart}`, `{prix}`, `{commission}`, `{net_chauffeur}`, etc.). Modèles prêts au départ : **Remerciement** (texte validé ci-dessous), **Confirmation**, **Rappel la veille**, **Course chauffeur (complet)**, **Annonce groupe (partiel)**.
+  Texte « Remerciement » : « Bonjour {prenom}, merci pour votre confiance ! Nous espérons que votre trajet du {date_course} s'est bien passé. Bonne nouvelle : vous bénéficiez de 10 % de réduction sur votre trajet retour. Appelez-nous ou répondez à ce message pour réserver. Votre avis compte pour nous : {lien_avis_google}. L'équipe ZenCAR — {telephone} »
+- **Raison** : changer un texte sans passer par le code ni une mise en prod. Le lien avis vient de EasyAdmin > Avis Google (D-009).
+- **Impact** : nouvelle entité + migration ; suggestions non retenues (lien GPS, trace des envois, chauffeur assigné) mises « En attente » dans `ROADMAP.md`.
+
 ### D-009 — Vrais avis Google sur le site — 2026-11-15
 - **Décision** : les 3 faux avis de l'accueil sont retirés. Le site affiche **uniquement la note globale et le nombre d'avis Google** (aujourd'hui 5,0 · 124 avis) avec le bouton « Voir nos avis Google ». **Pas d'avis individuels.** La note et le nombre d'avis se modifient dans **EasyAdmin**, sans passer par le code. Pas d'API Google payante.
 - **Raison** : les avis affichés étaient fictifs (rédigés par Claude), donc risque de pratique commerciale trompeuse ; la vraie fiche a 124 avis à 5,0, invisibles sur le site. Mise à jour manuelle simple et gratuite.

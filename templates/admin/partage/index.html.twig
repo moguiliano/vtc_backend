@@ -1,0 +1,144 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{# « Partager la course » (D-023 à D-028). Le remplissage des variables se fait dans public/js/partage-course.js #}
+
+{% block page_title %}Partager la course n°{{ reservation.id }}{% endblock %}
+
+{% block content_title %}
+    Partager la course n°{{ reservation.id }}
+    {% if statut %}<span class="badge badge-{{ statut.badgeColor }} bg-{{ statut.badgeColor }} ms-2" style="font-size:.8rem;vertical-align:middle;">{{ statut.label }}</span>{% endif %}
+{% endblock %}
+
+{% block page_actions %}
+    <a class="btn btn-secondary" href="{{ urlDetail }}"><i class="fa fa-arrow-left"></i> Retour à la réservation</a>
+    {% if peutModeles %}
+        <a class="btn btn-secondary" href="{{ urlModeles }}"><i class="fa fa-comment-dots"></i> Messages</a>
+    {% endif %}
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        .partage-onglets { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+        .partage-onglets button { border:1px solid var(--border-color, #dee2e6); background:var(--white, #fff); color:inherit; border-radius:8px; padding:.5rem 1rem; font-weight:600; }
+        .partage-onglets button.actif { background:#ff5630; border-color:#ff5630; color:#fff; }
+        .partage-panneau { display:none; }
+        .partage-panneau.actif { display:block; }
+        .partage-modeles { display:flex; flex-direction:column; gap:.5rem; margin-bottom:.75rem; }
+        .partage-categorie { display:flex; gap:.4rem; flex-wrap:wrap; align-items:center; }
+        .partage-categorie > strong { min-width:170px; font-size:.85rem; text-transform:uppercase; letter-spacing:.03em; opacity:.7; }
+        .partage-modeles label { cursor:pointer; border:1px solid var(--border-color, #dee2e6); border-radius:20px; padding:.25rem .8rem; font-size:.9rem; }
+        .partage-modeles input { display:none; }
+        .partage-modeles input:checked + span { color:#ff5630; font-weight:700; }
+        .partage-texte { width:100%; min-height:220px; resize:vertical; overflow:hidden; font-family:inherit; font-size:.95rem; line-height:1.5; border-radius:8px; padding:.75rem; }
+        .partage-envoi { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.75rem; }
+        .partage-envoi .btn { min-width:130px; }
+        .btn-whatsapp { background:#25d366; border-color:#25d366; color:#fff; }
+        .btn-whatsapp:hover { background:#1ebe57; color:#fff; }
+        .partage-commission .form-control { max-width:140px; }
+        .partage-carte { border:1px solid var(--border-color, #dee2e6); border-radius:10px; padding:1rem; margin-bottom:1rem; }
+    </style>
+{% endblock %}
+
+{% block main %}
+<div id="partage-course"
+     data-donnees="{{ donnees|json_encode|e('html_attr') }}">
+
+    {# ── Commission (partage complet et partiel, D-024) ── #}
+    <div class="partage-carte partage-commission">
+        <h5 class="mb-2"><i class="fa fa-euro-sign"></i> Commission <small class="text-muted">(partage complet et partiel)</small></h5>
+        <p class="mb-2">
+            Prix à encaisser : <strong>{{ donnees.prix|number_format(2, ',', ' ') }} €</strong>
+            · {% if commissionEnregistree %}commission enregistrée sur la réservation{% else %}taux par défaut {{ donnees.pourcentDefaut|number_format(0) }} %{% endif %}
+        </p>
+        <form method="post" class="d-flex flex-wrap align-items-end gap-3">
+            <input type="hidden" name="_token" value="{{ csrf_token('partage_commission_' ~ reservation.id) }}">
+            <div>
+                <label class="form-label mb-1" for="commission-euros">En €</label>
+                <input type="text" inputmode="decimal" class="form-control" id="commission-euros" name="commission">
+            </div>
+            <div>
+                <label class="form-label mb-1" for="commission-pourcent">En %</label>
+                <input type="text" inputmode="decimal" class="form-control" id="commission-pourcent">
+            </div>
+            <div class="pb-2">Net chauffeur : <strong id="net-chauffeur"></strong></div>
+            {% if peutModifier %}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer la commission</button>
+                    {% if commissionEnregistree %}
+                        <button type="submit" name="reinitialiser" value="1" class="btn btn-secondary">Revenir au taux par défaut</button>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </form>
+        <small class="text-muted">Modifiez l'un des deux champs : l'autre et le net se recalculent. Le message ci-dessous suit en direct ; « Enregistrer » garde la commission sur la réservation.</small>
+    </div>
+
+    {# ── Onglets ── #}
+    <div class="partage-onglets" role="tablist">
+        <button type="button" data-onglet="chauffeur" class="actif"><i class="fa fa-user-tie"></i> Complet (chauffeur)</button>
+        <button type="button" data-onglet="groupe"><i class="fa fa-users"></i> Partiel (groupe)</button>
+        <button type="button" data-onglet="client"><i class="fa fa-comment"></i> Message client</button>
+    </div>
+
+    {% set onglets = {
+        chauffeur: 'Toutes les infos de la course, client compris, pour le chauffeur retenu.',
+        groupe:    'Pour un groupe de chauffeurs : zone approximative, sans nom ni téléphone du client.',
+        client:    'Message au client, envoyé à son numéro.',
+    } %}
+    {% for type, explication in onglets %}
+        <div class="partage-panneau{{ loop.first ? ' actif' }}" data-panneau="{{ type }}">
+            <p class="text-muted mb-2">{{ explication }}</p>
+
+            {% if avertissements[type] %}
+                <div class="alert alert-warning py-2"><i class="fa fa-exclamation-triangle"></i> {{ avertissements[type] }}</div>
+            {% endif %}
+
+            {% if type == 'groupe' %}
+                <div class="partage-carte d-flex flex-wrap gap-3">
+                    <div>
+                        <label class="form-label mb-1" for="zone-depart">Zone de prise en charge</label>
+                        <input type="text" class="form-control" id="zone-depart" data-variable="{zone}" placeholder="ex. 13008 Marseille">
+                    </div>
+                    <div>
+                        <label class="form-label mb-1" for="zone-arrivee">Zone d'arrivée</label>
+                        <input type="text" class="form-control" id="zone-arrivee" data-variable="{zone_arrivee}" placeholder="ex. Aéroport Marseille Provence">
+                    </div>
+                    <small class="text-muted w-100">Préremplies depuis les adresses ; corrigez si besoin.</small>
+                </div>
+            {% endif %}
+
+            {% if donnees.modeles[type] is empty %}
+                <div class="alert alert-info">Aucun modèle actif pour ce partage.
+                    {% if peutModeles %}<a href="{{ urlModeles }}">Créer un modèle</a>.{% endif %}</div>
+            {% else %}
+                {# Modèles regroupés par catégorie (D-029) #}
+                <div class="partage-modeles">
+                    {% set categorie = null %}
+                    {% for modele in donnees.modeles[type] %}
+                        {% if modele.categorie != categorie %}
+                            {% if categorie is not null %}</div>{% endif %}
+                            {% set categorie = modele.categorie %}
+                            <div class="partage-categorie"><strong>{{ categorie }}</strong>
+                        {% endif %}
+                        <label><input type="radio" name="modele-{{ type }}" value="{{ loop.index0 }}" {{ loop.first ? 'checked' }}><span>{{ modele.nom }}</span></label>
+                        {% if loop.last %}</div>{% endif %}
+                    {% endfor %}
+                </div>
+                <textarea class="form-control partage-texte" data-texte="{{ type }}" aria-label="Texte du message"></textarea>
+                <small class="text-muted">Vous pouvez retoucher le texte avant d'envoyer, et étirer la zone par le coin en bas à droite. Le texte est recalculé si vous changez de modèle, de commission ou de zone.</small>
+                <div class="partage-envoi">
+                    <a class="btn btn-primary" data-envoi="sms" href="#"><i class="fa fa-sms"></i> SMS</a>
+                    <a class="btn btn-whatsapp" data-envoi="whatsapp" href="#" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <button type="button" class="btn btn-secondary" data-envoi="copier"><i class="fa fa-copy"></i> Copier</button>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('js/partage-course.js') }}?v=2"></script>
+{% endblock %}
