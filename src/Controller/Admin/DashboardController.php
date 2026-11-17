@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin;
+use App\Entity\Appel;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use App\Entity\Contact;
 use App\Entity\Forfait;
 use App\Entity\Reservation;
@@ -60,6 +62,14 @@ class DashboardController extends AbstractDashboardController
         if ($this->isGranted('ROLE_RESERVATIONS_EDIT')) {
             yield MenuItem::linkToRoute('Nouvelle réservation (téléphone)', 'fa fa-phone', 'admin_phone_booking');
             yield MenuItem::linkToRoute('Réservation rapide', 'fa fa-bolt', 'admin_quick_book');
+        }
+
+        // Journal des appels (suivi rentabilité Google Ads)
+        if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::section('Suivi des appels');
+            yield MenuItem::linkToCrud('Noter un appel', 'fa fa-phone-volume', Appel::class)
+                ->setAction(Crud::PAGE_NEW);
+            yield MenuItem::linkToCrud('Journal des appels', 'fa fa-list', Appel::class);
         }
 
         // Messages de contact
