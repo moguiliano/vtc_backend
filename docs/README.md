@@ -12,6 +12,7 @@ Tout ce qu'il faut savoir pour reprendre le projet sans rien chercher.
 | [marketing/google-ads.md](marketing/google-ads.md) | Campagne Google Ads | Session Marketing |
 | [marketing/google-ads-plan-2026-11-15.md](marketing/google-ads-plan-2026-11-15.md) | Plan Google Ads (étape 03) : suivi, réglages, 4 groupes, annonces rédigées, budget variable | Avant de modifier la campagne |
 | [marketing/seo.md](marketing/seo.md) | Pages SEO et mots-clés ciblés | Session Marketing |
+| [marketing/seo-local-2026-11-16.md](marketing/seo-local-2026-11-16.md) | SEO local et fiche Google (étape 04) : fiche, 168 requêtes, pages, JSON-LD | Avant de toucher la fiche Google ou les pages |
 | [marketing/diagnostic-2026-11-15.md](marketing/diagnostic-2026-11-15.md) | Diagnostic marketing (étape 01) : constats, notes, 29/100 | Avant la priorisation (étape 02) |
 | [marketing/priorisation-2026-11-15.md](marketing/priorisation-2026-11-15.md) | Priorisation (étape 02) : 5 chantiers, urgences de la semaine, plan 90 jours | Avant chaque session Marketing |
 | [marketing/prompts/](marketing/prompts/README.md) | 5 prompts marketing enchaînés (diagnostic, priorisation, Google Ads, SEO local, avis) | Pour un audit marketing — version recommandée |

@@ -1,0 +1,47 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{# Résumé par source au-dessus du journal : suit les filtres actifs (date, statut…) #}
+{% block main %}
+    {% if resume is defined and resume.lignes is not empty %}
+        <div class="card mb-4">
+            <div class="card-body p-3">
+                <h2 class="h6 mb-2">Résumé par source {% if filters|length > 0 and app.request.query.has('filters') %}(selon les filtres){% else %}(tous les appels){% endif %}</h2>
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th class="text-end">Appels</th>
+                                <th class="text-end">Courses</th>
+                                <th class="text-end">Refus</th>
+                                <th class="text-end">Gain</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for l in resume.lignes %}
+                                <tr>
+                                    <td>{{ l.source }}</td>
+                                    <td class="text-end">{{ l.appels }}</td>
+                                    <td class="text-end">{{ l.courses }}</td>
+                                    <td class="text-end">{{ l.refus }}</td>
+                                    <td class="text-end">{{ l.gain|number_format(2, ',', ' ') }} €</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="fw-bold">
+                                <td>Total</td>
+                                <td class="text-end">{{ resume.total.appels }}</td>
+                                <td class="text-end">{{ resume.total.courses }}</td>
+                                <td class="text-end">{{ resume.total.refus }}</td>
+                                <td class="text-end">{{ resume.total.gain|number_format(2, ',', ' ') }} €</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <p class="small text-muted mb-0 mt-2">Courses = faites + dispatchées. Filtre par date pour comparer le gain « Google Ads » à ta dépense sur la même période.</p>
+            </div>
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

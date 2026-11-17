@@ -1,6 +1,6 @@
 # Prompts marketing enchaînés — ZenCAR
 
-Une série de 5 prompts à lancer **dans l'ordre**, dans la même conversation Claude.
+Une série de prompts à lancer **dans l'ordre**, dans la même conversation Claude.
 Chaque prompt est court et focalisé : les réponses sont plus précises qu'avec un seul prompt géant
 ([version tout-en-un](../prompt-audit-marketing.md)).
 
@@ -24,6 +24,8 @@ Chaque prompt est court et focalisé : les réponses sont plus précises qu'avec
 | 3 | [03-google-ads.md](03-google-ads.md) | Campagne Ads : structure, annonces, suivi | Export Ads 90 jours |
 | 4 | [04-seo-local.md](04-seo-local.md) | Fiche Google, pages, mots-clés | Search Console, captures Google |
 | 5 | [05-avis-fidelisation.md](05-avis-fidelisation.md) | Plus d'avis, clients qui reviennent, clients pros | Avis Google, liste clients |
+| 6 | [06-concurrents.md](06-concurrents.md) | Veille concurrentielle avec des outils gratuits | Insights sur les enchères, captures bloc carte, [concurrents.md](../concurrents.md) |
+| 7 | [07-suivi-appels.md](07-suivi-appels.md) | Rentabilité Ads : exclure mots-clés et zones inutiles, renvoyer le gain des courses à Google, stratégie | Termes de recherche, lieux, horaires, conversions, journal d'appels |
 
 ## Le plus efficace : le faire ici, dans le projet
 
