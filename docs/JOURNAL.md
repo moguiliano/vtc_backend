@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-19 — Partager la course et réservation téléphone en prod (🧩 Fonctionnalités)
+- **Fait** : PR #8 (date passée, réservation par téléphone) puis PR #7 (Partager la course + messages) fusionnées dans `main` ; en prod avec la PR #9 Marketing (`f70355a`) : sauvegarde de la base, code déjà à jour, migrations `Version20261117100000` (messages + commission) et `Version20261117140000` (journal des appels) déjà jouées le 2026-11-17, cache vidé. Vérifié en ligne par toi : tout fonctionne.
+- **Bloqué** : rien.
+- **Prochaine étape** : idées « Partager, suite » en attente (lien GPS, trace des envois, chauffeur assigné) ; la session « Fondation Entreprise » doit partir de ce `main` (nouvelles migrations).
+
 ### 2026-11-17 — Partager la course + réservation téléphone (🧩 Fonctionnalités)
 - **Fait** : décisions D-023 à D-032. **`feature/partage-course`** (commit c047458) : bouton « Partager la course » (`/admin/reservation/{id}/partager`) avec partage complet / partiel (zone approximative, sans le client) / message client ; boutons SMS, WhatsApp, Copier ; commission modifiable en € ou % et enregistrée (`reservation.commission`) ; sous-menu Messages (catégories libres + modèles en base, 5 prêts) ; zone de texte auto + étirable. **`fix/reservation-telephone`** (commit 48b8eb4) : date passée acceptée, date du jour à l'heure de Marseille. Les deux testés en local par toi : ça marche.
 - **Bloqué** : rien. Migration `Version20261117100000` à lancer en prod avec Partager. La session « Fondation Entreprise » touchera aussi `Reservation` : surveiller l'ordre des migrations à la fusion.
