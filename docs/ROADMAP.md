@@ -21,11 +21,7 @@
 ## ⏳ En attente
 
 ### 🧩 Fonctionnalités
-- [ ] **Réservation par téléphone : date/heure = maintenant par défaut, date passée acceptée** (D-032) — branche `fix/reservation-telephone` (depuis `main`)
-- [ ] **Partager la course** (D-023 à D-028) — branche `feature/partage-course` : bouton EasyAdmin sur une réservation,
-  partage complet (chauffeur, commission modifiable € ou % enregistrée) / partiel (groupe, zone approximative) / message client ;
-  boutons SMS, WhatsApp, Copier ; sous-menu « Messages » : catégories libres + modèles en base, variables (D-029, D-030) ; zone de texte auto + étirable (D-031). Pas de Twilio.
-  Ensuite, idées en attente : lien GPS Waze/Maps dans le partage complet ; trace des envois (« Remerciement envoyé le… ») ;
+- [ ] **Partager la course, suite** (idées gardées de D-028) : lien GPS Waze/Maps dans le partage complet ; trace des envois (« Remerciement envoyé le… ») ;
   champ « chauffeur assigné » sur la réservation (anti-détournement de clients, prépare D-021)
 - [ ] **Facture brouillon → émise** (D-001, D-003) — branche `feature/facturation-emission` :
   statut brouillon/émise, bouton « Émettre », facture verrouillée une fois émise,
@@ -66,6 +62,7 @@
 - [ ] Vérifier que le `.env` local ne pointe pas vers la base de prod (seul `.env.local` doit définir la base locale)
 
 ## ✅ Terminé (récent)
+- 2026-11-17 — **Mise en prod** de « Partager la course » (PR #7, D-023 à D-031 : partage complet / partiel / client, SMS-WhatsApp-Copier, commission enregistrée, sous-menu Messages avec catégories et modèles) et de la réservation par téléphone avec date passée (PR #8, D-032), migration comprise ; vérifiées en ligne le 2026-11-19
 - 2026-11-15 — **Mise en prod** des corrections d'affichage (PR #3) : champs vides masqués (récap + fiche admin), zoom mobile, débordement mobile, marge de la carte
 - 2026-11-13 — **Mise en prod** de la réservation admin par téléphone + registre des migrations réparé + mode debug coupé en prod
 - 2026-11-13 — Procédure de déploiement Infomaniak (`docs/deploiement.md`), testée en vrai
