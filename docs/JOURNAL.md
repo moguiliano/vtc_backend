@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-22 — Optimisation Google Ads sur 12 mois (📣 Marketing)
+- **Fait** : calendrier sur 12 mois (137 jours actifs, D-042) ; IP des journaux Infomaniak (aucune à exclure, D-043) ; appels et clics non valides (pas d'enquête, D-044) ; audit et recherches de niche. Dans Google Ads : budget 14,40 → 12,00 €, 3 règles de budget en veille, Vitrolles ajoutée (« Présence »), 7 exclusions hors zone, exclusion « vitrolles » retirée, 0 recommandation appliquée automatiquement (D-045 à D-047). Compte rendu : `docs/marketing/optimisation-ads-2026-11-22.md`.
+- **Bloqué** : tests 7, 8, 9 et Marignane, exclusions « aix » → À trancher (D-049 à D-053). Niveau de qualité des mots-clés non relevé.
+- **Prochaine étape** : bilan J+7 (≈ 29 nov.) ; puis test 6 (mots-clés « numéro ») avec ton « oui » ; bilan J+14 (≈ 6 déc.) avec la commande SSH.
+
 ### 2026-11-19 — Partager la course et réservation téléphone en prod (🧩 Fonctionnalités)
 - **Fait** : PR #8 (date passée, réservation par téléphone) puis PR #7 (Partager la course + messages) fusionnées dans `main` ; en prod avec la PR #9 Marketing (`f70355a`) : sauvegarde de la base, code déjà à jour, migrations `Version20261117100000` (messages + commission) et `Version20261117140000` (journal des appels) déjà jouées le 2026-11-17, cache vidé. Vérifié en ligne par toi : tout fonctionne.
 - **Bloqué** : rien.

@@ -63,7 +63,90 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 - **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ?
 - **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
 
+<!-- ─── Bloc « Optimisation Google Ads » (ajouté le 2026-11-22, voir docs/marketing/optimisation-ads-2026-11-22.md).
+Numérotation : D-033 à D-041 existent sur la branche feature/tracage-visites (non fusionnée), d'où le départ à D-042. -->
+
+### D-049 — Google Ads : ajouter gare et aéroport côté VTC (test 7)
+- **Chantier** : 📣 Marketing
+- **Contexte** : [taxi saint charles marseille] (260 recherches/mois), [vtc gare saint charles] (30, concurrence faible), [vtc aeroport marseille] (210, concurrence moyenne). Groupes C et D presque sans diffusion.
+- **Options** : A) Les ajouter en exact dans C et D après le test 6 / B) Attendre le bilan J+14 / C) Ne pas les ajouter
+- **Avis de Claude** : A, un changement à la fois ; prix affiché seulement pour le forfait VTC, jamais pour le taxi.
+
+### D-050 — Google Ads : une conversion par clic pour les appels (test 8)
+- **Chantier** : 📣 Marketing
+- **Contexte** : un client qui appelle 5 fois compte pour 5 conversions (vu du 18 au 20 nov.). Google apprend sur des chiffres gonflés.
+- **Options** : A) Passer les conversions « appel » à « une par clic » / B) Garder « toutes »
+- **Avis de Claude** : A, après le test 6 ; le nombre de conversions affiché baissera, c'est normal.
+
+### D-051 — Google Ads : réactiver la nuit (0 h – 5 h) ? (test 9)
+- **Chantier** : 📣 Marketing
+- **Contexte** : sur l'année, la nuit est le créneau le moins cher (3,45 €/conv.). Elle est coupée depuis le 15 nov. (diffusion 7 h – 21 h). Un appel de nuit non décroché est payé pour rien.
+- **Options** : A) Réactiver la nuit si tu peux décrocher ou faire prendre la course par un partenaire / B) Garder 7 h – 21 h
+- **Avis de Claude** : dépend de ta disponibilité la nuit ; c'est toi qui sais.
+
+### D-052 — Google Ads : Marignane (là où se trouve la personne) à 17,54 €/conv.
+- **Chantier** : 📣 Marketing
+- **Contexte** : 88 € pour 5 conversions sur l'année, contre 7,26 € à Marseille. Mais l'aéroport est un trajet clé.
+- **Options** : A) Baisser la place de Marignane / B) Garder et surveiller / C) Réserver Marignane au groupe aéroport
+- **Avis de Claude** : B pour l'instant ; ne pas couper l'aéroport sur un petit chiffre.
+
+### D-053 — Google Ads : retirer les exclusions « aix » et « aixois » des groupes A, B, C ?
+- **Chantier** : 📣 Marketing
+- **Contexte** : posées le 15 nov. quand Aix n'était pas dans la zone. Depuis R-ADS-06 (« Oui, tout Aix »), elles bloquent les recherches « taxi aix… » alors qu'Aix est ciblé.
+- **Options** : A) Les retirer après le 29 nov. / B) Les garder
+- **Avis de Claude** : A, comme pour « vitrolles » (D-046), après la fin de l'apprentissage.
+
 ## ✅ Tranché
+
+### D-056 — Google Ads : groupes « Urgence » et « appel direct » — 2026-11-22
+- **Décision** : « A : laisser en veille ».
+- **Raison** : « Urgence » était déjà en veille avant le 15 nov. ; « appel direct » a été mis en veille le 15-16 nov. lors de la réorganisation en 4 groupes, et ses mots-clés (« taxi marseille telephone », « appeler taxi marseille ») sont passés dans le groupe A. Les réactiver mettrait nos propres groupes en concurrence. Une promesse « urgence » ne tient pas avec une diffusion de 7 h à 21 h.
+- **Impact** : aucun changement dans Google Ads. Le mot-clé [taxi urgent] revient avec le test 6 (groupe A, D-054).
+
+### D-055 — Google Ads : famille « seniors » — 2026-11-22
+- **Décision** : « 2e, après numéro » : nouveau groupe « E - Seniors » (page `/transport-seniors-marseille`, annonce dédiée, mots-clés en expression exacte, exclusions gratuit / bon de transport / aide / association / emploi / conventionné), lancé seul après le test 6, avec un « oui » le jour J.
+- **Raison** : concurrence faible, CPC estimé 0,20 – 2,48 €, clients réguliers ; la page existe déjà ; le lien annexe « Transport Seniors » a eu 190 affichages et 12 clics du 16 au 20 nov. Volume faible dans la zone.
+- **Impact** : liste détaillée dans `docs/marketing/optimisation-ads-2026-11-22.md`, section 8.
+
+### D-054 — Google Ads : première famille de mots-clés de niche — 2026-11-22
+- **Décision** : « A : « numéro » » : le test 6 est élargi aux variantes « numéro » trouvées dans le Planificateur : [numéro taxi], [taxi numéro], [numéro taxis], [numero des taxi], [taxi marseillais numéro], [numéro téléphone taxi], [taxi numero telephone], [numéro d un taxi], [numéro du taxi], en plus des 4 de D-048. Toujours après le 29 nov., en exact dans le groupe A, avec un « oui » le jour J.
+- **Raison** : famille déjà la plus rentable (1,75 à 4,77 €/conv.), concurrence moyenne, CPC estimé 0,51 – 2,58 € ; ce sont les gens les plus prêts à appeler.
+- **Impact** : familles suivantes (alternative à Uber, prix VTC aéroport/gare/croisière, Aix et VTC) gardées dans `docs/marketing/optimisation-ads-2026-11-22.md`, section 7, une famille à la fois.
+
+### D-048 — Google Ads : quand ajouter les mots-clés « numéro » (test 6) — 2026-11-22
+- **Décision** : « Après le 29 nov. » : [numero taxi marseille], [taxis marseille numéro], [taxi marseille telephone], [taxi urgent] en exact dans le groupe A, avec un « oui » le jour J. Tests 7, 8 et 9 : « A » → mis dans « À trancher » (D-049, D-050, D-051).
+- **Raison** : 5 changements faits le 22 nov. ; un changement à la fois pour savoir lequel a quel effet, et laisser finir l'apprentissage.
+- **Impact** : `docs/marketing/optimisation-ads-2026-11-22.md` (section 5).
+
+### D-047 — Google Ads : recommandations appliquées automatiquement — 2026-11-22
+- **Décision** : « B : les deux » : « Ajouter des mots clés en requête large » et « Supprimer les mots clés redondants » coupées. Plus aucune recommandation ne s'applique toute seule.
+- **Raison** : la requête large coûte plus cher (8,36 €/conv. contre 5,91 € en exact) ; les « redondants » ont supprimé [taxi gare saint charles] le 18 nov.
+- **Impact** : fait dans Google Ads le 22 nov. (R-ADS-08 réglée).
+
+### D-046 — Google Ads : exclusions hors zone et « vitrolles » — 2026-11-22
+- **Décision** : « Oui, la liste » : + manosque, nice, nimes, nîmes, pelissanne, central taxi, location de voiture (campagne, expression). Puis « Oui, la retirer » : exclusion « vitrolles » supprimée.
+- **Raison** : ≈ 75 € par an dépensés sur des villes hors zone ; « vitrolles » bloquait les recherches d'une ville désormais ciblée.
+- **Impact** : 172 → 178 exclusions ; « uber », « bolt », « aubagne », « rognac » inchangés.
+
+### D-045 — Google Ads : règles automatiques de budget — 2026-11-22
+- **Décision** : « Oui, les 2 » : règles « Freiner budget » mises en veille, en plus de « Accélérer budget » (action autorisée d'avance). Budget fixe à 12,00 €/jour.
+- **Raison** : l'audit montre que les réglages qui bougent sans arrêt coûtent le plus (≈ 190 € en janv.-févr.).
+- **Impact** : stabilité jusqu'au bilan J+14 ; c'est le bilan J+7 qui sert de frein. Les règles sont réactivables d'un clic.
+
+### D-044 — Google Ads : enquête sur les clics non valides ? — 2026-11-22
+- **Décision** : « A : non, surveiller ».
+- **Raison** : 7,8 % sur l'année, déjà retirés de la facture ; aucune IP suspecte répétée.
+- **Impact** : revoir après 14 jours actifs ; au-dessus de 15 %, ou si une IP revient sur plusieurs jours → enquête avec preuves.
+
+### D-043 — Google Ads : exclure des IP ? — 2026-11-22
+- **Décision** : « A » : rien pour l'instant ; relancer la commande SSH « gclid » dans 14 jours actifs.
+- **Raison** : aucune IP ne revient sur plusieurs jours ; économie possible ≈ 2-3 €/semaine contre un risque de bloquer des clients sur mobile.
+- **Impact** : IP et numéros jamais dans Git ; résultats gardés hors du projet (`~/Documents/ZenCAR-exports-ads/`).
+
+### D-042 — Google Ads : quels jours comptent comme actifs ? — 2026-11-22
+- **Décision** : « B : 137 jours » : tous les jours avec diffusion, sauf la période à 0,50 €/jour (22 sept. – 9 oct.).
+- **Raison** : 0,50 €/jour avec un CPA cible à 0,10 € revient presque à un arrêt et fausserait les moyennes par jour.
+- **Impact** : base de tous les calculs de `docs/marketing/optimisation-ads-2026-11-22.md`.
 
 ### D-032 — Réservation par téléphone : date et heure par défaut — 2026-11-17
 - **Décision** : sur `/admin/reservation-telephone`, le champ date/heure est **prérempli avec maintenant**, modifiable. Une **date passée est acceptée** (course oubliée puis dispatchée à la main sur les groupes, à saisir après coup).

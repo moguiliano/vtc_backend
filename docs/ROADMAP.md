@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 | 1 | **Fondation « Entreprise »** (D-020 étape 0) | 🗄️ Données | `feature/fondation-entreprise` | Libérer de la place disque (session bloquée), puis plan avant code ; inclut le rattachement des factures et de la société déjà en prod à l'entreprise n°1 |
 | 2 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | **Mise en prod seule le 2026-11-15** (D-020 modifiée) ; ensuite : « brouillon → émise » (D-001, D-003) |
-| 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
+| 3 | Campagne Google Ads — optimisation à 12 €/jour | 📣 Marketing | `docs/optimisation-ads-2026-11-22` | Bilan J+7 (≈ 29 nov.) puis test 6 (mots-clés exacts « numéro ») avec ton « oui » ; bilan J+14 (≈ 6 déc.) : relancer la commande SSH « gclid » et revoir les clics non valides. Voir `docs/marketing/optimisation-ads-2026-11-22.md` |
 
 ## 🏗️ Plateforme multi-entreprises (D-011 à D-021) — ordre décidé (D-020)
 
