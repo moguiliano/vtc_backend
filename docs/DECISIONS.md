@@ -98,6 +98,11 @@ Numérotation : D-033 à D-041 existent sur la branche feature/tracage-visites (
 
 ## ✅ Tranché
 
+### D-056 — Google Ads : groupes « Urgence » et « appel direct » — 2026-11-22
+- **Décision** : « A : laisser en veille ».
+- **Raison** : « Urgence » était déjà en veille avant le 15 nov. ; « appel direct » a été mis en veille le 15-16 nov. lors de la réorganisation en 4 groupes, et ses mots-clés (« taxi marseille telephone », « appeler taxi marseille ») sont passés dans le groupe A. Les réactiver mettrait nos propres groupes en concurrence. Une promesse « urgence » ne tient pas avec une diffusion de 7 h à 21 h.
+- **Impact** : aucun changement dans Google Ads. Le mot-clé [taxi urgent] revient avec le test 6 (groupe A, D-054).
+
 ### D-055 — Google Ads : famille « seniors » — 2026-11-22
 - **Décision** : « 2e, après numéro » : nouveau groupe « E - Seniors » (page `/transport-seniors-marseille`, annonce dédiée, mots-clés en expression exacte, exclusions gratuit / bon de transport / aide / association / emploi / conventionné), lancé seul après le test 6, avec un « oui » le jour J.
 - **Raison** : concurrence faible, CPC estimé 0,20 – 2,48 €, clients réguliers ; la page existe déjà ; le lien annexe « Transport Seniors » a eu 190 affichages et 12 clics du 16 au 20 nov. Volume faible dans la zone.
