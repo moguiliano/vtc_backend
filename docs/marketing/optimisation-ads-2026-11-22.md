@@ -107,7 +107,7 @@ Notes :
 - Pas de budget partagé. Le « Total compte 19,40 € » additionne des budgets de campagnes en veille, qui ne dépensent rien.
 - Un simulateur Google proposant 16,91 €/jour a été ouvert puis **annulé** sans rien appliquer.
 
-**Programmé** : test 6 (mots-clés exacts « numéro ») **après le 29 nov.** (D-048).
+**Programmé** : test 6 (mots-clés exacts « numéro ») **après le 29 nov.** (D-048), élargi aux variantes « numéro » (D-054, voir section 7).
 **Reporté à « À trancher »** : tests 7, 8 et 9 (D-049, D-050, D-051).
 
 ## 6. Chiffres à revérifier
@@ -119,3 +119,44 @@ Notes :
 | Après le 29 nov. | Lancer le test 6 avec ton « oui » le jour J | — |
 
 Rappel : les 3 règles de budget sont en veille. Plus rien ne freine tout seul, c'est le bilan J+7 qui sert de frein.
+
+## 7. Mots-clés de niche (Planificateur « nouvelles idées », 22 nov.)
+
+492 idées relevées puis filtrées : taxi / VTC / chauffeur, pas de ville hors zone, concurrence faible ou moyenne,
+CPC haut < 2,60 €, absentes du compte. Volumes France entière (le volume réel en zone « Présence » sera plus petit).
+**Une famille à la fois, en exact, après le 29 nov., avec un « oui » le jour J.**
+
+| Ordre | Famille | Mots-clés (exact) | Volume/mois | CPC estimé |
+|---|---|---|---|---|
+| 1 ✅ (D-054, test 6) | « numéro » | [numero taxi marseille], [taxis marseille numéro], [taxi marseille telephone], [taxi urgent], [numéro taxi], [taxi numéro], [numéro taxis], [numero des taxi], [taxi marseillais numéro], [numéro téléphone taxi], [taxi numero telephone], [numéro d un taxi], [numéro du taxi] | 880 + 390 + 50 + 40… | 0,51 – 2,58 € |
+| à choisir | Alternative à Uber | [uber marseille prix], [prix uber marseille], [tarif uber marseille], [contact uber marseille], [uber marseille aeroport], [prix uber marseille aeroport], [uber taxi marseille gare] | 20 – 70 chacun | **0,05 – 1,02 €** |
+| à choisir | Prix VTC aéroport / gare / croisière | [prix taxi marseille], [tarif taxi marseille aéroport], [prix taxi aéroport marseille port croisière], [prix taxi aéroport marseille vieux port], [prix taxi marignane marseille], [prix taxi aix tgv centre ville] | 20 – 170 | 0,15 – 1,43 € |
+| à choisir | Aix et VTC | [taxi aix], [tarif taxi aix en provence] (bloqués par D-053), [taxi vtc marseille], [reserver vtc marseille], [chauffeur privé vtc marseille], [chauffeur aéroport marseille] | 50 – 480 | 0,36 – 2,01 € |
+
+Règle métier : pour la famille « prix », l'annonce n'affiche **que le forfait VTC** (25 € gare, 59 € aéroport), jamais un prix de taxi.
+Écartés : « taxi g7 » (national), conventionné / VSL (non proposé), « 24/24 », « pas cher », noms d'autres compagnies,
+autres villes ; « taxi pmr marseille » seulement si le van accueille un fauteuil roulant (à confirmer).
+Le Planificateur a enregistré deux brouillons de plan dans le compte (sans effet sur la campagne).
+
+## 8. Famille « seniors » (D-055 : 2e test, après la famille « numéro »)
+
+Page : `/transport-seniors-marseille` (porte à porte, aide à monter, rendez-vous médicaux, EHPAD, réservation par
+téléphone ; **pas de transport conventionné**). Nouveau groupe « E - Seniors », annonce dédiée, sans prix taxi ni
+promesse de remboursement. Mots-clés en **expression exacte** (volume trop faible pour l'exact).
+
+| Mot-clé (expression) | Volume/mois (France) | CPC estimé | Concurrence |
+|---|---|---|---|
+| "taxi pour personnes âgées" · "taxi personne âgée" | 90 | 0,31 – 1,12 € | Faible |
+| "taxi personnes âgées" | 30 | 0,47 – 1,03 € | Faible |
+| "taxi senior" | 20 | 0,38 – 2,18 € | Faible |
+| "abonnement taxi senior" | 50 | 0,20 – 1,09 € | Faible |
+| "service de taxi pour personnes âgées" | 10 | 0,26 – 0,81 € | Moyenne |
+| "chauffeur personne âgée" | 320 | 0,51 – 2,11 € | Faible |
+| "accompagnement personnes âgées en voiture" | 390 | 0,49 – 2,48 € | Faible |
+| "transport personnes âgées" | 390 | 0,47 – 2,16 € | Faible |
+| "transport de personne âgée" | 40 | 0,50 – 1,96 € | Faible |
+
+Exclusions du groupe : gratuit, bon de transport, aide, association, bénévole, emploi, offre, recrutement, devenir,
+salaire, formation, réglementation, conventionné, vsl, remboursé, navigo.
+Volume réel attendu dans la zone : quelques recherches par mois (petite niche, clients fidèles).
+Hôpitaux et EHPAD : volume non mesurable, à citer dans l'annonce plutôt qu'à acheter.

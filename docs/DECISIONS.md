@@ -98,6 +98,16 @@ Numérotation : D-033 à D-041 existent sur la branche feature/tracage-visites (
 
 ## ✅ Tranché
 
+### D-055 — Google Ads : famille « seniors » — 2026-11-22
+- **Décision** : « 2e, après numéro » : nouveau groupe « E - Seniors » (page `/transport-seniors-marseille`, annonce dédiée, mots-clés en expression exacte, exclusions gratuit / bon de transport / aide / association / emploi / conventionné), lancé seul après le test 6, avec un « oui » le jour J.
+- **Raison** : concurrence faible, CPC estimé 0,20 – 2,48 €, clients réguliers ; la page existe déjà ; le lien annexe « Transport Seniors » a eu 190 affichages et 12 clics du 16 au 20 nov. Volume faible dans la zone.
+- **Impact** : liste détaillée dans `docs/marketing/optimisation-ads-2026-11-22.md`, section 8.
+
+### D-054 — Google Ads : première famille de mots-clés de niche — 2026-11-22
+- **Décision** : « A : « numéro » » : le test 6 est élargi aux variantes « numéro » trouvées dans le Planificateur : [numéro taxi], [taxi numéro], [numéro taxis], [numero des taxi], [taxi marseillais numéro], [numéro téléphone taxi], [taxi numero telephone], [numéro d un taxi], [numéro du taxi], en plus des 4 de D-048. Toujours après le 29 nov., en exact dans le groupe A, avec un « oui » le jour J.
+- **Raison** : famille déjà la plus rentable (1,75 à 4,77 €/conv.), concurrence moyenne, CPC estimé 0,51 – 2,58 € ; ce sont les gens les plus prêts à appeler.
+- **Impact** : familles suivantes (alternative à Uber, prix VTC aéroport/gare/croisière, Aix et VTC) gardées dans `docs/marketing/optimisation-ads-2026-11-22.md`, section 7, une famille à la fois.
+
 ### D-048 — Google Ads : quand ajouter les mots-clés « numéro » (test 6) — 2026-11-22
 - **Décision** : « Après le 29 nov. » : [numero taxi marseille], [taxis marseille numéro], [taxi marseille telephone], [taxi urgent] en exact dans le groupe A, avec un « oui » le jour J. Tests 7, 8 et 9 : « A » → mis dans « À trancher » (D-049, D-050, D-051).
 - **Raison** : 5 changements faits le 22 nov. ; un changement à la fois pour savoir lequel a quel effet, et laisser finir l'apprentissage.
