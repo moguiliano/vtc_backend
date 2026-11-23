@@ -21,7 +21,7 @@
 				<div class="d-flex justify-content-between align-items-center mb-2">
 					<i class="fas {{ icons[vehicle.slug] ?? 'fa-car' }}" style="font-size: 1.8rem; color: #ff5630;"></i>
 					<div class="vehicle-price" data-type="{{ vehicle.slug }}" style="font-size: 1rem; font-weight: bold; color: #fff;">
-						À partir de {{ vehicle.basePriceUnderThreshold|number_format(0) }} €
+						À partir de {{ prix_depart(vehicle)|number_format(0) }} €
 					</div>
 				</div>
 				<h5 class="text-white" style="font-size: 1.1rem; text-align: left;">{{ vehicle.label }}</h5>

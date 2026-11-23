@@ -30,10 +30,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 // ✅ AJOUTS
 use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
-use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
 use App\Service\ReservationAccess;
 use App\Service\ReservationCreator;
+use App\Service\Tarification;
 use App\Service\SmsNotifier;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -43,6 +43,7 @@ final class HomeController extends AbstractController
     public function __construct(
         private ReservationAccess $access,
         private ReservationCreator $creator,
+        private Tarification $tarification,
     ) {}
 
     // Route pour la page des services
@@ -54,7 +55,7 @@ final class HomeController extends AbstractController
 
     // Landing page SEO — "taxi marseille"
     #[Route('/taxi-marseille', name: 'app_taxi_marseille', methods: ['GET', 'POST'])]
-    public function taxiMarseille(Request $request, VehicleCategoryRepository $vehicleRepo, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer): Response
+    public function taxiMarseille(Request $request, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -84,7 +85,7 @@ final class HomeController extends AbstractController
 
         return $this->render('taxi-marseille.html.twig', [
             'form'     => $form->createView(),
-            'vehicles' => $vehicleRepo->findAllActive(),
+            'vehicles' => $this->tarification->categoriesProposees(),
         ]);
     }
 
@@ -204,7 +205,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(Request $request, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, VehicleCategoryRepository $vehicleRepo, ForfaitRepository $forfaitRepo): Response
+    public function index(Request $request, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, ForfaitRepository $forfaitRepo): Response
     {
         // Création d'une nouvelle entité Reservation (vide)
         $reservation = new Reservation();
@@ -242,7 +243,7 @@ final class HomeController extends AbstractController
         // Affichage du formulaire
         return $this->render('home.html.twig', [
             'form'     => $form->createView(),
-            'vehicles' => $vehicleRepo->findAllActive(),
+            'vehicles' => $this->tarification->categoriesProposees(),
             'forfaits' => $forfaitRepo->findActifs(),
         ]);
     }

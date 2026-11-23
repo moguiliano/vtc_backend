@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Form\ReservationType;
-use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
+use App\Service\Tarification;
 use App\Service\PdfGenerator;
 use App\Service\ReservationAccess;
 use App\Service\ReservationCreator;
@@ -26,10 +26,11 @@ class ReservationController extends AbstractController
         private HereMapsService $hereMapsService,
         private ReservationAccess $access,
         private ReservationCreator $creator,
+        private Tarification $tarification,
     ) {}
 
     #[Route('', name: 'reservation_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, VehicleCategoryRepository $vehicleRepo): Response
+    public function index(Request $request): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -56,7 +57,7 @@ class ReservationController extends AbstractController
             return $this->render('reservation/index.html.twig', [
                 'form'         => $form->createView(),
                 'here_api_key' => $this->getParameter('here_api_key'),
-                'vehicles'     => $vehicleRepo->findAllActive(),
+                'vehicles'     => $this->tarification->categoriesProposees(),
                 'reservation'  => $reservation,
                 'show_tab3'    => true,
             ]);
@@ -65,7 +66,7 @@ class ReservationController extends AbstractController
         return $this->render('reservation/index.html.twig', [
             'form'         => $form->createView(),
             'here_api_key' => $this->getParameter('here_api_key'),
-            'vehicles'     => $vehicleRepo->findAllActive(),
+            'vehicles'     => $this->tarification->categoriesProposees(),
         ]);
     }
 
@@ -177,7 +178,7 @@ class ReservationController extends AbstractController
             return new JsonResponse($distanceInfos, 400);
         }
 
-        $prixParCategorie = $this->hereMapsService->estimerToutesCategoriesActives(
+        $prixParCategorie = $this->tarification->estimerToutesCategories(
             $distanceInfos['distance_km'],
             $heure
         );

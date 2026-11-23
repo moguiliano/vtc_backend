@@ -5,9 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Reservation;
 use App\Enum\ReservationStatus;
 use App\Form\ReservationType;
-use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
 use App\Service\ReservationCreator;
+use App\Service\Tarification;
 use App\Service\SmsNotifier;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +31,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class PhoneBookingController extends AbstractController
 {
     public function __construct(
-        private VehicleCategoryRepository $vehicleRepo,
+        private Tarification $tarification,
         private PhoneNormalizerService $phoneNormalizer,
         private SmsNotifier $smsNotifier,
         private AdminUrlGenerator $adminUrlGenerator,
@@ -41,7 +41,7 @@ class PhoneBookingController extends AbstractController
     #[Route('/admin/reservation-telephone', name: 'admin_phone_booking', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
-        $vehicles    = $this->vehicleRepo->findAllActive();
+        $vehicles    = $this->tarification->categoriesProposees();
         $reservation = new Reservation();
         $form        = $this->createForm(ReservationType::class, $reservation, [
             'action' => $this->generateUrl('admin_phone_booking'),

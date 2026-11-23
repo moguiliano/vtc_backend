@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -26,10 +25,10 @@ class VehicleCategoryCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInSingular('Véhicule')
-            ->setEntityLabelInPlural('Véhicules & Tarifs')
+            ->setEntityLabelInPlural('Véhicules')
             ->setDefaultSort(['displayOrder' => 'ASC'])
-            ->setPageTitle('index', 'Gestion des véhicules et tarifs')
-            ->setHelp('index', 'Modifiez les prix directement ici. Les changements sont appliqués immédiatement sur le site.');
+            ->setPageTitle('index', 'Catégories de véhicules')
+            ->setHelp('index', 'Catégories communes (nom, places, bagages, ordre). Les prix se modifient dans « Grille de prix ».');
     }
 
     public function configureActions(Actions $actions): Actions
@@ -63,32 +62,6 @@ class VehicleCategoryCrudController extends AbstractCrudController
             ->setLabel('Description')
             ->hideOnIndex()
             ->setColumns(12);
-
-        yield NumberField::new('thresholdKm')
-            ->setLabel('Seuil (km)')
-            ->setHelp('Distance en km séparant les 2 formules de prix.')
-            ->setNumDecimals(1)
-            ->setColumns(3);
-
-        yield NumberField::new('basePriceUnderThreshold')
-            ->setLabel('Prix base ≤ seuil (€)')
-            ->setNumDecimals(2)
-            ->setColumns(3);
-
-        yield NumberField::new('pricePerKmUnderThreshold')
-            ->setLabel('€/km ≤ seuil')
-            ->setNumDecimals(2)
-            ->setColumns(3);
-
-        yield NumberField::new('basePriceOverThreshold')
-            ->setLabel('Prix base > seuil (€)')
-            ->setNumDecimals(2)
-            ->setColumns(3);
-
-        yield NumberField::new('pricePerKmOverThreshold')
-            ->setLabel('€/km > seuil')
-            ->setNumDecimals(2)
-            ->setColumns(3);
 
         yield IntegerField::new('maxPassengers')
             ->setLabel('Passagers max')
