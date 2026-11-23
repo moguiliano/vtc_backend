@@ -57,14 +57,12 @@ bons de commande, factures) + collaborateurs (établissements partenaires avec p
 Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres. -->
 
 
-### D-022 — Prix de l'abonnement
-- **Chantier** : 📣 Marketing
-- **Contexte** : apparue avec D-014. Le paiement est manuel, donc le prix ne bloque pas le développement. **Reportée** le 2026-11-14 : à fixer quand les espaces abonnés approcheront (étape 4 de D-020).
-- **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ? **Deux prix** depuis D-063 : chauffeur indépendant, et dispatcheur (plus cher).
-- **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
-- **En cours (2026-11-23)** : montants choisis par l'utilisateur : **chauffeur indépendant 10 € TTC / mois**, **dispatcheur 30 € TTC / mois**. **Essai gratuit : 1 mois** (facturation à partir du 2e mois). Reste à trancher : paiement mensuel et/ou annuel.
-
 ## ✅ Tranché
+
+### D-022 — Prix de l'abonnement — 2026-11-23
+- **Décision** : **chauffeur indépendant 10 € TTC / mois**, **dispatcheur 30 € TTC / mois** (le partage des courses en plus, D-063). **1 mois d'essai gratuit**, facturation à partir du 2e mois. **Paiement au mois uniquement**, sans engagement.
+- **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).
+- **Impact** : un abonné a un type, une date de début d'essai et un état (en attente / essai / actif / lecture seule, D-014, D-015). À intégrer à l'étape 4 « Espaces abonnés » de `ROADMAP.md`.
 
 ### D-063 — Abonné : chauffeur indépendant ou dispatcheur ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : C) : **deux abonnements différents** : « chauffeur indépendant » et « dispatcheur ». L'abonnement dispatcheur est **plus cher** et **débloque le partage** des courses (bouton « Partager la course » : WhatsApp, Telegram, SMS, partage).
