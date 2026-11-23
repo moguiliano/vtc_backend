@@ -213,7 +213,7 @@ class ReservationCrudController extends AbstractCrudController
         foreach (MessageTemplateType::cases() as $type) {
             $modeles[$type->value] = array_map(
                 fn($t) => ['id' => $t->getId(), 'nom' => $t->getNom(), 'categorie' => $t->getCategorie()->getNom(), 'contenu' => $t->getContenu()],
-                $templateRepo->findActifsParType($type)
+                $templateRepo->findActifsParType($reservation->getEntreprise(), $type)
             );
         }
 

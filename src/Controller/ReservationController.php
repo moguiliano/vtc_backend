@@ -4,15 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Form\ReservationType;
-use App\Repository\VehicleCategoryRepository;
+use App\Service\EntrepriseCourante;
 use App\Service\HereMapsService;
+use App\Service\Tarification;
+use App\Service\PdfGenerator;
 use App\Service\ReservationAccess;
+use App\Service\ReservationCreator;
 use App\Service\SmsNotifier;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
-use App\Repository\SocieteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,26 +26,24 @@ class ReservationController extends AbstractController
     public function __construct(
         private HereMapsService $hereMapsService,
         private ReservationAccess $access,
+        private ReservationCreator $creator,
+        private Tarification $tarification,
     ) {}
 
     #[Route('', name: 'reservation_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, VehicleCategoryRepository $vehicleRepo): Response
+    public function index(Request $request): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $date  = $form->get('dateDepart')->getData();
-            $heure = $form->get('heureDepart')->getData();
+            $reservation->setDateHeureDepart(ReservationCreator::fusionnerDateHeure(
+                $form->get('dateDepart')->getData(),
+                $form->get('heureDepart')->getData(),
+            ));
 
-            $dateHeureDepart = new \DateTime();
-            $dateHeureDepart->setDate($date->format('Y'), $date->format('m'), $date->format('d'));
-            $dateHeureDepart->setTime($heure->format('H'), $heure->format('i'));
-            $reservation->setDateHeureDepart($dateHeureDepart);
-
-            $entityManager->persist($reservation);
-            $entityManager->flush();
+            $this->creator->enregistrer($reservation);
             $this->access->grant($reservation->getId());
 
             // Appel AJAX depuis reservation.js → retourner juste l'ID
@@ -60,7 +58,7 @@ class ReservationController extends AbstractController
             return $this->render('reservation/index.html.twig', [
                 'form'         => $form->createView(),
                 'here_api_key' => $this->getParameter('here_api_key'),
-                'vehicles'     => $vehicleRepo->findAllActive(),
+                'vehicles'     => $this->tarification->categoriesProposees(),
                 'reservation'  => $reservation,
                 'show_tab3'    => true,
             ]);
@@ -69,7 +67,7 @@ class ReservationController extends AbstractController
         return $this->render('reservation/index.html.twig', [
             'form'         => $form->createView(),
             'here_api_key' => $this->getParameter('here_api_key'),
-            'vehicles'     => $vehicleRepo->findAllActive(),
+            'vehicles'     => $this->tarification->categoriesProposees(),
         ]);
     }
 
@@ -90,7 +88,7 @@ class ReservationController extends AbstractController
         $clientPhone = $payload['clientPhone'] ?? null;
         $prenom      = $payload['prenom'] ?? null;
         $infos       = $payload['informationsComplementaires'] ?? null;
-        $modeReglement = $payload['modeReglement'] ?? 'carte_bancaire';
+        $modeReglement = $payload['modeReglement'] ?? null;
         $bypassOtp   = (bool) ($payload['bypassOtp'] ?? false);
 
         // OTP bypass: only allowed for authenticated ROLE_ADMIN or ROLE_REGULATEUR
@@ -98,13 +96,8 @@ class ReservationController extends AbstractController
             return new JsonResponse(['ok' => false, 'error' => 'Non autorisé'], 403);
         }
 
-        // Persist client info and new fields
-        $reservation->setGuestPrenom($prenom ? mb_substr($prenom, 0, 100) : null);
-        $reservation->setGuestTelephone($clientPhone ? mb_substr($clientPhone, 0, 25) : null);
-        $reservation->setGuestInfo(json_encode(['prenom' => $prenom, 'phone' => $clientPhone]));
-        $reservation->setInformationsComplementaires($infos ? mb_substr($infos, 0, 500) : null);
-        $reservation->setModeReglement(in_array($modeReglement, ['especes', 'carte_bancaire'], true) ? $modeReglement : 'carte_bancaire');
-        $reservation->setIsGuest(true);
+        // Infos client (brique « Créer une réservation »)
+        $this->creator->renseignerClient($reservation, $prenom, $clientPhone, $infos, $modeReglement);
         $em->flush();
 
         $smsNotifier->notifyReservation($reservation, $clientPhone);
@@ -132,45 +125,24 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/quick-book', name: 'reservation_quick_book', methods: ['POST'])]
-    public function quickBook(Request $request, EntityManagerInterface $em, ForfaitRepository $forfaitRepo): JsonResponse
+    public function quickBook(Request $request, ForfaitRepository $forfaitRepo, EntrepriseCourante $entrepriseCourante): JsonResponse
     {
         $data      = json_decode($request->getContent(), true) ?? [];
         $forfaitId = (int) ($data['forfaitId'] ?? 0);
         $prenom    = trim($data['prenom'] ?? '');
         $phone     = trim($data['telephone'] ?? '');
-        $mode      = in_array($data['modeReglement'] ?? '', ['especes', 'carte_bancaire'], true)
-                     ? $data['modeReglement'] : 'carte_bancaire';
+        $mode      = $data['modeReglement'] ?? null;
 
         if (!$forfaitId || !$prenom || !$phone) {
             return new JsonResponse(['error' => 'Prénom, téléphone et forfait sont obligatoires.'], 400);
         }
 
         $forfait = $forfaitRepo->find($forfaitId);
-        if (!$forfait || !$forfait->isActif()) {
+        if (!$forfait || !$forfait->isActif() || $forfait->getEntreprise() !== $entrepriseCourante->get()) {
             return new JsonResponse(['error' => 'Forfait introuvable.'], 404);
         }
 
-        $reservation = new Reservation();
-        $reservation->setDepart($forfait->getDepart());
-        $reservation->setArrivee($forfait->getArrivee());
-        $reservation->setPrix((float) $forfait->getPrix());
-        $reservation->setDistance($forfait->getDistance());
-        $reservation->setDuree($forfait->getDuree());
-        $reservation->setTypeVehicule('eco_berline');
-        $offset = max(-60, min(0, (int) ($data['offsetMinutes'] ?? 0)));
-        $reservation->setDateHeureDepart(new \DateTime("{$offset} minutes"));
-        $reservation->setStopOption(false);
-        $reservation->setSiegeBebe(false);
-        $reservation->setGuestPrenom(mb_substr($prenom, 0, 100));
-        $reservation->setGuestTelephone(mb_substr($phone, 0, 25));
-        $reservation->setGuestInfo(json_encode(['prenom' => $prenom, 'phone' => $phone]));
-        $reservation->setModeReglement($mode);
-        $reservation->setIsGuest(true);
-        $reservation->setStatut('confirmee');
-        $reservation->setCreatedAt(new \DateTimeImmutable('-10 minutes'));
-
-        $em->persist($reservation);
-        $em->flush();
+        $reservation = $this->creator->depuisForfait($forfait, $prenom, $phone, $mode, (int) ($data['offsetMinutes'] ?? 0));
         $this->access->grant($reservation->getId());
 
         return new JsonResponse([
@@ -179,35 +151,14 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/{id}/bon-commande.pdf', name: 'reservation_pdf', methods: ['GET'])]
-    public function pdf(int $id, Request $request, ReservationRepository $repo, SocieteRepository $societeRepo): Response
+    public function pdf(int $id, Request $request, ReservationRepository $repo, PdfGenerator $pdf): Response
     {
         $reservation = $repo->find($id);
         if (!$reservation || !$this->access->isAllowed($request, $id)) {
             throw $this->createNotFoundException('Réservation introuvable.');
         }
 
-        $html = $this->renderView('pdf/bon_commande.html.twig', [
-            'reservation' => $reservation,
-            'societe'     => $societeRepo->get(),
-        ]);
-
-        $options = new Options();
-        $options->set('defaultFont', 'Helvetica');
-        $options->set('isRemoteEnabled', false);
-
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html, 'UTF-8');
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        return new Response(
-            $dompdf->output(),
-            200,
-            [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="bon-commande-' . $id . '.pdf"',
-            ]
-        );
+        return $pdf->bonDeCommande($reservation);
     }
 
     #[Route('/calculate-trip', name: 'reservation_calculate_trip', methods: ['POST'])]
@@ -228,7 +179,7 @@ class ReservationController extends AbstractController
             return new JsonResponse($distanceInfos, 400);
         }
 
-        $prixParCategorie = $this->hereMapsService->estimerToutesCategoriesActives(
+        $prixParCategorie = $this->tarification->estimerToutesCategories(
             $distanceInfos['distance_km'],
             $heure
         );

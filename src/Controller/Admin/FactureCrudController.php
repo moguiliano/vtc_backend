@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Facture;
 use App\Repository\FactureRepository;
 use App\Repository\ReservationRepository;
+use App\Service\EntrepriseCourante;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -23,6 +24,7 @@ class FactureCrudController extends AbstractCrudController
         private FactureRepository $factureRepo,
         private ReservationRepository $reservationRepo,
         private RequestStack $requestStack,
+        private EntrepriseCourante $entrepriseCourante,
     ) {}
 
     public static function getEntityFqcn(): string
@@ -66,6 +68,9 @@ class FactureCrudController extends AbstractCrudController
         $reservationId = (int) $this->requestStack->getCurrentRequest()?->query->get('reservationId');
         $reservation   = $reservationId ? $this->reservationRepo->find($reservationId) : null;
 
+        // La facture est émise par l'entreprise de la réservation, sinon par l'entreprise courante (D-017)
+        $facture->setEntreprise($reservation?->getEntreprise() ?? $this->entrepriseCourante->get());
+
         if ($reservation) {
             $facture->setReservation($reservation);
             $facture->setClientNom($reservation->getGuestPrenom() ?: 'Client');
@@ -80,7 +85,10 @@ class FactureCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if ($entityInstance instanceof Facture && !$entityInstance->getNumero()) {
-            $entityInstance->setNumero($this->factureRepo->nextNumero($entityInstance->getDateFacture()));
+            $entityInstance->setNumero($this->factureRepo->nextNumero(
+                $entityInstance->getEntreprise() ?? $this->entrepriseCourante->get(),
+                $entityInstance->getDateFacture(),
+            ));
         }
 
         parent::persistEntity($entityManager, $entityInstance);

@@ -7,6 +7,10 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VehicleCategoryRepository::class)]
+/**
+ * Catégorie de véhicule commune à toutes les entreprises (D-016) : slug, nom, places, bagages.
+ * Les prix sont dans GrilleTarif (une grille par entreprise).
+ */
 #[ORM\Table(name: 'vehicle_category')]
 class VehicleCategory
 {
@@ -25,26 +29,6 @@ class VehicleCategory
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
-    /** Prix de base si distance <= thresholdKm */
-    #[ORM\Column]
-    private float $basePriceUnderThreshold;
-
-    /** Prix de base si distance > thresholdKm */
-    #[ORM\Column]
-    private float $basePriceOverThreshold;
-
-    /** Prix par km supplémentaire si distance <= thresholdKm */
-    #[ORM\Column]
-    private float $pricePerKmUnderThreshold;
-
-    /** Prix par km supplémentaire si distance > thresholdKm */
-    #[ORM\Column]
-    private float $pricePerKmOverThreshold;
-
-    /** Seuil en km déclenchant la 2e formule */
-    #[ORM\Column]
-    private float $thresholdKm;
 
     #[ORM\Column]
     private int $maxPassengers = 4;
@@ -72,23 +56,6 @@ class VehicleCategory
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    // -------------------------------------------------------------------------
-    // Logique métier
-    // -------------------------------------------------------------------------
-
-    /**
-     * Calcule le prix brut selon la distance.
-     * La majoration nuit et la commission sont gérées par HereMapsService.
-     */
-    public function calculerPrixBrut(float $distance): float
-    {
-        if ($distance <= $this->thresholdKm) {
-            return $this->basePriceUnderThreshold + ($distance * $this->pricePerKmUnderThreshold);
-        }
-
-        return $this->basePriceOverThreshold + (($distance - $this->thresholdKm) * $this->pricePerKmOverThreshold);
-    }
-
     public function __toString(): string
     {
         return $this->label;
@@ -108,21 +75,6 @@ class VehicleCategory
 
     public function getDescription(): ?string { return $this->description; }
     public function setDescription(?string $description): static { $this->description = $description; return $this; }
-
-    public function getBasePriceUnderThreshold(): float { return $this->basePriceUnderThreshold; }
-    public function setBasePriceUnderThreshold(float $v): static { $this->basePriceUnderThreshold = $v; return $this; }
-
-    public function getBasePriceOverThreshold(): float { return $this->basePriceOverThreshold; }
-    public function setBasePriceOverThreshold(float $v): static { $this->basePriceOverThreshold = $v; return $this; }
-
-    public function getPricePerKmUnderThreshold(): float { return $this->pricePerKmUnderThreshold; }
-    public function setPricePerKmUnderThreshold(float $v): static { $this->pricePerKmUnderThreshold = $v; return $this; }
-
-    public function getPricePerKmOverThreshold(): float { return $this->pricePerKmOverThreshold; }
-    public function setPricePerKmOverThreshold(float $v): static { $this->pricePerKmOverThreshold = $v; return $this; }
-
-    public function getThresholdKm(): float { return $this->thresholdKm; }
-    public function setThresholdKm(float $v): static { $this->thresholdKm = $v; return $this; }
 
     public function getMaxPassengers(): int { return $this->maxPassengers; }
     public function setMaxPassengers(int $v): static { $this->maxPassengers = $v; return $this; }

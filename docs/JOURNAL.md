@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-23 — Fondation « Entreprise » (🗄️ Données, PR #12)
+- **Fait** : plan refait sur le `main` du jour (forfaits, messages et appels étiquetés aussi, ton choix « Oui, tout ») ; entité `Entreprise` (SIMPLICI CAB = n°1) ; `entreprise_id` sur réservations, factures (numéro `FAC-AAAA-0001` par entreprise), société (une fiche par entreprise), forfaits, catégories de messages, appels ; nouvelle **Grille de prix** (prix par entreprise, catégories communes, D-016) ; 4 briques (`EntrepriseCourante`, `ReservationCreator`, `PdfGenerator`, `Tarification`). 7 migrations testées sur une copie de la base (`zencar_fondation`) : aller-retour sans perte (12 tables identiques), 60 prix identiques, parcours public / téléphone / quick-book / bon PDF / facture + PDF / Partager vérifiés, 11 tests PHPUnit. PR #12 ouverte.
+- **Bloqué** : rien. Constatés en passant (déjà là avant) : fiche détail facture en erreur 500 en mode dev (taux de TVA en nombres à virgule) ; route `/reservation/{id}/confirm` déclarée deux fois.
+- **Prochaine étape** : fusionner la PR #12 puis mise en prod (sauvegarde, `git pull`, **7 migrations** juste après) ; dans l'admin, les prix se modifient désormais dans « Grille de prix ». Ensuite : Régulateur (D-021).
+
 ### 2026-11-19 — Partager la course et réservation téléphone en prod (🧩 Fonctionnalités)
 - **Fait** : PR #8 (date passée, réservation par téléphone) puis PR #7 (Partager la course + messages) fusionnées dans `main` ; en prod avec la PR #9 Marketing (`f70355a`) : sauvegarde de la base, code déjà à jour, migrations `Version20261117100000` (messages + commission) et `Version20261117140000` (journal des appels) déjà jouées le 2026-11-17, cache vidé. Vérifié en ligne par toi : tout fonctionne.
 - **Bloqué** : rien.

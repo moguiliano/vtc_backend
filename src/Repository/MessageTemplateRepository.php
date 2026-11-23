@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Entreprise;
 use App\Entity\MessageTemplate;
 use App\Enum\MessageTemplateType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -21,11 +22,12 @@ class MessageTemplateRepository extends ServiceEntityRepository
      * Modèles actifs d'un onglet de Partager, triés par catégorie puis par ordre.
      * @return MessageTemplate[]
      */
-    public function findActifsParType(MessageTemplateType $type): array
+    public function findActifsParType(Entreprise $entreprise, MessageTemplateType $type): array
     {
         return $this->createQueryBuilder('m')
             ->join('m.categorie', 'c')->addSelect('c')
             ->where('c.type = :type')->setParameter('type', $type->value)
+            ->andWhere('c.entreprise = :e')->setParameter('e', $entreprise)
             ->andWhere('m.actif = true')
             ->orderBy('c.ordre', 'ASC')->addOrderBy('c.nom', 'ASC')
             ->addOrderBy('m.ordre', 'ASC')->addOrderBy('m.id', 'ASC')

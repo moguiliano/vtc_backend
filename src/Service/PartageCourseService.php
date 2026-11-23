@@ -141,7 +141,7 @@ class PartageCourseService
         $prix       = (float) $r->getPrix();
         $commission = $this->commission($r);
         $settings   = $this->settingsRepo->findCurrent();
-        $societe    = $this->em->getRepository(Societe::class)->findOneBy([], ['id' => 'ASC']);
+        $societe    = $r->getEntreprise() ? $this->em->getRepository(Societe::class)->pourEntreprise($r->getEntreprise()) : null;
         $vehicule   = $r->getTypeVehicule() ? $this->vehicleRepo->findBySlug($r->getTypeVehicule()) : null;
 
         return [

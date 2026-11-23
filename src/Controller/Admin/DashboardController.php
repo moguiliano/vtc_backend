@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use App\Entity\Contact;
 use App\Entity\Facture;
 use App\Entity\Forfait;
+use App\Entity\GrilleTarif;
 use App\Entity\Reservation;
 use App\Entity\Societe;
 use App\Entity\MessageCategory;
@@ -16,6 +17,7 @@ use App\Entity\SiteSettings;
 use App\Entity\VehicleCategory;
 use App\Repository\ContactRepository;
 use App\Repository\SocieteRepository;
+use App\Service\EntrepriseCourante;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +34,7 @@ class DashboardController extends AbstractDashboardController
         private AdminUrlGenerator $adminUrlGenerator,
         private ContactRepository $contactRepo,
         private SocieteRepository $societeRepo,
+        private EntrepriseCourante $entrepriseCourante,
     ) {}
 
     #[Route('/admin', name: 'admin_dashboard')]
@@ -91,7 +94,8 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::section('Tarification');
         }
         if ($this->isGranted('ROLE_VEHICULES_VIEW')) {
-            yield MenuItem::linkToCrud('Véhicules & Prix', 'fa fa-car', VehicleCategory::class);
+            yield MenuItem::linkToCrud('Grille de prix', 'fa fa-euro-sign', GrilleTarif::class);
+            yield MenuItem::linkToCrud('Véhicules', 'fa fa-car', VehicleCategory::class);
         }
         if ($this->isGranted('ROLE_FORFAITS_VIEW')) {
             yield MenuItem::linkToCrud('Forfaits VTC', 'fa fa-tag', Forfait::class);
@@ -114,7 +118,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Administrateurs', 'fa fa-users', Admin::class);
             yield MenuItem::linkToCrud('Ma société', 'fa fa-building', Societe::class)
                 ->setAction(Action::EDIT)
-                ->setEntityId($this->societeRepo->get()->getId());
+                ->setEntityId($this->societeRepo->pourEntreprise($this->entrepriseCourante->get())->getId());
         }
 
         // Mon compte (tous)

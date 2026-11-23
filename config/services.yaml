@@ -45,8 +45,9 @@ services:
     bind:
       string $twilioFrom: '%env(string:TWILIO_FROM)%'
 
-  # --- 5) HereMapsService avec paramètres pricing ---
-  App\Service\HereMapsService:
+  # --- 5) Tarification (anciennement dans HereMapsService) ---
+  # Brique « Calculer un prix » (D-020) : grille de l'entreprise + nuit + commission
+  App\Service\Tarification:
     arguments:
       $commissionPercent:     '%pricing.commission_percent%'
       $nightSurchargePercent: '%pricing.night_surcharge_percent%'

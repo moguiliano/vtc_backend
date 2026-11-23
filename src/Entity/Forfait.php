@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EntrepriseTrait;
 use App\Repository\ForfaitRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ForfaitRepository::class)]
-class Forfait
+class Forfait implements AppartientAEntreprise
 {
+    /** Entreprise qui propose ce forfait (D-020). */
+    use EntrepriseTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -30,16 +30,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 // ✅ AJOUTS
 use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
-use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
 use App\Service\ReservationAccess;
+use App\Service\EntrepriseCourante;
+use App\Service\ReservationCreator;
+use App\Service\Tarification;
 use App\Service\SmsNotifier;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 final class HomeController extends AbstractController
 {
-    public function __construct(private ReservationAccess $access) {}
+    public function __construct(
+        private ReservationAccess $access,
+        private ReservationCreator $creator,
+        private Tarification $tarification,
+        private EntrepriseCourante $entrepriseCourante,
+    ) {}
 
     // Route pour la page des services
     #[Route('/services', name: 'app_services')]
@@ -50,7 +57,7 @@ final class HomeController extends AbstractController
 
     // Landing page SEO — "taxi marseille"
     #[Route('/taxi-marseille', name: 'app_taxi_marseille', methods: ['GET', 'POST'])]
-    public function taxiMarseille(Request $request, EntityManagerInterface $entityManager, VehicleCategoryRepository $vehicleRepo, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer): Response
+    public function taxiMarseille(Request $request, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -60,10 +67,7 @@ final class HomeController extends AbstractController
             $date  = $form->get('dateDepart')->getData();
             $heure = $form->get('heureDepart')->getData();
 
-            if ($date && $heure) {
-                $fusion = new \DateTime();
-                $fusion->setDate((int)$date->format('Y'), (int)$date->format('m'), (int)$date->format('d'));
-                $fusion->setTime((int)$heure->format('H'), (int)$heure->format('i'));
+            if ($fusion = ReservationCreator::fusionnerDateHeure($date, $heure)) {
                 $reservation->setDateHeureDepart($fusion);
             }
 
@@ -74,8 +78,7 @@ final class HomeController extends AbstractController
                 ?? null;
             $clientPhone = $phoneNormalizer->normalize($clientPhone, 'FR');
 
-            $entityManager->persist($reservation);
-            $entityManager->flush();
+            $this->creator->enregistrer($reservation);
             $smsNotifier->notifyReservation($reservation, $clientPhone, $prenom);
 
             $this->access->grant($reservation->getId());
@@ -84,7 +87,7 @@ final class HomeController extends AbstractController
 
         return $this->render('taxi-marseille.html.twig', [
             'form'     => $form->createView(),
-            'vehicles' => $vehicleRepo->findAllActive(),
+            'vehicles' => $this->tarification->categoriesProposees(),
         ]);
     }
 
@@ -93,7 +96,7 @@ final class HomeController extends AbstractController
     public function taxiAeroport(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('taxi-aeroport-marseille.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -102,7 +105,7 @@ final class HomeController extends AbstractController
     public function taxiGare(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('taxi-gare-saint-charles.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -118,7 +121,7 @@ final class HomeController extends AbstractController
     public function taxiCalanques(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('taxi-calanques-marseille.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -127,7 +130,7 @@ final class HomeController extends AbstractController
     public function vtcMarseille(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('vtc-marseille.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -204,7 +207,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, VehicleCategoryRepository $vehicleRepo, ForfaitRepository $forfaitRepo): Response
+    public function index(Request $request, SmsNotifier $smsNotifier, PhoneNormalizerService $phoneNormalizer, ForfaitRepository $forfaitRepo): Response
     {
         // Création d'une nouvelle entité Reservation (vide)
         $reservation = new Reservation();
@@ -218,10 +221,7 @@ final class HomeController extends AbstractController
             $date  = $form->get('dateDepart')->getData();   // peut être null
             $heure = $form->get('heureDepart')->getData();  // peut être null
 
-            if ($date && $heure) {
-                $fusion = new \DateTime();
-                $fusion->setDate((int)$date->format('Y'), (int)$date->format('m'), (int)$date->format('d'));
-                $fusion->setTime((int)$heure->format('H'), (int)$heure->format('i'));
+            if ($fusion = ReservationCreator::fusionnerDateHeure($date, $heure)) {
                 $reservation->setDateHeureDepart($fusion);
             }
             // 2) Récupère les champs non mappés (Tab3)
@@ -234,8 +234,7 @@ final class HomeController extends AbstractController
             $clientPhone = $phoneNormalizer->normalize($clientPhone, 'FR');
 
 
-            $entityManager->persist($reservation);
-            $entityManager->flush();
+            $this->creator->enregistrer($reservation);
             $smsNotifier->notifyReservation($reservation, $clientPhone, $prenom);
 
             // ✅ Redirection vers la page succès AVEC ID
@@ -246,8 +245,8 @@ final class HomeController extends AbstractController
         // Affichage du formulaire
         return $this->render('home.html.twig', [
             'form'     => $form->createView(),
-            'vehicles' => $vehicleRepo->findAllActive(),
-            'forfaits' => $forfaitRepo->findActifs(),
+            'vehicles' => $this->tarification->categoriesProposees(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 #[Route('/api/get-here-key', name: 'api_get_here_key', methods: ['GET'])]
