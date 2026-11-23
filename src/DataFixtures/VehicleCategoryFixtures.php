@@ -2,7 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Entreprise;
+use App\Entity\GrilleTarif;
 use App\Entity\VehicleCategory;
+use App\Service\EntrepriseCourante;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -65,25 +68,38 @@ class VehicleCategoryFixtures extends Fixture
             ],
         ];
 
+        // Entreprise n°1 (SIMPLICI CAB) : créée par la migration Version20261123100000
+        $entreprise = $manager->getRepository(Entreprise::class)->find(EntrepriseCourante::ID_PRINCIPALE)
+            ?? throw new \LogicException('Lancer les migrations avant les fixtures.');
+
         foreach ($categories as $data) {
-            $existing = $manager->getRepository(VehicleCategory::class)->findOneBy(['slug' => $data['slug']]);
-            if ($existing) continue; // ne pas écraser si déjà en BDD
+            $cat = $manager->getRepository(VehicleCategory::class)->findOneBy(['slug' => $data['slug']]);
+            if (!$cat) {
+                $cat = (new VehicleCategory())
+                    ->setSlug($data['slug'])
+                    ->setLabel($data['label'])
+                    ->setDescription($data['description'])
+                    ->setMaxPassengers($data['maxPassengers'])
+                    ->setLuggageCapacity($data['luggageCapacity'])
+                    ->setDisplayOrder($data['displayOrder'])
+                    ->setIsActive(true);
+                $manager->persist($cat);
+            }
 
-            $cat = (new VehicleCategory())
-                ->setSlug($data['slug'])
-                ->setLabel($data['label'])
-                ->setDescription($data['description'])
-                ->setBasePriceUnderThreshold($data['basePriceUnderThreshold'])
-                ->setPricePerKmUnderThreshold($data['pricePerKmUnderThreshold'])
-                ->setBasePriceOverThreshold($data['basePriceOverThreshold'])
-                ->setPricePerKmOverThreshold($data['pricePerKmOverThreshold'])
-                ->setThresholdKm($data['thresholdKm'])
-                ->setMaxPassengers($data['maxPassengers'])
-                ->setLuggageCapacity($data['luggageCapacity'])
-                ->setDisplayOrder($data['displayOrder'])
-                ->setIsActive(true);
-
-            $manager->persist($cat);
+            // Grille de prix de SIMPLICI CAB (D-016) — ne pas écraser si elle existe déjà
+            $grille = $cat->getId()
+                ? $manager->getRepository(GrilleTarif::class)->findOneBy(['entreprise' => $entreprise, 'categorie' => $cat])
+                : null;
+            if (!$grille) {
+                $manager->persist((new GrilleTarif())
+                    ->setEntreprise($entreprise)
+                    ->setCategorie($cat)
+                    ->setBasePriceUnderThreshold($data['basePriceUnderThreshold'])
+                    ->setPricePerKmUnderThreshold($data['pricePerKmUnderThreshold'])
+                    ->setBasePriceOverThreshold($data['basePriceOverThreshold'])
+                    ->setPricePerKmOverThreshold($data['pricePerKmOverThreshold'])
+                    ->setThresholdKm($data['thresholdKm']));
+            }
         }
 
         $manager->flush();
