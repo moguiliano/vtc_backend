@@ -65,6 +65,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-060 — Dispatcheur : comment partage-t-il une course ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : B) : **partage libre**. Le dispatcheur choisit lui-même ce qu'il envoie (course complète ou partielle), comme le bouton « Partager la course » actuel. Pas de partage en 2 temps imposé.
+- **Raison** : plus souple ; ce sont les clients et les chauffeurs du dispatcheur, c'est à lui de décider ce qu'il partage.
+- **Impact** : l'espace dispatcheur reprend le bouton « Partager la course » tel quel (modes complet / partiel / client). Le partage en 2 temps reste propre au régulateur interne (D-021).
+
 ### D-059 — Le dispatcheur : quel rôle ? — 2026-11-23
 - **Décision** (mots de l'utilisateur) : « le dispatcheur a les mêmes fonctionnalités qu'un chauffeur indépendant + possibilité de partager les courses sur WhatsApp, Telegram, SMS et Partager ».
 - **Raison** : un dispatcheur gère ses propres clients et courses comme un abonné, mais son métier est de les distribuer à des chauffeurs.
