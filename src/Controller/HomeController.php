@@ -32,6 +32,7 @@ use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
 use App\Service\PhoneNormalizerService;
 use App\Service\ReservationAccess;
+use App\Service\EntrepriseCourante;
 use App\Service\ReservationCreator;
 use App\Service\Tarification;
 use App\Service\SmsNotifier;
@@ -44,6 +45,7 @@ final class HomeController extends AbstractController
         private ReservationAccess $access,
         private ReservationCreator $creator,
         private Tarification $tarification,
+        private EntrepriseCourante $entrepriseCourante,
     ) {}
 
     // Route pour la page des services
@@ -94,7 +96,7 @@ final class HomeController extends AbstractController
     public function taxiAeroport(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('taxi-aeroport-marseille.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -103,7 +105,7 @@ final class HomeController extends AbstractController
     public function taxiGare(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('taxi-gare-saint-charles.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -119,7 +121,7 @@ final class HomeController extends AbstractController
     public function taxiCalanques(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('taxi-calanques-marseille.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -128,7 +130,7 @@ final class HomeController extends AbstractController
     public function vtcMarseille(ForfaitRepository $forfaitRepo): Response
     {
         return $this->render('vtc-marseille.html.twig', [
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 
@@ -244,7 +246,7 @@ final class HomeController extends AbstractController
         return $this->render('home.html.twig', [
             'form'     => $form->createView(),
             'vehicles' => $this->tarification->categoriesProposees(),
-            'forfaits' => $forfaitRepo->findActifs(),
+            'forfaits' => $forfaitRepo->findActifs($this->entrepriseCourante->get()),
         ]);
     }
 #[Route('/api/get-here-key', name: 'api_get_here_key', methods: ['GET'])]

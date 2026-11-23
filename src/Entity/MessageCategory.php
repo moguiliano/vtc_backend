@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EntrepriseTrait;
 use App\Enum\MessageTemplateType;
 use App\Repository\MessageCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,8 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Chaque catégorie est rangée dans un des 3 onglets de « Partager la course » (type).
  */
 #[ORM\Entity(repositoryClass: MessageCategoryRepository::class)]
-class MessageCategory
+class MessageCategory implements AppartientAEntreprise
 {
+    /** Entreprise propriétaire ; ses modèles de messages la suivent (D-020). */
+    use EntrepriseTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

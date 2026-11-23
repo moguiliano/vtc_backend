@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Repository\ForfaitRepository;
+use App\Service\EntrepriseCourante;
 use App\Service\ReservationCreator;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,12 +19,14 @@ class QuickBookController extends AbstractController
         private ForfaitRepository $forfaitRepo,
         private AdminUrlGenerator $adminUrlGenerator,
         private ReservationCreator $creator,
+        private EntrepriseCourante $entrepriseCourante,
     ) {}
 
     #[Route('/admin/quick-book', name: 'admin_quick_book')]
     public function index(Request $request): Response
     {
-        $forfaits = $this->forfaitRepo->findBy(['actif' => true], ['ordre' => 'ASC']);
+        $entreprise = $this->entrepriseCourante->get();
+        $forfaits   = $this->forfaitRepo->findBy(['actif' => true, 'entreprise' => $entreprise], ['ordre' => 'ASC']);
         $error    = null;
 
         if ($request->isMethod('POST')) {
@@ -33,7 +36,7 @@ class QuickBookController extends AbstractController
             $mode      = $request->request->get('modeReglement');
             $offset    = (int) $request->request->get('offsetMinutes', 0);
 
-            $forfait = $this->forfaitRepo->find($forfaitId);
+            $forfait = $this->forfaitRepo->findOneBy(['id' => $forfaitId, 'entreprise' => $entreprise]);
 
             if ($forfait && $prenom && $phone) {
                 $reservation = $this->creator->depuisForfait($forfait, $prenom, $phone, $mode, $offset);

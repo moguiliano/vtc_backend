@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Service\EntrepriseCourante;
 use App\Service\HereMapsService;
 use App\Service\Tarification;
 use App\Service\PdfGenerator;
@@ -124,7 +125,7 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/quick-book', name: 'reservation_quick_book', methods: ['POST'])]
-    public function quickBook(Request $request, ForfaitRepository $forfaitRepo): JsonResponse
+    public function quickBook(Request $request, ForfaitRepository $forfaitRepo, EntrepriseCourante $entrepriseCourante): JsonResponse
     {
         $data      = json_decode($request->getContent(), true) ?? [];
         $forfaitId = (int) ($data['forfaitId'] ?? 0);
@@ -137,7 +138,7 @@ class ReservationController extends AbstractController
         }
 
         $forfait = $forfaitRepo->find($forfaitId);
-        if (!$forfait || !$forfait->isActif()) {
+        if (!$forfait || !$forfait->isActif() || $forfait->getEntreprise() !== $entrepriseCourante->get()) {
             return new JsonResponse(['error' => 'Forfait introuvable.'], 404);
         }
 

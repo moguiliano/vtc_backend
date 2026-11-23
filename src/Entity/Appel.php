@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EntrepriseTrait;
 use App\Repository\AppelRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity(repositoryClass: AppelRepository::class)]
 #[ORM\Index(columns: ['date_appel'], name: 'idx_appel_date')]
-class Appel
+class Appel implements AppartientAEntreprise
 {
+    /** Entreprise qui a reçu l'appel (D-020). */
+    use EntrepriseTrait;
+
     public const SOURCES = [
         'Google Ads (annonce)'      => 'google_ads',
         'Fiche Google (Maps)'       => 'fiche_google',

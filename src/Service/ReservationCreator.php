@@ -90,7 +90,8 @@ class ReservationCreator
         $reservation->setStatut(ReservationStatus::CONFIRMEE->value);
         $reservation->setCreatedAt(new \DateTimeImmutable('-10 minutes'));
 
-        return $this->enregistrer($reservation);
+        // La réservation appartient à l'entreprise qui propose le forfait
+        return $this->enregistrer($reservation, $forfait->getEntreprise());
     }
 
     public static function modeReglementValide(mixed $mode): string
