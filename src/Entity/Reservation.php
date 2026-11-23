@@ -5,10 +5,14 @@ use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use App\Entity\Traits\EntrepriseTrait;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-class Reservation
+class Reservation implements AppartientAEntreprise
 {
+    /** Entreprise propriétaire de la réservation (D-020). */
+    use EntrepriseTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

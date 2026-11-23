@@ -7,8 +7,8 @@ use App\Enum\ReservationStatus;
 use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\PhoneNormalizerService;
+use App\Service\ReservationCreator;
 use App\Service\SmsNotifier;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -35,10 +35,11 @@ class PhoneBookingController extends AbstractController
         private PhoneNormalizerService $phoneNormalizer,
         private SmsNotifier $smsNotifier,
         private AdminUrlGenerator $adminUrlGenerator,
+        private ReservationCreator $creator,
     ) {}
 
     #[Route('/admin/reservation-telephone', name: 'admin_phone_booking', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $em): Response
+    public function index(Request $request): Response
     {
         $vehicles    = $this->vehicleRepo->findAllActive();
         $reservation = new Reservation();
@@ -67,22 +68,14 @@ class PhoneBookingController extends AbstractController
                 $reservation->setStopOption((bool) $reservation->getStopLieu());
                 $reservation->setSiegeBebe((bool) $reservation->isSiegeBebe());
                 $reservation->setPrix(round((float) $reservation->getPrix(), 2));
-                $reservation->setGuestPrenom(mb_substr($client['prenom'], 0, 100));
-                $reservation->setGuestTelephone(mb_substr($phone, 0, 25));
-                $reservation->setGuestInfo(json_encode(array_filter([
-                    'prenom' => $client['prenom'],
-                    'phone'  => $phone,
-                    'email'  => $client['email'] ?: null,
-                    'source' => 'telephone',
-                ])));
-                $reservation->setInformationsComplementaires($client['infos'] ? mb_substr($client['infos'], 0, 500) : null);
-                $reservation->setModeReglement(in_array($client['mode'], ['especes', 'carte_bancaire'], true) ? $client['mode'] : 'carte_bancaire');
-                $reservation->setIsGuest(true);
+                $this->creator->renseignerClient(
+                    $reservation, $client['prenom'], $phone, $client['infos'], $client['mode'],
+                    ['email' => $client['email'] ?: null, 'source' => 'telephone'],
+                );
                 $reservation->setStatut(ReservationStatus::CONFIRMEE->value);
                 $reservation->setCreatedAt(new \DateTimeImmutable());
 
-                $em->persist($reservation);
-                $em->flush();
+                $this->creator->enregistrer($reservation);
 
                 if ($client['sendSms']) {
                     $this->smsNotifier->notifyReservation($reservation, $phone, $client['prenom']);
@@ -161,14 +154,9 @@ class PhoneBookingController extends AbstractController
 
     private function buildDateHeure(FormInterface $form): ?\DateTime
     {
-        $date  = $form->get('dateDepart')->getData();
-        $heure = $form->get('heureDepart')->getData();
-        if (!$date || !$heure) {
-            return null;
-        }
-
-        return (new \DateTime())
-            ->setDate((int) $date->format('Y'), (int) $date->format('m'), (int) $date->format('d'))
-            ->setTime((int) $heure->format('H'), (int) $heure->format('i'));
+        return ReservationCreator::fusionnerDateHeure(
+            $form->get('dateDepart')->getData(),
+            $form->get('heureDepart')->getData(),
+        );
     }
 }

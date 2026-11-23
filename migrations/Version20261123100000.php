@@ -17,6 +17,12 @@ final class Version20261123100000 extends AbstractMigration
         return 'Fondation 1/7 : table entreprise + SIMPLICI CAB (id 1)';
     }
 
+    /** MariaDB/MySQL valident chaque ALTER TABLE tout de suite : pas de transaction possible. */
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE entreprise (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(150) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
