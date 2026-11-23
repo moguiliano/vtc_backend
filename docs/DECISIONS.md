@@ -65,6 +65,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-062 — Dispatcheur : qui fixe la commission et le prix chauffeur ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **le dispatcheur lui-même, course par course**. Il règle une fois son taux par défaut, puis peut le modifier à chaque partage, en € ou en % (comme D-024).
+- **Raison** : chaque dispatcheur a ses propres accords avec ses chauffeurs ; la souplesse du bouton Partager actuel lui convient.
+- **Impact** : le taux de commission par défaut devient un réglage **par abonné** (lien avec D-006 et D-016). La commission choisie reste enregistrée sur la réservation.
+
 ### D-061 — Dispatcheur : ses chauffeurs ont-ils un compte ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : A) : **non, pas de compte**. Les chauffeurs d'un dispatcheur reçoivent les courses par WhatsApp, Telegram ou SMS, comme les chauffeurs de SIMPLICI CAB aujourd'hui.
 - **Raison** : rien de plus à construire au démarrage ; c'est déjà la pratique réelle.
