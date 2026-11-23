@@ -6,10 +6,17 @@ use App\Repository\SocieteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/** Informations légales de l'exploitant (une seule ligne), utilisées sur les PDF. */
+/**
+ * Informations légales d'une entreprise (une fiche par entreprise, D-017), utilisées sur les PDF
+ * et dans « Partager la course ». SIMPLICI CAB = fiche de l'entreprise n°1.
+ */
 #[ORM\Entity(repositoryClass: SocieteRepository::class)]
-class Societe
+class Societe implements AppartientAEntreprise
 {
+    #[ORM\OneToOne(targetEntity: Entreprise::class)]
+    #[ORM\JoinColumn(nullable: false, unique: true)]
+    private ?Entreprise $entreprise = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -64,6 +71,9 @@ class Societe
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int { return $this->id; }
+
+    public function getEntreprise(): ?Entreprise { return $this->entreprise; }
+    public function setEntreprise(Entreprise $entreprise): static { $this->entreprise = $entreprise; return $this; }
 
     public function getRaisonSociale(): string { return $this->raisonSociale; }
     public function setRaisonSociale(string $v): static { $this->raisonSociale = $v; return $this; }

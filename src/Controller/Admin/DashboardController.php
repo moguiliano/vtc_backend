@@ -16,6 +16,7 @@ use App\Entity\SiteSettings;
 use App\Entity\VehicleCategory;
 use App\Repository\ContactRepository;
 use App\Repository\SocieteRepository;
+use App\Service\EntrepriseCourante;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +33,7 @@ class DashboardController extends AbstractDashboardController
         private AdminUrlGenerator $adminUrlGenerator,
         private ContactRepository $contactRepo,
         private SocieteRepository $societeRepo,
+        private EntrepriseCourante $entrepriseCourante,
     ) {}
 
     #[Route('/admin', name: 'admin_dashboard')]
@@ -114,7 +116,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Administrateurs', 'fa fa-users', Admin::class);
             yield MenuItem::linkToCrud('Ma société', 'fa fa-building', Societe::class)
                 ->setAction(Action::EDIT)
-                ->setEntityId($this->societeRepo->get()->getId());
+                ->setEntityId($this->societeRepo->pourEntreprise($this->entrepriseCourante->get())->getId());
         }
 
         // Mon compte (tous)

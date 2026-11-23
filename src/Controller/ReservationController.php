@@ -160,7 +160,7 @@ class ReservationController extends AbstractController
 
         $html = $this->renderView('pdf/bon_commande.html.twig', [
             'reservation' => $reservation,
-            'societe'     => $societeRepo->get(),
+            'societe'     => $societeRepo->pourEntreprise($reservation->getEntreprise()),
         ]);
 
         $options = new Options();

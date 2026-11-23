@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Repository\FactureRepository;
 use App\Repository\SocieteRepository;
+use App\Service\EntrepriseCourante;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class FactureController extends AbstractController
 {
     #[Route('/admin/factures/{id}/pdf', name: 'admin_facture_pdf', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function pdf(int $id, FactureRepository $repo, SocieteRepository $societeRepo): Response
+    public function pdf(int $id, FactureRepository $repo, SocieteRepository $societeRepo, EntrepriseCourante $entrepriseCourante): Response
     {
         $facture = $repo->find($id) ?? throw $this->createNotFoundException('Facture introuvable.');
 
@@ -24,7 +25,7 @@ class FactureController extends AbstractController
         $options->set('isRemoteEnabled', false);
 
         $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($this->renderView('pdf/facture.html.twig', ['facture' => $facture, 'societe' => $societeRepo->get()]), 'UTF-8');
+        $dompdf->loadHtml($this->renderView('pdf/facture.html.twig', ['facture' => $facture, 'societe' => $societeRepo->pourEntreprise($entrepriseCourante->get())]), 'UTF-8');
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
