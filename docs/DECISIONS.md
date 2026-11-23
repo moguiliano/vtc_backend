@@ -65,6 +65,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-059 — Le dispatcheur : quel rôle ? — 2026-11-23
+- **Décision** (mots de l'utilisateur) : « le dispatcheur a les mêmes fonctionnalités qu'un chauffeur indépendant + possibilité de partager les courses sur WhatsApp, Telegram, SMS et Partager ».
+- **Raison** : un dispatcheur gère ses propres clients et courses comme un abonné, mais son métier est de les distribuer à des chauffeurs.
+- **Impact** : complète D-013. Rôles prévus : super-admin, régulateur (interne SIMPLICI CAB, D-021), **abonné chauffeur indépendant**, **abonné dispatcheur** (= chauffeur indépendant + bouton « Partager la course » : WhatsApp, Telegram, SMS, partage natif), collaborateur. Le module « Partager la course » (déjà en prod) devient réutilisable dans l'espace abonné. `ROADMAP.md` (étape 4 « Espaces abonnés ») mis à jour. Numéro D-059 choisi car D-033 à D-058 sont déjà pris sur d'autres branches non fusionnées (traçage des visites, optimisation Ads).
+
 ### D-032 — Réservation par téléphone : date et heure par défaut — 2026-11-17
 - **Décision** : sur `/admin/reservation-telephone`, le champ date/heure est **prérempli avec maintenant**, modifiable. Une **date passée est acceptée** (course oubliée puis dispatchée à la main sur les groupes, à saisir après coup).
 - **Raison** : la plupart des appels sont pour tout de suite ; garder une trace complète des courses, même saisies en retard.
