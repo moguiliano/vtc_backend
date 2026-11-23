@@ -57,13 +57,37 @@ bons de commande, factures) + collaborateurs (établissements partenaires avec p
 Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres. -->
 
 
-### D-022 — Prix de l'abonnement
-- **Chantier** : 📣 Marketing
-- **Contexte** : apparue avec D-014. Le paiement est manuel, donc le prix ne bloque pas le développement. **Reportée** le 2026-11-14 : à fixer quand les espaces abonnés approcheront (étape 4 de D-020).
-- **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ?
-- **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
-
 ## ✅ Tranché
+
+### D-022 — Prix de l'abonnement — 2026-11-23
+- **Décision** : **chauffeur indépendant 10 € TTC / mois**, **dispatcheur 30 € TTC / mois** (le partage des courses en plus, D-063). **1 mois d'essai gratuit**, facturation à partir du 2e mois. **Paiement au mois uniquement**, sans engagement.
+- **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).
+- **Impact** : un abonné a un type, une date de début d'essai et un état (en attente / essai / actif / lecture seule, D-014, D-015). À intégrer à l'étape 4 « Espaces abonnés » de `ROADMAP.md`.
+
+### D-063 — Abonné : chauffeur indépendant ou dispatcheur ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : C) : **deux abonnements différents** : « chauffeur indépendant » et « dispatcheur ». L'abonnement dispatcheur est **plus cher** et **débloque le partage** des courses (bouton « Partager la course » : WhatsApp, Telegram, SMS, partage).
+- **Raison** : le partage est un vrai service en plus pour ceux dont le métier est de distribuer des courses ; il justifie un prix plus élevé.
+- **Impact** : un abonné a un **type** (chauffeur indépendant / dispatcheur). Le bouton Partager n'est visible que pour le type dispatcheur. Les deux montants restent à fixer avec D-022 (reportée).
+
+### D-062 — Dispatcheur : qui fixe la commission et le prix chauffeur ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **le dispatcheur lui-même, course par course**. Il règle une fois son taux par défaut, puis peut le modifier à chaque partage, en € ou en % (comme D-024).
+- **Raison** : chaque dispatcheur a ses propres accords avec ses chauffeurs ; la souplesse du bouton Partager actuel lui convient.
+- **Impact** : le taux de commission par défaut devient un réglage **par abonné** (lien avec D-006 et D-016). La commission choisie reste enregistrée sur la réservation.
+
+### D-061 — Dispatcheur : ses chauffeurs ont-ils un compte ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **non, pas de compte**. Les chauffeurs d'un dispatcheur reçoivent les courses par WhatsApp, Telegram ou SMS, comme les chauffeurs de SIMPLICI CAB aujourd'hui.
+- **Raison** : rien de plus à construire au démarrage ; c'est déjà la pratique réelle.
+- **Impact** : confirme D-013 (pas de comptes chauffeurs). Pas d'écran « mes courses » côté chauffeur.
+
+### D-060 — Dispatcheur : comment partage-t-il une course ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : B) : **partage libre**. Le dispatcheur choisit lui-même ce qu'il envoie (course complète ou partielle), comme le bouton « Partager la course » actuel. Pas de partage en 2 temps imposé.
+- **Raison** : plus souple ; ce sont les clients et les chauffeurs du dispatcheur, c'est à lui de décider ce qu'il partage.
+- **Impact** : l'espace dispatcheur reprend le bouton « Partager la course » tel quel (modes complet / partiel / client). Le partage en 2 temps reste propre au régulateur interne (D-021).
+
+### D-059 — Le dispatcheur : quel rôle ? — 2026-11-23
+- **Décision** (mots de l'utilisateur) : « le dispatcheur a les mêmes fonctionnalités qu'un chauffeur indépendant + possibilité de partager les courses sur WhatsApp, Telegram, SMS et Partager ».
+- **Raison** : un dispatcheur gère ses propres clients et courses comme un abonné, mais son métier est de les distribuer à des chauffeurs.
+- **Impact** : complète D-013. Rôles prévus : super-admin, régulateur (interne SIMPLICI CAB, D-021), **abonné chauffeur indépendant**, **abonné dispatcheur** (= chauffeur indépendant + bouton « Partager la course » : WhatsApp, Telegram, SMS, partage natif), collaborateur. Le module « Partager la course » (déjà en prod) devient réutilisable dans l'espace abonné. `ROADMAP.md` (étape 4 « Espaces abonnés ») mis à jour. Numéro D-059 choisi car D-033 à D-058 sont déjà pris sur d'autres branches non fusionnées (traçage des visites, optimisation Ads).
 
 ### D-032 — Réservation par téléphone : date et heure par défaut — 2026-11-17
 - **Décision** : sur `/admin/reservation-telephone`, le champ date/heure est **prérempli avec maintenant**, modifiable. Une **date passée est acceptée** (course oubliée puis dispatchée à la main sur les groupes, à saisir après coup).
