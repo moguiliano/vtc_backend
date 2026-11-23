@@ -65,6 +65,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-061 — Dispatcheur : ses chauffeurs ont-ils un compte ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **non, pas de compte**. Les chauffeurs d'un dispatcheur reçoivent les courses par WhatsApp, Telegram ou SMS, comme les chauffeurs de SIMPLICI CAB aujourd'hui.
+- **Raison** : rien de plus à construire au démarrage ; c'est déjà la pratique réelle.
+- **Impact** : confirme D-013 (pas de comptes chauffeurs). Pas d'écran « mes courses » côté chauffeur.
+
 ### D-060 — Dispatcheur : comment partage-t-il une course ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : B) : **partage libre**. Le dispatcheur choisit lui-même ce qu'il envoie (course complète ou partielle), comme le bouton « Partager la course » actuel. Pas de partage en 2 temps imposé.
 - **Raison** : plus souple ; ce sont les clients et les chauffeurs du dispatcheur, c'est à lui de décider ce qu'il partage.
