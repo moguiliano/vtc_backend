@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-23 — Fondation « Entreprise » en prod (PR #12)
+- **Fait** : PR #12 mise à jour avec `main` (PR #13, sans conflit) puis fusionnée (`e87be67`) ; en prod : sauvegarde (877 Ko, `sauvegarde-20261123-2041.sql`), `git pull --ff-only` (`f70355a..e87be67`), exactement 7 migrations listées puis jouées sans erreur, cache vidé. Base : 1 entreprise, 5 grilles de prix (une 5ᵉ catégorie inactive en prod), 331 réservations et 3 factures rattachées à SIMPLICI CAB. Vérifié en ligne : pages publiques, prix « À partir de » (20/30/35/63 €), calcul de trajet ; admin vérifié par toi.
+- **Bloqué** : rien.
+- **Prochaine étape** : Régulateur (D-021). Les prix se modifient désormais dans l'admin > « Grille de prix ».
+
 ### 2026-11-23 — Fondation « Entreprise » (🗄️ Données, PR #12)
 - **Fait** : plan refait sur le `main` du jour (forfaits, messages et appels étiquetés aussi, ton choix « Oui, tout ») ; entité `Entreprise` (SIMPLICI CAB = n°1) ; `entreprise_id` sur réservations, factures (numéro `FAC-AAAA-0001` par entreprise), société (une fiche par entreprise), forfaits, catégories de messages, appels ; nouvelle **Grille de prix** (prix par entreprise, catégories communes, D-016) ; 4 briques (`EntrepriseCourante`, `ReservationCreator`, `PdfGenerator`, `Tarification`). 7 migrations testées sur une copie de la base (`zencar_fondation`) : aller-retour sans perte (12 tables identiques), 60 prix identiques, parcours public / téléphone / quick-book / bon PDF / facture + PDF / Partager vérifiés, 11 tests PHPUnit. PR #12 ouverte.
 - **Bloqué** : rien. Constatés en passant (déjà là avant) : fiche détail facture en erreur 500 en mode dev (taux de TVA en nombres à virgule) ; route `/reservation/{id}/confirm` déclarée deux fois.

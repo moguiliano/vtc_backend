@@ -6,13 +6,13 @@
 
 | # | Objectif | Chantier | Branche | Prochaine étape |
 |---|---|---|---|---|
-| 1 | **Fondation « Entreprise »** (D-020 étape 0) | 🗄️ Données | `feature/fondation-entreprise` | **Codée et testée (PR #12)** : fusionner, puis mise en prod avec **7 migrations** (sauvegarde avant) |
+| 1 | **Régulateur** (D-020 étape 2, D-013, D-021) | 🧩 Fonctionnalités | — | Plan avant code (la fondation est en prod depuis le 2026-11-23) |
 | 2 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | **Mise en prod seule le 2026-11-15** (D-020 modifiée) ; ensuite : « brouillon → émise » (D-001, D-003) |
 | 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
 
 ## 🏗️ Plateforme multi-entreprises (D-011 à D-021) — ordre décidé (D-020)
 
-0. [x] **Fondation** (PR #12, 2026-11-23, à mettre en prod) : entité Entreprise ; réservations, factures (numérotation par entreprise), société, grille de prix, forfaits, messages, appels rattachés à une entreprise ; briques `EntrepriseCourante`, `ReservationCreator`, `PdfGenerator`, `Tarification`. **Pas encore fait** (prévu aux étapes 2 à 4) : filtrer les listes admin par entreprise, entreprise de l'utilisateur connecté, état de l'abonné
+0. [x] **Fondation** (PR #12, **en prod le 2026-11-23**) : entité Entreprise ; réservations, factures (numérotation par entreprise), société, grille de prix, forfaits, messages, appels rattachés à une entreprise ; briques `EntrepriseCourante`, `ReservationCreator`, `PdfGenerator`, `Tarification`. **Pas encore fait** (prévu aux étapes 2 à 4) : filtrer les listes admin par entreprise, entreprise de l'utilisateur connecté, état de l'abonné
 1. **Facturation** → mise en prod **avant** la fondation (modification du 2026-11-15) ; sera rattachée à l'entreprise n°1 à l'étape 0
 2. [ ] **Régulateur** (D-013, D-021) : `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; partage en 2 temps sur WhatsApp et Telegram : annonce groupe (zone approximative, date/heure, véhicule, prix chauffeur seul) → réponses avec temps d'approche → le régulateur choisit → course complète en message privé au chauffeur retenu
 3. [ ] **Collaborateurs** (D-018, D-019) : comptes établissements de SIMPLICI CAB, forfaits propres + remise %, paiement « sur le compte » (facture mensuelle) ou par le passager, au choix par commande
@@ -64,6 +64,7 @@
 - [ ] Vérifier que le `.env` local ne pointe pas vers la base de prod (seul `.env.local` doit définir la base locale)
 
 ## ✅ Terminé (récent)
+- 2026-11-23 — **Mise en prod** de la fondation « Entreprise » (PR #12) : 7 migrations, prix et données inchangés, nouveau menu « Grille de prix »
 - 2026-11-17 — **Mise en prod** de « Partager la course » (PR #7, D-023 à D-031 : partage complet / partiel / client, SMS-WhatsApp-Copier, commission enregistrée, sous-menu Messages avec catégories et modèles) et de la réservation par téléphone avec date passée (PR #8, D-032), migration comprise ; vérifiées en ligne le 2026-11-19
 - 2026-11-15 — **Mise en prod** des corrections d'affichage (PR #3) : champs vides masqués (récap + fiche admin), zoom mobile, débordement mobile, marge de la carte
 - 2026-11-13 — **Mise en prod** de la réservation admin par téléphone + registre des migrations réparé + mode debug coupé en prod
