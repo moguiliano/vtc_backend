@@ -60,10 +60,15 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 ### D-022 — Prix de l'abonnement
 - **Chantier** : 📣 Marketing
 - **Contexte** : apparue avec D-014. Le paiement est manuel, donc le prix ne bloque pas le développement. **Reportée** le 2026-11-14 : à fixer quand les espaces abonnés approcheront (étape 4 de D-020).
-- **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ?
+- **Options** : montant ? mensuel / annuel ? période d'essai gratuite (ex. 1 mois) ? **Deux prix** depuis D-063 : chauffeur indépendant, et dispatcheur (plus cher).
 - **Avis de Claude** : à fixer avant le premier abonné ; regarder les prix des logiciels VTC concurrents.
 
 ## ✅ Tranché
+
+### D-063 — Abonné : chauffeur indépendant ou dispatcheur ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : C) : **deux abonnements différents** : « chauffeur indépendant » et « dispatcheur ». L'abonnement dispatcheur est **plus cher** et **débloque le partage** des courses (bouton « Partager la course » : WhatsApp, Telegram, SMS, partage).
+- **Raison** : le partage est un vrai service en plus pour ceux dont le métier est de distribuer des courses ; il justifie un prix plus élevé.
+- **Impact** : un abonné a un **type** (chauffeur indépendant / dispatcheur). Le bouton Partager n'est visible que pour le type dispatcheur. Les deux montants restent à fixer avec D-022 (reportée).
 
 ### D-062 — Dispatcheur : qui fixe la commission et le prix chauffeur ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : A) : **le dispatcheur lui-même, course par course**. Il règle une fois son taux par défaut, puis peut le modifier à chaque partage, en € ou en % (comme D-024).
