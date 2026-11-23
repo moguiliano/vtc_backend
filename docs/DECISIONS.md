@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-072 — Espaces abonnés avant les Collaborateurs ? — 2026-11-24
+- **Décision** (mots de l'utilisateur) : « je veux d'abord l'espace abonné ». L'étape 4 **Espaces abonnés** passe **avant** l'étape 3 **Collaborateurs**.
+- **Raison** : choix de l'utilisateur ; la Fondation « Entreprise » et le Régulateur (étapes 0 et 2) sont en prod, les espaces abonnés peuvent s'appuyer dessus.
+- **Impact** : modifie l'ordre de D-020. `ROADMAP.md` : Espaces abonnés devient l'étape en cours, Collaborateurs ensuite.
+
 ### D-022 — Prix de l'abonnement — 2026-11-23
 - **Décision** : **chauffeur indépendant 10 € TTC / mois**, **dispatcheur 30 € TTC / mois** (le partage des courses en plus, D-063). **1 mois d'essai gratuit**, facturation à partir du 2e mois. **Paiement au mois uniquement**, sans engagement.
 - **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).
