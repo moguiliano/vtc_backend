@@ -2,19 +2,25 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EntrepriseTrait;
 use App\Repository\FactureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
-class Facture
+/** Numérotation propre à chaque entreprise émettrice (D-017) : le numéro est unique dans une entreprise. */
+#[ORM\UniqueConstraint(name: 'uniq_facture_entreprise_numero', columns: ['entreprise_id', 'numero'])]
+class Facture implements AppartientAEntreprise
 {
+    /** Entreprise qui émet la facture (D-017, D-020). */
+    use EntrepriseTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 30, unique: true)]
+    #[ORM\Column(length: 30)]
     private ?string $numero = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]

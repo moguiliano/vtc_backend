@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Entreprise;
 use App\Entity\Facture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -13,15 +14,17 @@ class FactureRepository extends ServiceEntityRepository
         parent::__construct($registry, Facture::class);
     }
 
-    /** Prochain numéro chronologique de l'année : FAC-2026-0001 */
-    public function nextNumero(\DateTimeInterface $date): string
+    /** Prochain numéro chronologique de l'année pour une entreprise (D-003, D-017) : FAC-2026-0001 */
+    public function nextNumero(Entreprise $entreprise, \DateTimeInterface $date): string
     {
         $prefix = 'FAC-' . $date->format('Y') . '-';
 
         $last = $this->createQueryBuilder('f')
             ->select('f.numero')
             ->where('f.numero LIKE :p')
+            ->andWhere('f.entreprise = :e')
             ->setParameter('p', $prefix . '%')
+            ->setParameter('e', $entreprise)
             ->orderBy('f.numero', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
