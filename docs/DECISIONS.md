@@ -64,6 +64,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 - **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).
 - **Impact** : un abonné a un type, une date de début d'essai et un état (en attente / essai / actif / lecture seule, D-014, D-015). À intégrer à l'étape 4 « Espaces abonnés » de `ROADMAP.md`.
 
+### D-071 — Annonce groupe : l'adresse d'arrivée est-elle cachée ? — 2026-11-23
+- **Décision** (mots de l'utilisateur) : « pas besoin qu'elle soit cachée ». L'adresse d'**arrivée** (`{arrivee}`) s'affiche dans l'annonce groupe. Restent toujours retirés : nom, téléphone et adresse exacte de **départ** du client, arrêt, informations complémentaires, prix client et commission.
+- **Raison** : D-021 ne demande qu'une zone approximative de **prise en charge** ; le risque de contact direct avec le client vient du départ, pas de la destination.
+- **Impact** : précise D-066 ; `{arrivee}` retirée de `PartageCourseService::INTERDITES_GROUPE`. Le modèle « Annonce groupe » de prod n'a pas besoin d'être modifié.
+
 ### D-070 — Une page dédiée au régulateur ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : B) : **non pour l'instant**. La liste des réservations suffit pour démarrer ; l'idée d'un tableau de bord régulateur (courses du jour et du lendemain, courses sans chauffeur retenu, bouton Partager par ligne) va dans « En attente ».
 - **Raison** : mettre en prod ce qui est fait, puis voir comment le régulateur travaille vraiment.

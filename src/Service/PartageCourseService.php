@@ -21,11 +21,11 @@ class PartageCourseService
 {
     /**
      * Annonce groupe (D-021, D-066) : variables toujours vidées, quel que soit le modèle.
-     * Le groupe ne voit que le prix chauffeur ({net_chauffeur}) et des zones approximatives.
+     * Le groupe ne voit que le prix chauffeur ({net_chauffeur}) et une zone approximative de prise en charge ; l'arrivée reste visible (D-071).
      * Une ligne du modèle qui contient l'une d'elles disparaît du message.
      */
     public const INTERDITES_GROUPE = [
-        '{prenom}', '{telephone_client}', '{depart}', '{arrivee}', '{arret}',
+        '{prenom}', '{telephone_client}', '{depart}', '{arret}',
         '{prix}', '{commission}', '{infos}',
     ];
 
