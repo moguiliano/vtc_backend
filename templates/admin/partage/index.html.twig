@@ -84,7 +84,7 @@
     </div>
 
     {% set onglets = {
-        groupe:    'Annonce dans les groupes WhatsApp ou Telegram : zone approximative, date et heure, véhicule, prix chauffeur seul. Ni prix client, ni commission, ni nom, téléphone ou adresse exacte du client.',
+        groupe:    'Annonce dans les groupes WhatsApp ou Telegram : zone approximative de prise en charge, arrivée, date et heure, véhicule, prix chauffeur seul. Ni prix client, ni commission, ni nom, téléphone ou adresse exacte de départ du client.',
         chauffeur: 'Une fois le chauffeur choisi parmi ceux qui ont répondu (temps d\'approche) : toutes les infos de la course, en message privé.',
         client:    'Message au client, envoyé à son numéro.',
     } %}
@@ -160,5 +160,5 @@
 
 {% block body_javascript %}
     {{ parent() }}
-    <script src="{{ asset('js/partage-course.js') }}?v=3"></script>
+    <script src="{{ asset('js/partage-course.js') }}?v=4"></script>
 {% endblock %}

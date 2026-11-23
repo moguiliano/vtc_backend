@@ -7,7 +7,7 @@
  *
  * Règle : une ligne dont une variable est vide disparaît (ex. pas d'arrêt).
  * Annonce groupe (D-066) : les variables de donnees.interditesGroupe sont toujours vides
- * (prix client, commission, client, adresses exactes), quel que soit le modèle.
+ * (prix client, commission, client, adresse exacte de départ ; l'arrivée reste visible, D-071), quel que soit le modèle.
  */
 (function () {
     const racine = document.getElementById('partage-course');
