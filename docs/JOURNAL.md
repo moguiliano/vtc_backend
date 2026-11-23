@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-23 — Régulateur en prod (PR #15 et #16)
+- **Fait** : PR #15 fusionnée (`acab3bc`) ; en prod : sauvegarde (881 Ko), `git pull --ff-only`, 1 seule migration listée puis jouée (`Version20261123214444`), cache vidé. Compte n°3 (hotmail) qui avait d'anciens droits (`ROLE_ADMIN`, `ROLE_RESERVATIONS_*`) passé en **Régulateur pur** depuis l'admin. Correctif D-071 (« pas besoin qu'elle soit cachée ») : l'annonce groupe affiche à nouveau l'adresse d'arrivée ; PR #16 fusionnée (`9c8cf19`) et mise en prod (pull + cache, sans migration). Vérifié par toi en ligne : arrivée visible dans l'annonce, menu régulateur, Telegram, `/admin/admin` refusé en régulateur. Vérifié par Claude : pages publiques et redirection de `/admin` vers la connexion.
+- **Bloqué** : rien. Toujours non testé : le bouton Telegram sur un vrai téléphone ; la trace « site » lors d'une modification par le site public.
+- **Prochaine étape** : laisser le régulateur travailler quelques semaines, puis revoir le tableau de bord régulateur (D-070, en attente). Étape suivante de la plateforme : Collaborateurs (D-018, D-019).
+
 ### 2026-11-23 — Régulateur (🧩 Fonctionnalités, `feature/regulateur`)
 - **Fait** : décisions D-064 à D-069. Trou de sécurité fermé : un régulateur pouvait ouvrir « Administrateurs » (et se créer un compte Super Admin), la grille de prix, les véhicules, les forfaits, « Avis Google » et créer des factures en tapant l'adresse. Désormais réservés au super-admin (`#[IsGranted('ROLE_SUPER_ADMIN')]`). Droits simplifiés à 2 (Super Admin / Régulateur). Factures en lecture seule pour le régulateur. Page Partager : « 1. Annonce groupe » (prix chauffeur seul, client et prix client toujours retirés), « 2. Envoi au chauffeur retenu » avec champ « Chauffeur retenu », bouton Telegram. Trace « Modifiée par / le » (heure de Marseille). Corrigé en passant : fiche détail facture en erreur 500 (taux de TVA). **1 migration** (`Version20261123214444`, 3 colonnes vides sur `reservation`). Testé en local sur une copie de la base (`zencar_regulateur`) avec 2 comptes de test : 16 adresses interdites → 403 pour le régulateur, 200 pour le super-admin.
 - **Bloqué** : rien. Non testé : le bouton Telegram sur un vrai téléphone ; la trace « site » quand un client modifie sa réservation sur le site public.
