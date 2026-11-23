@@ -21,6 +21,7 @@
 ## ⏳ En attente
 
 ### 🧩 Fonctionnalités
+- [ ] **Tableau de bord régulateur** (D-070) : page d'accueil du régulateur avec les courses du jour et du lendemain, les courses sans chauffeur retenu (à dispatcher en priorité) et un bouton « Partager » par ligne. À revoir après quelques semaines d'usage réel.
 - [ ] **Partager la course, suite** (idées gardées de D-028) : lien GPS Waze/Maps dans le partage complet ; trace des envois (« Remerciement envoyé le… ») ;
   ~~champ « chauffeur assigné »~~ → fait avec le Régulateur (« Chauffeur retenu », D-067)
 - [ ] **Facture brouillon → émise** (D-001, D-003) — branche `feature/facturation-emission` :

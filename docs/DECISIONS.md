@@ -64,6 +64,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 - **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).
 - **Impact** : un abonné a un type, une date de début d'essai et un état (en attente / essai / actif / lecture seule, D-014, D-015). À intégrer à l'étape 4 « Espaces abonnés » de `ROADMAP.md`.
 
+### D-070 — Une page dédiée au régulateur ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : B) : **non pour l'instant**. La liste des réservations suffit pour démarrer ; l'idée d'un tableau de bord régulateur (courses du jour et du lendemain, courses sans chauffeur retenu, bouton Partager par ligne) va dans « En attente ».
+- **Raison** : mettre en prod ce qui est fait, puis voir comment le régulateur travaille vraiment.
+- **Impact** : rien à coder ; `ROADMAP.md` (En attente) mis à jour.
+
 ### D-069 — Le régulateur voit-il les « Messages reçus » ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : A) : **oui**, il voit les messages du formulaire de contact et peut les marquer comme lus (comme aujourd'hui). Le **Journal des appels** (suivi Google Ads) reste au super-admin.
 - **Raison** : un client qui écrit pour réserver, c'est de l'exploitation quotidienne.
