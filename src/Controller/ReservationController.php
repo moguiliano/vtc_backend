@@ -6,14 +6,12 @@ use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\VehicleCategoryRepository;
 use App\Service\HereMapsService;
+use App\Service\PdfGenerator;
 use App\Service\ReservationAccess;
 use App\Service\ReservationCreator;
 use App\Service\SmsNotifier;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use App\Repository\ForfaitRepository;
 use App\Repository\ReservationRepository;
-use App\Repository\SocieteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -151,35 +149,14 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/{id}/bon-commande.pdf', name: 'reservation_pdf', methods: ['GET'])]
-    public function pdf(int $id, Request $request, ReservationRepository $repo, SocieteRepository $societeRepo): Response
+    public function pdf(int $id, Request $request, ReservationRepository $repo, PdfGenerator $pdf): Response
     {
         $reservation = $repo->find($id);
         if (!$reservation || !$this->access->isAllowed($request, $id)) {
             throw $this->createNotFoundException('Réservation introuvable.');
         }
 
-        $html = $this->renderView('pdf/bon_commande.html.twig', [
-            'reservation' => $reservation,
-            'societe'     => $societeRepo->pourEntreprise($reservation->getEntreprise()),
-        ]);
-
-        $options = new Options();
-        $options->set('defaultFont', 'Helvetica');
-        $options->set('isRemoteEnabled', false);
-
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html, 'UTF-8');
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        return new Response(
-            $dompdf->output(),
-            200,
-            [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="bon-commande-' . $id . '.pdf"',
-            ]
-        );
+        return $pdf->bonDeCommande($reservation);
     }
 
     #[Route('/calculate-trip', name: 'reservation_calculate_trip', methods: ['POST'])]

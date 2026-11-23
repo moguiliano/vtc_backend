@@ -3,10 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Repository\FactureRepository;
-use App\Repository\SocieteRepository;
-use App\Service\EntrepriseCourante;
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use App\Service\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,22 +13,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class FactureController extends AbstractController
 {
     #[Route('/admin/factures/{id}/pdf', name: 'admin_facture_pdf', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function pdf(int $id, FactureRepository $repo, SocieteRepository $societeRepo, EntrepriseCourante $entrepriseCourante): Response
+    public function pdf(int $id, FactureRepository $repo, PdfGenerator $pdf): Response
     {
         $facture = $repo->find($id) ?? throw $this->createNotFoundException('Facture introuvable.');
 
-        $options = new Options();
-        $options->set('defaultFont', 'Helvetica');
-        $options->set('isRemoteEnabled', false);
-
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($this->renderView('pdf/facture.html.twig', ['facture' => $facture, 'societe' => $societeRepo->pourEntreprise($entrepriseCourante->get())]), 'UTF-8');
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        return new Response($dompdf->output(), 200, [
-            'Content-Type'        => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $facture->getNumero() . '.pdf"',
-        ]);
+        return $pdf->facture($facture);
     }
 }
