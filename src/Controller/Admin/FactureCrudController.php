@@ -51,7 +51,8 @@ class FactureCrudController extends AbstractCrudController
         // Numérotation continue : une facture émise ne se supprime pas
         $actions->disable(Action::DELETE, Action::BATCH_DELETE);
 
-        if (!$this->isGranted('ROLE_RESERVATIONS_EDIT')) {
+        // D-065 : le régulateur voit les factures (liste, détail, PDF) sans les créer ni les modifier
+        if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
             $actions->disable(Action::NEW, Action::EDIT);
         }
 
@@ -116,7 +117,11 @@ class FactureCrudController extends AbstractCrudController
                 '20 %'                          => 20.0,
                 '0 % (exonéré)'                 => 0.0,
             ])
-            ->hideOnIndex();
+            ->onlyOnForms();
+        // Sur la fiche détail : simple texte (la liste de choix en nombres à virgule y plantait, erreur 500)
+        yield NumberField::new('tauxTva', 'Taux de TVA')
+            ->formatValue(fn($v) => str_replace('.', ',', (string) round((float) $v, 2)) . ' %')
+            ->onlyOnDetail();
         yield NumberField::new('montantHt', 'Montant HT (€)')->setNumDecimals(2)->hideOnForm();
         yield NumberField::new('montantTva', 'TVA (€)')->setNumDecimals(2)->hideOnForm();
         yield ChoiceField::new('modeReglement', 'Règlement')

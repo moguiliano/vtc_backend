@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\SiteSettings;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -15,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 /**
  * Écran « Avis Google » : une seule ligne, modifiable, ni création ni suppression.
  */
+#[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réglages du site réservés au super-admin
 class SiteSettingsCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

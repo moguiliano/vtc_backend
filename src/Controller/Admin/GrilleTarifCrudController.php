@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\GrilleTarif;
 use App\Service\EntrepriseCourante;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +24,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
  * Grille de prix de l'entreprise courante (D-016, D-020) : une ligne par catégorie proposée.
  * Les prix étaient avant dans « Véhicules & Prix » ; les montants n'ont pas changé.
  */
+#[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réservé au super-admin, même en tapant l'adresse
 class GrilleTarifCrudController extends AbstractCrudController
 {
     public function __construct(private readonly EntrepriseCourante $entrepriseCourante) {}

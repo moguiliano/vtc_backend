@@ -60,7 +60,7 @@ class ReservationCrudController extends AbstractCrudController
                 ->setAction(Action::NEW)
                 ->set('reservationId', $r->getId())
                 ->generateUrl())
-            ->displayIf(fn() => $this->isGranted('ROLE_RESERVATIONS_EDIT'))
+            ->displayIf(fn() => $this->isGranted('ROLE_SUPER_ADMIN')) // D-065
             ->addCssClass('btn btn-secondary');
 
         // « Partager la course » (D-023) : toujours visible (D-027)
@@ -128,6 +128,13 @@ class ReservationCrudController extends AbstractCrudController
             ->setNumOfRows(3)
             ->setRequired(false);
 
+        // ── Régulateur (D-067, D-068) ──
+        $chauffeurRetenu = TextField::new('chauffeurRetenu', 'Chauffeur retenu')
+            ->setRequired(false)
+            ->setHelp('Nom et téléphone du chauffeur qui fait la course, ex. « Karim — 06 12 34 56 78 ».');
+        $modifiePar = TextField::new('modifiePar', 'Modifiée par');
+        $modifieLe  = DateTimeField::new('modifieLe', 'Modifiée le')->setFormat('dd/MM/yyyy HH:mm');
+
         // ── Dates ──
         $createdAt = DateTimeField::new('createdAt', 'Créé le')->setFormat('dd/MM/yyyy HH:mm');
 
@@ -139,7 +146,7 @@ class ReservationCrudController extends AbstractCrudController
 
         // ── Index ──
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$statut, $createdAt, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos];
+            return [$statut, $createdAt, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos, $chauffeurRetenu];
         }
 
         // ── Détail : seuls les champs renseignés sont affichés ──
@@ -159,6 +166,7 @@ class ReservationCrudController extends AbstractCrudController
                 $typeVehicule, $prix, $commission, $modeReglement,
                 $guestPrenom, $guestTelephone,
                 $infos,
+                $chauffeurRetenu, $modifiePar, $modifieLe,
                 $user, $isGuest, $guestInfo,
             ]);
         }
@@ -174,13 +182,14 @@ class ReservationCrudController extends AbstractCrudController
             $guestPrenom,
             $guestTelephone,
             $infos,
+            $chauffeurRetenu,
         ];
     }
 
     /**
      * Écran « Partager la course » (D-023 à D-028) : partage complet (chauffeur),
-     * partiel (groupe) et messages client, avec SMS / WhatsApp / Copier.
-     * POST : enregistre la commission choisie sur la réservation (D-024).
+     * partiel (groupe) et messages client, avec SMS / WhatsApp / Telegram / Copier.
+     * POST : enregistre la commission (D-024) ou le chauffeur retenu (D-067) sur la réservation.
      *
      * #[AdminAction] : déclare la route « jolie » /admin/reservation/{id}/partager
      * (sans elle, EasyAdmin ne charge pas la réservation → erreur 500).
@@ -205,7 +214,9 @@ class ReservationCrudController extends AbstractCrudController
             ->generateUrl();
 
         if ($request->isMethod('POST')) {
-            $this->enregistrerCommission($request, $reservation, $em);
+            $request->request->has('chauffeur_retenu')
+                ? $this->enregistrerChauffeur($request, $reservation, $em)
+                : $this->enregistrerCommission($request, $reservation, $em);
             return $this->redirect($url);
         }
 
@@ -236,9 +247,28 @@ class ReservationCrudController extends AbstractCrudController
                 'commission'      => $commission,
                 'pourcentDefaut'  => $partage->getCommissionPercentDefaut(),
                 'telephoneClient' => $partage->telephoneClient($reservation),
+                'interditesGroupe'=> PartageCourseService::INTERDITES_GROUPE,
                 'modeles'         => $modeles,
             ],
         ]);
+    }
+
+    /** Chauffeur retenu, texte libre (D-067), saisi à l'étape « 2. Envoi au chauffeur retenu ». */
+    private function enregistrerChauffeur(Request $request, Reservation $reservation, EntityManagerInterface $em): void
+    {
+        if (!$this->isGranted('ROLE_RESERVATIONS_EDIT')) {
+            throw $this->createAccessDeniedException();
+        }
+        if (!$this->isCsrfTokenValid('partage_chauffeur_' . $reservation->getId(), (string) $request->request->get('_token'))) {
+            $this->addFlash('danger', 'Session expirée, recommencez.');
+            return;
+        }
+
+        $reservation->setChauffeurRetenu(mb_substr((string) $request->request->get('chauffeur_retenu'), 0, 255));
+        $em->flush();
+        $this->addFlash('success', $reservation->getChauffeurRetenu()
+            ? sprintf('Chauffeur retenu enregistré : %s.', $reservation->getChauffeurRetenu())
+            : 'Chauffeur retenu effacé.');
     }
 
     private function enregistrerCommission(Request $request, Reservation $reservation, EntityManagerInterface $em): void

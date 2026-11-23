@@ -56,6 +56,17 @@ class Reservation implements AppartientAEntreprise
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $commission = null;
 
+    /** Chauffeur retenu, texte libre (ex. « Karim — 06 12 34 56 78 »), D-067. */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $chauffeurRetenu = null;
+
+    /** Dernière modification : qui (email du compte admin, ou « site ») et quand (D-068). */
+    #[ORM\Column(length: 180, nullable: true)]
+    private ?string $modifiePar = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $modifieLe = null;
+
     #[ORM\Column(type: 'boolean')]
     private bool $isGuest = false;
 
@@ -244,6 +255,36 @@ class Reservation implements AppartientAEntreprise
     public function setCommission(?float $commission): static
     {
         $this->commission = $commission;
+        return $this;
+    }
+
+    public function getChauffeurRetenu(): ?string
+    {
+        return $this->chauffeurRetenu;
+    }
+
+    public function setChauffeurRetenu(?string $chauffeurRetenu): static
+    {
+        $chauffeurRetenu = $chauffeurRetenu !== null ? trim($chauffeurRetenu) : null;
+        $this->chauffeurRetenu = $chauffeurRetenu === '' ? null : $chauffeurRetenu;
+        return $this;
+    }
+
+    public function getModifiePar(): ?string
+    {
+        return $this->modifiePar;
+    }
+
+    public function getModifieLe(): ?\DateTimeImmutable
+    {
+        return $this->modifieLe;
+    }
+
+    /** Appelé automatiquement à chaque modification (ReservationModificationListener). */
+    public function marquerModifiee(string $par, \DateTimeImmutable $le): static
+    {
+        $this->modifiePar = $par;
+        $this->modifieLe  = $le;
         return $this;
     }
 

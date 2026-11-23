@@ -3,9 +3,11 @@
  *
  * Remplit les variables des modèles ({prenom}, {commission}…) avec les valeurs
  * envoyées par le serveur, recalcule commission / net en direct, et prépare
- * les liens SMS, WhatsApp et le bouton Copier.
+ * les liens SMS, WhatsApp, Telegram et le bouton Copier.
  *
  * Règle : une ligne dont une variable est vide disparaît (ex. pas d'arrêt).
+ * Annonce groupe (D-066) : les variables de donnees.interditesGroupe sont toujours vides
+ * (prix client, commission, client, adresses exactes), quel que soit le modèle.
  */
 (function () {
     const racine = document.getElementById('partage-course');
@@ -24,7 +26,16 @@
     const ecrireNombre = (n) => String(Math.round(n * 100) / 100).replace('.', ',');
 
     // ── Remplacement des variables ──
-    function remplir(contenu) {
+    const interditesGroupe = donnees.interditesGroupe || [];
+    function valeursPour(type) {
+        if (type !== 'groupe') return variables;
+        const v = Object.assign({}, variables);
+        interditesGroupe.forEach((nom) => { v[nom] = ''; });
+        return v;
+    }
+
+    function remplir(contenu, type) {
+        const variables = valeursPour(type);
         const lignes = contenu.split('\n').filter((ligne) => {
             const trouvees = ligne.match(/\{[a-z_]+\}/g) || [];
             return trouvees.every((v) => !(v in variables) || String(variables[v]).trim() !== '');
@@ -52,6 +63,8 @@
             // « ?&body= » : fonctionne sur iPhone comme sur Android
             sms: 'sms:' + numero + '?&body=' + corps,
             whatsapp: 'https://wa.me/' + numero.replace(/\D/g, '') + '?text=' + corps,
+            // Telegram : pas de destinataire, on choisit le groupe ou le contact dans l'appli
+            telegram: 'https://t.me/share/url?url=' + corps,
         };
     }
 
@@ -62,7 +75,7 @@
         if (!zone) return;
         const choix  = panneau.querySelector('input[type=radio]:checked');
         const modele = donnees.modeles[type][choix ? Number(choix.value) : 0];
-        zone.value = remplir(modele.contenu);
+        zone.value = remplir(modele.contenu, type);
         ajusterHauteur(zone);
         majLiens(type);
     }
@@ -73,9 +86,10 @@
         const l = liens(type, zone.value);
         panneau.querySelector('[data-envoi="sms"]').href = l.sms;
         panneau.querySelector('[data-envoi="whatsapp"]').href = l.whatsapp;
+        panneau.querySelector('[data-envoi="telegram"]').href = l.telegram;
     }
 
-    const types = ['chauffeur', 'groupe', 'client'];
+    const types = ['groupe', 'chauffeur', 'client'];
     const toutRafraichir = () => types.forEach(rafraichir);
 
     // ── Commission : € ↔ % ↔ net ──

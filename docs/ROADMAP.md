@@ -6,7 +6,7 @@
 
 | # | Objectif | Chantier | Branche | Prochaine étape |
 |---|---|---|---|---|
-| 1 | **Régulateur** (D-020 étape 2, D-013, D-021) | 🧩 Fonctionnalités | — | Plan avant code (la fondation est en prod depuis le 2026-11-23) |
+| 1 | **Régulateur** (D-020 étape 2, D-013, D-021, D-064 à D-069) | 🧩 Fonctionnalités | `feature/regulateur` | Codé et testé en local ; ensuite : PR vers `main` puis mise en prod (sauvegarde + **1 migration**) |
 | 2 | Facturation (factures + fiche société) | 🧩 Fonctionnalités | `feature/facturation` | **Mise en prod seule le 2026-11-15** (D-020 modifiée) ; ensuite : « brouillon → émise » (D-001, D-003) |
 | 3 | Campagne Google Ads — 5 groupes | 📣 Marketing | — | Créer les 5 groupes dans l'interface Google Ads |
 
@@ -14,15 +14,16 @@
 
 0. [x] **Fondation** (PR #12, **en prod le 2026-11-23**) : entité Entreprise ; réservations, factures (numérotation par entreprise), société, grille de prix, forfaits, messages, appels rattachés à une entreprise ; briques `EntrepriseCourante`, `ReservationCreator`, `PdfGenerator`, `Tarification`. **Pas encore fait** (prévu aux étapes 2 à 4) : filtrer les listes admin par entreprise, entreprise de l'utilisateur connecté, état de l'abonné
 1. **Facturation** → mise en prod **avant** la fondation (modification du 2026-11-15) ; sera rattachée à l'entreprise n°1 à l'étape 0
-2. [ ] **Régulateur** (D-013, D-021) : `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; partage en 2 temps sur WhatsApp et Telegram : annonce groupe (zone approximative, date/heure, véhicule, prix chauffeur seul) → réponses avec temps d'approche → le régulateur choisit → course complète en message privé au chauffeur retenu
+2. [~] **Régulateur** (D-013, D-021, D-064 à D-069, **codé sur `feature/regulateur`, pas encore en prod**) : compte créé dans « Administrateurs » (2 droits : Super Admin / Régulateur) ; menus interdits fermés même en tapant l'adresse ; factures en lecture seule ; champ « Chauffeur retenu » et trace « Modifiée par / le » ; messages reçus visibles. `ROLE_REGULATEUR`, voit tout sur les courses de SIMPLICI CAB, ne touche ni aux tarifs, ni à « Ma société », ni aux comptes, ni à la création de factures ; partage en 2 temps sur WhatsApp et Telegram : annonce groupe (zone approximative, date/heure, véhicule, prix chauffeur seul) → réponses avec temps d'approche → le régulateur choisit → course complète en message privé au chauffeur retenu
 3. [ ] **Collaborateurs** (D-018, D-019) : comptes établissements de SIMPLICI CAB, forfaits propres + remise %, paiement « sur le compte » (facture mensuelle) ou par le passager, au choix par commande
 4. [ ] **Espaces abonnés** (D-011 à D-017, D-059) : 2 types d'abonnés, **chauffeur indépendant** et **dispatcheur** (= chauffeur indépendant + « Partager la course » sur WhatsApp, Telegram, SMS et partage) ; outil de gestion, 1 compte par abonné, saisie société une fois puis validation super-admin (rien d'accessible avant), états en attente / actif / lecture seule, paiement manuel, catégories communes + prix propres, bons et factures à son nom avec sa numérotation. Prix (D-022) : 10 € TTC / mois chauffeur, 30 € TTC / mois dispatcheur, 1 mois d'essai, paiement mensuel
 
 ## ⏳ En attente
 
 ### 🧩 Fonctionnalités
+- [ ] **Tableau de bord régulateur** (D-070) : page d'accueil du régulateur avec les courses du jour et du lendemain, les courses sans chauffeur retenu (à dispatcher en priorité) et un bouton « Partager » par ligne. À revoir après quelques semaines d'usage réel.
 - [ ] **Partager la course, suite** (idées gardées de D-028) : lien GPS Waze/Maps dans le partage complet ; trace des envois (« Remerciement envoyé le… ») ;
-  champ « chauffeur assigné » sur la réservation (anti-détournement de clients, prépare D-021)
+  ~~champ « chauffeur assigné »~~ → fait avec le Régulateur (« Chauffeur retenu », D-067)
 - [ ] **Facture brouillon → émise** (D-001, D-003) — branche `feature/facturation-emission` :
   statut brouillon/émise, bouton « Émettre », facture verrouillée une fois émise,
   numéro `FAC-AAAA-0001` attribué à l'émission (pas à la création), avoir pour corriger une facture émise
