@@ -14,8 +14,8 @@ enum MessageTemplateType: string
     public function label(): string
     {
         return match ($this) {
-            self::CHAUFFEUR => 'Partage complet (chauffeur)',
-            self::GROUPE    => 'Partage partiel (groupe)',
+            self::CHAUFFEUR => '2. Envoi au chauffeur retenu',
+            self::GROUPE    => '1. Annonce groupe',
             self::CLIENT    => 'Message client',
         };
     }

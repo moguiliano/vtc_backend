@@ -35,6 +35,8 @@
         .partage-envoi .btn { min-width:130px; }
         .btn-whatsapp { background:#25d366; border-color:#25d366; color:#fff; }
         .btn-whatsapp:hover { background:#1ebe57; color:#fff; }
+        .btn-telegram { background:#229ed9; border-color:#229ed9; color:#fff; }
+        .btn-telegram:hover { background:#1b8cc2; color:#fff; }
         .partage-commission .form-control { max-width:140px; }
         .partage-carte { border:1px solid var(--border-color, #dee2e6); border-radius:10px; padding:1rem; margin-bottom:1rem; }
     </style>
@@ -76,14 +78,14 @@
 
     {# ── Onglets ── #}
     <div class="partage-onglets" role="tablist">
-        <button type="button" data-onglet="chauffeur" class="actif"><i class="fa fa-user-tie"></i> Complet (chauffeur)</button>
-        <button type="button" data-onglet="groupe"><i class="fa fa-users"></i> Partiel (groupe)</button>
+        <button type="button" data-onglet="groupe" class="actif"><i class="fa fa-users"></i> 1. Annonce groupe</button>
+        <button type="button" data-onglet="chauffeur"><i class="fa fa-user-tie"></i> 2. Envoi au chauffeur retenu</button>
         <button type="button" data-onglet="client"><i class="fa fa-comment"></i> Message client</button>
     </div>
 
     {% set onglets = {
-        chauffeur: 'Toutes les infos de la course, client compris, pour le chauffeur retenu.',
-        groupe:    'Pour un groupe de chauffeurs : zone approximative, sans nom ni téléphone du client.',
+        groupe:    'Annonce dans les groupes WhatsApp ou Telegram : zone approximative, date et heure, véhicule, prix chauffeur seul. Ni prix client, ni commission, ni nom, téléphone ou adresse exacte du client.',
+        chauffeur: 'Une fois le chauffeur choisi parmi ceux qui ont répondu (temps d\'approche) : toutes les infos de la course, en message privé.',
         client:    'Message au client, envoyé à son numéro.',
     } %}
     {% for type, explication in onglets %}
@@ -92,6 +94,23 @@
 
             {% if avertissements[type] %}
                 <div class="alert alert-warning py-2"><i class="fa fa-exclamation-triangle"></i> {{ avertissements[type] }}</div>
+            {% endif %}
+
+            {% if type == 'chauffeur' %}
+                {# Chauffeur retenu (D-067) : noté sur la réservation #}
+                <form method="post" class="partage-carte d-flex flex-wrap align-items-end gap-3">
+                    <input type="hidden" name="_token" value="{{ csrf_token('partage_chauffeur_' ~ reservation.id) }}">
+                    <div class="flex-grow-1" style="max-width:420px;">
+                        <label class="form-label mb-1" for="chauffeur-retenu">Chauffeur retenu</label>
+                        <input type="text" class="form-control" id="chauffeur-retenu" name="chauffeur_retenu" maxlength="255"
+                               value="{{ reservation.chauffeurRetenu }}" placeholder="ex. Karim — 06 12 34 56 78"
+                               {{ peutModifier ? '' : 'disabled' }}>
+                    </div>
+                    {% if peutModifier %}
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer le chauffeur</button>
+                    {% endif %}
+                    <small class="text-muted w-100">Notez qui fait la course : si le client rappelle, on sait tout de suite qui vient le chercher.</small>
+                </form>
             {% endif %}
 
             {% if type == 'groupe' %}
@@ -130,6 +149,7 @@
                 <div class="partage-envoi">
                     <a class="btn btn-primary" data-envoi="sms" href="#"><i class="fa fa-sms"></i> SMS</a>
                     <a class="btn btn-whatsapp" data-envoi="whatsapp" href="#" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <a class="btn btn-telegram" data-envoi="telegram" href="#" target="_blank" rel="noopener"><i class="fab fa-telegram-plane"></i> Telegram</a>
                     <button type="button" class="btn btn-secondary" data-envoi="copier"><i class="fa fa-copy"></i> Copier</button>
                 </div>
             {% endif %}
@@ -140,5 +160,5 @@
 
 {% block body_javascript %}
     {{ parent() }}
-    <script src="{{ asset('js/partage-course.js') }}?v=2"></script>
+    <script src="{{ asset('js/partage-course.js') }}?v=3"></script>
 {% endblock %}

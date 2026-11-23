@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Forfait;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -12,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
+#[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réservé au super-admin, même en tapant l'adresse
 class ForfaitCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

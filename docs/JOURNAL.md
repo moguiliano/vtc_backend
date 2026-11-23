@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-23 — Régulateur (🧩 Fonctionnalités, `feature/regulateur`)
+- **Fait** : décisions D-064 à D-069. Trou de sécurité fermé : un régulateur pouvait ouvrir « Administrateurs » (et se créer un compte Super Admin), la grille de prix, les véhicules, les forfaits, « Avis Google » et créer des factures en tapant l'adresse. Désormais réservés au super-admin (`#[IsGranted('ROLE_SUPER_ADMIN')]`). Droits simplifiés à 2 (Super Admin / Régulateur). Factures en lecture seule pour le régulateur. Page Partager : « 1. Annonce groupe » (prix chauffeur seul, client et prix client toujours retirés), « 2. Envoi au chauffeur retenu » avec champ « Chauffeur retenu », bouton Telegram. Trace « Modifiée par / le » (heure de Marseille). Corrigé en passant : fiche détail facture en erreur 500 (taux de TVA). **1 migration** (`Version20261123214444`, 3 colonnes vides sur `reservation`). Testé en local sur une copie de la base (`zencar_regulateur`) avec 2 comptes de test : 16 adresses interdites → 403 pour le régulateur, 200 pour le super-admin.
+- **Bloqué** : rien. Non testé : le bouton Telegram sur un vrai téléphone ; la trace « site » quand un client modifie sa réservation sur le site public.
+- **Prochaine étape** : PR vers `main` (avec ton accord), puis mise en prod : sauvegarde, vérifier les droits des comptes admin existants, migration. En prod, corriger le modèle « Annonce groupe » : remplacer `{arrivee}` par `{zone_arrivee}` (sinon la ligne Arrivée disparaît).
+
 ### 2026-11-23 — Fondation « Entreprise » en prod (PR #12)
 - **Fait** : PR #12 mise à jour avec `main` (PR #13, sans conflit) puis fusionnée (`e87be67`) ; en prod : sauvegarde (877 Ko, `sauvegarde-20261123-2041.sql`), `git pull --ff-only` (`f70355a..e87be67`), exactement 7 migrations listées puis jouées sans erreur, cache vidé. Base : 1 entreprise, 5 grilles de prix (une 5ᵉ catégorie inactive en prod), 331 réservations et 3 factures rattachées à SIMPLICI CAB. Vérifié en ligne : pages publiques, prix « À partir de » (20/30/35/63 €), calcul de trajet ; admin vérifié par toi.
 - **Bloqué** : rien.

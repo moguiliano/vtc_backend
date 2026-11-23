@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Admin;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -17,6 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
+#[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réservé au super-admin, même en tapant l'adresse
 class AdminCrudController extends AbstractCrudController
 {
     public function __construct(
@@ -60,31 +62,33 @@ class AdminCrudController extends AbstractCrudController
             ->onlyOnForms()
             ->setRequired($pageName === Crud::PAGE_NEW);
 
+        // D-064 : 2 droits au choix dans le formulaire. Les anciens droits
+        // détaillés restent lisibles dans la liste pour les comptes qui les ont encore.
+        $libelles = [
+            'ROLE_SUPER_ADMIN'         => 'Super Admin (accès total)',
+            'ROLE_REGULATEUR'          => 'Régulateur (courses au quotidien)',
+            'ROLE_ADMIN'               => 'Admin (ancien droit)',
+            'ROLE_RESERVATIONS_VIEW'   => 'Voir réservations (ancien droit)',
+            'ROLE_RESERVATIONS_EDIT'   => 'Modifier réservations (ancien droit)',
+            'ROLE_RESERVATIONS_DELETE' => 'Supprimer réservations (ancien droit)',
+            'ROLE_FORFAITS_VIEW'       => 'Voir forfaits VTC (ancien droit)',
+            'ROLE_FORFAITS_EDIT'       => 'Modifier forfaits VTC (ancien droit)',
+            'ROLE_VEHICULES_VIEW'      => 'Voir véhicules (ancien droit)',
+            'ROLE_VEHICULES_EDIT'      => 'Modifier véhicules (ancien droit)',
+        ];
+        $formulaire = in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT], true);
+        $choix = $formulaire ? array_slice($libelles, 0, 2, true) : $libelles;
+
         yield ChoiceField::new('roles', 'Droits')
-            ->setChoices([
-                'Super Admin (accès total)'   => 'ROLE_SUPER_ADMIN',
-                'Admin (accès /admin)'        => 'ROLE_ADMIN',
-                'Régulateur (réservations)'   => 'ROLE_REGULATEUR',
-                '— Voir réservations'         => 'ROLE_RESERVATIONS_VIEW',
-                '— Modifier réservations'     => 'ROLE_RESERVATIONS_EDIT',
-                '— Supprimer réservations'    => 'ROLE_RESERVATIONS_DELETE',
-                '— Voir forfaits VTC'         => 'ROLE_FORFAITS_VIEW',
-                '— Modifier forfaits VTC'     => 'ROLE_FORFAITS_EDIT',
-                '— Voir véhicules'            => 'ROLE_VEHICULES_VIEW',
-                '— Modifier véhicules'        => 'ROLE_VEHICULES_EDIT',
-            ])
+            ->setChoices(array_flip($choix))
             ->allowMultipleChoices()
+            ->renderExpanded($formulaire)
+            ->setHelp('Régulateur : gère les courses (statuts, réservations téléphone, partage, bons de commande, factures en lecture). '
+                . 'Il ne voit ni les tarifs, ni « Ma société », ni les comptes admin, et ne crée pas de factures.')
             ->renderAsBadges([
-                'ROLE_SUPER_ADMIN'         => 'danger',
-                'ROLE_ADMIN'               => 'warning',
-                'ROLE_REGULATEUR'          => 'primary',
-                'ROLE_RESERVATIONS_VIEW'   => 'info',
-                'ROLE_RESERVATIONS_EDIT'   => 'warning',
-                'ROLE_RESERVATIONS_DELETE' => 'danger',
-                'ROLE_FORFAITS_VIEW'       => 'info',
-                'ROLE_FORFAITS_EDIT'       => 'warning',
-                'ROLE_VEHICULES_VIEW'      => 'info',
-                'ROLE_VEHICULES_EDIT'      => 'warning',
+                'ROLE_SUPER_ADMIN' => 'danger',
+                'ROLE_REGULATEUR'  => 'primary',
+                'ROLE_ADMIN'       => 'warning',
             ]);
     }
 

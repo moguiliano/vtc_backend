@@ -64,6 +64,36 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 - **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).
 - **Impact** : un abonné a un type, une date de début d'essai et un état (en attente / essai / actif / lecture seule, D-014, D-015). À intégrer à l'étape 4 « Espaces abonnés » de `ROADMAP.md`.
 
+### D-069 — Le régulateur voit-il les « Messages reçus » ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **oui**, il voit les messages du formulaire de contact et peut les marquer comme lus (comme aujourd'hui). Le **Journal des appels** (suivi Google Ads) reste au super-admin.
+- **Raison** : un client qui écrit pour réserver, c'est de l'exploitation quotidienne.
+- **Impact** : aucun changement sur `ContactCrudController`.
+
+### D-068 — Garder une trace des actions du régulateur ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : B) : sur chaque réservation, **« Modifiée par »** et **« Modifiée le »** (dernière modification seulement). Pas de journal complet.
+- **Raison** : savoir qui a touché une course en dernier (ex. annulation par erreur), sans nouvel écran. Un journal complet pourra venir plus tard.
+- **Impact** : 2 colonnes sur `Reservation`, dans la même migration que D-067.
+
+### D-067 — Noter le chauffeur retenu sur la réservation ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : B) : un champ **texte libre « Chauffeur retenu »** sur la réservation (ex. « Karim — 06 12 34 56 78 »), rempli par le régulateur au moment de l'envoi privé.
+- **Raison** : si un client rappelle, on sait tout de suite qui vient le chercher. Une vraie liste de chauffeurs en base pourra venir plus tard.
+- **Impact** : nouvelle colonne sur `Reservation` → **migration** à jouer en prod.
+
+### D-066 — Partage en 2 temps : imposé ou conseillé ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **ordre conseillé**, pas imposé. Les onglets deviennent « 1. Annonce groupe » et « 2. Envoi au chauffeur retenu » ; ajout d'un bouton **Telegram** ; l'annonce groupe n'affiche **que le prix chauffeur** (`{net_chauffeur}`), jamais le prix client, la commission, ni le nom, le téléphone ou l'adresse exacte du client, quel que soit le modèle.
+- **Raison** : simple, rapide en cas d'urgence ; reprend la page « Partager la course » qui marche déjà (D-023 à D-027).
+- **Impact** : page Partager (onglets, bouton Telegram) ; `PartageCourseService` vide les variables interdites pour l'annonce groupe.
+
+### D-065 — Régulateur : que voit-il des factures ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : **liste, fiche détail et PDF**, en **lecture seule**. Ni création, ni modification, ni émission (D-021).
+- **Raison** : il peut renvoyer sa facture à un client qui la redemande, sans déranger le super-admin.
+- **Impact** : `FactureCrudController` : créer et modifier réservés au super-admin ; bouton « Créer une facture » masqué sur les réservations pour le régulateur.
+
+### D-064 — Régulateur : comment créer son compte ? — 2026-11-23
+- **Décision** (choix de l'utilisateur : A) : dans le menu **« Administrateurs »** existant, réservé au super-admin. La liste des droits est simplifiée à **2 choix : « Super Admin » et « Régulateur »**. Le super-admin tape lui-même le mot de passe.
+- **Raison** : on reste dans l'admin déjà connue ; plus de cases techniques qui prêtent à confusion.
+- **Impact** : `AdminCrudController` (liste des droits réduite, accès réservé au super-admin même en tapant l'adresse). Pas de commande terminal.
+
 ### D-063 — Abonné : chauffeur indépendant ou dispatcheur ? — 2026-11-23
 - **Décision** (choix de l'utilisateur : C) : **deux abonnements différents** : « chauffeur indépendant » et « dispatcheur ». L'abonnement dispatcheur est **plus cher** et **débloque le partage** des courses (bouton « Partager la course » : WhatsApp, Telegram, SMS, partage).
 - **Raison** : le partage est un vrai service en plus pour ceux dont le métier est de distribuer des courses ; il justifie un prix plus élevé.

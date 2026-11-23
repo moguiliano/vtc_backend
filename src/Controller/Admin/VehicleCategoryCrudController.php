@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\VehicleCategory;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
+#[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réservé au super-admin, même en tapant l'adresse
 class VehicleCategoryCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

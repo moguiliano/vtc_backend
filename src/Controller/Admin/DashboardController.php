@@ -89,15 +89,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Contact');
         yield MenuItem::linkToCrud($label, 'fa fa-envelope', Contact::class);
 
-        // Tarification
-        if ($this->isGranted('ROLE_FORFAITS_VIEW') || $this->isGranted('ROLE_VEHICULES_VIEW')) {
+        // Tarification (super-admin uniquement, D-021)
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             yield MenuItem::section('Tarification');
         }
-        if ($this->isGranted('ROLE_VEHICULES_VIEW')) {
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             yield MenuItem::linkToCrud('Grille de prix', 'fa fa-euro-sign', GrilleTarif::class);
             yield MenuItem::linkToCrud('Véhicules', 'fa fa-car', VehicleCategory::class);
         }
-        if ($this->isGranted('ROLE_FORFAITS_VIEW')) {
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             yield MenuItem::linkToCrud('Forfaits VTC', 'fa fa-tag', Forfait::class);
         }
 
