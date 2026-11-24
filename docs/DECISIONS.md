@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-073 — Espaces abonnés : par quelle étape commencer ? — 2026-11-24
+- **Décision** (choix de l'utilisateur : A) : le chantier est découpé en 6 petites étapes livrables ; on commence par l'**étape 1 « le compte et la porte d'entrée »** : création de l'abonné (type + état), connexion, formulaire « Ma société » seul accessible avant validation, validation par le super-admin qui lance l'essai, cloisonnement des données.
+- **Raison** : toutes les autres étapes en dépendent (« la serrure avant les meubles »).
+- **Impact** : `ROADMAP.md` (étape 4 découpée). Étapes suivantes : 2. ses courses, 3. ses prix, 4. ses bons et factures, 5. Partager la course pour le dispatcheur, 6. fin d'essai / actif / lecture seule.
+
 ### D-072 — Espaces abonnés avant les Collaborateurs ? — 2026-11-24
 - **Décision** (mots de l'utilisateur) : « je veux d'abord l'espace abonné ». L'étape 4 **Espaces abonnés** passe **avant** l'étape 3 **Collaborateurs**.
 - **Raison** : choix de l'utilisateur ; la Fondation « Entreprise » et le Régulateur (étapes 0 et 2) sont en prod, les espaces abonnés peuvent s'appuyer dessus.
