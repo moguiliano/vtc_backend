@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-077 — Quand démarre le mois d'essai ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **le jour où le super-admin valide la société** de l'abonné.
+- **Raison** : l'abonné profite de 30 vrais jours d'utilisation, sans perdre de jours à attendre la validation.
+- **Impact** : la validation enregistre la date de début d'essai (fin = début + 1 mois) et fait passer l'abonné de « en attente » à « essai ».
+
 ### D-076 — Où l'abonné travaille-t-il ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : B) : dans un **espace séparé** (`/espace`) avec son propre menu, distinct de l'admin `/admin`.
 - **Raison** : on n'y met que les écrans prévus pour les abonnés, chacun filtré sur ses données dès le départ ; aucun risque d'oublier de fermer un écran de l'admin SIMPLICI CAB. L'admin et le régulateur ne changent pas.
