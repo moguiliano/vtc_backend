@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-076 — Où l'abonné travaille-t-il ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : dans un **espace séparé** (`/espace`) avec son propre menu, distinct de l'admin `/admin`.
+- **Raison** : on n'y met que les écrans prévus pour les abonnés, chacun filtré sur ses données dès le départ ; aucun risque d'oublier de fermer un écran de l'admin SIMPLICI CAB. L'admin et le régulateur ne changent pas.
+- **Impact** : nouveau tableau de bord EasyAdmin pour les abonnés ; `/admin` reste fermé aux abonnés.
+
 ### D-075 — Inscription : comment écarter les robots ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A) : **pas de code SMS ni d'e-mail** à l'inscription. Un champ piège invisible (que seuls les robots remplissent) et une limite de quelques inscriptions par heure ; la validation de la société par le super-admin (D-015) sert de filtre final.
 - **Raison** : un faux compte ne voit que « Ma société » et n'est jamais validé ; le crédit Twilio est épuisé et l'envoi d'e-mails n'existe pas encore. Le code SMS pourra s'ajouter plus tard.
