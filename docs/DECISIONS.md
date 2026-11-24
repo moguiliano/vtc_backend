@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-075 — Inscription : comment écarter les robots ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **pas de code SMS ni d'e-mail** à l'inscription. Un champ piège invisible (que seuls les robots remplissent) et une limite de quelques inscriptions par heure ; la validation de la société par le super-admin (D-015) sert de filtre final.
+- **Raison** : un faux compte ne voit que « Ma société » et n'est jamais validé ; le crédit Twilio est épuisé et l'envoi d'e-mails n'existe pas encore. Le code SMS pourra s'ajouter plus tard.
+- **Impact** : formulaire d'inscription avec champ piège et limite de fréquence ; rien à brancher sur Twilio ni sur un Mailer.
+
 ### D-074 — Comment l'abonné obtient-il son compte ? — 2026-11-24
 - **Décision** (choix de l'utilisateur : B) : **inscription publique**. Une page « Créer mon espace » sur dzencar.fr : la personne crée elle-même son compte, puis le super-admin valide sa société (D-015).
 - **Raison** : choix de l'utilisateur ; l'abonné n'a pas besoin d'attendre le super-admin pour commencer à remplir ses informations.
