@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-074 — Comment l'abonné obtient-il son compte ? — 2026-11-24
+- **Décision** (choix de l'utilisateur : B) : **inscription publique**. Une page « Créer mon espace » sur dzencar.fr : la personne crée elle-même son compte, puis le super-admin valide sa société (D-015).
+- **Raison** : choix de l'utilisateur ; l'abonné n'a pas besoin d'attendre le super-admin pour commencer à remplir ses informations.
+- **Impact** : page publique d'inscription à protéger contre les robots et les abus ; un compte inscrit n'a accès qu'à « Ma société » tant qu'il n'est pas validé (D-015).
+
 ### D-073 — Espaces abonnés : par quelle étape commencer ? — 2026-11-24
 - **Décision** (choix de l'utilisateur : A) : le chantier est découpé en 6 petites étapes livrables ; on commence par l'**étape 1 « le compte et la porte d'entrée »** : création de l'abonné (type + état), connexion, formulaire « Ma société » seul accessible avant validation, validation par le super-admin qui lance l'essai, cloisonnement des données.
 - **Raison** : toutes les autres étapes en dépendent (« la serrure avant les meubles »).
