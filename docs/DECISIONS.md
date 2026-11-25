@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-106 — Le statut du chauffeur met-il à jour le statut client ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **oui, synchronisé**. « Je prends la course » → *Chauffeur assigné* ; « Je suis arrivé » → *Chauffeur arrivé* ; « Client à bord » → *Client à bord* ; « Course terminée » → *Terminée* ; « Je me retire » → retour à *Confirmée* (jamais *Annulée*) + alerte chez l'émetteur. L'émetteur peut toujours corriger son statut dans l'admin.
+- **Raison** : les statuts « chauffeur assigné / arrivé / client à bord » existent pour ça ; suivi en direct sans appel.
+- **Impact** : étape 2b ; chaque bouton du chauffeur écrit le statut chauffeur et le statut client, avec la trace « Modifiée par / le ».
+
 ### D-105 — Course confiée : quels montants l'abonné voit-il ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : C) : **tout, comme le message WhatsApp** « Envoi au chauffeur retenu » : **à encaisser** (prix client) + mode de règlement, **commission** de l'émetteur et **net chauffeur**, quel que soit le règlement. Montants en lecture seule (D-101).
 - **Raison** : identique à ce que le chauffeur reçoit déjà par WhatsApp ; il sait toujours combien encaisser et ce qu'il garde.
