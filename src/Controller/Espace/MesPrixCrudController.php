@@ -7,6 +7,8 @@ use App\Entity\GrilleTarif;
 use App\Enum\EtatAbonne;
 use App\Service\EntrepriseCourante;
 use App\Service\GrilleAbonnes;
+use App\Service\Tarification;
+use App\Repository\GrilleTarifRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminAction;
@@ -44,6 +46,8 @@ class MesPrixCrudController extends AbstractCrudController
         private readonly GrilleAbonnes $grilleAbonnes,
         private readonly AdminUrlGenerator $adminUrlGenerator,
         private readonly CsrfTokenManagerInterface $csrf,
+        private readonly GrilleTarifRepository $grilleRepo,
+        private readonly Tarification $tarification,
     ) {}
 
     public static function getEntityFqcn(): string
@@ -57,8 +61,9 @@ class MesPrixCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Prix d\'un véhicule')
             ->setEntityLabelInPlural('Mes prix')
             ->setPageTitle(Crud::PAGE_INDEX, 'Mes prix')
-            ->setHelp(Crud::PAGE_INDEX, 'Vos prix par véhicule. « Prix ZenCAR » : ils suivent les mises à jour de ZenCAR. '
-                . 'Dès que vous modifiez un chiffre d\'un véhicule, il passe en « Mes prix » et garde vos chiffres. Cochez « Proposé » pour les véhicules que vous avez.')
+            ->setHelp(Crud::PAGE_INDEX, 'Vos prix par véhicule : prise en charge + prix au km (courte distance), puis prix au km (longue distance). '
+                . '« Prix ZenCAR » : ils suivent les mises à jour de ZenCAR. Dès que vous modifiez un chiffre d\'un véhicule, il garde vos chiffres. '
+                . 'Activez « Proposé » pour les véhicules que vous avez.')
             ->setHelp(Crud::PAGE_EDIT, 'Modifier un chiffre fait passer ce véhicule en « Mes prix » : il ne suivra plus les prix ZenCAR.')
             ->setDefaultSort(['id' => 'ASC'])
             ->setSearchFields(null);
@@ -87,7 +92,10 @@ class MesPrixCrudController extends AbstractCrudController
 
     public function configureAssets(Assets $assets): Assets
     {
-        return $this->assetsGrille($assets); // prix au seuil et exemple en direct (D-090)
+        // Simulateur de prix (D-095) : ses grilles et SA majoration de nuit (D-089)
+        $e = $this->entrepriseCourante->get();
+
+        return $this->assetsGrille($assets, $this->grilleRepo->findBy(['entreprise' => $e]), $this->tarification->pourcentNuit($e));
     }
 
     public function configureFields(string $pageName): iterable

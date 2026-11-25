@@ -7,6 +7,8 @@ use App\Controller\Traits\GrilleTarifChampsTrait;
 use App\Entity\GrilleTarif;
 use App\Service\EntrepriseCourante;
 use App\Service\GrilleAbonnes;
+use App\Service\Tarification;
+use App\Repository\GrilleTarifRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -31,6 +33,8 @@ class GrilleTarifCrudController extends AbstractCrudController
     public function __construct(
         private readonly EntrepriseCourante $entrepriseCourante,
         private readonly GrilleAbonnes $grilleAbonnes,
+        private readonly GrilleTarifRepository $grilleRepo,
+        private readonly Tarification $tarification,
     ) {}
 
     public static function getEntityFqcn(): string
@@ -44,8 +48,9 @@ class GrilleTarifCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Prix d\'un véhicule')
             ->setEntityLabelInPlural('Grille de prix')
             ->setPageTitle('index', 'Grille de prix')
-            ->setHelp('index', 'Vos prix par catégorie de véhicule. Les changements sont appliqués immédiatement sur le site. '
-                . 'Une catégorie n\'apparaît sur le site que si elle a une ligne ici, cochée « Proposé », et qu\'elle est active dans « Véhicules ».')
+            ->setHelp('index', 'Vos prix par véhicule : prise en charge + prix au km (courte distance), puis prix au km (longue distance). '
+                . 'Les changements sont appliqués immédiatement sur le site et chez les abonnés « Prix ZenCAR ». '
+                . 'Un véhicule n\'apparaît sur le site que s\'il est « Proposé » ici et actif dans « Véhicules ».')
             ->setDefaultSort(['id' => 'ASC']);
     }
 
@@ -94,7 +99,10 @@ class GrilleTarifCrudController extends AbstractCrudController
 
     public function configureAssets(Assets $assets): Assets
     {
-        return $this->assetsGrille($assets); // prix au seuil et exemple en direct (D-090)
+        // Simulateur de prix (D-095) : vos grilles et votre majoration de nuit (services.yaml)
+        $principale = $this->entrepriseCourante->get();
+
+        return $this->assetsGrille($assets, $this->grilleRepo->findBy(['entreprise' => $principale]), $this->tarification->pourcentNuit($principale));
     }
 
     public function configureFields(string $pageName): iterable
