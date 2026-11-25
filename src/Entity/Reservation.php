@@ -60,6 +60,14 @@ class Reservation implements AppartientAEntreprise
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $chauffeurRetenu = null;
 
+    /**
+     * Abonné validé qui fait la course (D-079 A, D-083), facultatif.
+     * La réservation reste à SIMPLICI CAB : on note seulement qui roule.
+     */
+    #[ORM\ManyToOne(targetEntity: Entreprise::class)]
+    #[ORM\JoinColumn(name: 'abonne_retenu_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Entreprise $abonneRetenu = null;
+
     /** Dernière modification : qui (email du compte admin, ou « site ») et quand (D-068). */
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $modifiePar = null;
@@ -269,6 +277,9 @@ class Reservation implements AppartientAEntreprise
         $this->chauffeurRetenu = $chauffeurRetenu === '' ? null : $chauffeurRetenu;
         return $this;
     }
+
+    public function getAbonneRetenu(): ?Entreprise { return $this->abonneRetenu; }
+    public function setAbonneRetenu(?Entreprise $abonne): static { $this->abonneRetenu = $abonne; return $this; }
 
     public function getModifiePar(): ?string
     {

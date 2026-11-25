@@ -3,6 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Reservation;
+use App\Repository\CompteAbonneRepository;
+use App\Repository\EntrepriseRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use App\Enum\MessageTemplateType;
 use App\Enum\ReservationStatus;
 use App\Repository\MessageTemplateRepository;
@@ -132,6 +136,8 @@ class ReservationCrudController extends AbstractCrudController
         $chauffeurRetenu = TextField::new('chauffeurRetenu', 'Chauffeur retenu')
             ->setRequired(false)
             ->setHelp('Nom et téléphone du chauffeur qui fait la course, ex. « Karim — 06 12 34 56 78 ».');
+        // Abonné validé qui fait la course (D-079 A, D-083) : choisi sur la page Partager
+        $abonneRetenu = AssociationField::new('abonneRetenu', 'Abonné retenu');
         $modifiePar = TextField::new('modifiePar', 'Modifiée par');
         $modifieLe  = DateTimeField::new('modifieLe', 'Modifiée le')->setFormat('dd/MM/yyyy HH:mm');
 
@@ -166,7 +172,7 @@ class ReservationCrudController extends AbstractCrudController
                 $typeVehicule, $prix, $commission, $modeReglement,
                 $guestPrenom, $guestTelephone,
                 $infos,
-                $chauffeurRetenu, $modifiePar, $modifieLe,
+                $chauffeurRetenu, $abonneRetenu, $modifiePar, $modifieLe,
                 $user, $isGuest, $guestInfo,
             ]);
         }
@@ -186,6 +192,15 @@ class ReservationCrudController extends AbstractCrudController
         ];
     }
 
+    /** Filtre « Abonné retenu » (D-083) : toutes les courses faites par un abonné. */
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters->add(
+            EntityFilter::new('abonneRetenu', 'Abonné retenu')
+                ->setFormTypeOption('value_type_options.query_builder', fn (EntrepriseRepository $r) => $r->qbAbonnes())
+        );
+    }
+
     /**
      * Écran « Partager la course » (D-023 à D-028) : partage complet (chauffeur),
      * partiel (groupe) et messages client, avec SMS / WhatsApp / Telegram / Copier.
@@ -201,6 +216,8 @@ class ReservationCrudController extends AbstractCrudController
         PartageCourseService $partage,
         MessageTemplateRepository $templateRepo,
         EntityManagerInterface $em,
+        EntrepriseRepository $entrepriseRepo,
+        CompteAbonneRepository $compteRepo,
     ): Response {
         $reservation = $context->getEntity()->getInstance();
         if (!$reservation instanceof Reservation) {
@@ -215,7 +232,7 @@ class ReservationCrudController extends AbstractCrudController
 
         if ($request->isMethod('POST')) {
             $request->request->has('chauffeur_retenu')
-                ? $this->enregistrerChauffeur($request, $reservation, $em)
+                ? $this->enregistrerChauffeur($request, $reservation, $em, $entrepriseRepo)
                 : $this->enregistrerCommission($request, $reservation, $em);
             return $this->redirect($url);
         }
@@ -241,6 +258,11 @@ class ReservationCrudController extends AbstractCrudController
             'urlDetail'     => $this->adminUrlGenerator->setController(self::class)->setAction(Action::DETAIL)->setEntityId($reservation->getId())->generateUrl(),
             'urlModeles'    => $this->adminUrlGenerator->setController(MessageTemplateCrudController::class)->setAction(Action::INDEX)->unset('entityId')->generateUrl(),
             'commissionEnregistree' => $reservation->getCommission() !== null,
+            // Abonnés validés proposés comme chauffeur retenu (D-083)
+            'abonnes'       => array_map(fn ($e) => [
+                'id'    => $e->getId(),
+                'texte' => trim($e->getNom() . ' — ' . self::telephoneLisible($compteRepo->pourEntreprise($e)?->getTelephone()), ' —'),
+            ], $entrepriseRepo->abonnesValides()),
             'donnees'       => [
                 'variables'       => $partage->variables($reservation),
                 'prix'            => $prix,
@@ -254,7 +276,7 @@ class ReservationCrudController extends AbstractCrudController
     }
 
     /** Chauffeur retenu, texte libre (D-067), saisi à l'étape « 2. Envoi au chauffeur retenu ». */
-    private function enregistrerChauffeur(Request $request, Reservation $reservation, EntityManagerInterface $em): void
+    private function enregistrerChauffeur(Request $request, Reservation $reservation, EntityManagerInterface $em, EntrepriseRepository $entrepriseRepo): void
     {
         if (!$this->isGranted('ROLE_RESERVATIONS_EDIT')) {
             throw $this->createAccessDeniedException();
@@ -264,11 +286,31 @@ class ReservationCrudController extends AbstractCrudController
             return;
         }
 
+        // Abonné retenu (D-083) : seulement un abonné validé, sinon aucun
+        $idAbonne = (int) $request->request->get('abonne_retenu');
+        $abonne = null;
+        foreach ($idAbonne > 0 ? $entrepriseRepo->abonnesValides() : [] as $e) {
+            if ($e->getId() === $idAbonne) {
+                $abonne = $e;
+            }
+        }
+        $reservation->setAbonneRetenu($abonne);
+
         $reservation->setChauffeurRetenu(mb_substr((string) $request->request->get('chauffeur_retenu'), 0, 255));
         $em->flush();
         $this->addFlash('success', $reservation->getChauffeurRetenu()
-            ? sprintf('Chauffeur retenu enregistré : %s.', $reservation->getChauffeurRetenu())
+            ? sprintf('Chauffeur retenu enregistré : %s%s.', $reservation->getChauffeurRetenu(), $abonne ? ' (abonné ZenCAR)' : '')
             : 'Chauffeur retenu effacé.');
+    }
+
+    /** +33611223344 → 06 11 22 33 44 (affichage seulement). */
+    private static function telephoneLisible(?string $e164): string
+    {
+        if ($e164 && preg_match('/^\+33(\d{9})$/', $e164, $m)) {
+            return trim(chunk_split('0' . $m[1], 2, ' '));
+        }
+
+        return (string) $e164;
     }
 
     private function enregistrerCommission(Request $request, Reservation $reservation, EntityManagerInterface $em): void

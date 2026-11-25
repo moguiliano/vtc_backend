@@ -59,6 +59,16 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-084 — L'abonné retenu reçoit-il la course dans son espace ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : **oui, avec l'étape 2**. La page « Mes courses » de l'abonné aura 2 parties : les courses qu'il saisit lui-même et les **courses reçues de ZenCAR** (celles où il est « abonné retenu », D-083). Pour ces dernières : date, départ, arrivée, véhicule et **prix chauffeur seulement** (ni prix client, ni commission), en **copie** : il ne touche jamais la réservation de SIMPLICI CAB. Le partage WhatsApp / Telegram continue en attendant.
+- **Raison** : ne construire qu'une fois (pendant l'étape 2) ; premier pas vers la bourse aux courses (D-079 C).
+- **Impact** : précise D-079 (au-delà de A) ; étape 2 de `ROADMAP.md` complétée. Point à garder pour l'étape 2 : le tri automatique par entreprise cache les réservations de SIMPLICI CAB à l'abonné, la lecture des « courses reçues » devra passer par une copie ou une lecture dédiée, limitée aux champs autorisés.
+
+### D-083 — Liste des abonnés dans « Chauffeur retenu » : le plan — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : sur la page Partager (onglet « 2. Envoi au chauffeur retenu »), une liste **« Abonné ZenCAR »** avec les seuls abonnés **validés** (essai ou actif) ; le choix remplit le texte « Nom — téléphone » (modifiable) ; « — Pas un abonné — » garde le texte libre. Filtre **« Abonné retenu »** sur la liste des réservations. Rien de nouveau dans l'espace de l'abonné.
+- **Raison** : mettre en œuvre D-079 A et préparer la bourse aux courses (savoir qui roule beaucoup et bien).
+- **Impact** : lien facultatif `reservation.abonne_retenu_id` (1 migration, colonne vide) ; page Partager ; `ReservationCrudController`.
+
 ### D-082 — Les chauffeurs auront-ils un formulaire de réservation avec la carte ? — 2026-11-25
 - **Décision** (mots de l'utilisateur : « ok pour le 1, non pour le 2 », à propos des 2 formulaires) : **oui** au formulaire de saisie **dans l'espace** de l'abonné (étape 2 : adresses suggérées, carte et trajet, prix calculé depuis sa grille, sur le modèle de la réservation par téléphone) ; **non** pour l'instant à un formulaire **public** pour les clients de l'abonné (confirme D-012). Plan de la page `/chauffeurs-vtc` accepté tel quel (non référencée, sans parler des futures courses confiées).
 - **Raison** : le chauffeur saisit vite les courses de ses clients ; une page publique par abonné reste à protéger et viendra plus tard.
