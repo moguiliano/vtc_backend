@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-081 — Où mettre le lien « Créer mon espace » ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : une **page de présentation pour les chauffeurs** (l'outil, les 2 prix, le mois d'essai, bouton « Créer mon espace ») + un **lien discret dans le pied de page**. Pas de bouton dans le menu du haut.
+- **Raison** : le chauffeur comprend l'offre avant de s'inscrire ; les clients (et les visiteurs Google Ads) ne voient presque rien de changé ; l'adresse de la page peut être partagée dans les groupes WhatsApp de chauffeurs.
+- **Impact** : nouvelle page publique + lien dans `partials/_footer.html.twig`.
+
 ### D-080 — Après la mise en prod de l'étape 1 : par quoi continuer ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : C) : d'abord **placer le lien « Créer mon espace »** sur dzencar.fr, pour recruter les premiers abonnés ; ensuite la liste des abonnés dans « Chauffeur retenu » (D-079), puis l'étape 2 (les courses de l'abonné).
 - **Raison** : sans abonnés, les autres étapes ne servent à personne ; on accroche l'enseigne avant de meubler la boutique.
