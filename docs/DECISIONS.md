@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-082 — Les chauffeurs auront-ils un formulaire de réservation avec la carte ? — 2026-11-25
+- **Décision** (mots de l'utilisateur : « ok pour le 1, non pour le 2 », à propos des 2 formulaires) : **oui** au formulaire de saisie **dans l'espace** de l'abonné (étape 2 : adresses suggérées, carte et trajet, prix calculé depuis sa grille, sur le modèle de la réservation par téléphone) ; **non** pour l'instant à un formulaire **public** pour les clients de l'abonné (confirme D-012). Plan de la page `/chauffeurs-vtc` accepté tel quel (non référencée, sans parler des futures courses confiées).
+- **Raison** : le chauffeur saisit vite les courses de ses clients ; une page publique par abonné reste à protéger et viendra plus tard.
+- **Impact** : étape 2 de `ROADMAP.md` précisée ; la page chauffeurs annonce « saisir vos courses avec calcul automatique du trajet et du prix ».
+
 ### D-081 — Où mettre le lien « Créer mon espace » ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : B) : une **page de présentation pour les chauffeurs** (l'outil, les 2 prix, le mois d'essai, bouton « Créer mon espace ») + un **lien discret dans le pied de page**. Pas de bouton dans le menu du haut.
 - **Raison** : le chauffeur comprend l'offre avant de s'inscrire ; les clients (et les visiteurs Google Ads) ne voient presque rien de changé ; l'adresse de la page peut être partagée dans les groupes WhatsApp de chauffeurs.
