@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-089 — Majoration de nuit des abonnés — 2026-11-25
+- **Décision** (choix de l'utilisateur : « Oui, chaque abonné ») : **chaque abonné décide** dans « Mes prix » s'il applique une majoration de nuit (case à cocher) et son pourcentage. Les heures de nuit sont les mêmes pour tous : **à partir de 23 h** (jusqu'à 7 h, comme SIMPLICI CAB).
+- **Raison** : cohérent avec D-016 et D-087 : chaque chauffeur maîtrise ses prix, nuit comprise.
+- **Impact** : réglage « majoration de nuit : oui / non + % » par entreprise abonnée (au départ : comme SIMPLICI CAB, 20 %, D-087) ; SIMPLICI CAB garde sa règle actuelle (`services.yaml`, D-006 inchangée).
+
 ### D-088 — Un seul module de facturation pour SIMPLICI CAB et les abonnés — 2026-11-25
 - **Décision** (mots de l'utilisateur) : « on va factoriser le module de facturation pour moi comme pour les chauffeurs ».
 - **Raison** : ne construire et n'entretenir qu'une seule facturation ; chaque entreprise garde ses mentions légales et sa numérotation (D-017).
