@@ -12,6 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -89,6 +90,11 @@ class GrilleTarifCrudController extends AbstractCrudController
         if ($grille instanceof GrilleTarif && ($n = $this->grilleAbonnes->propagerDepuis($grille)) > 0) {
             $this->addFlash('info', sprintf('Prix repris par %d ligne(s) d\'abonnés « comme ZenCAR ».', $n));
         }
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $this->assetsGrille($assets); // prix au seuil et exemple en direct (D-090)
     }
 
     public function configureFields(string $pageName): iterable

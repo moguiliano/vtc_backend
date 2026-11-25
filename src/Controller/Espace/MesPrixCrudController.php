@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminCrud;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -82,6 +83,11 @@ class MesPrixCrudController extends AbstractCrudController
         }
 
         return $actions;
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $this->assetsGrille($assets); // prix au seuil et exemple en direct (D-090)
     }
 
     public function configureFields(string $pageName): iterable
