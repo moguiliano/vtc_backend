@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-098 — SMS de confirmation au client d'un abonné ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **pas de SMS** envoyé par le site pour les courses saisies par un abonné. L'abonné confirme lui-même à son client.
+- **Raison** : le SMS partirait du compte Twilio de ZenCAR, signé ZenCAR (confusion pour le client du chauffeur), à la charge de ZenCAR ; crédit Twilio épuisé. Option payante ou plafonnée possible plus tard si les abonnés le demandent.
+- **Impact** : formulaire « Nouvelle course » de l'espace sans la case « Envoyer un SMS ».
+
 ### D-097 — Étape 2 « Mes courses » : en une ou deux livraisons ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A) : **deux livraisons**. **2a** : formulaire de saisie avec carte et prix depuis la grille de l'abonné, liste de ses courses (même écran que la liste « Réservations » de l'admin, limitée aux siennes), fiche d'une course. **2b** : « Courses reçues de ZenCAR » (D-084).
 - **Raison** : deux sujets différents ; 2b a ses propres questions de sécurité ; on teste chaque marche avant la suivante.
