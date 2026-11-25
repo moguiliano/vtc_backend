@@ -4,6 +4,7 @@ namespace App\Controller\Espace;
 
 use App\Entity\CompteAbonne;
 use App\Entity\GrilleTarif;
+use App\Entity\Reservation;
 use App\Entity\Societe;
 use App\Enum\EtatAbonne;
 use App\Form\SocieteAbonneType;
@@ -27,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Les pages sont des méthodes de ce contrôleur : EasyAdmin leur donne le menu et la mise en page.
  * Elles lisent toujours l'entreprise du compte connecté (EntrepriseCourante), jamais un numéro dans l'adresse.
  */
-#[AdminDashboard(routePath: '/espace', routeName: 'espace', allowedControllers: [MesPrixCrudController::class])]
+#[AdminDashboard(routePath: '/espace', routeName: 'espace', allowedControllers: [MesPrixCrudController::class, MesCoursesCrudController::class])]
 class EspaceDashboardController extends AbstractDashboardController
 {
     public function __construct(
@@ -49,6 +50,13 @@ class EspaceDashboardController extends AbstractDashboardController
         $entreprise = $this->entrepriseCourante->get();
 
         yield MenuItem::linkToRoute('Accueil', 'fa fa-home', 'espace_accueil');
+        if (!$entreprise->isEnAttente()) {
+            yield MenuItem::section('Mes courses');
+            if ($entreprise->getEtat() !== EtatAbonne::LECTURE_SEULE) {
+                yield MenuItem::linkToRoute('Nouvelle course', 'fa fa-plus-circle', 'espace_nouvelle_course');
+            }
+            yield MenuItem::linkToCrud('Mes courses', 'fa fa-calendar-check', Reservation::class)->setController(MesCoursesCrudController::class);
+        }
         yield MenuItem::section('Mon activité');
         yield MenuItem::linkToRoute('Ma société', 'fa fa-building', 'espace_ma_societe');
         if (!$entreprise->isEnAttente()) {

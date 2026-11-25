@@ -103,7 +103,9 @@
 
           try {
             // Appel au backend pour calculer le trajet et les tarifs
-            const res = await fetch("/reservation/calculate-trip", {
+            // Espace abonné : sa propre adresse de calcul (sa grille de prix, D-103) ; sinon le site public
+            const calculUrl = document.querySelector("form[data-calcul-url]")?.dataset.calculUrl || "/reservation/calculate-trip";
+            const res = await fetch(calculUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({

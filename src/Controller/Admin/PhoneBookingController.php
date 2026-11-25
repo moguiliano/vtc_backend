@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Traits\SaisieCourseTrait;
 use App\Entity\Reservation;
 use App\Enum\ReservationStatus;
 use App\Form\ReservationType;
@@ -11,7 +12,6 @@ use App\Service\Tarification;
 use App\Service\SmsNotifier;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +30,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_RESERVATIONS_EDIT')]
 class PhoneBookingController extends AbstractController
 {
+    use SaisieCourseTrait; // contrôles communs avec « Nouvelle course » de l'espace abonné (D-103)
+
     public function __construct(
         private Tarification $tarification,
         private PhoneNormalizerService $phoneNormalizer,
@@ -99,64 +101,5 @@ class PhoneBookingController extends AbstractController
             'errors'   => $errors,
             'client'   => $client,
         ]);
-    }
-
-    /**
-     * @param array<string, mixed> $client
-     * @param array<int, \App\Entity\VehicleCategory> $vehicles
-     * @return string[]
-     */
-    private function validate(FormInterface $form, Reservation $reservation, array $client, array $vehicles): array
-    {
-        $errors = [];
-
-        if (!$form->isValid()) {
-            foreach ($form->getErrors(true) as $error) {
-                $errors[] = $error->getMessage();
-            }
-        }
-
-        if (!trim((string) $reservation->getDepart()) || !trim((string) $reservation->getArrivee())) {
-            $errors[] = 'Adresses de départ et d’arrivée obligatoires.';
-        }
-        if (!$reservation->getDistance()) {
-            $errors[] = 'Le trajet n’a pas été calculé (onglet 1 → « Choisir le véhicule »).';
-        }
-
-        $slugs = array_map(fn ($v) => $v->getSlug(), $vehicles);
-        if (!in_array($reservation->getTypeVehicule(), $slugs, true)) {
-            $errors[] = 'Merci de choisir un véhicule.';
-        }
-
-        if ((float) $reservation->getPrix() <= 0) {
-            $errors[] = 'Le prix doit être supérieur à 0 €.';
-        }
-
-        $dateHeure = $this->buildDateHeure($form);
-        // Date passée acceptée (D-032) : course oubliée puis dispatchée à la main, saisie après coup.
-        // Le champ est prérempli avec « maintenant » (ReservationType).
-        if (!$dateHeure) {
-            $errors[] = 'Date et heure de départ obligatoires.';
-        }
-
-        if ($client['prenom'] === '') {
-            $errors[] = 'Le prénom du client est obligatoire.';
-        }
-        if (!preg_match('/^\+\d{8,15}$/', (string) $this->phoneNormalizer->normalize($client['telephone']))) {
-            $errors[] = 'Numéro de téléphone invalide.';
-        }
-        if ($client['email'] !== '' && !filter_var($client['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Adresse email invalide.';
-        }
-
-        return array_values(array_unique($errors));
-    }
-
-    private function buildDateHeure(FormInterface $form): ?\DateTime
-    {
-        return ReservationCreator::fusionnerDateHeure(
-            $form->get('dateDepart')->getData(),
-            $form->get('heureDepart')->getData(),
-        );
     }
 }

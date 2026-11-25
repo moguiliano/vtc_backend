@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Espace\MesCoursesCrudController;
 use App\Controller\Espace\MesPrixCrudController;
 use App\Entity\Admin;
 use App\Entity\Appel;
@@ -32,7 +33,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 // Les écrans de l'espace abonné n'existent pas sous /admin (D-092, D-093)
-#[AdminDashboard(routePath: '/admin', routeName: 'admin', deniedControllers: [MesPrixCrudController::class])]
+#[AdminDashboard(routePath: '/admin', routeName: 'admin', deniedControllers: [MesPrixCrudController::class, MesCoursesCrudController::class])]
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
