@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-105 — Course confiée : quels montants l'abonné voit-il ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : C) : **tout, comme le message WhatsApp** « Envoi au chauffeur retenu » : **à encaisser** (prix client) + mode de règlement, **commission** de l'émetteur et **net chauffeur**, quel que soit le règlement. Montants en lecture seule (D-101).
+- **Raison** : identique à ce que le chauffeur reçoit déjà par WhatsApp ; il sait toujours combien encaisser et ce qu'il garde.
+- **Impact** : **modifie D-084** (« ni prix client, ni commission ») pour les courses confiées : ces montants sont désormais visibles par le chauffeur retenu. Commission : celle enregistrée au partage, sinon le taux par défaut (comme le message WhatsApp).
+
 ### D-104 — Course confiée : quelles informations du client l'abonné voit-il ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A) : **tout ce qu'il faut pour faire la course**, comme le message WhatsApp « Envoi au chauffeur retenu » : prénom et téléphone du client, adresse exacte de départ, arrêt, arrivée, date et heure, véhicule, siège bébé, informations complémentaires.
 - **Raison** : rien de plus que ce qu'il reçoit déjà par WhatsApp une fois retenu ; sans adresse ni téléphone il ne peut pas prendre en charge le client. Il ne voit la course que tant qu'il est retenu (D-100).
