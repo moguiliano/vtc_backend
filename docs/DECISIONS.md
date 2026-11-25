@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-097 — Étape 2 « Mes courses » : en une ou deux livraisons ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **deux livraisons**. **2a** : formulaire de saisie avec carte et prix depuis la grille de l'abonné, liste de ses courses (même écran que la liste « Réservations » de l'admin, limitée aux siennes), fiche d'une course. **2b** : « Courses reçues de ZenCAR » (D-084).
+- **Raison** : deux sujets différents ; 2b a ses propres questions de sécurité ; on teste chaque marche avant la suivante.
+- **Impact** : `ROADMAP.md` (étape 2 découpée). Point technique : le calcul du trajet de l'espace doit utiliser la grille de l'abonné (adresse propre à `/espace`), pas celle du site public.
+
 ### D-096 — Cases alignées et indication « distance courte à 0 » — 2026-11-25
 - **Décision** (mots de l'utilisateur : « aligne les input pour tous les affichages, verticale ou horizontale » ; « ajoute une indication en bas : vous pouvez laisser votre seuil à 0 si vous voulez garder le même prix au km pour petite ou grande distance ») : dans le formulaire de la grille de prix, cases de même largeur et à la même hauteur (côte à côte sur ordinateur, les unes sous les autres sur téléphone) ; indication en bas du formulaire et sous le tableau : « Vous pouvez laisser la distance courte à 0 si vous voulez garder le même prix au km pour petite ou grande distance : c'est alors le prix au km, longue distance qui s'applique dès le premier km. »
 - **Raison** : lisibilité ; le mot « seuil » est devenu « distance courte » (D-095), et la phrase précise quel prix au km s'applique.
