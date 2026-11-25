@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-102 — Quand le chauffeur « annule » une course reçue — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : un **statut côté chauffeur**, séparé du statut de la réservation : « Je prends la course », « Je suis arrivé », « Client à bord », « Course terminée », « Je me retire ». « Je me retire » **ne change pas** le statut client (reste « Confirmée ») et affiche une **alerte** dans l'admin de l'émetteur pour réattribuer la course.
+- **Raison** : « annulée » ne veut pas dire la même chose pour le client et pour le chauffeur ; le client n'est jamais annulé par erreur.
+- **Impact** : étape 2b ; nouveau champ « statut chauffeur » sur la réservation (migration) ; alerte dans la liste des réservations de l'admin ; « Course terminée » côté chauffeur pourra passer le statut client à « Terminée » (à préciser dans le plan 2b).
+
 ### D-101 — Prix d'une course confiée : celui de l'émetteur — 2026-11-25
 - **Décision** (mots de l'utilisateur : « si une course est envoyée à un chauffeur et qu'il accepte, c'est avec le prix du dispatcheur et non pas avec les prix du chauffeur ») : une course confiée (par SIMPLICI CAB, ou plus tard par un dispatcheur) **garde le prix fixé par l'émetteur**. Le chauffeur voit le **prix chauffeur** (net chauffeur, commission enregistrée au partage) et **ne peut pas le changer** (cohérent avec D-100 : statut seulement).
 - **Raison** : le prix a été annoncé au client par l'émetteur ; la grille du chauffeur ne s'applique qu'à ses propres clients.
