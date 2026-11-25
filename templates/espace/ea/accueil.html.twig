@@ -21,13 +21,13 @@
             <h5 class="card-title">Pour bien démarrer</h5>
             <p>Dans <strong>Mes prix</strong>, cochez « Proposé » pour vos véhicules. Vos prix sont ceux de ZenCAR, mis à jour pour vous ; vous pouvez les modifier.</p>
             <a class="btn btn-primary" href="{{ path('espace_mes_prix_index') }}"><i class="fa fa-tags"></i> Mes prix</a>
+            {% if entreprise.etat.value != 'lecture_seule' %}<a class="btn btn-outline-primary ms-2" href="{{ path('espace_nouvelle_course') }}"><i class="fa fa-plus-circle"></i> Nouvelle course</a>{% endif %}
         </div></div>
     </div>
     <div class="col-12">
         <div class="card"><div class="card-body">
             <h5 class="card-title">Bientôt dans votre espace</h5>
             <ul class="mb-0 text-muted">
-                <li>Saisir et suivre vos courses, avec la carte et le prix calculé</li>
                 <li>Les courses que ZenCAR vous confie</li>
                 <li>Vos bons de commande et vos factures, à votre nom</li>
                 {% if entreprise.typeAbonnement and entreprise.typeAbonnement.value == 'dispatcheur' %}<li>Partager vos courses (WhatsApp, Telegram, SMS)</li>{% endif %}

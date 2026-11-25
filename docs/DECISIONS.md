@@ -59,6 +59,42 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-103 — Plan de l'étape 2a « Mes courses saisies » — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : menus « Nouvelle course » (formulaire de la réservation par téléphone, véhicules et prix de SA grille, nuit comprise, sans SMS, statut « Confirmée ») et « Mes courses » (même liste que « Réservations » de l'admin, limitée à ses courses, toutes actions D-099) ; calcul de trajet propre à l'espace (`/espace/calcul-trajet`) ; lecture seule = consultation seulement ; pas de migration.
+- **Raison** : réutiliser ce qui marche déjà ; le tri automatique par entreprise garantit le cloisonnement.
+- **Impact** : nouveaux écrans de l'espace ; admin inchangée (les courses des abonnés n'apparaissent pas dans la liste de SIMPLICI CAB).
+
+### D-102 — Quand le chauffeur « annule » une course reçue — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : un **statut côté chauffeur**, séparé du statut de la réservation : « Je prends la course », « Je suis arrivé », « Client à bord », « Course terminée », « Je me retire ». « Je me retire » **ne change pas** le statut client (reste « Confirmée ») et affiche une **alerte** dans l'admin de l'émetteur pour réattribuer la course.
+- **Raison** : « annulée » ne veut pas dire la même chose pour le client et pour le chauffeur ; le client n'est jamais annulé par erreur.
+- **Impact** : étape 2b ; nouveau champ « statut chauffeur » sur la réservation (migration) ; alerte dans la liste des réservations de l'admin ; « Course terminée » côté chauffeur pourra passer le statut client à « Terminée » (à préciser dans le plan 2b).
+
+### D-101 — Prix d'une course confiée : celui de l'émetteur — 2026-11-25
+- **Décision** (mots de l'utilisateur : « si une course est envoyée à un chauffeur et qu'il accepte, c'est avec le prix du dispatcheur et non pas avec les prix du chauffeur ») : une course confiée (par SIMPLICI CAB, ou plus tard par un dispatcheur) **garde le prix fixé par l'émetteur**. Le chauffeur voit le **prix chauffeur** (net chauffeur, commission enregistrée au partage) et **ne peut pas le changer** (cohérent avec D-100 : statut seulement).
+- **Raison** : le prix a été annoncé au client par l'émetteur ; la grille du chauffeur ne s'applique qu'à ses propres clients.
+- **Impact** : étape 2b ; la grille « Mes prix » du chauffeur ne sert qu'aux courses qu'il saisit lui-même (2a). Décision prise dans une session dérivée et reportée ici.
+
+### D-100 — Courses de SIMPLICI CAB confiées à un abonné : ce qu'il voit et peut faire — 2026-11-25
+- **Décision** (mots de l'utilisateur : « mes courses, un chauffeur ne la voit que si je lui envoie » ; « concernant les miennes il ne peut que changer le statut, pas la supprimer » ; « si au final il annule et que je l'envoie à un autre chauffeur, il n'a plus la main sur cette course ») : une course de SIMPLICI CAB n'apparaît dans l'espace d'un abonné **que s'il est l'abonné retenu** (D-083) ; il ne peut **que changer son statut** (ni modifier, ni supprimer) ; dès que la course est confiée à un autre abonné, elle **disparaît** de son espace.
+- **Raison** : la course et le client restent à SIMPLICI CAB ; l'abonné est un sous-traitant.
+- **Impact** : étape 2b. Pas de copie : lecture contrôlée des seules courses où `abonne_retenu` = l'abonné, limitée aux champs autorisés (jamais prix client ni commission, D-084) ; une seule action d'écriture : le statut. Précise D-084 (« copie » → lecture contrôlée, qui suit automatiquement les changements et le changement de chauffeur). Effet d'une annulation par le chauffeur : à trancher.
+- **Précision** (mots de l'utilisateur : « pas uniquement mes courses mais n'importe quelle course reçue par un dispatcheur ou par moi-même ») : la règle vaut pour **toute course confiée** à un chauffeur abonné, qu'elle vienne de SIMPLICI CAB **ou d'un abonné dispatcheur**. Ci-dessous, « SIMPLICI CAB » se lit donc « l'entreprise qui envoie la course ».
+
+### D-099 — Que peut faire l'abonné sur ses propres courses ? — 2026-11-25
+- **Décision** (mots de l'utilisateur : « il peut faire ce qu'il veut de ses courses ») : sur les courses qu'il a saisies, l'abonné peut **tout faire** : consulter, modifier, changer le statut et **supprimer**.
+- **Raison** : ce sont ses clients et ses courses (D-011).
+- **Impact** : étape 2a, écran « Mes courses » avec toutes les actions, limité à ses courses (tri automatique par entreprise).
+
+### D-098 — SMS de confirmation au client d'un abonné ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **pas de SMS** envoyé par le site pour les courses saisies par un abonné. L'abonné confirme lui-même à son client.
+- **Raison** : le SMS partirait du compte Twilio de ZenCAR, signé ZenCAR (confusion pour le client du chauffeur), à la charge de ZenCAR ; crédit Twilio épuisé. Option payante ou plafonnée possible plus tard si les abonnés le demandent.
+- **Impact** : formulaire « Nouvelle course » de l'espace sans la case « Envoyer un SMS ».
+
+### D-097 — Étape 2 « Mes courses » : en une ou deux livraisons ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **deux livraisons**. **2a** : formulaire de saisie avec carte et prix depuis la grille de l'abonné, liste de ses courses (même écran que la liste « Réservations » de l'admin, limitée aux siennes), fiche d'une course. **2b** : « Courses reçues de ZenCAR » (D-084).
+- **Raison** : deux sujets différents ; 2b a ses propres questions de sécurité ; on teste chaque marche avant la suivante.
+- **Impact** : `ROADMAP.md` (étape 2 découpée). Point technique : le calcul du trajet de l'espace doit utiliser la grille de l'abonné (adresse propre à `/espace`), pas celle du site public.
+
 ### D-096 — Cases alignées et indication « distance courte à 0 » — 2026-11-25
 - **Décision** (mots de l'utilisateur : « aligne les input pour tous les affichages, verticale ou horizontale » ; « ajoute une indication en bas : vous pouvez laisser votre seuil à 0 si vous voulez garder le même prix au km pour petite ou grande distance ») : dans le formulaire de la grille de prix, cases de même largeur et à la même hauteur (côte à côte sur ordinateur, les unes sous les autres sur téléphone) ; indication en bas du formulaire et sous le tableau : « Vous pouvez laisser la distance courte à 0 si vous voulez garder le même prix au km pour petite ou grande distance : c'est alors le prix au km, longue distance qui s'applique dès le premier km. »
 - **Raison** : lisibilité ; le mot « seuil » est devenu « distance courte » (D-095), et la phrase précise quel prix au km s'applique.
