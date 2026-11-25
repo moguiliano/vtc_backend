@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-090 — « Prix base > seuil » : réglage ou simple indication ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A ; ses mots : « prix base seuil ne devrait pas être touché, c'est juste une indication ») : le **prix de base au-delà du seuil est calculé automatiquement** = prise en charge + seuil × prix/km jusqu'au seuil. Il est **affiché pour information**, plus saisi à la main. Il reste 4 chiffres à régler par véhicule.
+- **Raison** : c'est la conséquence des autres chiffres (vérifié : 45 = 20 + 10 × 2,50 ; 55 ; 35 ; 63 pour les 4 véhicules de SIMPLICI CAB) ; saisi à la main, une erreur ferait « sauter » le prix au passage du seuil.
+- **Impact** : « Grille de prix » de l'admin et « Mes prix » des abonnés ; `GrilleTarif` recalcule la valeur à chaque modification. Prix actuels inchangés (ils respectent déjà la règle).
+
 ### D-089 — Majoration de nuit des abonnés — 2026-11-25
 - **Décision** (choix de l'utilisateur : « Oui, chaque abonné ») : **chaque abonné décide** dans « Mes prix » s'il applique une majoration de nuit (case à cocher) et son pourcentage. Les heures de nuit sont les mêmes pour tous : **à partir de 23 h** (jusqu'à 7 h, comme SIMPLICI CAB).
 - **Raison** : cohérent avec D-016 et D-087 : chaque chauffeur maîtrise ses prix, nuit comprise.
