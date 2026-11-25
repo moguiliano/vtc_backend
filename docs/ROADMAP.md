@@ -17,6 +17,7 @@
 3. [ ] **Collaborateurs** (après les Espaces abonnés, D-072) (D-018, D-019) : comptes établissements de SIMPLICI CAB, forfaits propres + remise %, paiement « sur le compte » (facture mensuelle) ou par le passager, au choix par commande
 4. [ ] 🔨 **Espaces abonnés — en cours** (fait avant les Collaborateurs, D-072 ; branche `feature/espaces-abonnes`) (D-011 à D-017, D-059) : 2 types d'abonnés, **chauffeur indépendant** et **dispatcheur** (= chauffeur indépendant + « Partager la course » sur WhatsApp, Telegram, SMS et partage) ; outil de gestion, 1 compte par abonné, saisie société une fois puis validation super-admin (rien d'accessible avant), états en attente / actif / lecture seule, paiement manuel, catégories communes + prix propres, bons et factures à son nom avec sa numérotation. Prix (D-022) : 10 € TTC / mois chauffeur, 30 € TTC / mois dispatcheur, 1 mois d'essai, paiement mensuel
    - Découpage (D-073) : [x] 1. compte et porte d'entrée (inscription `/espace/inscription`, connexion, « Ma société » puis validation, menu « Abonnés », cloisonnement — **en prod le 2026-11-25** (PR #18), 1 migration) · [ ] 2. ses courses · [ ] 3. ses prix · [ ] 4. ses bons et factures · [ ] 5. Partager la course (dispatcheur) · [ ] 6. fin d'essai / actif / lecture seule
+   - Abonnés = futurs chauffeurs de ZenCAR (D-079) : [ ] **A** « Chauffeur retenu » choisi parmi les abonnés validés (texte libre gardé) · [ ] plus tard **C** bourse aux courses (revoir D-011, sous-traitance, assurance, facturation)
 
 ## ⏳ En attente
 

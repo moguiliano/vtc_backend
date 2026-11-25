@@ -59,6 +59,13 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-079 — Les abonnés, futurs chauffeurs de ZenCAR ? — 2026-11-25
+- **Décision** (mots de l'utilisateur) : « A pour l'instant, le but sera de passer à C plus tard ». Les abonnés d'aujourd'hui seront les chauffeurs de demain sur ZenCAR.
+  - **Maintenant (A)** : les courses de SIMPLICI CAB restent partagées par WhatsApp / Telegram ; le champ « Chauffeur retenu » propose la **liste des abonnés validés** (en plus du texte libre, pour les chauffeurs qui ne sont pas abonnés).
+  - **Plus tard (C)** : « bourse aux courses » : chaque course de dzencar.fr proposée à tous les abonnés validés, le premier qui accepte la prend.
+- **Raison** : savoir dès maintenant quel abonné fait quelles courses, sans rien construire de lourd ; la bourse viendra quand il y aura assez d'abonnés de confiance.
+- **Impact** : complète D-011 (ZenCAR pourra un jour distribuer des courses : D-011 sera à revoir au moment de C). A : lien optionnel entre une réservation et l'entreprise abonnée retenue (migration), page Partager et fiche réservation. C : à préparer (sous-traitance, assurance, qui facture le client, cloisonnement : l'abonné ne reçoit qu'une copie de la course, jamais la réservation de SIMPLICI CAB). `ROADMAP.md` mis à jour.
+
 ### D-078 — Plan de l'étape 1 et deux choix par défaut — 2026-11-25
 - **Décision** (mot de l'utilisateur : « Ok ») : plan de l'étape 1 accepté, avec ses deux choix par défaut : **après validation, l'abonné ne modifie plus « Ma société » lui-même** (il demande au super-admin) ; **la page d'inscription n'est pas encore liée depuis dzencar.fr** (emplacement du lien à décider quand tout marchera).
 - **Raison** : éviter qu'un SIRET change après le contrôle du super-admin ; ne rien montrer au public avant que l'espace soit testé.
