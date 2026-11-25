@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-25 — Abonné retenu dans « Partager la course » (🧩 Fonctionnalités, `feature/abonne-retenu`)
+- **Fait** : D-083 (plan accepté : « Ok »). Page Partager, onglet « 2. Envoi au chauffeur retenu » : liste « Abonné ZenCAR » (abonnés validés seulement : essai ou actif), le choix remplit « Nom — téléphone » (modifiable), « — Pas un abonné — » garde le texte libre ; ligne « Abonné retenu » sur la fiche réservation ; filtre « Abonné retenu » sur la liste des réservations. **1 migration** (`Version20261125015415`, colonne vide `reservation.abonne_retenu_id`). Testé en local : A (en essai) proposé, B (en attente) absent et refusé même en forçant l'envoi, texte libre d'un non-abonné OK, filtre → la bonne course, zones de message intactes (un conflit de nom `data-texte` avec le script de la page a été corrigé), 11 tests PHPUnit OK.
+- **Bloqué** : rien. Non testé : la page avec un compte régulateur (mêmes droits que l'admin sur cette page).
+- **Prochaine étape** : PR vers `main` puis mise en prod (sauvegarde + 1 migration) ; ensuite étape 2 des espaces abonnés (les courses de l'abonné, D-082).
+
 ### 2026-11-25 — Page « Espace chauffeurs pro » en prod (PR #19)
 - **Fait** : PR #19 fusionnée (`059f857`) ; en prod : `git pull` puis cache vidé (pas de migration). Vérifié en ligne par Claude : `https://dzencar.fr/chauffeurs-vtc` s'affiche (noindex, absente du sitemap), lien « Espace chauffeurs pro » dans le pied de page, `/espace/inscription` et `/espace/connexion` OK, `/espace` et `/admin` toujours fermés.
 - **Bloqué** : rien. Non testé : un vrai téléphone.
