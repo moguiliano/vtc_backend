@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-093 — « Mes prix » : le même écran que la Grille de prix de l'admin — 2026-11-25
+- **Décision** (question de l'utilisateur : « pourquoi n'as-tu pas mis exactement le même template prix que le mien ? », puis choix A) : « Mes prix » reprend **le même écran** que « Grille de prix » de l'admin (liste, puis « Modifier » par véhicule, mêmes colonnes), avec seulement : ses propres lignes, ni « Ajouter » ni « Supprimer », une colonne « Prix ZenCAR / Mes prix » et une action « Revenir aux prix ZenCAR ». La majoration de nuit passe dans une petite page à part, « Ma majoration de nuit ».
+- **Raison** : un seul écran à entretenir (esprit de D-088) ; le super-admin voit la même chose que le chauffeur et peut l'aider au téléphone.
+- **Impact** : remplace la page « simple d'abord » de D-092 pour « Mes prix » (le reste de D-092 ne change pas). Champs communs aux deux écrans (un seul endroit à modifier).
+
 ### D-092 — L'espace chauffeur en style « admin EasyAdmin » — 2026-11-25
 - **Décision** (mots de l'utilisateur : « je le trouve trop complexe », « pourquoi pas mettre une page similaire à admin symfony ? », puis choix A) : l'espace abonné passe dans un **2ᵉ tableau de bord EasyAdmin** sous `/espace` (menu sur le côté : Accueil, Ma société, Mes prix, puis Mes courses et Mes factures). « Mes prix » devient **« simple d'abord »** : une ligne par véhicule (case, prix ZenCAR « à partir de », bouton « Personnaliser » qui ouvre les 4 chiffres) et une phrase pour la nuit. Inscription et connexion restent des pages simples.
 - **Raison** : page actuelle trop chargée ; un cadre connu, plus clair ; listes, recherche et filtres offerts pour les étapes 2 et 4 ; factorisation avec l'admin (D-088).
