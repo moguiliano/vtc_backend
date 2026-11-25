@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-104 — Course confiée : quelles informations du client l'abonné voit-il ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **tout ce qu'il faut pour faire la course**, comme le message WhatsApp « Envoi au chauffeur retenu » : prénom et téléphone du client, adresse exacte de départ, arrêt, arrivée, date et heure, véhicule, siège bébé, informations complémentaires.
+- **Raison** : rien de plus que ce qu'il reçoit déjà par WhatsApp une fois retenu ; sans adresse ni téléphone il ne peut pas prendre en charge le client. Il ne voit la course que tant qu'il est retenu (D-100).
+- **Impact** : étape 2b, fiche « Course reçue ». Ce qui concerne l'argent (prix à encaisser, commission) est tranché à part.
+
 ### D-103 — Plan de l'étape 2a « Mes courses saisies » — 2026-11-25
 - **Décision** (mot de l'utilisateur : « Ok ») : menus « Nouvelle course » (formulaire de la réservation par téléphone, véhicules et prix de SA grille, nuit comprise, sans SMS, statut « Confirmée ») et « Mes courses » (même liste que « Réservations » de l'admin, limitée à ses courses, toutes actions D-099) ; calcul de trajet propre à l'espace (`/espace/calcul-trajet`) ; lecture seule = consultation seulement ; pas de migration.
 - **Raison** : réutiliser ce qui marche déjà ; le tri automatique par entreprise garantit le cloisonnement.
