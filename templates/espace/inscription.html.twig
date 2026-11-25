@@ -1,0 +1,23 @@
+{% extends 'espace/base.html.twig' %}
+{% block title %}Créer mon espace{% endblock %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+<div class="zen-card zen-narrow" style="max-width:520px">
+    <h1 class="mb-1">Créer mon espace pro</h1>
+    <p class="muted small mb-4">L'outil de gestion des chauffeurs VTC : vos courses, vos prix, vos bons de commande et vos factures.
+        <strong>1 mois d'essai gratuit</strong> à partir de la validation de votre société.</p>
+    {% if erreur %}<div class="alert alert-danger py-2">{{ erreur }}</div>{% endif %}
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.nom, {row_attr: {class: 'mb-3'}}) }}
+        {{ form_row(form.typeAbonnement, {row_attr: {class: 'mb-3'}, help: 'Dispatcheur = chauffeur indépendant + partage des courses (WhatsApp, Telegram, SMS).'}) }}
+        {{ form_row(form.email, {row_attr: {class: 'mb-3'}}) }}
+        {{ form_row(form.telephone, {row_attr: {class: 'mb-3'}}) }}
+        {{ form_row(form.motDePasse.first, {row_attr: {class: 'mb-3'}}) }}
+        {{ form_row(form.motDePasse.second, {row_attr: {class: 'mb-3'}}) }}
+        <div class="piege" aria-hidden="true">{{ form_row(form.siteWeb) }}</div>
+        <button class="btn btn-zen w-100 mt-2" type="submit">Créer mon espace</button>
+    {{ form_end(form) }}
+    <p class="text-center mt-4 mb-0 muted small">Déjà inscrit ? <a href="{{ path('espace_connexion') }}">Se connecter</a></p>
+</div>
+{% endblock %}

@@ -70,6 +70,21 @@ class Societe implements AppartientAEntreprise
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /**
+     * Fiche vide pour un abonné (D-015) : surtout pas les valeurs par défaut,
+     * qui sont celles de SIMPLICI CAB.
+     */
+    public static function vierge(Entreprise $entreprise): self
+    {
+        $s = (new self())->setEntreprise($entreprise);
+        foreach (['raisonSociale', 'nomCommercial', 'formeJuridique', 'adresse', 'codePostal', 'ville',
+                  'telephone', 'siren', 'siret', 'tvaIntra', 'codeNaf', 'numeroRevtc'] as $champ) {
+            $s->$champ = '';
+        }
+
+        return $s;
+    }
+
     public function getId(): ?int { return $this->id; }
 
     public function getEntreprise(): ?Entreprise { return $this->entreprise; }
@@ -79,7 +94,7 @@ class Societe implements AppartientAEntreprise
     public function setRaisonSociale(string $v): static { $this->raisonSociale = $v; return $this; }
 
     public function getNomCommercial(): string { return $this->nomCommercial; }
-    public function setNomCommercial(string $v): static { $this->nomCommercial = $v; return $this; }
+    public function setNomCommercial(?string $v): static { $this->nomCommercial = (string) $v; return $this; }
 
     public function getFormeJuridique(): string { return $this->formeJuridique; }
     public function setFormeJuridique(string $v): static { $this->formeJuridique = $v; return $this; }
@@ -112,7 +127,7 @@ class Societe implements AppartientAEntreprise
     public function setSiret(string $v): static { $this->siret = $v; return $this; }
 
     public function getTvaIntra(): string { return $this->tvaIntra; }
-    public function setTvaIntra(string $v): static { $this->tvaIntra = $v; return $this; }
+    public function setTvaIntra(?string $v): static { $this->tvaIntra = (string) $v; return $this; }
 
     public function getCodeNaf(): string { return $this->codeNaf; }
     public function setCodeNaf(string $v): static { $this->codeNaf = $v; return $this; }

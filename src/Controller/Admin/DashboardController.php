@@ -6,6 +6,9 @@ use App\Entity\Admin;
 use App\Entity\Appel;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use App\Entity\Contact;
+use App\Entity\Entreprise;
+use App\Enum\EtatAbonne;
+use App\Repository\EntrepriseRepository;
 use App\Entity\Facture;
 use App\Entity\Forfait;
 use App\Entity\GrilleTarif;
@@ -35,6 +38,7 @@ class DashboardController extends AbstractDashboardController
         private ContactRepository $contactRepo,
         private SocieteRepository $societeRepo,
         private EntrepriseCourante $entrepriseCourante,
+        private EntrepriseRepository $entrepriseRepo,
     ) {}
 
     #[Route('/admin', name: 'admin_dashboard')]
@@ -116,6 +120,10 @@ class DashboardController extends AbstractDashboardController
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             yield MenuItem::section('Administration');
             yield MenuItem::linkToCrud('Administrateurs', 'fa fa-users', Admin::class);
+            // Espaces abonnés (D-074 à D-078) : badge = sociétés en attente de validation
+            $enAttente = $this->entrepriseRepo->count(['etat' => EtatAbonne::EN_ATTENTE]);
+            yield MenuItem::linkToCrud('Abonnés' . ($enAttente > 0 ? ' <span style="background:#ff5630;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;">' . $enAttente . '</span>' : ''), 'fa fa-id-badge', Entreprise::class)
+                ->setController(AbonneCrudController::class);
             yield MenuItem::linkToCrud('Ma société', 'fa fa-building', Societe::class)
                 ->setAction(Action::EDIT)
                 ->setEntityId($this->societeRepo->pourEntreprise($this->entrepriseCourante->get())->getId());

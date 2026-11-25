@@ -59,6 +59,41 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-078 — Plan de l'étape 1 et deux choix par défaut — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : plan de l'étape 1 accepté, avec ses deux choix par défaut : **après validation, l'abonné ne modifie plus « Ma société » lui-même** (il demande au super-admin) ; **la page d'inscription n'est pas encore liée depuis dzencar.fr** (emplacement du lien à décider quand tout marchera).
+- **Raison** : éviter qu'un SIRET change après le contrôle du super-admin ; ne rien montrer au public avant que l'espace soit testé.
+- **Impact** : cloisonnement en 3 verrous (connexion séparée `/espace`, tri automatique des données par entreprise, écrans propres à l'espace) ; menu « Abonnés » au super-admin ; migration sur `entreprise` + table `compte_abonne`.
+
+### D-077 — Quand démarre le mois d'essai ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **le jour où le super-admin valide la société** de l'abonné.
+- **Raison** : l'abonné profite de 30 vrais jours d'utilisation, sans perdre de jours à attendre la validation.
+- **Impact** : la validation enregistre la date de début d'essai (fin = début + 1 mois) et fait passer l'abonné de « en attente » à « essai ».
+
+### D-076 — Où l'abonné travaille-t-il ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : dans un **espace séparé** (`/espace`) avec son propre menu, distinct de l'admin `/admin`.
+- **Raison** : on n'y met que les écrans prévus pour les abonnés, chacun filtré sur ses données dès le départ ; aucun risque d'oublier de fermer un écran de l'admin SIMPLICI CAB. L'admin et le régulateur ne changent pas.
+- **Impact** : nouveau tableau de bord EasyAdmin pour les abonnés ; `/admin` reste fermé aux abonnés.
+
+### D-075 — Inscription : comment écarter les robots ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **pas de code SMS ni d'e-mail** à l'inscription. Un champ piège invisible (que seuls les robots remplissent) et une limite de quelques inscriptions par heure ; la validation de la société par le super-admin (D-015) sert de filtre final.
+- **Raison** : un faux compte ne voit que « Ma société » et n'est jamais validé ; le crédit Twilio est épuisé et l'envoi d'e-mails n'existe pas encore. Le code SMS pourra s'ajouter plus tard.
+- **Impact** : formulaire d'inscription avec champ piège et limite de fréquence ; rien à brancher sur Twilio ni sur un Mailer.
+
+### D-074 — Comment l'abonné obtient-il son compte ? — 2026-11-24
+- **Décision** (choix de l'utilisateur : B) : **inscription publique**. Une page « Créer mon espace » sur dzencar.fr : la personne crée elle-même son compte, puis le super-admin valide sa société (D-015).
+- **Raison** : choix de l'utilisateur ; l'abonné n'a pas besoin d'attendre le super-admin pour commencer à remplir ses informations.
+- **Impact** : page publique d'inscription à protéger contre les robots et les abus ; un compte inscrit n'a accès qu'à « Ma société » tant qu'il n'est pas validé (D-015).
+
+### D-073 — Espaces abonnés : par quelle étape commencer ? — 2026-11-24
+- **Décision** (choix de l'utilisateur : A) : le chantier est découpé en 6 petites étapes livrables ; on commence par l'**étape 1 « le compte et la porte d'entrée »** : création de l'abonné (type + état), connexion, formulaire « Ma société » seul accessible avant validation, validation par le super-admin qui lance l'essai, cloisonnement des données.
+- **Raison** : toutes les autres étapes en dépendent (« la serrure avant les meubles »).
+- **Impact** : `ROADMAP.md` (étape 4 découpée). Étapes suivantes : 2. ses courses, 3. ses prix, 4. ses bons et factures, 5. Partager la course pour le dispatcheur, 6. fin d'essai / actif / lecture seule.
+
+### D-072 — Espaces abonnés avant les Collaborateurs ? — 2026-11-24
+- **Décision** (mots de l'utilisateur) : « je veux d'abord l'espace abonné ». L'étape 4 **Espaces abonnés** passe **avant** l'étape 3 **Collaborateurs**.
+- **Raison** : choix de l'utilisateur ; la Fondation « Entreprise » et le Régulateur (étapes 0 et 2) sont en prod, les espaces abonnés peuvent s'appuyer dessus.
+- **Impact** : modifie l'ordre de D-020. `ROADMAP.md` : Espaces abonnés devient l'étape en cours, Collaborateurs ensuite.
+
 ### D-022 — Prix de l'abonnement — 2026-11-23
 - **Décision** : **chauffeur indépendant 10 € TTC / mois**, **dispatcheur 30 € TTC / mois** (le partage des courses en plus, D-063). **1 mois d'essai gratuit**, facturation à partir du 2e mois. **Paiement au mois uniquement**, sans engagement.
 - **Raison** : prix d'entrée bas pour attirer les premiers abonnés ; le paiement mensuel reste simple à suivre à la main (D-014).

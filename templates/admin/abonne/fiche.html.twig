@@ -1,0 +1,76 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}Abonné : {{ entreprise.nom }}{% endblock %}
+
+{% block content_title %}
+    Abonné : {{ entreprise.nom }}
+    <span class="badge bg-{{ entreprise.enAttente ? 'warning' : (entreprise.etat.value == 'lecture_seule' ? 'secondary' : 'success') }} ms-2" style="font-size:.8rem;vertical-align:middle;">{{ entreprise.etat.label }}</span>
+{% endblock %}
+
+{% block page_actions %}
+    <a class="btn btn-secondary" href="{{ urlListe }}"><i class="fa fa-arrow-left"></i> Liste des abonnés</a>
+    <a class="btn btn-secondary" href="{{ urlModifier }}"><i class="fa fa-pen"></i> Modifier type / état</a>
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-lg-5 mb-4">
+        <div class="card"><div class="card-body">
+            <h5 class="card-title">Abonnement</h5>
+            <p class="mb-1">Type : <strong>{{ entreprise.typeAbonnement ? entreprise.typeAbonnement.label ~ ' (' ~ entreprise.typeAbonnement.prixMensuelTtc ~ ' € TTC / mois)' : '—' }}</strong></p>
+            <p class="mb-1">Inscrit le : {{ entreprise.createdAt|date('d/m/Y H:i') }}</p>
+            {% if entreprise.essaiDebut %}
+                <p class="mb-1">Essai : du {{ entreprise.essaiDebut|date('d/m/Y') }} au {{ entreprise.essaiFin|date('d/m/Y') }}</p>
+            {% endif %}
+            <hr>
+            <h5 class="card-title">Compte de connexion</h5>
+            {% if compte %}
+                <p class="mb-1">E-mail : {{ compte.email }}</p>
+                <p class="mb-0">Téléphone : <a href="tel:{{ compte.telephone }}">{{ compte.telephone }}</a></p>
+            {% else %}
+                <p class="text-muted mb-0">Aucun compte.</p>
+            {% endif %}
+        </div></div>
+
+        {% if entreprise.enAttente %}
+            <div class="card mt-4 border-warning"><div class="card-body">
+                <h5 class="card-title">Validation</h5>
+                {% if societe %}
+                    <p>Vérifiez la société ci-contre (SIREN, REVTC…). La validation ouvre l'espace et lance le <strong>mois d'essai à partir d'aujourd'hui</strong> (D-077).</p>
+                    <form method="post" onsubmit="return confirm('Valider {{ entreprise.nom|e('js') }} et lancer son mois d\'essai ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('valider-abonne-' ~ entreprise.id) }}">
+                        <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> Valider la société</button>
+                    </form>
+                {% else %}
+                    <p class="text-muted mb-0">L'abonné n'a pas encore rempli « Ma société ». Rien à valider pour l'instant.</p>
+                {% endif %}
+            </div></div>
+        {% endif %}
+    </div>
+    <div class="col-lg-7 mb-4">
+        <div class="card"><div class="card-body">
+            <h5 class="card-title">Société saisie par l'abonné</h5>
+            {% if societe %}
+                <table class="table table-sm mb-0">
+                    <tr><th>Raison sociale</th><td>{{ societe.raisonSociale }}</td></tr>
+                    <tr><th>Nom commercial</th><td>{{ societe.nomCommercial ?: '—' }}</td></tr>
+                    <tr><th>Forme juridique</th><td>{{ societe.formeJuridique }}</td></tr>
+                    <tr><th>Capital social</th><td>{{ societe.capitalSocial ?: '—' }}</td></tr>
+                    <tr><th>RCS</th><td>{{ societe.rcs ?: '—' }}</td></tr>
+                    <tr><th>SIREN</th><td>{{ societe.siren }} <a href="https://annuaire-entreprises.data.gouv.fr/entreprise/{{ societe.siren|replace({' ': ''}) }}" target="_blank" rel="noopener" class="small ms-2">vérifier sur l'annuaire officiel</a></td></tr>
+                    <tr><th>SIRET</th><td>{{ societe.siret }}</td></tr>
+                    <tr><th>TVA intracommunautaire</th><td>{{ societe.tvaIntra ?: 'non assujetti' }}</td></tr>
+                    <tr><th>Code NAF</th><td>{{ societe.codeNaf }}</td></tr>
+                    <tr><th>N° REVTC</th><td>{{ societe.numeroRevtc }}</td></tr>
+                    <tr><th>Adresse</th><td>{{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}</td></tr>
+                    <tr><th>Téléphone</th><td>{{ societe.telephone }}</td></tr>
+                    <tr><th>E-mail</th><td>{{ societe.email ?: '—' }}</td></tr>
+                    <tr><th>Envoyée / modifiée le</th><td>{{ societe.updatedAt ? societe.updatedAt|date('d/m/Y H:i') : '—' }}</td></tr>
+                </table>
+            {% else %}
+                <p class="text-muted mb-0">Pas encore remplie.</p>
+            {% endif %}
+        </div></div>
+    </div>
+</div>
+{% endblock %}

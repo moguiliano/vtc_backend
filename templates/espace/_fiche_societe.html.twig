@@ -1,0 +1,14 @@
+<dl class="fiche row">
+    <dt class="col-sm-4">Raison sociale</dt><dd class="col-sm-8">{{ societe.raisonSociale }}</dd>
+    {% if societe.nomCommercial %}<dt class="col-sm-4">Nom commercial</dt><dd class="col-sm-8">{{ societe.nomCommercial }}</dd>{% endif %}
+    <dt class="col-sm-4">Forme juridique</dt><dd class="col-sm-8">{{ societe.formeJuridique }}</dd>
+    {% if societe.capitalSocial %}<dt class="col-sm-4">Capital social</dt><dd class="col-sm-8">{{ societe.capitalSocial }}</dd>{% endif %}
+    {% if societe.rcs %}<dt class="col-sm-4">RCS</dt><dd class="col-sm-8">{{ societe.rcs }}</dd>{% endif %}
+    <dt class="col-sm-4">SIREN / SIRET</dt><dd class="col-sm-8">{{ societe.siren }} / {{ societe.siret }}</dd>
+    <dt class="col-sm-4">TVA intracommunautaire</dt><dd class="col-sm-8">{{ societe.tvaIntra ?: 'non assujetti' }}</dd>
+    <dt class="col-sm-4">Code NAF</dt><dd class="col-sm-8">{{ societe.codeNaf }}</dd>
+    <dt class="col-sm-4">N° REVTC</dt><dd class="col-sm-8">{{ societe.numeroRevtc }}</dd>
+    <dt class="col-sm-4">Adresse</dt><dd class="col-sm-8">{{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}</dd>
+    <dt class="col-sm-4">Téléphone</dt><dd class="col-sm-8">{{ societe.telephone }}</dd>
+    {% if societe.email %}<dt class="col-sm-4">E-mail</dt><dd class="col-sm-8">{{ societe.email }}</dd>{% endif %}
+</dl>
