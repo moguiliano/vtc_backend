@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-083 — Liste des abonnés dans « Chauffeur retenu » : le plan — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : sur la page Partager (onglet « 2. Envoi au chauffeur retenu »), une liste **« Abonné ZenCAR »** avec les seuls abonnés **validés** (essai ou actif) ; le choix remplit le texte « Nom — téléphone » (modifiable) ; « — Pas un abonné — » garde le texte libre. Filtre **« Abonné retenu »** sur la liste des réservations. Rien de nouveau dans l'espace de l'abonné.
+- **Raison** : mettre en œuvre D-079 A et préparer la bourse aux courses (savoir qui roule beaucoup et bien).
+- **Impact** : lien facultatif `reservation.abonne_retenu_id` (1 migration, colonne vide) ; page Partager ; `ReservationCrudController`.
+
 ### D-082 — Les chauffeurs auront-ils un formulaire de réservation avec la carte ? — 2026-11-25
 - **Décision** (mots de l'utilisateur : « ok pour le 1, non pour le 2 », à propos des 2 formulaires) : **oui** au formulaire de saisie **dans l'espace** de l'abonné (étape 2 : adresses suggérées, carte et trajet, prix calculé depuis sa grille, sur le modèle de la réservation par téléphone) ; **non** pour l'instant à un formulaire **public** pour les clients de l'abonné (confirme D-012). Plan de la page `/chauffeurs-vtc` accepté tel quel (non référencée, sans parler des futures courses confiées).
 - **Raison** : le chauffeur saisit vite les courses de ses clients ; une page publique par abonné reste à protéger et viendra plus tard.
