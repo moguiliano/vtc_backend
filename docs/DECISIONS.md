@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-078 — Plan de l'étape 1 et deux choix par défaut — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : plan de l'étape 1 accepté, avec ses deux choix par défaut : **après validation, l'abonné ne modifie plus « Ma société » lui-même** (il demande au super-admin) ; **la page d'inscription n'est pas encore liée depuis dzencar.fr** (emplacement du lien à décider quand tout marchera).
+- **Raison** : éviter qu'un SIRET change après le contrôle du super-admin ; ne rien montrer au public avant que l'espace soit testé.
+- **Impact** : cloisonnement en 3 verrous (connexion séparée `/espace`, tri automatique des données par entreprise, écrans propres à l'espace) ; menu « Abonnés » au super-admin ; migration sur `entreprise` + table `compte_abonne`.
+
 ### D-077 — Quand démarre le mois d'essai ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A) : **le jour où le super-admin valide la société** de l'abonné.
 - **Raison** : l'abonné profite de 30 vrais jours d'utilisation, sans perdre de jours à attendre la validation.
