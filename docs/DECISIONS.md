@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-085 — Étape 2 ou étape 3 d'abord ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **les prix d'abord**. L'étape 3 (l'abonné coche ses véhicules et règle ses prix dans son espace) passe avant l'étape 2 (« Mes courses »).
+- **Raison** : le formulaire « Mes courses » calcule le prix depuis la grille de l'abonné ; sans grille, il ne saurait ni quels véhicules proposer ni quel prix afficher. Le formulaire n'est ainsi construit qu'une fois.
+- **Impact** : ordre de `ROADMAP.md` (étape 4 « Espaces abonnés ») : 1 ✔, puis 3 (ses prix), puis 2 (ses courses).
+
 ### D-084 — L'abonné retenu reçoit-il la course dans son espace ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : B) : **oui, avec l'étape 2**. La page « Mes courses » de l'abonné aura 2 parties : les courses qu'il saisit lui-même et les **courses reçues de ZenCAR** (celles où il est « abonné retenu », D-083). Pour ces dernières : date, départ, arrivée, véhicule et **prix chauffeur seulement** (ni prix client, ni commission), en **copie** : il ne touche jamais la réservation de SIMPLICI CAB. Le partage WhatsApp / Telegram continue en attendant.
 - **Raison** : ne construire qu'une fois (pendant l'étape 2) ; premier pas vers la bourse aux courses (D-079 C).
