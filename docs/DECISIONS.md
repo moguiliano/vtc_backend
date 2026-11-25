@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-095 — Titres simples et simulateur de prix dans la grille — 2026-11-25
+- **Décision** (mots de l'utilisateur : « A + ajoute un simulateur en dessous, pour éviter que les abonnés aillent sur la carte qu'ils utilisent HERE Maps pour resimuler les prix ») : nouveaux titres et phrases courtes (Proposé ; Distance courte jusqu'à (km) ; Prise en charge (€) ; Prix au km, courte distance (€) ; Prix à la fin de la distance courte ; Prix au km, longue distance (€)), pour l'admin et « Mes prix ». Plus un **simulateur de prix** sous la grille : on tape une distance, on voit le prix, sans passer par la carte.
+- **Raison** : le jargon « seuil / base » n'était pas clair ; simuler sans la carte évite des appels HERE Maps (coût) et fait gagner du temps.
+- **Impact** : `GrilleTarifChampsTrait` (titres, aides, simulateur) ; noms internes inchangés, prix inchangés. Emplacement du simulateur à préciser.
+
 ### D-094 — Descriptions dans la grille de prix : où ? — 2026-11-25
 - **Décision** (demande de l'utilisateur : « ajoute une description pour chaque ligne », puis choix A) : une **phrase courte sous chaque case** du formulaire « Modifier » de la grille de prix (admin et « Mes prix » des abonnés, même code).
 - **Raison** : c'est devant un chiffre à taper que l'on hésite ; une description des véhicules dans le tableau pourra venir plus tard.
