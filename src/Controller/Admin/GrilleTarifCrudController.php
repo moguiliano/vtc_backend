@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Controller\Traits\GrilleTarifChampsTrait;
 use App\Entity\GrilleTarif;
 use App\Service\EntrepriseCourante;
 use App\Service\GrilleAbonnes;
@@ -16,10 +17,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 /**
  * Grille de prix de l'entreprise courante (D-016, D-020) : une ligne par catégorie proposée.
@@ -28,6 +25,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 #[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réservé au super-admin, même en tapant l'adresse
 class GrilleTarifCrudController extends AbstractCrudController
 {
+    use GrilleTarifChampsTrait;
+
     public function __construct(
         private readonly EntrepriseCourante $entrepriseCourante,
         private readonly GrilleAbonnes $grilleAbonnes,
@@ -94,37 +93,6 @@ class GrilleTarifCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('categorie', 'Véhicule')
-            ->setColumns(4)
-            ->setFormTypeOption('disabled', $pageName === Crud::PAGE_EDIT);
-
-        yield BooleanField::new('actif', 'Proposé')
-            ->setHelp('Décoché : le véhicule n\'est plus proposé sur le site.')
-            ->setColumns(2);
-
-        yield NumberField::new('thresholdKm', 'Seuil (km)')
-            ->setHelp('Distance en km séparant les 2 formules de prix.')
-            ->setNumDecimals(1)
-            ->setColumns(3);
-
-        yield NumberField::new('basePriceUnderThreshold', 'Prix base ≤ seuil (€)')
-            ->setNumDecimals(2)
-            ->setColumns(3);
-
-        yield NumberField::new('pricePerKmUnderThreshold', '€/km ≤ seuil')
-            ->setNumDecimals(2)
-            ->setColumns(3);
-
-        // D-090 : calculé automatiquement (prise en charge + seuil × €/km), affiché pour information
-        yield NumberField::new('basePriceOverThreshold', 'Prix au seuil (calculé)')
-            ->setNumDecimals(2)
-            ->hideOnForm()
-            ->setHelp('Prise en charge + seuil × €/km jusqu\'au seuil : calculé automatiquement.');
-
-        yield NumberField::new('pricePerKmOverThreshold', '€/km > seuil')
-            ->setNumDecimals(2)
-            ->setColumns(3);
-
-        yield DateTimeField::new('updatedAt', 'Modifié le')->onlyOnDetail();
+        return $this->champsGrille($pageName); // mêmes colonnes que « Mes prix » des abonnés (D-093)
     }
 }

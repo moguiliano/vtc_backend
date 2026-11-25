@@ -1,0 +1,24 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{# « Ma majoration de nuit » (D-089, D-093) #}
+{% block page_title %}Ma majoration de nuit{% endblock %}
+{% block content_title %}Ma majoration de nuit{% endblock %}
+{% block main %}
+<div class="card"><div class="card-body">
+    <p class="text-muted">Entre <strong>23 h et 7 h</strong>, le prix de vos courses peut être majoré. Vous choisissez si vous l'appliquez et de combien (ZenCAR : 20 %).</p>
+    {% if not modifiable %}<div class="alert alert-info">Votre espace est en lecture seule : ce réglage ne peut pas être modifié.</div>{% endif %}
+    {% if erreur %}<div class="alert alert-danger">{{ erreur }}</div>{% endif %}
+    <form method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('ma-nuit') }}">
+        <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="nuit-active" name="nuit_active" value="1"
+                   {{ entreprise.nuitActive ? 'checked' : '' }} {{ modifiable ? '' : 'disabled' }}>
+            <label class="form-check-label" for="nuit-active">Appliquer une majoration de nuit</label>
+        </div>
+        <div class="mb-3" style="max-width:220px;">
+            <label class="form-label" for="nuit-pourcent">Majoration (%)</label>
+            <input class="form-control" id="nuit-pourcent" name="nuit_pourcent" value="{{ entreprise.nuitPourcent }}" inputmode="decimal" {{ modifiable ? '' : 'disabled' }}>
+        </div>
+        {% if modifiable %}<button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Enregistrer</button>{% endif %}
+    </form>
+</div></div>
+{% endblock %}
