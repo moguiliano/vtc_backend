@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-086 — Avec quels prix démarre la grille d'un nouvel abonné ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **une grille vide** : tous les prix à 0, aucun véhicule coché. L'abonné remplit lui-même ses prix avant de pouvoir saisir une course.
+- **Raison** : choix de l'utilisateur ; chaque abonné fixe ses prix lui-même, sans partir de ceux de SIMPLICI CAB.
+- **Impact** : l'écran « Mes prix » doit être très clair (exemple chiffré, aide sur le seuil et les 2 formules) ; tant qu'aucun véhicule n'est coché avec des prix, « Mes courses » (étape 2) affichera un message qui renvoie vers « Mes prix ».
+
 ### D-085 — Étape 2 ou étape 3 d'abord ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A) : **les prix d'abord**. L'étape 3 (l'abonné coche ses véhicules et règle ses prix dans son espace) passe avant l'étape 2 (« Mes courses »).
 - **Raison** : le formulaire « Mes courses » calcule le prix depuis la grille de l'abonné ; sans grille, il ne saurait ni quels véhicules proposer ni quel prix afficher. Le formulaire n'est ainsi construit qu'une fois.
