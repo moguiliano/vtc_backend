@@ -59,7 +59,17 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
-### D-086 — Avec quels prix démarre la grille d'un nouvel abonné ? — 2026-11-25
+### D-088 — Un seul module de facturation pour SIMPLICI CAB et les abonnés — 2026-11-25
+- **Décision** (mots de l'utilisateur) : « on va factoriser le module de facturation pour moi comme pour les chauffeurs ».
+- **Raison** : ne construire et n'entretenir qu'une seule facturation ; chaque entreprise garde ses mentions légales et sa numérotation (D-017).
+- **Impact** : à l'étape 4 (« ses bons et factures »), les écrans de factures et le PDF de l'espace abonné réutilisent les mêmes briques que l'admin (`Facture`, numérotation par entreprise, `PdfGenerator`), au lieu d'une copie à part. Toute amélioration (ex. brouillon → émise, D-001, D-003) profitera aux deux.
+
+### D-087 — Grille par défaut d'un abonné : les prix de SIMPLICI CAB — 2026-11-25
+- **Décision** (mots de l'utilisateur) : « les prix de leurs grilles par défaut seront les mêmes prix que moi ».
+- **Raison** : changement d'avis par rapport à D-086 ; l'abonné part d'une grille complète et l'ajuste.
+- **Impact** : **remplace D-086** (grille vide). À la création de la grille d'un abonné, ses prix sont **copiés** de ceux de SIMPLICI CAB ; ensuite sa grille lui appartient (un changement de prix de SIMPLICI CAB ne la modifie pas). Véhicules cochés ou non au départ : à préciser dans le plan.
+
+### D-086 — Avec quels prix démarre la grille d'un nouvel abonné ? — 2026-11-25 — ⚠️ remplacée par D-087
 - **Décision** (choix de l'utilisateur : A) : **une grille vide** : tous les prix à 0, aucun véhicule coché. L'abonné remplit lui-même ses prix avant de pouvoir saisir une course.
 - **Raison** : choix de l'utilisateur ; chaque abonné fixe ses prix lui-même, sans partir de ceux de SIMPLICI CAB.
 - **Impact** : l'écran « Mes prix » doit être très clair (exemple chiffré, aide sur le seuil et les 2 formules) ; tant qu'aucun véhicule n'est coché avec des prix, « Mes courses » (étape 2) affichera un message qui renvoie vers « Mes prix ».
