@@ -11,6 +11,8 @@ use App\Entity\Contact;
 use App\Entity\Entreprise;
 use App\Enum\EtatAbonne;
 use App\Repository\EntrepriseRepository;
+use App\Repository\ReservationRepository;
+use App\Enum\StatutChauffeur;
 use App\Entity\Facture;
 use App\Entity\Forfait;
 use App\Entity\GrilleTarif;
@@ -42,6 +44,7 @@ class DashboardController extends AbstractDashboardController
         private SocieteRepository $societeRepo,
         private EntrepriseCourante $entrepriseCourante,
         private EntrepriseRepository $entrepriseRepo,
+        private ReservationRepository $reservationRepo,
     ) {}
 
     #[Route('/admin', name: 'admin_dashboard')]
@@ -74,7 +77,10 @@ class DashboardController extends AbstractDashboardController
         // Réservations
         if ($this->isGranted('ROLE_RESERVATIONS_VIEW')) {
             yield MenuItem::section('Réservations');
-            yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
+            // Pastille : courses dont l'abonné retenu s'est retiré, à réattribuer (D-102, D-107)
+            $retires = $this->reservationRepo->count(['statutChauffeur' => StatutChauffeur::RETIRE]);
+            $reservations = MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
+            yield $retires > 0 ? $reservations->setBadge($retires . ' retrait' . ($retires > 1 ? 's' : ''), 'danger') : $reservations;
             yield MenuItem::linkToCrud('Factures', 'fa fa-file-invoice', Facture::class);
         }
         if ($this->isGranted('ROLE_RESERVATIONS_EDIT')) {
