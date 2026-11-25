@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-25 — Page « Espace chauffeurs pro » (🧩 Fonctionnalités, `feature/page-chauffeurs`)
+- **Fait** : D-079 (« A pour l'instant, le but sera de passer à C plus tard » : liste des abonnés dans « Chauffeur retenu » maintenant, bourse aux courses plus tard), D-080 (lien d'inscription d'abord), D-081 (page de présentation + lien en pied de page), D-082 (formulaire avec carte dans l'espace à l'étape 2, pas de formulaire public). Page `/chauffeurs-vtc` (non référencée) : l'outil, les 2 abonnements (10 € / 30 € TTC), le mois d'essai, 3 étapes, boutons « Créer mon espace » et « Me connecter » ; lien « Espace chauffeurs pro » dans le pied de page (colonne Informations). Porte `/espace` resserrée à `/espace` et `/espace/…` exactement. Testé en local : page en largeur téléphone et ordinateur sans débordement, lien présent, `/espace` et `/admin` toujours fermés, 11 tests PHPUnit OK. Pas de migration.
+- **Bloqué** : rien. Non testé : un vrai téléphone.
+- **Prochaine étape** : PR vers `main` (avec ton accord) puis mise en prod (pull + cache, pas de migration) ; partager `https://dzencar.fr/chauffeurs-vtc` dans les groupes de chauffeurs ; ensuite D-079 A (liste des abonnés dans « Chauffeur retenu »).
+
 ### 2026-11-25 — Espaces abonnés étape 1 en prod (PR #18)
 - **Fait** : PR #18 fusionnée (`82558fd`) ; en prod : sauvegarde (887 Ko), `git pull` (`acab3bc..82558fd`, apporte aussi le correctif D-071 de la PR #16, qui n'avait pas encore été tiré sur le serveur), 1 seule migration listée puis jouée (`Version20261125003725`), cache vidé. Vérifié en ligne par Claude : pages publiques et prix « à partir de », calcul de trajet Gare Saint-Charles → aéroport (4 prix renvoyés), `/espace/inscription` et `/espace/connexion` affichées (noindex), `/espace` et `/espace/ma-societe` renvoient vers la connexion abonné, `/admin` et `/admin/abonne` vers `/login`.
 - **Bloqué** : rien. Aucun abonné réel créé en prod ; la page d'inscription n'est liée nulle part (D-078). Non testé : l'affichage sur téléphone.
