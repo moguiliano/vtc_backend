@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-25 — Abonné retenu en prod (PR #20)
+- **Fait** : PR #20 fusionnée (`5365bd3`) ; en prod : sauvegarde (`sauvegarde-20261125-0915.sql`), `git pull` (`059f857..5365bd3`), 1 seule migration listée puis jouée (`Version20261125015415`), cache vidé. Vérifié en ligne par Claude : accueil, page chauffeurs, réservation, calcul de trajet, connexion abonné, redirection de `/admin`. Expliqué en séance : sauvegarde (photo avant travaux), `pull` / `push`, ordre sauvegarde → pull → migration → cache.
+- **Bloqué** : rien. La liste « Abonné ZenCAR » n'apparaîtra qu'avec un premier abonné validé. `public/.htaccess` non suivi sur le serveur : normal (propre à Infomaniak).
+- **Prochaine étape** : partager `https://dzencar.fr/chauffeurs-vtc` et valider les premiers abonnés ; étape 2 des espaces abonnés (Mes courses : saisie avec carte + courses reçues de ZenCAR, D-082, D-084).
+
 ### 2026-11-25 — Abonné retenu dans « Partager la course » (🧩 Fonctionnalités, `feature/abonne-retenu`)
 - **Fait** : D-083 (plan accepté : « Ok »). Page Partager, onglet « 2. Envoi au chauffeur retenu » : liste « Abonné ZenCAR » (abonnés validés seulement : essai ou actif), le choix remplit « Nom — téléphone » (modifiable), « — Pas un abonné — » garde le texte libre ; ligne « Abonné retenu » sur la fiche réservation ; filtre « Abonné retenu » sur la liste des réservations. **1 migration** (`Version20261125015415`, colonne vide `reservation.abonne_retenu_id`). Testé en local : A (en essai) proposé, B (en attente) absent et refusé même en forçant l'envoi, texte libre d'un non-abonné OK, filtre → la bonne course, zones de message intactes (un conflit de nom `data-texte` avec le script de la page a été corrigé), 11 tests PHPUnit OK.
 - **Bloqué** : rien. Non testé : la page avec un compte régulateur (mêmes droits que l'admin sur cette page).
