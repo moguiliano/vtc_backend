@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-103 — Plan de l'étape 2a « Mes courses saisies » — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : menus « Nouvelle course » (formulaire de la réservation par téléphone, véhicules et prix de SA grille, nuit comprise, sans SMS, statut « Confirmée ») et « Mes courses » (même liste que « Réservations » de l'admin, limitée à ses courses, toutes actions D-099) ; calcul de trajet propre à l'espace (`/espace/calcul-trajet`) ; lecture seule = consultation seulement ; pas de migration.
+- **Raison** : réutiliser ce qui marche déjà ; le tri automatique par entreprise garantit le cloisonnement.
+- **Impact** : nouveaux écrans de l'espace ; admin inchangée (les courses des abonnés n'apparaissent pas dans la liste de SIMPLICI CAB).
+
 ### D-102 — Quand le chauffeur « annule » une course reçue — 2026-11-25
 - **Décision** (choix de l'utilisateur : B) : un **statut côté chauffeur**, séparé du statut de la réservation : « Je prends la course », « Je suis arrivé », « Client à bord », « Course terminée », « Je me retire ». « Je me retire » **ne change pas** le statut client (reste « Confirmée ») et affiche une **alerte** dans l'admin de l'émetteur pour réattribuer la course.
 - **Raison** : « annulée » ne veut pas dire la même chose pour le client et pour le chauffeur ; le client n'est jamais annulé par erreur.
