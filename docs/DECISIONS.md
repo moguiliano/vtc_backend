@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-091 — Quand SIMPLICI CAB change ses prix, ceux des abonnés suivent-ils ? — 2026-11-25
+- **Décision** (mots de l'utilisateur : « c'est plutôt ma facturation qui change et celle des abonnés qui suit », puis « Oui, ils suivent ») : chaque véhicule d'un abonné est **« comme ZenCAR »** au départ et **suit les changements de prix de SIMPLICI CAB**. Dès que l'abonné modifie lui-même un chiffre de ce véhicule, il passe en **« mes prix »** et ne suit plus ; un bouton **« Revenir aux prix ZenCAR »** le raccroche.
+- **Raison** : l'abonné n'a rien à faire pour rester aligné sur ZenCAR, tout en gardant la liberté de fixer ses prix (D-016).
+- **Impact** : **corrige l'impact de D-087** (la phrase « un changement de prix de SIMPLICI CAB ne modifie pas sa grille » avait été ajoutée par Claude, pas par l'utilisateur). Seuls les 4 chiffres de prix suivent ; les véhicules cochés et la majoration de nuit (D-089) restent propres à l'abonné.
+
 ### D-090 — « Prix base > seuil » : réglage ou simple indication ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A ; ses mots : « prix base seuil ne devrait pas être touché, c'est juste une indication ») : le **prix de base au-delà du seuil est calculé automatiquement** = prise en charge + seuil × prix/km jusqu'au seuil. Il est **affiché pour information**, plus saisi à la main. Il reste 4 chiffres à régler par véhicule.
 - **Raison** : c'est la conséquence des autres chiffres (vérifié : 45 = 20 + 10 × 2,50 ; 55 ; 35 ; 63 pour les 4 véhicules de SIMPLICI CAB) ; saisi à la main, une erreur ferait « sauter » le prix au passage du seuil.
@@ -77,7 +82,7 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 ### D-087 — Grille par défaut d'un abonné : les prix de SIMPLICI CAB — 2026-11-25
 - **Décision** (mots de l'utilisateur) : « les prix de leurs grilles par défaut seront les mêmes prix que moi ».
 - **Raison** : changement d'avis par rapport à D-086 ; l'abonné part d'une grille complète et l'ajuste.
-- **Impact** : **remplace D-086** (grille vide). À la création de la grille d'un abonné, ses prix sont **copiés** de ceux de SIMPLICI CAB ; ensuite sa grille lui appartient (un changement de prix de SIMPLICI CAB ne la modifie pas). Véhicules cochés ou non au départ : à préciser dans le plan.
+- **Impact** : **remplace D-086** (grille vide). À la création de la grille d'un abonné, ses prix sont **copiés** de ceux de SIMPLICI CAB. ~~Ensuite sa grille lui appartient (un changement de prix de SIMPLICI CAB ne la modifie pas).~~ → corrigé par **D-091** : ils suivent tant que l'abonné ne les modifie pas. Aucun véhicule coché au départ (plan de l'étape 3).
 
 ### D-086 — Avec quels prix démarre la grille d'un nouvel abonné ? — 2026-11-25 — ⚠️ remplacée par D-087
 - **Décision** (choix de l'utilisateur : A) : **une grille vide** : tous les prix à 0, aucun véhicule coché. L'abonné remplit lui-même ses prix avant de pouvoir saisir une course.
