@@ -1,0 +1,25 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Changer mon mot de passe{% endblock %}
+{% block content_title %}Changer mon mot de passe{% endblock %}
+{% block main %}
+<div class="card" style="max-width:520px;"><div class="card-body">
+    {% if erreur %}<div class="alert alert-danger">{{ erreur }}</div>{% endif %}
+    <form method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('mon-mot-de-passe') }}">
+        <div class="mb-3">
+            <label class="form-label" for="actuel">Mot de passe actuel</label>
+            <input type="password" id="actuel" name="actuel" class="form-control" autocomplete="current-password" required>
+            <div class="form-text">Si ZenCAR vous a donné un mot de passe provisoire, c'est celui-là.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="nouveau">Nouveau mot de passe (8 caractères minimum)</label>
+            <input type="password" id="nouveau" name="nouveau" class="form-control" autocomplete="new-password" required minlength="8">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="confirmation">Nouveau mot de passe (encore)</label>
+            <input type="password" id="confirmation" name="confirmation" class="form-control" autocomplete="new-password" required minlength="8">
+        </div>
+        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Enregistrer</button>
+    </form>
+</div></div>
+{% endblock %}

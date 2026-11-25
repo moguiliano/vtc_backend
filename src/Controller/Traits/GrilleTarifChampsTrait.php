@@ -144,7 +144,7 @@ trait GrilleTarifChampsTrait
     c.before(note);
     const maj = () => {
       const l = { s: n(seuil.value), p: n(pec.value), a: n(ks.value), b: n(kr.value) };
-      if (auSeuil) auSeuil.value = (l.p + l.s * l.a).toFixed(2);
+      if (auSeuil) auSeuil.value = (l.p + l.s * l.a).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const d = n(c.querySelector('[data-sim-km]').value), nuit = c.querySelector('[data-sim-nuit]').checked;
       c.querySelector('[data-sim-resultat]').innerHTML = `\${d.toLocaleString('fr-FR')} km \${nuit ? 'de nuit' : 'de jour'} : <strong class="fs-5">\${eur(prix(l, d, nuit))}</strong>`;
     };

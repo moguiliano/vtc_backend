@@ -9,6 +9,7 @@ use App\Repository\CompteAbonneRepository;
 use App\Repository\SocieteRepository;
 use App\Service\EntrepriseCourante;
 use App\Service\GrilleAbonnes;
+use App\Service\MotDePasseAbonne;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminAction;
@@ -103,7 +104,7 @@ class AbonneCrudController extends AbstractCrudController
     }
 
     #[AdminAction(routePath: '/{entityId}/fiche', routeName: 'fiche', methods: ['GET', 'POST'])]
-    public function fiche(AdminContext $context, Request $request, EntityManagerInterface $em): Response
+    public function fiche(AdminContext $context, Request $request, EntityManagerInterface $em, MotDePasseAbonne $mdp): Response
     {
         $entreprise = $this->abonneOu404($context);
 
@@ -114,6 +115,19 @@ class AbonneCrudController extends AbstractCrudController
         );
 
         $url = $this->adminUrlGenerator->setController(self::class)->setAction('fiche')->setEntityId($entreprise->getId())->generateUrl();
+
+        // « Nouveau mot de passe » (D-108) : provisoire affiché une seule fois, à transmettre à l'abonné
+        if ($request->isMethod('POST') && $request->request->has('nouveau_mdp')) {
+            $compte = $this->compteRepo->pourEntreprise($entreprise);
+            if ($compte && $this->isCsrfTokenValid('mdp-abonne-' . $entreprise->getId(), (string) $request->request->get('_token'))) {
+                $provisoire = $mdp->provisoire($compte);
+                $this->addFlash('warning', sprintf('Mot de passe provisoire de %s : %s — à lui transmettre maintenant (il ne sera plus affiché). Il pourra le changer dans « Changer mon mot de passe ».', $compte->getEmail(), $provisoire));
+            } else {
+                $this->addFlash('danger', 'Le formulaire a expiré, réessayez.');
+            }
+
+            return $this->redirect($url);
+        }
 
         if ($request->isMethod('POST')) {
             if (!$this->isCsrfTokenValid('valider-abonne-' . $entreprise->getId(), (string) $request->request->get('_token'))) {

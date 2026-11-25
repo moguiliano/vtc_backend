@@ -1,6 +1,8 @@
 # config/services.yaml
 
 parameters:
+  # Expéditeur des e-mails du site (D-108) ; MAILER_FROM dans .env.local le remplace
+  env(MAILER_FROM): 'noreply@dzencar.fr'
   here_api_key: '%env(HERE_API_KEY)%'
   twilio.sid:   '%env(TWILIO_SID)%'
   twilio.token: '%env(TWILIO_TOKEN)%'

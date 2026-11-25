@@ -44,6 +44,13 @@ class CompteAbonne implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
+    /** « Mot de passe oublié » (D-108) : empreinte SHA-256 du lien secret (jamais le lien lui-même) et son expiration. */
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $resetHash = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $resetExpire = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -61,6 +68,31 @@ class CompteAbonne implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $telephone): static { $this->telephone = $telephone; return $this; }
 
     public function getCreatedAt(): \DateTimeImmutable { return $this->createdAt; }
+
+    /** Crée un lien secret valable 1 heure ; renvoie le secret en clair (à mettre dans l'e-mail, jamais stocké). */
+    public function nouveauLienReset(\DateTimeImmutable $maintenant): string
+    {
+        $secret = bin2hex(random_bytes(32));
+        $this->resetHash = hash('sha256', $secret);
+        $this->resetExpire = $maintenant->modify('+1 hour');
+
+        return $secret;
+    }
+
+    public function lienResetValide(string $secret, \DateTimeImmutable $maintenant): bool
+    {
+        return $this->resetHash !== null && $this->resetExpire !== null
+            && $maintenant < $this->resetExpire
+            && hash_equals($this->resetHash, hash('sha256', $secret));
+    }
+
+    /** Usage unique : le lien est effacé dès qu'il a servi (ou quand un nouveau mot de passe est donné). */
+    public function effacerLienReset(): static
+    {
+        $this->resetHash = null;
+        $this->resetExpire = null;
+        return $this;
+    }
 
     public function getUserIdentifier(): string { return $this->email; }
 

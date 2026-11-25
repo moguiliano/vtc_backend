@@ -13,6 +13,7 @@ use App\Service\GrilleAbonnes;
 use App\Enum\EtatAbonne;
 use App\Service\EntrepriseCourante;
 use App\Service\LimiteInscriptions;
+use App\Service\MotDePasseAbonne;
 use App\Service\PhoneNormalizerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -117,5 +118,52 @@ class EspaceController extends AbstractController
     public function deconnexion(): never
     {
         throw new \LogicException('Géré par le pare-feu « espace ».');
+    }
+
+    /** « Mot de passe oublié ? » (D-108) : même message que le compte existe ou non, limite par heure. */
+    #[Route('/mot-de-passe-oublie', name: 'espace_mot_de_passe_oublie', methods: ['GET', 'POST'])]
+    public function motDePasseOublie(Request $request, MotDePasseAbonne $mdp, LimiteInscriptions $limite): Response
+    {
+        $envoye = false;
+        $erreur = null;
+        if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('mot-de-passe-oublie', (string) $request->request->get('_token'))) {
+                $erreur = 'Le formulaire a expiré, recommencez.';
+            } elseif ($limite->estDepassee($request->getClientIp(), 'reset')) {
+                $erreur = 'Trop de demandes depuis votre connexion. Réessayez dans une heure.';
+            } else {
+                $limite->compter($request->getClientIp(), 'reset');
+                $mdp->envoyerLien((string) $request->request->get('email'));
+                $envoye = true;
+            }
+        }
+
+        return $this->render('espace/mot_de_passe_oublie.html.twig', ['envoye' => $envoye, 'erreur' => $erreur]);
+    }
+
+    /** Lien reçu par e-mail : choisir un nouveau mot de passe (lien 1 h, usage unique, D-108). */
+    #[Route('/nouveau-mot-de-passe/{secret}', name: 'espace_nouveau_mot_de_passe', methods: ['GET', 'POST'])]
+    public function nouveauMotDePasse(string $secret, Request $request, MotDePasseAbonne $mdp): Response
+    {
+        $compte = $mdp->compteDuLien($secret);
+        $erreur = null;
+
+        if ($compte && $request->isMethod('POST')) {
+            $nouveau = (string) $request->request->get('nouveau');
+            if (!$this->isCsrfTokenValid('nouveau-mot-de-passe', (string) $request->request->get('_token'))) {
+                $erreur = 'Le formulaire a expiré, recommencez.';
+            } elseif (mb_strlen($nouveau) < MotDePasseAbonne::LONGUEUR_MIN) {
+                $erreur = sprintf('Le mot de passe doit contenir au moins %d caractères.', MotDePasseAbonne::LONGUEUR_MIN);
+            } elseif ($nouveau !== (string) $request->request->get('confirmation')) {
+                $erreur = 'Les deux mots de passe ne correspondent pas.';
+            } else {
+                $mdp->changer($compte, $nouveau); // efface aussi le lien : usage unique
+                $this->addFlash('info', 'Votre mot de passe est changé. Vous pouvez vous connecter.');
+
+                return $this->redirectToRoute('espace_connexion');
+            }
+        }
+
+        return $this->render('espace/nouveau_mot_de_passe.html.twig', ['valide' => $compte !== null, 'erreur' => $erreur]);
     }
 }

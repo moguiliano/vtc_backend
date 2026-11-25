@@ -59,6 +59,16 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-109 — Plan « mot de passe » et EasyAdmin en français — 2026-11-25
+- **Décision** (mot de l'utilisateur : « Ok ») : bouton « Nouveau mot de passe » (provisoire affiché une seule fois) dans la fiche abonné ; page « Changer mon mot de passe » dans l'espace ; « Mot de passe oublié ? » par e-mail (lien 1 h, usage unique, message identique que le compte existe ou non, limite par heure, lien brouillé en base) ; EasyAdmin en français pour l'admin et l'espace.
+- **Raison** : indispensable avant les premiers vrais abonnés.
+- **Impact** : 1 migration (2 colonnes sur `compte_abonne`) ; `MAILER_DSN` et adresse d'envoi à configurer en prod par l'utilisateur.
+
+### D-108 — Mot de passe oublié d'un abonné — 2026-11-25
+- **Décision** (choix de l'utilisateur : C) : **les deux**. Tout de suite, un bouton « Nouveau mot de passe » dans la fiche abonné du super-admin (mot de passe provisoire à transmettre par téléphone / WhatsApp). Et un lien « Mot de passe oublié ? » sur la connexion de l'espace : lien par e-mail valable 1 heure, actif dès qu'une adresse d'envoi Infomaniak est configurée sur le serveur.
+- **Raison** : dépannage immédiat sans configuration ; ensuite les abonnés se débrouillent seuls. L'adresse d'envoi servira aux futurs e-mails (confirmations, factures).
+- **Impact** : fiche abonné (admin) ; pages « mot de passe oublié » et « changer mon mot de passe » dans l'espace ; envoi d'e-mails (Symfony Mailer déjà installé, `MAILER_DSN` à renseigner en prod par l'utilisateur).
+
 ### D-107 — Plan de l'étape 2b « Courses reçues » — 2026-11-25
 - **Décision** (mot de l'utilisateur : « Ok ») : menu « Courses reçues » dans l'espace (liste + fiche en lecture seule avec les informations D-104 et les montants D-105, boutons de statut D-102 / D-106 ; course retirée grisée jusqu'à réattribution) ; dans l'admin : colonne « Chauffeur », pastille et filtre « Chauffeur retiré », statut chauffeur sur la page Partager ; changement d'abonné retenu = statut chauffeur remis à zéro.
 - **Raison** : sous-traitance simple et suivie en direct, sans jamais ouvrir les autres réservations de l'émetteur.

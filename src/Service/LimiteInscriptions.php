@@ -15,28 +15,29 @@ class LimiteInscriptions
 
     public function __construct(private readonly CacheItemPoolInterface $cacheApp) {}
 
-    public function estDepassee(?string $ip): bool
+    /** $quoi : « inscription » (D-075) ou « reset » (mot de passe oublié, D-108), compteurs séparés. */
+    public function estDepassee(?string $ip, string $quoi = 'inscription'): bool
     {
-        return $this->compteur('ip_' . hash('sha256', (string) $ip)) >= self::MAX_PAR_IP_HEURE
-            || $this->compteur('total') >= self::MAX_TOTAL_HEURE;
+        return $this->compteur($quoi . '_ip_' . hash('sha256', (string) $ip)) >= self::MAX_PAR_IP_HEURE
+            || $this->compteur($quoi . '_total') >= self::MAX_TOTAL_HEURE;
     }
 
-    public function compter(?string $ip): void
+    public function compter(?string $ip, string $quoi = 'inscription'): void
     {
-        $this->incrementer('ip_' . hash('sha256', (string) $ip));
-        $this->incrementer('total');
+        $this->incrementer($quoi . '_ip_' . hash('sha256', (string) $ip));
+        $this->incrementer($quoi . '_total');
     }
 
     private function compteur(string $cle): int
     {
-        $item = $this->cacheApp->getItem('inscription_' . $cle);
+        $item = $this->cacheApp->getItem('limite_' . $cle);
 
         return $item->isHit() ? (int) $item->get()['n'] : 0;
     }
 
     private function incrementer(string $cle): void
     {
-        $item = $this->cacheApp->getItem('inscription_' . $cle);
+        $item = $this->cacheApp->getItem('limite_' . $cle);
         $data = $item->isHit() ? $item->get() : ['n' => 0, 'fin' => time() + 3600];
         $data['n']++;
         $item->set($data);

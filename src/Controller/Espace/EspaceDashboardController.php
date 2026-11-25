@@ -7,6 +7,7 @@ use App\Entity\GrilleTarif;
 use App\Entity\Reservation;
 use App\Enum\StatutChauffeur;
 use App\Service\CoursesRecues;
+use App\Service\MotDePasseAbonne;
 use App\Service\PartageCourseService;
 use App\Entity\Societe;
 use App\Enum\EtatAbonne;
@@ -72,6 +73,7 @@ class EspaceDashboardController extends AbstractDashboardController
             yield MenuItem::linkToRoute('Ma majoration de nuit', 'fa fa-moon', 'espace_ma_nuit');
         }
         yield MenuItem::section('Mon compte');
+        yield MenuItem::linkToRoute('Changer mon mot de passe', 'fa fa-key', 'espace_mon_mot_de_passe');
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
     }
 
@@ -220,5 +222,32 @@ class EspaceDashboardController extends AbstractDashboardController
         return $this->coursesRecues->trouver($entreprise, $id)
             ? $this->redirectToRoute('espace_course_recue', ['id' => $id])
             : $this->redirectToRoute('espace_courses_recues');
+    }
+
+    /** « Changer mon mot de passe » (D-108) : remplacer un mot de passe provisoire donné par ZenCAR. */
+    #[Route('/espace/mon-mot-de-passe', name: 'espace_mon_mot_de_passe', methods: ['GET', 'POST'])]
+    public function monMotDePasse(Request $request, MotDePasseAbonne $mdp): Response
+    {
+        $compte = $this->getUser();
+        $erreur = null;
+        if ($compte instanceof CompteAbonne && $request->isMethod('POST')) {
+            $nouveau = (string) $request->request->get('nouveau');
+            if (!$this->isCsrfTokenValid('mon-mot-de-passe', (string) $request->request->get('_token'))) {
+                $erreur = 'Le formulaire a expiré, recommencez.';
+            } elseif (!$mdp->motDePasseValide($compte, (string) $request->request->get('actuel'))) {
+                $erreur = 'Mot de passe actuel incorrect.';
+            } elseif (mb_strlen($nouveau) < MotDePasseAbonne::LONGUEUR_MIN) {
+                $erreur = sprintf('Le nouveau mot de passe doit contenir au moins %d caractères.', MotDePasseAbonne::LONGUEUR_MIN);
+            } elseif ($nouveau !== (string) $request->request->get('confirmation')) {
+                $erreur = 'Les deux mots de passe ne correspondent pas.';
+            } else {
+                $mdp->changer($compte, $nouveau);
+                $this->addFlash('success', 'Mot de passe changé.');
+
+                return $this->redirectToRoute('espace_mon_mot_de_passe');
+            }
+        }
+
+        return $this->render('espace/ea/mon_mot_de_passe.html.twig', ['erreur' => $erreur]);
     }
 }

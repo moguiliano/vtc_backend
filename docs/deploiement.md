@@ -47,7 +47,7 @@
    ssh <identifiant>@<serveur>.ftp.infomaniak.com
    cd ~/sites/dzencar.fr
    ```
-4. **Sauvegarder la base**, à chaque fois. Le bloc lit lui-même les infos dans `.env.local` (rien à recopier) :
+4. **Sauvegarder la base**, à chaque fois, **depuis le dossier du site** (étape 3 : `cd ~/sites/dzencar.fr`, sinon `.env.local` est introuvable et la sauvegarde est vide). Le bloc lit lui-même les infos dans `.env.local` (rien à recopier) :
    ```bash
    L=$(grep '^DATABASE_URL' .env.local | tail -1)
    H=$(echo "$L" | sed -E 's#.*@([^:/]+).*#\1#')
