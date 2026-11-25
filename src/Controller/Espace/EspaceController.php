@@ -7,7 +7,10 @@ use App\Entity\Entreprise;
 use App\Entity\Societe;
 use App\Form\InscriptionAbonneType;
 use App\Form\SocieteAbonneType;
+use App\Repository\GrilleTarifRepository;
 use App\Repository\SocieteRepository;
+use App\Service\GrilleAbonnes;
+use App\Enum\EtatAbonne;
 use App\Service\EntrepriseCourante;
 use App\Service\LimiteInscriptions;
 use App\Service\PhoneNormalizerService;
@@ -114,63 +117,5 @@ class EspaceController extends AbstractController
     public function deconnexion(): never
     {
         throw new \LogicException('Géré par le pare-feu « espace ».');
-    }
-
-    #[Route('', name: 'espace_accueil', methods: ['GET'])]
-    public function accueil(): Response
-    {
-        $entreprise = $this->entrepriseCourante->get();
-        $societe = $this->societeRepo->trouverPourEntreprise($entreprise);
-
-        // Avant validation : seul « Ma société » est accessible (D-015).
-        if ($entreprise->isEnAttente()) {
-            return $societe
-                ? $this->render('espace/en_attente.html.twig', ['entreprise' => $entreprise, 'societe' => $societe])
-                : $this->redirectToRoute('espace_ma_societe');
-        }
-
-        return $this->render('espace/accueil.html.twig', [
-            'entreprise' => $entreprise,
-            'societe' => $societe,
-        ]);
-    }
-
-    #[Route('/ma-societe', name: 'espace_ma_societe', methods: ['GET', 'POST'])]
-    public function maSociete(Request $request): Response
-    {
-        $entreprise = $this->entrepriseCourante->get();
-        $societe = $this->societeRepo->trouverPourEntreprise($entreprise);
-
-        // Après validation, l'abonné ne modifie plus sa société lui-même (D-078).
-        if (!$entreprise->isEnAttente()) {
-            return $this->render('espace/ma_societe.html.twig', [
-                'entreprise' => $entreprise,
-                'societe' => $societe,
-                'form' => null,
-            ]);
-        }
-
-        $nouvelle = $societe === null;
-        $societe ??= Societe::vierge($entreprise);
-
-        $form = $this->createForm(SocieteAbonneType::class, $societe);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $societe->setEntreprise($entreprise)->touch();
-            if ($nouvelle) {
-                $this->em->persist($societe);
-            }
-            $this->em->flush();
-            $this->addFlash('success', 'Merci ! Vos informations sont envoyées. Vous recevrez l\'accès complet dès leur validation.');
-
-            return $this->redirectToRoute('espace_accueil');
-        }
-
-        return $this->render('espace/ma_societe.html.twig', [
-            'entreprise' => $entreprise,
-            'societe' => $societe,
-            'form' => $form,
-        ]);
     }
 }

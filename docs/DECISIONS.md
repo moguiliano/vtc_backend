@@ -59,6 +59,66 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-096 — Cases alignées et indication « distance courte à 0 » — 2026-11-25
+- **Décision** (mots de l'utilisateur : « aligne les input pour tous les affichages, verticale ou horizontale » ; « ajoute une indication en bas : vous pouvez laisser votre seuil à 0 si vous voulez garder le même prix au km pour petite ou grande distance ») : dans le formulaire de la grille de prix, cases de même largeur et à la même hauteur (côte à côte sur ordinateur, les unes sous les autres sur téléphone) ; indication en bas du formulaire et sous le tableau : « Vous pouvez laisser la distance courte à 0 si vous voulez garder le même prix au km pour petite ou grande distance : c'est alors le prix au km, longue distance qui s'applique dès le premier km. »
+- **Raison** : lisibilité ; le mot « seuil » est devenu « distance courte » (D-095), et la phrase précise quel prix au km s'applique.
+- **Impact** : `GrilleTarifChampsTrait` (admin et « Mes prix »). Vérifié : avec 0, prix = prise en charge + distance × prix au km longue distance, au simulateur comme sur le site.
+
+### D-095 — Titres simples et simulateur de prix dans la grille — 2026-11-25
+- **Décision** (mots de l'utilisateur : « A + ajoute un simulateur en dessous, pour éviter que les abonnés aillent sur la carte qu'ils utilisent HERE Maps pour resimuler les prix ») : nouveaux titres et phrases courtes (Proposé — texte choisi par l'utilisateur : « vous proposez cette gamme de véhicule à vos clients » ; Distance courte jusqu'à (km) ; Prise en charge (€) ; Prix au km, courte distance (€) ; Prix à la fin de la distance courte ; Prix au km, longue distance (€)), pour l'admin et « Mes prix ». Plus un **simulateur de prix** sous la grille : on tape une distance, on voit le prix, sans passer par la carte.
+- **Raison** : le jargon « seuil / base » n'était pas clair ; simuler sans la carte évite des appels HERE Maps (coût) et fait gagner du temps.
+- **Impact** : `GrilleTarifChampsTrait` (titres, aides, simulateur) ; noms internes inchangés, prix inchangés. Emplacement (choix de l'utilisateur : C) : **sous le tableau** (prix de tous les véhicules proposés pour une distance, jour ou nuit) **et sous le formulaire « Modifier »** (prix du véhicule en cours de modification). La nuit applique 20 % pour SIMPLICI CAB et le réglage de chaque abonné (D-089).
+
+### D-094 — Descriptions dans la grille de prix : où ? — 2026-11-25
+- **Décision** (demande de l'utilisateur : « ajoute une description pour chaque ligne », puis choix A) : une **phrase courte sous chaque case** du formulaire « Modifier » de la grille de prix (admin et « Mes prix » des abonnés, même code).
+- **Raison** : c'est devant un chiffre à taper que l'on hésite ; une description des véhicules dans le tableau pourra venir plus tard.
+- **Impact** : textes d'aide dans `GrilleTarifChampsTrait` ; formulation des textes à valider avec l'utilisateur.
+
+### D-093 — « Mes prix » : le même écran que la Grille de prix de l'admin — 2026-11-25
+- **Décision** (question de l'utilisateur : « pourquoi n'as-tu pas mis exactement le même template prix que le mien ? », puis choix A) : « Mes prix » reprend **le même écran** que « Grille de prix » de l'admin (liste, puis « Modifier » par véhicule, mêmes colonnes), avec seulement : ses propres lignes, ni « Ajouter » ni « Supprimer », une colonne « Prix ZenCAR / Mes prix » et une action « Revenir aux prix ZenCAR ». La majoration de nuit passe dans une petite page à part, « Ma majoration de nuit ».
+- **Raison** : un seul écran à entretenir (esprit de D-088) ; le super-admin voit la même chose que le chauffeur et peut l'aider au téléphone.
+- **Impact** : remplace la page « simple d'abord » de D-092 pour « Mes prix » (le reste de D-092 ne change pas). Champs communs aux deux écrans (un seul endroit à modifier).
+
+### D-092 — L'espace chauffeur en style « admin EasyAdmin » — 2026-11-25
+- **Décision** (mots de l'utilisateur : « je le trouve trop complexe », « pourquoi pas mettre une page similaire à admin symfony ? », puis choix A) : l'espace abonné passe dans un **2ᵉ tableau de bord EasyAdmin** sous `/espace` (menu sur le côté : Accueil, Ma société, Mes prix, puis Mes courses et Mes factures). « Mes prix » devient **« simple d'abord »** : une ligne par véhicule (case, prix ZenCAR « à partir de », bouton « Personnaliser » qui ouvre les 4 chiffres) et une phrase pour la nuit. Inscription et connexion restent des pages simples.
+- **Raison** : page actuelle trop chargée ; un cadre connu, plus clair ; listes, recherche et filtres offerts pour les étapes 2 et 4 ; factorisation avec l'admin (D-088).
+- **Impact** : nouveau `EspaceDashboardController` (`#[AdminDashboard]` sous `/espace`, `allowedControllers` = seulement les écrans de l'espace, donc aucun écran admin accessible) ; accueil, Ma société et Mes prix déplacés dedans ; à faire avant la mise en prod de « Mes prix ».
+
+### D-091 — Quand SIMPLICI CAB change ses prix, ceux des abonnés suivent-ils ? — 2026-11-25
+- **Décision** (mots de l'utilisateur : « c'est plutôt ma facturation qui change et celle des abonnés qui suit », puis « Oui, ils suivent ») : chaque véhicule d'un abonné est **« comme ZenCAR »** au départ et **suit les changements de prix de SIMPLICI CAB**. Dès que l'abonné modifie lui-même un chiffre de ce véhicule, il passe en **« mes prix »** et ne suit plus ; un bouton **« Revenir aux prix ZenCAR »** le raccroche.
+- **Raison** : l'abonné n'a rien à faire pour rester aligné sur ZenCAR, tout en gardant la liberté de fixer ses prix (D-016).
+- **Impact** : **corrige l'impact de D-087** (la phrase « un changement de prix de SIMPLICI CAB ne modifie pas sa grille » avait été ajoutée par Claude, pas par l'utilisateur). Seuls les 4 chiffres de prix suivent ; les véhicules cochés et la majoration de nuit (D-089) restent propres à l'abonné.
+
+### D-090 — « Prix base > seuil » : réglage ou simple indication ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A ; ses mots : « prix base seuil ne devrait pas être touché, c'est juste une indication ») : le **prix de base au-delà du seuil est calculé automatiquement** = prise en charge + seuil × prix/km jusqu'au seuil. Il est **affiché pour information**, plus saisi à la main. Il reste 4 chiffres à régler par véhicule.
+- **Raison** : c'est la conséquence des autres chiffres (vérifié : 45 = 20 + 10 × 2,50 ; 55 ; 35 ; 63 pour les 4 véhicules de SIMPLICI CAB) ; saisi à la main, une erreur ferait « sauter » le prix au passage du seuil.
+- **Impact** : « Grille de prix » de l'admin et « Mes prix » des abonnés ; `GrilleTarif` recalcule la valeur à chaque modification. Prix actuels inchangés (ils respectent déjà la règle).
+
+### D-089 — Majoration de nuit des abonnés — 2026-11-25
+- **Décision** (choix de l'utilisateur : « Oui, chaque abonné ») : **chaque abonné décide** dans « Mes prix » s'il applique une majoration de nuit (case à cocher) et son pourcentage. Les heures de nuit sont les mêmes pour tous : **à partir de 23 h** (jusqu'à 7 h, comme SIMPLICI CAB).
+- **Raison** : cohérent avec D-016 et D-087 : chaque chauffeur maîtrise ses prix, nuit comprise.
+- **Impact** : réglage « majoration de nuit : oui / non + % » par entreprise abonnée (au départ : comme SIMPLICI CAB, 20 %, D-087) ; SIMPLICI CAB garde sa règle actuelle (`services.yaml`, D-006 inchangée).
+
+### D-088 — Un seul module de facturation pour SIMPLICI CAB et les abonnés — 2026-11-25
+- **Décision** (mots de l'utilisateur) : « on va factoriser le module de facturation pour moi comme pour les chauffeurs ».
+- **Raison** : ne construire et n'entretenir qu'une seule facturation ; chaque entreprise garde ses mentions légales et sa numérotation (D-017).
+- **Impact** : à l'étape 4 (« ses bons et factures »), les écrans de factures et le PDF de l'espace abonné réutilisent les mêmes briques que l'admin (`Facture`, numérotation par entreprise, `PdfGenerator`), au lieu d'une copie à part. Toute amélioration (ex. brouillon → émise, D-001, D-003) profitera aux deux.
+
+### D-087 — Grille par défaut d'un abonné : les prix de SIMPLICI CAB — 2026-11-25
+- **Décision** (mots de l'utilisateur) : « les prix de leurs grilles par défaut seront les mêmes prix que moi ».
+- **Raison** : changement d'avis par rapport à D-086 ; l'abonné part d'une grille complète et l'ajuste.
+- **Impact** : **remplace D-086** (grille vide). À la création de la grille d'un abonné, ses prix sont **copiés** de ceux de SIMPLICI CAB. ~~Ensuite sa grille lui appartient (un changement de prix de SIMPLICI CAB ne la modifie pas).~~ → corrigé par **D-091** : ils suivent tant que l'abonné ne les modifie pas. Aucun véhicule coché au départ (plan de l'étape 3).
+
+### D-086 — Avec quels prix démarre la grille d'un nouvel abonné ? — 2026-11-25 — ⚠️ remplacée par D-087
+- **Décision** (choix de l'utilisateur : A) : **une grille vide** : tous les prix à 0, aucun véhicule coché. L'abonné remplit lui-même ses prix avant de pouvoir saisir une course.
+- **Raison** : choix de l'utilisateur ; chaque abonné fixe ses prix lui-même, sans partir de ceux de SIMPLICI CAB.
+- **Impact** : l'écran « Mes prix » doit être très clair (exemple chiffré, aide sur le seuil et les 2 formules) ; tant qu'aucun véhicule n'est coché avec des prix, « Mes courses » (étape 2) affichera un message qui renvoie vers « Mes prix ».
+
+### D-085 — Étape 2 ou étape 3 d'abord ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : A) : **les prix d'abord**. L'étape 3 (l'abonné coche ses véhicules et règle ses prix dans son espace) passe avant l'étape 2 (« Mes courses »).
+- **Raison** : le formulaire « Mes courses » calcule le prix depuis la grille de l'abonné ; sans grille, il ne saurait ni quels véhicules proposer ni quel prix afficher. Le formulaire n'est ainsi construit qu'une fois.
+- **Impact** : ordre de `ROADMAP.md` (étape 4 « Espaces abonnés ») : 1 ✔, puis 3 (ses prix), puis 2 (ses courses).
+
 ### D-084 — L'abonné retenu reçoit-il la course dans son espace ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : B) : **oui, avec l'étape 2**. La page « Mes courses » de l'abonné aura 2 parties : les courses qu'il saisit lui-même et les **courses reçues de ZenCAR** (celles où il est « abonné retenu », D-083). Pour ces dernières : date, départ, arrivée, véhicule et **prix chauffeur seulement** (ni prix client, ni commission), en **copie** : il ne touche jamais la réservation de SIMPLICI CAB. Le partage WhatsApp / Telegram continue en attendant.
 - **Raison** : ne construire qu'une fois (pendant l'étape 2) ; premier pas vers la bourse aux courses (D-079 C).
