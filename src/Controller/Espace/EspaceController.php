@@ -7,7 +7,10 @@ use App\Entity\Entreprise;
 use App\Entity\Societe;
 use App\Form\InscriptionAbonneType;
 use App\Form\SocieteAbonneType;
+use App\Repository\GrilleTarifRepository;
 use App\Repository\SocieteRepository;
+use App\Service\GrilleAbonnes;
+use App\Enum\EtatAbonne;
 use App\Service\EntrepriseCourante;
 use App\Service\LimiteInscriptions;
 use App\Service\PhoneNormalizerService;
@@ -171,6 +174,103 @@ class EspaceController extends AbstractController
             'entreprise' => $entreprise,
             'societe' => $societe,
             'form' => $form,
+        ]);
+    }
+
+    /**
+     * « Mes prix » (étape 3, D-086 à D-091) : véhicules proposés, 4 prix par véhicule, majoration de nuit.
+     * Ne lit et n'écrit que les grilles de l'abonné connecté (tri automatique + aucune id d'entreprise dans l'adresse).
+     */
+    #[Route('/mes-prix', name: 'espace_mes_prix', methods: ['GET', 'POST'])]
+    public function mesPrix(Request $request, GrilleTarifRepository $grilleRepo, GrilleAbonnes $grilleAbonnes): Response
+    {
+        $entreprise = $this->entrepriseCourante->get();
+        if ($entreprise->isEnAttente()) {
+            return $this->redirectToRoute('espace_accueil');
+        }
+        $modifiable = $entreprise->getEtat() !== EtatAbonne::LECTURE_SEULE;
+
+        $grilleAbonnes->creerPour($entreprise); // filet : lignes manquantes (nouvelle catégorie…)
+        $grilles = $grilleRepo->createQueryBuilder('g')
+            ->join('g.categorie', 'c')->addSelect('c')
+            ->where('g.entreprise = :e')->setParameter('e', $entreprise)
+            ->andWhere('c.isActive = true')
+            ->orderBy('c.displayOrder', 'ASC')
+            ->getQuery()->getResult();
+        $erreurs = [];
+
+        if ($request->isMethod('POST') && $modifiable) {
+            if (!$this->isCsrfTokenValid('mes-prix', (string) $request->request->get('_token'))) {
+                $this->addFlash('info', 'Le formulaire a expiré, recommencez.');
+                return $this->redirectToRoute('espace_mes_prix');
+            }
+
+            // « Revenir aux prix ZenCAR » pour un véhicule (D-091)
+            $raccrocher = (int) $request->request->get('raccrocher');
+            if ($raccrocher > 0) {
+                foreach ($grilles as $g) {
+                    if ($g->getId() === $raccrocher) {
+                        $grilleAbonnes->raccrocher($g);
+                        $this->addFlash('success', sprintf('%s : prix ZenCAR remis.', $g->getCategorie()->getLabel()));
+                    }
+                }
+                return $this->redirectToRoute('espace_mes_prix');
+            }
+
+            $actifs = (array) $request->request->all('actif');
+            $saisis = (array) $request->request->all('prix');
+            $lire = fn ($v) => is_numeric($v = str_replace([',', ' ', '€'], ['.', '', ''], (string) $v)) ? (float) $v : null;
+
+            foreach ($grilles as $g) {
+                $id = $g->getId();
+                $label = $g->getCategorie()->getLabel();
+                $v = array_map($lire, [
+                    $saisis[$id]['seuil'] ?? null, $saisis[$id]['pec'] ?? null,
+                    $saisis[$id]['km_sous'] ?? null, $saisis[$id]['km_sur'] ?? null,
+                ]);
+                if (in_array(null, $v, true) || min($v) < 0 || max($v) > 1000) {
+                    $erreurs[] = sprintf('%s : chaque prix doit être un nombre entre 0 et 1000.', $label);
+                    continue;
+                }
+                $actif = isset($actifs[$id]);
+                if ($actif && $v[1] <= 0 && $v[2] <= 0) {
+                    $erreurs[] = sprintf('%s : indiquez au moins une prise en charge ou un prix au km.', $label);
+                    continue;
+                }
+                // Un chiffre changé = l'abonné fixe ses propres prix : ce véhicule ne suit plus ZenCAR (D-091)
+                $avant = array_map(fn ($x) => round($x, 2), $g->prix());
+                $apres = array_map(fn ($x) => round($x, 2), $v);
+                if ($avant !== $apres) {
+                    $g->setPrix(...$v)->setSuitZencar(false);
+                }
+                $g->setActif($actif)->setUpdatedAt(new \DateTimeImmutable());
+            }
+
+            $nuitPourcent = $lire($request->request->get('nuit_pourcent'));
+            if ($nuitPourcent === null || $nuitPourcent < 0 || $nuitPourcent > 100) {
+                $erreurs[] = 'Majoration de nuit : un pourcentage entre 0 et 100.';
+            } else {
+                $entreprise->setNuitActive($request->request->has('nuit_active'))->setNuitPourcent($nuitPourcent);
+            }
+
+            if (!$erreurs) {
+                $this->em->flush();
+                $this->addFlash('success', 'Vos prix sont enregistrés.');
+                return $this->redirectToRoute('espace_mes_prix');
+            }
+            $this->em->clear(); // rien n'est enregistré si une ligne est fausse
+            return $this->render('espace/mes_prix.html.twig', [
+                'entreprise' => $this->entrepriseCourante->get(), 'grilles' => $grilleRepo->findBy(['entreprise' => $this->entrepriseCourante->get()]),
+                'modifiable' => $modifiable, 'erreurs' => $erreurs, 'saisis' => $saisis,
+            ], new Response('', 422));
+        }
+
+        return $this->render('espace/mes_prix.html.twig', [
+            'entreprise' => $entreprise,
+            'grilles' => $grilles,
+            'modifiable' => $modifiable,
+            'erreurs' => $erreurs,
+            'saisis' => null,
         ]);
     }
 }

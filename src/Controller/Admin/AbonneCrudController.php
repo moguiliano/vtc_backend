@@ -8,6 +8,7 @@ use App\Enum\TypeAbonnement;
 use App\Repository\CompteAbonneRepository;
 use App\Repository\SocieteRepository;
 use App\Service\EntrepriseCourante;
+use App\Service\GrilleAbonnes;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminAction;
@@ -42,6 +43,7 @@ class AbonneCrudController extends AbstractCrudController
         private readonly SocieteRepository $societeRepo,
         private readonly CompteAbonneRepository $compteRepo,
         private readonly AdminUrlGenerator $adminUrlGenerator,
+        private readonly GrilleAbonnes $grilleAbonnes,
     ) {}
 
     public static function getEntityFqcn(): string
@@ -123,6 +125,7 @@ class AbonneCrudController extends AbstractCrudController
             } else {
                 $entreprise->valider();
                 $em->flush();
+                $this->grilleAbonnes->creerPour($entreprise); // D-087 : sa grille, copiée de vos prix
                 $this->addFlash('success', sprintf('%s est validé : essai gratuit jusqu\'au %s.', $entreprise->getNom(), $entreprise->getEssaiFin()->format('d/m/Y')));
             }
 

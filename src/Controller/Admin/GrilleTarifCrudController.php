@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\GrilleTarif;
 use App\Service\EntrepriseCourante;
+use App\Service\GrilleAbonnes;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -27,7 +28,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 #[IsGranted('ROLE_SUPER_ADMIN')] // D-021 : réservé au super-admin, même en tapant l'adresse
 class GrilleTarifCrudController extends AbstractCrudController
 {
-    public function __construct(private readonly EntrepriseCourante $entrepriseCourante) {}
+    public function __construct(
+        private readonly EntrepriseCourante $entrepriseCourante,
+        private readonly GrilleAbonnes $grilleAbonnes,
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -71,6 +75,21 @@ class GrilleTarifCrudController extends AbstractCrudController
             $entityInstance->setUpdatedAt(new \DateTimeImmutable());
         }
         parent::updateEntity($entityManager, $entityInstance);
+        $this->propager($entityInstance);
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        parent::persistEntity($entityManager, $entityInstance);
+        $this->propager($entityInstance);
+    }
+
+    /** D-091 : les abonnés « comme ZenCAR » suivent le nouveau prix. */
+    private function propager($grille): void
+    {
+        if ($grille instanceof GrilleTarif && ($n = $this->grilleAbonnes->propagerDepuis($grille)) > 0) {
+            $this->addFlash('info', sprintf('Prix repris par %d ligne(s) d\'abonnés « comme ZenCAR ».', $n));
+        }
     }
 
     public function configureFields(string $pageName): iterable
@@ -96,9 +115,11 @@ class GrilleTarifCrudController extends AbstractCrudController
             ->setNumDecimals(2)
             ->setColumns(3);
 
-        yield NumberField::new('basePriceOverThreshold', 'Prix base > seuil (€)')
+        // D-090 : calculé automatiquement (prise en charge + seuil × €/km), affiché pour information
+        yield NumberField::new('basePriceOverThreshold', 'Prix au seuil (calculé)')
             ->setNumDecimals(2)
-            ->setColumns(3);
+            ->hideOnForm()
+            ->setHelp('Prise en charge + seuil × €/km jusqu\'au seuil : calculé automatiquement.');
 
         yield NumberField::new('pricePerKmOverThreshold', '€/km > seuil')
             ->setNumDecimals(2)

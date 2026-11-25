@@ -11,7 +11,8 @@ use App\Repository\GrilleTarifRepository;
  * Brique « Calculer un prix » (D-020).
  *
  * Lit la grille de prix de l'entreprise (D-016) ; sans entreprise précisée : l'entreprise courante.
- * Majoration de nuit et commission : paramètres de config/services.yaml (D-006, à trancher).
+ * Majoration de nuit : SIMPLICI CAB = config/services.yaml (D-006) ; un abonné = son propre réglage (D-089).
+ * Heures de nuit communes à tous (23 h → 7 h). Commission : config/services.yaml.
  * HereMapsService ne fait plus que les cartes (adresses, distance, durée).
  */
 class Tarification
@@ -91,8 +92,9 @@ class Tarification
         $prix   = $grille->calculerPrixBrut($distance);
         $isNuit = $this->estNuit($heure);
 
-        if ($isNuit) {
-            $prix = round($prix * (1 + $this->nightSurchargePercent / 100), 2);
+        $majoration = $this->pourcentNuit($grille->getEntreprise());
+        if ($isNuit && $majoration > 0) {
+            $prix = round($prix * (1 + $majoration / 100), 2);
         }
 
         $prix       = round($prix, 2);
@@ -102,7 +104,17 @@ class Tarification
             'prix_total'      => $prix,
             'commission'      => $commission,
             'net_chauffeur'   => round($prix - $commission, 2),
-            'majoration_nuit' => $isNuit,
+            'majoration_nuit' => $isNuit && $majoration > 0,
         ];
+    }
+
+    /** % de majoration de nuit : celui de l'abonné (D-089), sinon celui de SIMPLICI CAB (config). */
+    public function pourcentNuit(?Entreprise $entreprise): float
+    {
+        if ($entreprise !== null && $entreprise->estAbonne()) {
+            return $entreprise->isNuitActive() ? $entreprise->getNuitPourcent() : 0.0;
+        }
+
+        return $this->nightSurchargePercent;
     }
 }

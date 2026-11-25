@@ -80,4 +80,35 @@ class TarificationTest extends TestCase
     {
         $this->assertSame(20.0, $this->tarification()->prixDepart((new VehicleCategory())->setSlug('eco_berline')));
     }
+
+    /** D-089 : un abonné applique SA majoration de nuit (ou aucune) ; SIMPLICI CAB garde la config. */
+    public function testNuitPropreAAbonne(): void
+    {
+        $abonne = (new Entreprise())->setNom('Abonné')->setNuitPourcent(15);
+        (new \ReflectionProperty(Entreprise::class, 'id'))->setValue($abonne, 2);
+        $grille = $this->grille('eco_berline', 10, 20, 2.5, 0, 2)->setEntreprise($abonne);
+
+        $repo = $this->createMock(GrilleTarifRepository::class);
+        $repo->method('findProposees')->willReturn([$grille]);
+        $t = new Tarification($repo, $this->createMock(EntrepriseCourante::class), 20.0, 20.0, 23, 7);
+
+        // 20 + 10 × 2,5 = 45 au seuil (D-090, calculé même si on passe 0) ; + 15 × 2 = 75 ; nuit +15 % = 86,25
+        $this->assertSame(75.0, $t->estimerPrix(25, 'eco_berline', 14, $abonne)['prix_total']);
+        $this->assertSame(86.25, $t->estimerPrix(25, 'eco_berline', 23, $abonne)['prix_total']);
+
+        $abonne->setNuitActive(false);
+        $nuit = $t->estimerPrix(25, 'eco_berline', 23, $abonne);
+        $this->assertSame(75.0, $nuit['prix_total']);
+        $this->assertFalse($nuit['majoration_nuit']);
+    }
+
+    /** D-090 : le prix au seuil est toujours prise en charge + seuil × €/km, quoi qu'on saisisse. */
+    public function testPrixAuSeuilCalcule(): void
+    {
+        $g = $this->grille('eco_berline', 10, 20, 2.5, 999, 2);
+        $this->assertSame(45.0, $g->prixAuSeuil());
+        $this->assertSame(45.0, $g->getBasePriceOverThreshold());
+        $g->setBasePriceUnderThreshold(22);
+        $this->assertSame(47.0, $g->getBasePriceOverThreshold());
+    }
 }

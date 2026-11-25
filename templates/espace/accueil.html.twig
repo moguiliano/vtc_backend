@@ -11,10 +11,10 @@
     {% elseif entreprise.etat.value == 'lecture_seule' %}
         <p>Votre espace est en <strong>lecture seule</strong> : vous pouvez consulter vos documents, mais plus en créer. Contactez ZenCAR pour le réactiver.</p>
     {% endif %}
+    <p class="mt-4"><a class="btn btn-zen" href="{{ path('espace_mes_prix') }}"><i class="bi bi-tags"></i> Régler mes prix</a></p>
     <h2 class="h6 mt-4">Bientôt dans votre espace</h2>
     <ul class="muted">
         <li>Saisir et suivre vos courses</li>
-        <li>Vos catégories de véhicules et vos prix</li>
         <li>Vos bons de commande et vos factures, à votre nom</li>
         {% if entreprise.typeAbonnement and entreprise.typeAbonnement.value == 'dispatcheur' %}<li>Partager vos courses (WhatsApp, Telegram, SMS)</li>{% endif %}
     </ul>

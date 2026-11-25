@@ -1,0 +1,97 @@
+{% extends 'espace/base.html.twig' %}
+{% block title %}Mes prix{% endblock %}
+{% block body %}
+<style>
+  .veh { border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:1.1rem 1.2rem; margin-bottom:1rem; }
+  .veh.off { opacity:.6; }
+  .veh h2 { font-size:1.05rem; margin:0; }
+  .badge-suit { font-size:.72rem; border-radius:20px; padding:3px 10px; }
+  .suit-oui { background:rgba(46,204,113,.15); color:#5fe39a; }
+  .suit-non { background:rgba(255,86,48,.15); color:var(--zen-orange); }
+  .prix-ligne { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; margin:.5rem 0; }
+  .prix-ligne input { width:84px; display:inline-block; text-align:right; padding:4px 8px; }
+  .exemple { font-size:.85rem; color:rgba(255,255,255,.6); }
+  .exemple strong { color:#fff; }
+</style>
+<div class="zen-card zen-wide">
+    <h1 class="mb-1">Mes prix</h1>
+    <p class="muted small mb-3">Cochez les véhicules que vous proposez et réglez vos prix. Ils servent au calcul automatique de vos courses.
+        Au départ, vos prix sont ceux de ZenCAR et <strong>suivent ses mises à jour</strong> ; dès que vous changez un chiffre d'un véhicule, ce véhicule garde <strong>vos prix</strong>.</p>
+
+    {% if not modifiable %}
+        <div class="alert alert-info py-2">Votre espace est en lecture seule : vos prix sont visibles mais ne peuvent pas être modifiés.</div>
+    {% endif %}
+    {% for e in erreurs %}<div class="alert alert-danger py-2">{{ e }}</div>{% endfor %}
+
+    <form method="post" id="form-prix">
+        <input type="hidden" name="_token" value="{{ csrf_token('mes-prix') }}">
+        {% for g in grilles %}
+            {% set s = saisis ? (saisis[g.id] ?? {}) : {} %}
+            {% set v = {
+                seuil: s.seuil ?? g.thresholdKm, pec: s.pec ?? g.basePriceUnderThreshold,
+                km_sous: s.km_sous ?? g.pricePerKmUnderThreshold, km_sur: s.km_sur ?? g.pricePerKmOverThreshold } %}
+            <div class="veh {{ g.actif ? '' : 'off' }}" data-veh>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="form-check m-0">
+                        <input class="form-check-input" type="checkbox" id="actif-{{ g.id }}" name="actif[{{ g.id }}]" value="1"
+                               {{ g.actif ? 'checked' : '' }} {{ modifiable ? '' : 'disabled' }} data-actif>
+                        <label class="form-check-label" for="actif-{{ g.id }}"><h2>{{ g.categorie.label }}</h2></label>
+                    </div>
+                    {% if g.suitZencar %}
+                        <span class="badge-suit suit-oui">Comme ZenCAR · suit ses mises à jour</span>
+                    {% else %}
+                        <span class="badge-suit suit-non">Mes prix
+                            {% if modifiable %}· <button type="submit" name="raccrocher" value="{{ g.id }}" class="btn btn-link p-0 align-baseline" style="font-size:.72rem;color:inherit;">revenir aux prix ZenCAR</button>{% endif %}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="prix-ligne">
+                    Jusqu'à <input class="form-control form-control-sm" name="prix[{{ g.id }}][seuil]" value="{{ v.seuil }}" inputmode="decimal" data-seuil {{ modifiable ? '' : 'disabled' }}> km :
+                    <input class="form-control form-control-sm" name="prix[{{ g.id }}][pec]" value="{{ v.pec }}" inputmode="decimal" data-pec {{ modifiable ? '' : 'disabled' }}> € de prise en charge
+                    + <input class="form-control form-control-sm" name="prix[{{ g.id }}][km_sous]" value="{{ v.km_sous }}" inputmode="decimal" data-kmsous {{ modifiable ? '' : 'disabled' }}> € / km
+                </div>
+                <div class="prix-ligne">
+                    Au-delà : <span data-auseuil class="fw-bold">{{ g.prixAuSeuil|number_format(2, ',', ' ') }} €</span> <span class="muted small">(prix au seuil, calculé)</span>
+                    + <input class="form-control form-control-sm" name="prix[{{ g.id }}][km_sur]" value="{{ v.km_sur }}" inputmode="decimal" data-kmsur {{ modifiable ? '' : 'disabled' }}> € / km au-delà
+                </div>
+                <div class="exemple" data-exemple></div>
+            </div>
+        {% endfor %}
+
+        <div class="veh">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="nuit-active" name="nuit_active" value="1"
+                       {{ entreprise.nuitActive ? 'checked' : '' }} {{ modifiable ? '' : 'disabled' }}>
+                <label class="form-check-label" for="nuit-active"><h2>Majoration de nuit (de 23 h à 7 h)</h2></label>
+            </div>
+            <div class="prix-ligne">
+                + <input class="form-control form-control-sm" name="nuit_pourcent" value="{{ entreprise.nuitPourcent }}" inputmode="decimal" {{ modifiable ? '' : 'disabled' }}> % sur le prix de la course
+            </div>
+        </div>
+
+        {% if modifiable %}<button class="btn btn-zen" type="submit">Enregistrer mes prix</button>{% endif %}
+    </form>
+</div>
+<script>
+// Exemple calculé en direct (D-090) : prix au seuil + 2 distances
+(function () {
+  const n = (el) => parseFloat(String(el.value).replace(',', '.').replace(/\s/g, '')) || 0;
+  const eur = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  document.querySelectorAll('[data-veh]').forEach((bloc) => {
+    const seuil = bloc.querySelector('[data-seuil]');
+    if (!seuil) return;
+    const pec = bloc.querySelector('[data-pec]'), ks = bloc.querySelector('[data-kmsous]'), kr = bloc.querySelector('[data-kmsur]');
+    const maj = () => {
+      const S = n(seuil), P = n(pec), A = n(ks), B = n(kr), auSeuil = P + S * A;
+      const prix = (d) => d <= S ? P + d * A : auSeuil + (d - S) * B;
+      const d1 = Math.max(1, Math.round(S * 0.8)), d2 = Math.round(S + 15);
+      bloc.querySelector('[data-auseuil]').textContent = eur(auSeuil);
+      bloc.querySelector('[data-exemple]').innerHTML = `Exemple : une course de ${d1} km = <strong>${eur(prix(d1))}</strong> · ${d2} km = <strong>${eur(prix(d2))}</strong> (de jour)`;
+    };
+    [seuil, pec, ks, kr].forEach((el) => el.addEventListener('input', maj));
+    bloc.querySelector('[data-actif]')?.addEventListener('change', (e) => bloc.classList.toggle('off', !e.target.checked));
+    maj();
+  });
+})();
+</script>
+{% endblock %}

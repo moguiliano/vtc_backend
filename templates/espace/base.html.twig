@@ -47,6 +47,9 @@
                 <span class="muted small">{{ app.user.userIdentifier }}</span>
                 <a class="nav-l" href="{{ path('espace_accueil') }}"><i class="bi bi-house"></i> Accueil</a>
                 <a class="nav-l" href="{{ path('espace_ma_societe') }}"><i class="bi bi-building"></i> Ma société</a>
+                {% if app.user.entreprise and not app.user.entreprise.enAttente %}
+                    <a class="nav-l" href="{{ path('espace_mes_prix') }}"><i class="bi bi-tags"></i> Mes prix</a>
+                {% endif %}
                 <a class="nav-l" href="{{ path('espace_deconnexion') }}"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
             </div>
         {% endif %}

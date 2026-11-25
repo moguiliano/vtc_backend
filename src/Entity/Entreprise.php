@@ -40,6 +40,13 @@ class Entreprise
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $essaiDebut = null;
 
+    /** Abonné (D-089) : majoration de nuit (23 h → 7 h) oui / non et pourcentage. SIMPLICI CAB : services.yaml. */
+    #[ORM\Column(options: ['default' => true])]
+    private bool $nuitActive = true;
+
+    #[ORM\Column(options: ['default' => 20])]
+    private float $nuitPourcent = 20.0;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -70,6 +77,17 @@ class Entreprise
     {
         return $this->essaiDebut?->modify('+1 month')->modify('-1 day');
     }
+
+    public function isNuitActive(): bool { return $this->nuitActive; }
+    public function setNuitActive(bool $v): static { $this->nuitActive = $v; return $this; }
+
+    public function getNuitPourcent(): float { return $this->nuitPourcent; }
+    public function setNuitPourcent(float $v): static { $this->nuitPourcent = max(0.0, min(100.0, $v)); return $this; }
+
+    public function estAbonne(): bool { return $this->id !== null && $this->id !== \App\Service\EntrepriseCourante::ID_PRINCIPALE; }
+
+    /** Espace ouvert (validé) : essai, actif ou lecture seule. */
+    public function estValide(): bool { return !$this->isEnAttente(); }
 
     public function isEnAttente(): bool { return $this->etat === EtatAbonne::EN_ATTENTE; }
 
