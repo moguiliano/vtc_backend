@@ -59,6 +59,16 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-100 — Courses de SIMPLICI CAB confiées à un abonné : ce qu'il voit et peut faire — 2026-11-25
+- **Décision** (mots de l'utilisateur : « mes courses, un chauffeur ne la voit que si je lui envoie » ; « concernant les miennes il ne peut que changer le statut, pas la supprimer » ; « si au final il annule et que je l'envoie à un autre chauffeur, il n'a plus la main sur cette course ») : une course de SIMPLICI CAB n'apparaît dans l'espace d'un abonné **que s'il est l'abonné retenu** (D-083) ; il ne peut **que changer son statut** (ni modifier, ni supprimer) ; dès que la course est confiée à un autre abonné, elle **disparaît** de son espace.
+- **Raison** : la course et le client restent à SIMPLICI CAB ; l'abonné est un sous-traitant.
+- **Impact** : étape 2b. Pas de copie : lecture contrôlée des seules courses où `abonne_retenu` = l'abonné, limitée aux champs autorisés (jamais prix client ni commission, D-084) ; une seule action d'écriture : le statut. Précise D-084 (« copie » → lecture contrôlée, qui suit automatiquement les changements et le changement de chauffeur). Effet d'une annulation par le chauffeur : à trancher.
+
+### D-099 — Que peut faire l'abonné sur ses propres courses ? — 2026-11-25
+- **Décision** (mots de l'utilisateur : « il peut faire ce qu'il veut de ses courses ») : sur les courses qu'il a saisies, l'abonné peut **tout faire** : consulter, modifier, changer le statut et **supprimer**.
+- **Raison** : ce sont ses clients et ses courses (D-011).
+- **Impact** : étape 2a, écran « Mes courses » avec toutes les actions, limité à ses courses (tri automatique par entreprise).
+
 ### D-098 — SMS de confirmation au client d'un abonné ? — 2026-11-25
 - **Décision** (choix de l'utilisateur : A) : **pas de SMS** envoyé par le site pour les courses saisies par un abonné. L'abonné confirme lui-même à son client.
 - **Raison** : le SMS partirait du compte Twilio de ZenCAR, signé ZenCAR (confusion pour le client du chauffeur), à la charge de ZenCAR ; crédit Twilio épuisé. Option payante ou plafonnée possible plus tard si les abonnés le demandent.
