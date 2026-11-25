@@ -59,6 +59,28 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-082 — Les chauffeurs auront-ils un formulaire de réservation avec la carte ? — 2026-11-25
+- **Décision** (mots de l'utilisateur : « ok pour le 1, non pour le 2 », à propos des 2 formulaires) : **oui** au formulaire de saisie **dans l'espace** de l'abonné (étape 2 : adresses suggérées, carte et trajet, prix calculé depuis sa grille, sur le modèle de la réservation par téléphone) ; **non** pour l'instant à un formulaire **public** pour les clients de l'abonné (confirme D-012). Plan de la page `/chauffeurs-vtc` accepté tel quel (non référencée, sans parler des futures courses confiées).
+- **Raison** : le chauffeur saisit vite les courses de ses clients ; une page publique par abonné reste à protéger et viendra plus tard.
+- **Impact** : étape 2 de `ROADMAP.md` précisée ; la page chauffeurs annonce « saisir vos courses avec calcul automatique du trajet et du prix ».
+
+### D-081 — Où mettre le lien « Créer mon espace » ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : B) : une **page de présentation pour les chauffeurs** (l'outil, les 2 prix, le mois d'essai, bouton « Créer mon espace ») + un **lien discret dans le pied de page**. Pas de bouton dans le menu du haut.
+- **Raison** : le chauffeur comprend l'offre avant de s'inscrire ; les clients (et les visiteurs Google Ads) ne voient presque rien de changé ; l'adresse de la page peut être partagée dans les groupes WhatsApp de chauffeurs.
+- **Impact** : nouvelle page publique + lien dans `partials/_footer.html.twig`.
+
+### D-080 — Après la mise en prod de l'étape 1 : par quoi continuer ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : C) : d'abord **placer le lien « Créer mon espace »** sur dzencar.fr, pour recruter les premiers abonnés ; ensuite la liste des abonnés dans « Chauffeur retenu » (D-079), puis l'étape 2 (les courses de l'abonné).
+- **Raison** : sans abonnés, les autres étapes ne servent à personne ; on accroche l'enseigne avant de meubler la boutique.
+- **Impact** : remplace le « pas encore liée » de D-078 ; emplacement du lien à trancher.
+
+### D-079 — Les abonnés, futurs chauffeurs de ZenCAR ? — 2026-11-25
+- **Décision** (mots de l'utilisateur) : « A pour l'instant, le but sera de passer à C plus tard ». Les abonnés d'aujourd'hui seront les chauffeurs de demain sur ZenCAR.
+  - **Maintenant (A)** : les courses de SIMPLICI CAB restent partagées par WhatsApp / Telegram ; le champ « Chauffeur retenu » propose la **liste des abonnés validés** (en plus du texte libre, pour les chauffeurs qui ne sont pas abonnés).
+  - **Plus tard (C)** : « bourse aux courses » : chaque course de dzencar.fr proposée à tous les abonnés validés, le premier qui accepte la prend.
+- **Raison** : savoir dès maintenant quel abonné fait quelles courses, sans rien construire de lourd ; la bourse viendra quand il y aura assez d'abonnés de confiance.
+- **Impact** : complète D-011 (ZenCAR pourra un jour distribuer des courses : D-011 sera à revoir au moment de C). A : lien optionnel entre une réservation et l'entreprise abonnée retenue (migration), page Partager et fiche réservation. C : à préparer (sous-traitance, assurance, qui facture le client, cloisonnement : l'abonné ne reçoit qu'une copie de la course, jamais la réservation de SIMPLICI CAB). `ROADMAP.md` mis à jour.
+
 ### D-078 — Plan de l'étape 1 et deux choix par défaut — 2026-11-25
 - **Décision** (mot de l'utilisateur : « Ok ») : plan de l'étape 1 accepté, avec ses deux choix par défaut : **après validation, l'abonné ne modifie plus « Ma société » lui-même** (il demande au super-admin) ; **la page d'inscription n'est pas encore liée depuis dzencar.fr** (emplacement du lien à décider quand tout marchera).
 - **Raison** : éviter qu'un SIRET change après le contrôle du super-admin ; ne rien montrer au public avant que l'espace soit testé.

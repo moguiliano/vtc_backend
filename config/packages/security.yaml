@@ -36,7 +36,7 @@ security:
         # Espace abonnés (D-076) : sa propre porte, ses propres comptes.
         # Un compte abonné n'existe que derrière ce pare-feu ; un admin ne peut pas s'y connecter.
         espace:
-            pattern: ^/espace
+            pattern: ^/espace(/|$)
             lazy: true
             provider: abonne_provider
             form_login:
@@ -62,7 +62,7 @@ security:
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/espace/(connexion|inscription)$, roles: PUBLIC_ACCESS }
-        - { path: ^/espace, roles: ROLE_ABONNE }
+        - { path: ^/espace(/|$), roles: ROLE_ABONNE }
         - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_REGULATEUR] }
 
 when@test:

@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{# Page de présentation de l'espace pro aux chauffeurs (D-081). Non référencée (D-082). #}
+
+{% block title %}Chauffeurs VTC : votre espace de gestion | ZenCAR{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Chauffeurs VTC à Marseille : un espace pour gérer votre activité, vos prix, vos bons de commande et vos factures. 1 mois d'essai gratuit." />
+<meta name="robots" content="noindex, follow" />
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="https://dzencar.fr/chauffeurs-vtc" />
+{% endblock %}
+
+{% block og_title %}Chauffeurs VTC : votre espace de gestion | ZenCAR{% endblock %}
+{% block og_description %}Gérez vos courses, vos prix et vos factures à votre nom. Dès 10 € TTC / mois, 1 mois d'essai gratuit.{% endblock %}
+{% block og_url %}https://dzencar.fr/chauffeurs-vtc{% endblock %}
+
+{% block body %}
+<style>
+  .chf-card { background:#1a1d27; border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:1.6rem; height:100%; }
+  .chf-card h3 { font-size:1.1rem; font-weight:700; color:#fff; }
+  .chf-prix { font-size:2rem; font-weight:800; color:var(--zen-orange); }
+  .chf-step { width:38px; height:38px; border-radius:50%; background:var(--zen-orange); color:#fff; font-weight:800;
+              display:inline-flex; align-items:center; justify-content:center; margin-bottom:.6rem; }
+  .chf-soon { color:rgba(255,255,255,.55); }
+  .chf-btn { background:var(--zen-orange); color:#fff; border-radius:50px; padding:12px 28px; font-weight:700; text-decoration:none; display:inline-block; }
+  .chf-btn:hover { color:#fff; opacity:.9; }
+  .chf-btn-ghost { border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:50px; padding:12px 28px; font-weight:600; text-decoration:none; display:inline-block; }
+  .chf-btn-ghost:hover { color:#fff; border-color:var(--zen-orange); }
+</style>
+
+<div class="container mt-5 mb-5 text-white">
+  <div class="text-center mb-5">
+    <h1 class="display-6 fw-bold mb-3">Chauffeurs VTC : gérez votre activité avec <span style="color:var(--zen-orange);">ZenCAR</span></h1>
+    <p class="lead mb-4">Un espace à vous pour vos courses, vos prix, vos bons de commande et vos factures à votre nom.<br>
+      <strong>1 mois d'essai gratuit</strong>, sans engagement.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a class="chf-btn" href="{{ path('espace_inscription') }}">Créer mon espace</a>
+      <a class="chf-btn-ghost" href="{{ path('espace_connexion') }}">J'ai déjà un espace : me connecter</a>
+    </div>
+  </div>
+
+  <h2 class="h4 fw-bold mb-3">Ce que vous trouvez dans votre espace</h2>
+  <div class="row g-3 mb-5">
+    <div class="col-md-6">
+      <div class="chf-card">
+        <h3><i class="bi bi-check-circle" style="color:var(--zen-orange);"></i> Dès aujourd'hui</h3>
+        <ul class="mb-0">
+          <li>Votre espace personnel, protégé par mot de passe</li>
+          <li>Les informations légales de votre société (SIREN, REVTC…), vérifiées par ZenCAR</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chf-card">
+        <h3><i class="bi bi-hourglass-split" style="color:var(--zen-orange);"></i> Bientôt</h3>
+        <ul class="mb-0 chf-soon">
+          <li>Saisir vos courses avec calcul automatique du trajet et du prix</li>
+          <li>Vos catégories de véhicules et vos propres prix</li>
+          <li>Vos bons de commande et vos factures, à votre nom, avec votre numérotation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="h4 fw-bold mb-3">Deux abonnements, sans engagement</h2>
+  <div class="row g-3 mb-5">
+    {% for a in abonnements %}
+      <div class="col-md-6">
+        <div class="chf-card">
+          <h3>{{ a.label }}</h3>
+          <div class="chf-prix">{{ a.prixMensuelTtc }} € <small style="font-size:.9rem;font-weight:500;color:rgba(255,255,255,.6);">TTC / mois</small></div>
+          {% if a.value == 'dispatcheur' %}
+            <p class="mb-0">Tout l'abonnement chauffeur indépendant, <strong>+ le partage de vos courses</strong> à vos chauffeurs par WhatsApp, Telegram ou SMS.</p>
+          {% else %}
+            <p class="mb-0">Pour le chauffeur qui gère ses propres clients et ses propres courses.</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+    <p class="small mt-2" style="color:rgba(255,255,255,.55);">Le 1er mois est offert à partir de la validation de votre société. Paiement au mois, résiliable à tout moment.</p>
+  </div>
+
+  <h2 class="h4 fw-bold mb-3">Comment ça marche</h2>
+  <div class="row g-3 mb-5 text-center">
+    <div class="col-md-4"><div class="chf-card"><div class="chf-step">1</div><h3>Je crée mon espace</h3><p class="mb-0">E-mail, téléphone, mot de passe : 1 minute.</p></div></div>
+    <div class="col-md-4"><div class="chf-card"><div class="chf-step">2</div><h3>Je renseigne ma société</h3><p class="mb-0">Raison sociale, SIREN, SIRET, n° REVTC, adresse.</p></div></div>
+    <div class="col-md-4"><div class="chf-card"><div class="chf-step">3</div><h3>ZenCAR valide</h3><p class="mb-0">Votre espace s'ouvre et votre mois d'essai gratuit démarre.</p></div></div>
+  </div>
+
+  <div class="text-center">
+    <a class="chf-btn" href="{{ path('espace_inscription') }}">Créer mon espace</a>
+    <p class="small mt-3" style="color:rgba(255,255,255,.55);">Une question ? Appelez-nous au <a href="tel:+33674039694" style="color:var(--zen-orange);">06 74 03 96 94</a>.</p>
+  </div>
+</div>
+{% endblock %}
