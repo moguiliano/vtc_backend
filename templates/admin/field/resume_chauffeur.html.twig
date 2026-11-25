@@ -1,0 +1,7 @@
+{# Colonne « Chauffeur » (D-107) : abonné retenu + son statut, en badge #}
+{% set r = entity.instance %}
+{% if r.abonneRetenu %}
+    {{ r.abonneRetenu.nom }}
+    {% if r.statutChauffeur %}<span class="badge bg-{{ r.statutChauffeur.badge }}">{{ r.statutChauffeur.value == 'retire' ? '⚠ ' : '' }}{{ r.statutChauffeur.label }}</span>
+    {% else %}<span class="badge bg-warning text-dark">Proposée</span>{% endif %}
+{% endif %}

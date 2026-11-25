@@ -1,0 +1,34 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{# « Courses reçues » (D-100 à D-107) : courses confiées à l'abonné, en lecture seule #}
+{% block page_title %}Courses reçues{% endblock %}
+{% block content_title %}Courses reçues{% endblock %}
+{% block main %}
+<p class="text-muted">Les courses que ZenCAR vous confie. Les montants sont fixés par ZenCAR. Répondez depuis la fiche de chaque course.</p>
+{% if courses is empty %}
+    <div class="card"><div class="card-body text-muted">Aucune course reçue pour le moment.</div></div>
+{% else %}
+<div class="table-responsive">
+<table class="table datagrid">
+    <thead><tr>
+        <th>Date & heure</th><th>Départ</th><th>Arrivée</th><th>Véhicule</th><th>À encaisser</th><th>Votre net</th><th>Votre statut</th><th>Envoyée par</th><th></th>
+    </tr></thead>
+    <tbody>
+    {% for r in courses %}
+        {% set prix = r.prix|default(0) %}
+        <tr{% if r.statutChauffeur and r.statutChauffeur.value == 'retire' %} class="text-muted"{% endif %}>
+            <td>{{ r.dateHeureDepart ? r.dateHeureDepart|date('d/m/Y H:i') : '—' }}</td>
+            <td>{{ r.depart }}</td>
+            <td>{{ r.arrivee }}</td>
+            <td>{{ r.typeVehicule }}</td>
+            <td>{{ prix|number_format(2, ',', ' ') }} €</td>
+            <td>{{ (prix - partage.commission(r))|number_format(2, ',', ' ') }} €</td>
+            <td>{% if r.statutChauffeur %}<span class="badge bg-{{ r.statutChauffeur.badge }}">{{ r.statutChauffeur.label }}</span>{% else %}<span class="badge bg-warning text-dark">À répondre</span>{% endif %}</td>
+            <td>{{ r.entreprise ? r.entreprise.nom : '' }}</td>
+            <td><a class="btn btn-sm btn-primary" href="{{ path('espace_course_recue', {id: r.id}) }}">Voir</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

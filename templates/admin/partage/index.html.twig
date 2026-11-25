@@ -120,6 +120,13 @@
                     {% if peutModifier %}
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer le chauffeur</button>
                     {% endif %}
+                    {% if reservation.abonneRetenu %}
+                        <div class="w-100">Statut du chauffeur :
+                            {% if reservation.statutChauffeur %}<span class="badge bg-{{ reservation.statutChauffeur.badge }}">{{ reservation.statutChauffeur.label }}</span>
+                                <small class="text-muted">le {{ reservation.statutChauffeurLe|date('d/m/Y H:i') }}</small>
+                            {% else %}<span class="badge bg-warning text-dark">Proposée, pas encore de réponse</span>{% endif %}
+                        </div>
+                    {% endif %}
                     <small class="text-muted w-100">Notez qui fait la course : si le client rappelle, on sait tout de suite qui vient le chercher.
                         {% if abonnes is not empty %}Choisir un abonné ZenCAR remplit le nom et le téléphone (modifiables).{% endif %}</small>
                 </form>

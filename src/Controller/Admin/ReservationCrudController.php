@@ -7,6 +7,8 @@ use App\Repository\CompteAbonneRepository;
 use App\Repository\EntrepriseRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use App\Enum\StatutChauffeur;
 use App\Enum\MessageTemplateType;
 use App\Enum\ReservationStatus;
 use App\Repository\MessageTemplateRepository;
@@ -138,6 +140,9 @@ class ReservationCrudController extends AbstractCrudController
             ->setHelp('Nom et téléphone du chauffeur qui fait la course, ex. « Karim — 06 12 34 56 78 ».');
         // Abonné validé qui fait la course (D-079 A, D-083) : choisi sur la page Partager
         $abonneRetenu = AssociationField::new('abonneRetenu', 'Abonné retenu');
+        // Statut côté chauffeur de l'abonné retenu (D-102, D-107) : « Karim VTC — A pris la course »
+        $chauffeur = TextField::new('resumeChauffeur', 'Chauffeur')
+            ->setTemplatePath('admin/field/resume_chauffeur.html.twig');
         $modifiePar = TextField::new('modifiePar', 'Modifiée par');
         $modifieLe  = DateTimeField::new('modifieLe', 'Modifiée le')->setFormat('dd/MM/yyyy HH:mm');
 
@@ -152,7 +157,7 @@ class ReservationCrudController extends AbstractCrudController
 
         // ── Index ──
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$statut, $createdAt, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos, $chauffeurRetenu];
+            return [$statut, $createdAt, $depart, $arrivee, $dateHeureDepart, $typeVehicule, $prix, $modeReglement, $guestPrenom, $guestTelephone, $infos, $chauffeurRetenu, $chauffeur];
         }
 
         // ── Détail : seuls les champs renseignés sont affichés ──
@@ -172,7 +177,7 @@ class ReservationCrudController extends AbstractCrudController
                 $typeVehicule, $prix, $commission, $modeReglement,
                 $guestPrenom, $guestTelephone,
                 $infos,
-                $chauffeurRetenu, $abonneRetenu, $modifiePar, $modifieLe,
+                $chauffeurRetenu, $abonneRetenu, $chauffeur, $modifiePar, $modifieLe,
                 $user, $isGuest, $guestInfo,
             ]);
         }
@@ -195,10 +200,16 @@ class ReservationCrudController extends AbstractCrudController
     /** Filtre « Abonné retenu » (D-083) : toutes les courses faites par un abonné. */
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters->add(
-            EntityFilter::new('abonneRetenu', 'Abonné retenu')
-                ->setFormTypeOption('value_type_options.query_builder', fn (EntrepriseRepository $r) => $r->qbAbonnes())
-        );
+        $statutsChauffeur = [];
+        foreach (StatutChauffeur::cases() as $c) {
+            $statutsChauffeur[$c->label()] = $c->value;
+        }
+
+        return $filters
+            ->add(EntityFilter::new('abonneRetenu', 'Abonné retenu')
+                ->setFormTypeOption('value_type_options.query_builder', fn (EntrepriseRepository $r) => $r->qbAbonnes()))
+            // « Chauffeur retiré » (D-107) : les courses à réattribuer
+            ->add(ChoiceFilter::new('statutChauffeur', 'Statut chauffeur')->setChoices($statutsChauffeur));
     }
 
     /**

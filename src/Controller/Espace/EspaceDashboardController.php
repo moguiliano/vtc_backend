@@ -5,6 +5,9 @@ namespace App\Controller\Espace;
 use App\Entity\CompteAbonne;
 use App\Entity\GrilleTarif;
 use App\Entity\Reservation;
+use App\Enum\StatutChauffeur;
+use App\Service\CoursesRecues;
+use App\Service\PartageCourseService;
 use App\Entity\Societe;
 use App\Enum\EtatAbonne;
 use App\Form\SocieteAbonneType;
@@ -35,6 +38,7 @@ class EspaceDashboardController extends AbstractDashboardController
         private readonly EntrepriseCourante $entrepriseCourante,
         private readonly SocieteRepository $societeRepo,
         private readonly EntityManagerInterface $em,
+        private readonly CoursesRecues $coursesRecues,
     ) {}
 
     public function configureDashboard(): Dashboard
@@ -56,6 +60,10 @@ class EspaceDashboardController extends AbstractDashboardController
                 yield MenuItem::linkToRoute('Nouvelle course', 'fa fa-plus-circle', 'espace_nouvelle_course');
             }
             yield MenuItem::linkToCrud('Mes courses', 'fa fa-calendar-check', Reservation::class)->setController(MesCoursesCrudController::class);
+            // Courses confiées par ZenCAR (D-100) : pastille = en attente de sa réponse
+            $aRepondre = $this->coursesRecues->enAttenteDeReponse($entreprise);
+            $recues = MenuItem::linkToRoute('Courses reçues', 'fa fa-inbox', 'espace_courses_recues');
+            yield $aRepondre > 0 ? $recues->setBadge($aRepondre, 'danger') : $recues;
         }
         yield MenuItem::section('Mon activité');
         yield MenuItem::linkToRoute('Ma société', 'fa fa-building', 'espace_ma_societe');
@@ -160,5 +168,57 @@ class EspaceDashboardController extends AbstractDashboardController
             'modifiable' => $modifiable,
             'erreur' => $erreur,
         ]);
+    }
+
+    /** « Courses reçues » (étape 2b, D-100 à D-107) : seulement celles où il est l'abonné retenu en ce moment. */
+    #[Route('/espace/courses-recues', name: 'espace_courses_recues', methods: ['GET'])]
+    public function coursesRecues(PartageCourseService $partage): Response
+    {
+        $entreprise = $this->entrepriseCourante->get();
+        if ($entreprise->isEnAttente()) {
+            return $this->redirectToRoute('espace_accueil');
+        }
+
+        return $this->render('espace/ea/courses_recues.html.twig', [
+            'courses' => $this->coursesRecues->liste($entreprise),
+            'partage' => $partage,
+        ]);
+    }
+
+    #[Route('/espace/courses-recues/{id}', name: 'espace_course_recue', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function courseRecue(int $id, PartageCourseService $partage): Response
+    {
+        $entreprise = $this->entrepriseCourante->get();
+        $r = $entreprise->isEnAttente() ? null : $this->coursesRecues->trouver($entreprise, $id);
+        if (!$r) {
+            throw $this->createNotFoundException(); // pas (ou plus) à lui : introuvable (D-100)
+        }
+
+        return $this->render('espace/ea/course_recue.html.twig', [
+            'r' => $r,
+            'partage' => $partage,
+            'boutons' => $entreprise->getEtat() === EtatAbonne::LECTURE_SEULE ? [] : StatutChauffeur::suivants($r->getStatutChauffeur()),
+        ]);
+    }
+
+    /** Réponse du chauffeur : la seule écriture possible sur une course confiée (D-100, D-102, D-106). */
+    #[Route('/espace/courses-recues/{id}/statut', name: 'espace_course_recue_statut', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function courseRecueStatut(int $id, Request $request): Response
+    {
+        $entreprise = $this->entrepriseCourante->get();
+        $statut = StatutChauffeur::tryFrom((string) $request->request->get('statut'));
+
+        if (!$this->isCsrfTokenValid('course-recue-' . $id, (string) $request->request->get('_token'))) {
+            $this->addFlash('danger', 'Le formulaire a expiré, recommencez.');
+        } elseif ($entreprise->isEnAttente() || $entreprise->getEtat() === EtatAbonne::LECTURE_SEULE || !$statut
+            || !$this->coursesRecues->repondre($entreprise, $id, $statut)) {
+            $this->addFlash('warning', 'Action impossible sur cette course.');
+        } else {
+            $this->addFlash('success', 'Statut enregistré : ' . $statut->label() . '.');
+        }
+
+        return $this->coursesRecues->trouver($entreprise, $id)
+            ? $this->redirectToRoute('espace_course_recue', ['id' => $id])
+            : $this->redirectToRoute('espace_courses_recues');
     }
 }

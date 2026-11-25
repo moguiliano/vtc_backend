@@ -68,6 +68,13 @@ class Reservation implements AppartientAEntreprise
     #[ORM\JoinColumn(name: 'abonne_retenu_id', nullable: true, onDelete: 'SET NULL')]
     private ?Entreprise $abonneRetenu = null;
 
+    /** Statut côté chauffeur de l'abonné retenu (D-102, D-106) ; null = proposée, pas encore de réponse. */
+    #[ORM\Column(length: 20, nullable: true, enumType: \App\Enum\StatutChauffeur::class)]
+    private ?\App\Enum\StatutChauffeur $statutChauffeur = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $statutChauffeurLe = null;
+
     /** Dernière modification : qui (email du compte admin, ou « site ») et quand (D-068). */
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $modifiePar = null;
@@ -279,7 +286,37 @@ class Reservation implements AppartientAEntreprise
     }
 
     public function getAbonneRetenu(): ?Entreprise { return $this->abonneRetenu; }
-    public function setAbonneRetenu(?Entreprise $abonne): static { $this->abonneRetenu = $abonne; return $this; }
+    /** Un autre abonné (ou aucun) : son statut chauffeur repart de zéro (D-100, D-107). */
+    public function setAbonneRetenu(?Entreprise $abonne): static
+    {
+        if ($abonne?->getId() !== $this->abonneRetenu?->getId()) {
+            $this->statutChauffeur = null;
+            $this->statutChauffeurLe = null;
+        }
+        $this->abonneRetenu = $abonne;
+        return $this;
+    }
+
+    public function getStatutChauffeur(): ?\App\Enum\StatutChauffeur { return $this->statutChauffeur; }
+    public function getStatutChauffeurLe(): ?\DateTimeImmutable { return $this->statutChauffeurLe; }
+
+    /** Réponse du chauffeur retenu : statut chauffeur + statut client synchronisé (D-106). */
+    public function repondreChauffeur(\App\Enum\StatutChauffeur $s, \DateTimeImmutable $quand): static
+    {
+        $this->statutChauffeur = $s;
+        $this->statutChauffeurLe = $quand;
+        $this->statut = $s->statutClient()->value;
+        return $this;
+    }
+
+    /** Colonne « Chauffeur » de l'admin (D-107) : « Karim VTC — A pris la course ». */
+    public function getResumeChauffeur(): ?string
+    {
+        if (!$this->abonneRetenu) {
+            return null;
+        }
+        return $this->abonneRetenu->getNom() . ' — ' . ($this->statutChauffeur?->label() ?? 'Proposée');
+    }
 
     public function getModifiePar(): ?string
     {
