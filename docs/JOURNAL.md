@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-25 — Page « Espace chauffeurs pro » en prod (PR #19)
+- **Fait** : PR #19 fusionnée (`059f857`) ; en prod : `git pull` puis cache vidé (pas de migration). Vérifié en ligne par Claude : `https://dzencar.fr/chauffeurs-vtc` s'affiche (noindex, absente du sitemap), lien « Espace chauffeurs pro » dans le pied de page, `/espace/inscription` et `/espace/connexion` OK, `/espace` et `/admin` toujours fermés.
+- **Bloqué** : rien. Non testé : un vrai téléphone.
+- **Prochaine étape** : partager le lien dans les groupes de chauffeurs et valider les premiers inscrits (admin > Abonnés) ; ensuite D-079 A (liste des abonnés dans « Chauffeur retenu »), puis l'étape 2 (courses de l'abonné).
+
 ### 2026-11-25 — Page « Espace chauffeurs pro » (🧩 Fonctionnalités, `feature/page-chauffeurs`)
 - **Fait** : D-079 (« A pour l'instant, le but sera de passer à C plus tard » : liste des abonnés dans « Chauffeur retenu » maintenant, bourse aux courses plus tard), D-080 (lien d'inscription d'abord), D-081 (page de présentation + lien en pied de page), D-082 (formulaire avec carte dans l'espace à l'étape 2, pas de formulaire public). Page `/chauffeurs-vtc` (non référencée) : l'outil, les 2 abonnements (10 € / 30 € TTC), le mois d'essai, 3 étapes, boutons « Créer mon espace » et « Me connecter » ; lien « Espace chauffeurs pro » dans le pied de page (colonne Informations). Porte `/espace` resserrée à `/espace` et `/espace/…` exactement. Testé en local : page en largeur téléphone et ordinateur sans débordement, lien présent, `/espace` et `/admin` toujours fermés, 11 tests PHPUnit OK. Pas de migration.
 - **Bloqué** : rien. Non testé : un vrai téléphone.

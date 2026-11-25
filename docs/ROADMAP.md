@@ -66,6 +66,7 @@
 - [ ] Vérifier que le `.env` local ne pointe pas vers la base de prod (seul `.env.local` doit définir la base locale)
 
 ## ✅ Terminé (récent)
+- 2026-11-25 — **Mise en prod** de la page « Espace chauffeurs pro » `/chauffeurs-vtc` + lien en pied de page (PR #19)
 - 2026-11-25 — **Mise en prod** des espaces abonnés, étape 1 (PR #18) : inscription `/espace/inscription`, « Ma société », menu « Abonnés », cloisonnement par entreprise ; 1 migration
 - 2026-11-23 — **Mise en prod** de la fondation « Entreprise » (PR #12) : 7 migrations, prix et données inchangés, nouveau menu « Grille de prix »
 - 2026-11-17 — **Mise en prod** de « Partager la course » (PR #7, D-023 à D-031 : partage complet / partiel / client, SMS-WhatsApp-Copier, commission enregistrée, sous-menu Messages avec catégories et modèles) et de la réservation par téléphone avec date passée (PR #8, D-032), migration comprise ; vérifiées en ligne le 2026-11-19
