@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-096 — Cases alignées et indication « distance courte à 0 » — 2026-11-25
+- **Décision** (mots de l'utilisateur : « aligne les input pour tous les affichages, verticale ou horizontale » ; « ajoute une indication en bas : vous pouvez laisser votre seuil à 0 si vous voulez garder le même prix au km pour petite ou grande distance ») : dans le formulaire de la grille de prix, cases de même largeur et à la même hauteur (côte à côte sur ordinateur, les unes sous les autres sur téléphone) ; indication en bas du formulaire et sous le tableau : « Vous pouvez laisser la distance courte à 0 si vous voulez garder le même prix au km pour petite ou grande distance : c'est alors le prix au km, longue distance qui s'applique dès le premier km. »
+- **Raison** : lisibilité ; le mot « seuil » est devenu « distance courte » (D-095), et la phrase précise quel prix au km s'applique.
+- **Impact** : `GrilleTarifChampsTrait` (admin et « Mes prix »). Vérifié : avec 0, prix = prise en charge + distance × prix au km longue distance, au simulateur comme sur le site.
+
 ### D-095 — Titres simples et simulateur de prix dans la grille — 2026-11-25
 - **Décision** (mots de l'utilisateur : « A + ajoute un simulateur en dessous, pour éviter que les abonnés aillent sur la carte qu'ils utilisent HERE Maps pour resimuler les prix ») : nouveaux titres et phrases courtes (Proposé — texte choisi par l'utilisateur : « vous proposez cette gamme de véhicule à vos clients » ; Distance courte jusqu'à (km) ; Prise en charge (€) ; Prix au km, courte distance (€) ; Prix à la fin de la distance courte ; Prix au km, longue distance (€)), pour l'admin et « Mes prix ». Plus un **simulateur de prix** sous la grille : on tape une distance, on voit le prix, sans passer par la carte.
 - **Raison** : le jargon « seuil / base » n'était pas clair ; simuler sans la carte évite des appels HERE Maps (coût) et fait gagner du temps.

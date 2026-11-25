@@ -89,12 +89,27 @@ trait GrilleTarifChampsTrait
         $donnees = json_encode(['nuit' => $nuitPourcent, 'lignes' => $lignes], JSON_THROW_ON_ERROR | JSON_HEX_TAG | JSON_HEX_AMP);
 
         // Titres longs (D-095) : ils passent à la ligne au lieu d'élargir le tableau
-        $assets = $assets->addHtmlContentToHead('<style>table.datagrid thead th, table.datagrid thead th a { white-space: normal; vertical-align: bottom; }</style>');
+        // Cases alignées (demande de l'utilisateur) : titres de même hauteur, cases de même largeur,
+        // côte à côte sur ordinateur comme les unes sous les autres sur téléphone
+        $assets = $assets->addHtmlContentToHead('<style>
+            table.datagrid thead th, table.datagrid thead th a { white-space: normal; vertical-align: bottom; }
+            form[name="GrilleTarif"] .form-group > .form-label, form[name="GrilleTarif"] .form-group > label.form-control-label {
+                min-height: 3.9em; display: block; margin-bottom: .35rem; }
+            form[name="GrilleTarif"] .form-widget input.form-control,
+            form[name="GrilleTarif"] .form-widget select.form-select { width: 100%; max-width: 100%; }
+            form[name="GrilleTarif"] .form-help { min-height: 2.6em; }
+            @media (max-width: 767.98px) {
+              form[name="GrilleTarif"] .form-group > .form-label, form[name="GrilleTarif"] .form-group > label.form-control-label { min-height: 0; }
+              form[name="GrilleTarif"] .form-help { min-height: 0; }
+            }
+        </style>');
 
         return $assets->addHtmlContentToBody(<<<HTML
 <script>
 (function () {
   const DONNEES = {$donnees};
+  // Indication demandée par l'utilisateur (D-096)
+  const NOTE_SEUIL = 'Vous pouvez laisser la <strong>distance courte à 0</strong> si vous voulez garder le même prix au km pour petite ou grande distance : c\'est alors le <strong>prix au km, longue distance</strong> qui s\'applique dès le premier km.';
   const n = (v) => parseFloat(String(v).replace(',', '.').replace(/\s/g, '')) || 0;
   const eur = (x) => x.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
   const prixBrut = (l, d) => d <= l.s ? l.p + d * l.a : (l.p + l.s * l.a) + (d - l.s) * l.b;
@@ -123,6 +138,10 @@ trait GrilleTarifChampsTrait
   if (seuil && pec && ks && kr) {
     const c = carte('Simulateur de prix pour ce véhicule');
     (kr.closest('form') || document.querySelector('#main')).after(c);
+    const note = document.createElement('div');
+    note.className = 'alert alert-info mt-3 mb-0';
+    note.innerHTML = '<i class="fa fa-info-circle"></i> ' + NOTE_SEUIL;
+    c.before(note);
     const maj = () => {
       const l = { s: n(seuil.value), p: n(pec.value), a: n(ks.value), b: n(kr.value) };
       if (auSeuil) auSeuil.value = (l.p + l.s * l.a).toFixed(2);
@@ -140,6 +159,10 @@ trait GrilleTarifChampsTrait
   if (!table) return;
   const c = carte('Simulateur de prix');
   (table.closest('.content-panel') || table.parentElement).after(c);
+  const note = document.createElement('div');
+  note.className = 'alert alert-info mt-3 mb-0';
+  note.innerHTML = '<i class="fa fa-info-circle"></i> ' + NOTE_SEUIL;
+  c.after(note);
   const maj = () => {
     const d = n(c.querySelector('[data-sim-km]').value), nuit = c.querySelector('[data-sim-nuit]').checked;
     c.querySelector('[data-sim-resultat]').innerHTML = DONNEES.lignes.length
