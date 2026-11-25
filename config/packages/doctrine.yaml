@@ -26,6 +26,11 @@ doctrine:
                 alias: App
         controller_resolver:
             auto_mapping: false
+        # Cloisonnement par entreprise (D-078) : activé à chaque page par CloisonnementEntrepriseListener
+        filters:
+            entreprise:
+                class: App\Doctrine\EntrepriseFilter
+                enabled: false
 
 when@test:
     doctrine:

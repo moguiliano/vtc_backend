@@ -7,6 +7,11 @@ security:
             entity:
                 class: App\Entity\Admin
                 property: email
+        # Comptes des abonnés (D-074) : séparés des administrateurs (D-078, verrou n°1)
+        abonne_provider:
+            entity:
+                class: App\Entity\CompteAbonne
+                property: email
 
     role_hierarchy:
         ROLE_SUPER_ADMIN:
@@ -28,6 +33,20 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        # Espace abonnés (D-076) : sa propre porte, ses propres comptes.
+        # Un compte abonné n'existe que derrière ce pare-feu ; un admin ne peut pas s'y connecter.
+        espace:
+            pattern: ^/espace
+            lazy: true
+            provider: abonne_provider
+            form_login:
+                login_path: espace_connexion
+                check_path: espace_connexion
+                default_target_path: espace_accueil
+                enable_csrf: true
+            logout:
+                path: espace_deconnexion
+                target: espace_connexion
         main:
             lazy: true
             provider: app_user_provider
@@ -42,6 +61,8 @@ security:
 
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/espace/(connexion|inscription)$, roles: PUBLIC_ACCESS }
+        - { path: ^/espace, roles: ROLE_ABONNE }
         - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_REGULATEUR] }
 
 when@test:

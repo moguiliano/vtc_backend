@@ -1,0 +1,13 @@
+{% extends 'espace/base.html.twig' %}
+{% block title %}En attente de validation{% endblock %}
+{% block body %}
+<div class="zen-card zen-wide">
+    <span class="badge-etat">{{ entreprise.etat.label }}</span>
+    <h1 class="mt-3">Merci, {{ entreprise.nom }} !</h1>
+    <p>Vos informations sont bien reçues. ZenCAR les vérifie ; votre espace s'ouvrira dès la validation,
+        et votre <strong>mois d'essai gratuit</strong> commencera ce jour-là.</p>
+    <p class="muted small">Une erreur ? Vous pouvez encore <a href="{{ path('espace_ma_societe') }}">corriger vos informations</a>.</p>
+    <h2 class="h6 mt-4 mb-3">Ce que vous avez envoyé</h2>
+    {% include 'espace/_fiche_societe.html.twig' %}
+</div>
+{% endblock %}

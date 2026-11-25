@@ -1,0 +1,24 @@
+{% extends 'espace/base.html.twig' %}
+{% block title %}Ma société{% endblock %}
+{% block body %}
+<div class="zen-card zen-wide">
+    <h1 class="mb-1">Ma société</h1>
+    {% if form %}
+        {% form_theme form 'bootstrap_5_layout.html.twig' %}
+        <p class="muted small mb-4">Ces informations apparaîtront sur vos bons de commande et vos factures.
+            Elles sont vérifiées par ZenCAR avant l'ouverture de votre espace. Vous pouvez les corriger tant qu'elles ne sont pas validées.</p>
+        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            {% for champ in form.children|filter(c => c.vars.name != '_token') %}
+                <div class="col-md-6 mb-3">{{ form_row(champ) }}</div>
+            {% endfor %}
+        </div>
+        <button class="btn btn-zen" type="submit">Envoyer pour validation</button>
+        {{ form_end(form) }}
+    {% else %}
+        <p class="muted small mb-4">Votre société est validée. Pour corriger une information, contactez ZenCAR au 06 74 03 96 94.</p>
+        {% if societe %}{% include 'espace/_fiche_societe.html.twig' %}{% endif %}
+    {% endif %}
+</div>
+{% endblock %}

@@ -55,3 +55,5 @@ templates/partials/dev.log
 # Entités/Fixtures de test non finalisées
 src/Entity/voiture.php
 src/DataFixtures/AppFixtures.php
+# Mots de passe des comptes de test locaux (jamais commités)
+comptes-test.local
