@@ -1,0 +1,14 @@
+<table class="table table-sm mb-0">
+    <tr><th style="width:38%">Raison sociale</th><td>{{ societe.raisonSociale }}</td></tr>
+    {% if societe.nomCommercial %}<tr><th>Nom commercial</th><td>{{ societe.nomCommercial }}</td></tr>{% endif %}
+    <tr><th>Forme juridique</th><td>{{ societe.formeJuridique }}</td></tr>
+    {% if societe.capitalSocial %}<tr><th>Capital social</th><td>{{ societe.capitalSocial }}</td></tr>{% endif %}
+    {% if societe.rcs %}<tr><th>RCS</th><td>{{ societe.rcs }}</td></tr>{% endif %}
+    <tr><th>SIREN / SIRET</th><td>{{ societe.siren }} / {{ societe.siret }}</td></tr>
+    <tr><th>TVA intracommunautaire</th><td>{{ societe.tvaIntra ?: 'non assujetti' }}</td></tr>
+    <tr><th>Code NAF</th><td>{{ societe.codeNaf }}</td></tr>
+    <tr><th>N° REVTC</th><td>{{ societe.numeroRevtc }}</td></tr>
+    <tr><th>Adresse</th><td>{{ societe.adresse }}, {{ societe.codePostal }} {{ societe.ville }}</td></tr>
+    <tr><th>Téléphone</th><td>{{ societe.telephone }}</td></tr>
+    {% if societe.email %}<tr><th>E-mail</th><td>{{ societe.email }}</td></tr>{% endif %}
+</table>

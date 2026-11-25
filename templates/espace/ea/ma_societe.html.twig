@@ -1,0 +1,23 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Ma société{% endblock %}
+{% block content_title %}Ma société{% endblock %}
+{% block main %}
+<div class="card"><div class="card-body">
+{% if form %}
+    {% form_theme form 'bootstrap_5_layout.html.twig' %}
+    <p class="text-muted">Ces informations apparaîtront sur vos bons de commande et vos factures. ZenCAR les vérifie avant l'ouverture de votre espace ; vous pouvez les corriger tant qu'elles ne sont pas validées.</p>
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        {% for champ in form.children|filter(c => c.vars.name != '_token') %}
+            <div class="col-md-6 mb-3">{{ form_row(champ) }}</div>
+        {% endfor %}
+    </div>
+    <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i> Envoyer pour validation</button>
+    {{ form_end(form) }}
+{% else %}
+    <p class="text-muted">Votre société est validée. Pour corriger une information, contactez ZenCAR au 06 74 03 96 94.</p>
+    {% if societe %}{% include 'espace/ea/_fiche_societe.html.twig' %}{% endif %}
+{% endif %}
+</div></div>
+{% endblock %}

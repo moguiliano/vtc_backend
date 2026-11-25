@@ -41,18 +41,7 @@
 </head>
 <body>
     <div class="espace-bar">
-        <a class="brand" href="{{ path('espace_accueil') }}">ZenCAR<small>Espace pro</small></a>
-        {% if app.user %}
-            <div>
-                <span class="muted small">{{ app.user.userIdentifier }}</span>
-                <a class="nav-l" href="{{ path('espace_accueil') }}"><i class="bi bi-house"></i> Accueil</a>
-                <a class="nav-l" href="{{ path('espace_ma_societe') }}"><i class="bi bi-building"></i> Ma société</a>
-                {% if app.user.entreprise and not app.user.entreprise.enAttente %}
-                    <a class="nav-l" href="{{ path('espace_mes_prix') }}"><i class="bi bi-tags"></i> Mes prix</a>
-                {% endif %}
-                <a class="nav-l" href="{{ path('espace_deconnexion') }}"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
-            </div>
-        {% endif %}
+        <a class="brand" href="{{ path('app_chauffeurs_vtc') }}">ZenCAR<small>Espace pro</small></a>
     </div>
     <div class="container px-3">
         {% for type, messages in app.flashes %}

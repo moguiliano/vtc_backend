@@ -1,0 +1,38 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{# Accueil de l'espace abonné (D-092) #}
+{% block page_title %}Accueil{% endblock %}
+{% block content_title %}Bonjour, {{ entreprise.nom }}{% endblock %}
+{% block main %}
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Mon abonnement</h5>
+            <p class="mb-1"><span class="badge bg-{{ entreprise.etat.value == 'lecture_seule' ? 'secondary' : 'success' }}">{{ entreprise.etat.label }}</span></p>
+            <p class="mb-1">{{ entreprise.typeAbonnement ? entreprise.typeAbonnement.label ~ ' — ' ~ entreprise.typeAbonnement.prixMensuelTtc ~ ' € TTC / mois' : '—' }}</p>
+            {% if entreprise.etat.value == 'essai' and entreprise.essaiFin %}
+                <p class="mb-0">Essai gratuit jusqu'au <strong>{{ entreprise.essaiFin|date('d/m/Y') }}</strong> inclus.</p>
+            {% elseif entreprise.etat.value == 'lecture_seule' %}
+                <p class="mb-0">Votre espace est en <strong>lecture seule</strong> : contactez ZenCAR pour le réactiver.</p>
+            {% endif %}
+        </div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Pour bien démarrer</h5>
+            <p>Cochez vos véhicules dans <strong>Mes prix</strong>. Vos prix sont ceux de ZenCAR, mis à jour pour vous ; vous pouvez les personnaliser.</p>
+            <a class="btn btn-primary" href="{{ path('espace_mes_prix') }}"><i class="fa fa-tags"></i> Mes prix</a>
+        </div></div>
+    </div>
+    <div class="col-12">
+        <div class="card"><div class="card-body">
+            <h5 class="card-title">Bientôt dans votre espace</h5>
+            <ul class="mb-0 text-muted">
+                <li>Saisir et suivre vos courses, avec la carte et le prix calculé</li>
+                <li>Les courses que ZenCAR vous confie</li>
+                <li>Vos bons de commande et vos factures, à votre nom</li>
+                {% if entreprise.typeAbonnement and entreprise.typeAbonnement.value == 'dispatcheur' %}<li>Partager vos courses (WhatsApp, Telegram, SMS)</li>{% endif %}
+            </ul>
+        </div></div>
+    </div>
+</div>
+{% endblock %}
