@@ -7,7 +7,8 @@
 
 ### 2026-11-25 — Abonné retenu en prod (PR #20)
 - **Fait** : PR #20 fusionnée (`5365bd3`) ; en prod : sauvegarde (`sauvegarde-20261125-0915.sql`), `git pull` (`059f857..5365bd3`), 1 seule migration listée puis jouée (`Version20261125015415`), cache vidé. Vérifié en ligne par Claude : accueil, page chauffeurs, réservation, calcul de trajet, connexion abonné, redirection de `/admin`. Expliqué en séance : sauvegarde (photo avant travaux), `pull` / `push`, ordre sauvegarde → pull → migration → cache.
-- **Bloqué** : rien. La liste « Abonné ZenCAR » n'apparaîtra qu'avec un premier abonné validé. `public/.htaccess` non suivi sur le serveur : normal (propre à Infomaniak).
+- **Test en prod par l'utilisateur** : inscription d'un abonné « TEST SIMPLICI CAB » (dispatcheur) via `/chauffeurs-vtc`, société remplie, validation dans Admin > Abonnés : « validé ! ». À passer en « Lecture seule » après les tests (pas de suppression d'abonné dans l'admin).
+- **Bloqué** : rien. `public/.htaccess` non suivi sur le serveur : normal (propre à Infomaniak).
 - **Prochaine étape** : partager `https://dzencar.fr/chauffeurs-vtc` et valider les premiers abonnés ; étape 2 des espaces abonnés (Mes courses : saisie avec carte + courses reçues de ZenCAR, D-082, D-084).
 
 ### 2026-11-25 — Abonné retenu dans « Partager la course » (🧩 Fonctionnalités, `feature/abonne-retenu`)
