@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-092 — L'espace chauffeur en style « admin EasyAdmin » — 2026-11-25
+- **Décision** (mots de l'utilisateur : « je le trouve trop complexe », « pourquoi pas mettre une page similaire à admin symfony ? », puis choix A) : l'espace abonné passe dans un **2ᵉ tableau de bord EasyAdmin** sous `/espace` (menu sur le côté : Accueil, Ma société, Mes prix, puis Mes courses et Mes factures). « Mes prix » devient **« simple d'abord »** : une ligne par véhicule (case, prix ZenCAR « à partir de », bouton « Personnaliser » qui ouvre les 4 chiffres) et une phrase pour la nuit. Inscription et connexion restent des pages simples.
+- **Raison** : page actuelle trop chargée ; un cadre connu, plus clair ; listes, recherche et filtres offerts pour les étapes 2 et 4 ; factorisation avec l'admin (D-088).
+- **Impact** : nouveau `EspaceDashboardController` (`#[AdminDashboard]` sous `/espace`, `allowedControllers` = seulement les écrans de l'espace, donc aucun écran admin accessible) ; accueil, Ma société et Mes prix déplacés dedans ; à faire avant la mise en prod de « Mes prix ».
+
 ### D-091 — Quand SIMPLICI CAB change ses prix, ceux des abonnés suivent-ils ? — 2026-11-25
 - **Décision** (mots de l'utilisateur : « c'est plutôt ma facturation qui change et celle des abonnés qui suit », puis « Oui, ils suivent ») : chaque véhicule d'un abonné est **« comme ZenCAR »** au départ et **suit les changements de prix de SIMPLICI CAB**. Dès que l'abonné modifie lui-même un chiffre de ce véhicule, il passe en **« mes prix »** et ne suit plus ; un bouton **« Revenir aux prix ZenCAR »** le raccroche.
 - **Raison** : l'abonné n'a rien à faire pour rester aligné sur ZenCAR, tout en gardant la liberté de fixer ses prix (D-016).
