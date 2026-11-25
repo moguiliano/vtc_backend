@@ -61,7 +61,8 @@ security:
 
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/espace/(connexion|inscription)$, roles: PUBLIC_ACCESS }
+        - { path: ^/espace/(connexion|inscription|mot-de-passe-oublie)$, roles: PUBLIC_ACCESS }
+        - { path: ^/espace/nouveau-mot-de-passe/, roles: PUBLIC_ACCESS }
         - { path: ^/espace(/|$), roles: ROLE_ABONNE }
         - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_REGULATEUR] }
 

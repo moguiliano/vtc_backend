@@ -17,6 +17,7 @@
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <button class="btn btn-zen w-100 mt-2" type="submit">Se connecter</button>
+        <p class="text-center mt-3 mb-0 small"><a href="{{ path('espace_mot_de_passe_oublie') }}">Mot de passe oublié ?</a></p>
     </form>
     <p class="text-center mt-4 mb-0 muted small">Pas encore d'espace ? <a href="{{ path('espace_inscription') }}">Créer mon espace</a></p>
 </div>

@@ -1,0 +1,25 @@
+{% extends 'espace/base.html.twig' %}
+{% block title %}Nouveau mot de passe{% endblock %}
+{% block body %}
+<div class="zen-card zen-narrow">
+    <h1 class="text-center mb-3">Nouveau mot de passe</h1>
+    {% if not valide %}
+        <div class="alert alert-warning py-2">Ce lien n'est plus valable (il sert une seule fois et expire au bout d'1 heure).</div>
+        <p class="text-center mb-0"><a href="{{ path('espace_mot_de_passe_oublie') }}">Demander un nouveau lien</a></p>
+    {% else %}
+        {% if erreur %}<div class="alert alert-danger py-2">{{ erreur }}</div>{% endif %}
+        <form method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('nouveau-mot-de-passe') }}">
+            <div class="mb-3">
+                <label class="form-label" for="nouveau">Nouveau mot de passe (8 caractères minimum)</label>
+                <input type="password" id="nouveau" name="nouveau" class="form-control" autocomplete="new-password" required minlength="8">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="confirmation">Nouveau mot de passe (encore)</label>
+                <input type="password" id="confirmation" name="confirmation" class="form-control" autocomplete="new-password" required minlength="8">
+            </div>
+            <button class="btn btn-zen w-100" type="submit">Enregistrer</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
