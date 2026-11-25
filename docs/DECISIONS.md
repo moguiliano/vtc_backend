@@ -59,7 +59,13 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-101 — Prix d'une course confiée : celui de l'émetteur — 2026-11-25
+- **Décision** (mots de l'utilisateur : « si une course est envoyée à un chauffeur et qu'il accepte, c'est avec le prix du dispatcheur et non pas avec les prix du chauffeur ») : une course confiée (par SIMPLICI CAB, ou plus tard par un dispatcheur) **garde le prix fixé par l'émetteur**. Le chauffeur voit le **prix chauffeur** (net chauffeur, commission enregistrée au partage) et **ne peut pas le changer** (cohérent avec D-100 : statut seulement).
+- **Raison** : le prix a été annoncé au client par l'émetteur ; la grille du chauffeur ne s'applique qu'à ses propres clients.
+- **Impact** : étape 2b ; la grille « Mes prix » du chauffeur ne sert qu'aux courses qu'il saisit lui-même (2a). Décision prise dans une session dérivée et reportée ici.
+
 ### D-100 — Courses de SIMPLICI CAB confiées à un abonné : ce qu'il voit et peut faire — 2026-11-25
+- **Précision** (mots de l'utilisateur : « pas uniquement mes courses mais n'importe quelle course reçue par un dispatcheur ou par moi-même ») : la règle vaut pour **toute course confiée** à un chauffeur abonné, qu'elle vienne de SIMPLICI CAB **ou d'un abonné dispatcheur**. Ci-dessous, « SIMPLICI CAB » se lit donc « l'entreprise qui envoie la course ».
 - **Décision** (mots de l'utilisateur : « mes courses, un chauffeur ne la voit que si je lui envoie » ; « concernant les miennes il ne peut que changer le statut, pas la supprimer » ; « si au final il annule et que je l'envoie à un autre chauffeur, il n'a plus la main sur cette course ») : une course de SIMPLICI CAB n'apparaît dans l'espace d'un abonné **que s'il est l'abonné retenu** (D-083) ; il ne peut **que changer son statut** (ni modifier, ni supprimer) ; dès que la course est confiée à un autre abonné, elle **disparaît** de son espace.
 - **Raison** : la course et le client restent à SIMPLICI CAB ; l'abonné est un sous-traitant.
 - **Impact** : étape 2b. Pas de copie : lecture contrôlée des seules courses où `abonne_retenu` = l'abonné, limitée aux champs autorisés (jamais prix client ni commission, D-084) ; une seule action d'écriture : le statut. Précise D-084 (« copie » → lecture contrôlée, qui suit automatiquement les changements et le changement de chauffeur). Effet d'une annulation par le chauffeur : à trancher.
