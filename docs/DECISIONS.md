@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-094 — Descriptions dans la grille de prix : où ? — 2026-11-25
+- **Décision** (demande de l'utilisateur : « ajoute une description pour chaque ligne », puis choix A) : une **phrase courte sous chaque case** du formulaire « Modifier » de la grille de prix (admin et « Mes prix » des abonnés, même code).
+- **Raison** : c'est devant un chiffre à taper que l'on hésite ; une description des véhicules dans le tableau pourra venir plus tard.
+- **Impact** : textes d'aide dans `GrilleTarifChampsTrait` ; formulation des textes à valider avec l'utilisateur.
+
 ### D-093 — « Mes prix » : le même écran que la Grille de prix de l'admin — 2026-11-25
 - **Décision** (question de l'utilisateur : « pourquoi n'as-tu pas mis exactement le même template prix que le mien ? », puis choix A) : « Mes prix » reprend **le même écran** que « Grille de prix » de l'admin (liste, puis « Modifier » par véhicule, mêmes colonnes), avec seulement : ses propres lignes, ni « Ajouter » ni « Supprimer », une colonne « Prix ZenCAR / Mes prix » et une action « Revenir aux prix ZenCAR ». La majoration de nuit passe dans une petite page à part, « Ma majoration de nuit ».
 - **Raison** : un seul écran à entretenir (esprit de D-088) ; le super-admin voit la même chose que le chauffeur et peut l'aider au téléphone.
