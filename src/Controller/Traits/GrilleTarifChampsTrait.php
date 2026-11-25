@@ -31,7 +31,7 @@ trait GrilleTarifChampsTrait
 
         yield BooleanField::new('actif', 'Proposé')
             ->setColumns('col-md-3')
-            ->setHelp('Activé : vos clients peuvent choisir ce véhicule.');
+            ->setHelp('Vous proposez cette gamme de véhicule à vos clients.');
 
         if ($formulaire) {
             yield FormField::addRow();
