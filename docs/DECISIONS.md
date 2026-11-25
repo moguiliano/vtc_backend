@@ -59,6 +59,11 @@ Ordre conseillé : D-011 (modèle) d'abord, car il conditionne toutes les autres
 
 ## ✅ Tranché
 
+### D-080 — Après la mise en prod de l'étape 1 : par quoi continuer ? — 2026-11-25
+- **Décision** (choix de l'utilisateur : C) : d'abord **placer le lien « Créer mon espace »** sur dzencar.fr, pour recruter les premiers abonnés ; ensuite la liste des abonnés dans « Chauffeur retenu » (D-079), puis l'étape 2 (les courses de l'abonné).
+- **Raison** : sans abonnés, les autres étapes ne servent à personne ; on accroche l'enseigne avant de meubler la boutique.
+- **Impact** : remplace le « pas encore liée » de D-078 ; emplacement du lien à trancher.
+
 ### D-079 — Les abonnés, futurs chauffeurs de ZenCAR ? — 2026-11-25
 - **Décision** (mots de l'utilisateur) : « A pour l'instant, le but sera de passer à C plus tard ». Les abonnés d'aujourd'hui seront les chauffeurs de demain sur ZenCAR.
   - **Maintenant (A)** : les courses de SIMPLICI CAB restent partagées par WhatsApp / Telegram ; le champ « Chauffeur retenu » propose la **liste des abonnés validés** (en plus du texte libre, pour les chauffeurs qui ne sont pas abonnés).
