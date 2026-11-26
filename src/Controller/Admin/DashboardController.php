@@ -79,7 +79,9 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::section('Réservations');
             // Pastille : courses dont l'abonné retenu s'est retiré, à réattribuer (D-102, D-107)
             $retires = $this->reservationRepo->count(['statutChauffeur' => StatutChauffeur::RETIRE]);
-            $reservations = MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class);
+            // Deux contrôleurs par entité (admin + espace abonné) : toujours dire lequel, sinon EasyAdmin peut prendre celui de l'espace (403)
+            $reservations = MenuItem::linkToCrud('Réservations', 'fa fa-calendar-check', Reservation::class)
+                ->setController(ReservationCrudController::class);
             yield $retires > 0 ? $reservations->setBadge($retires . ' retrait' . ($retires > 1 ? 's' : ''), 'danger') : $reservations;
             yield MenuItem::linkToCrud('Factures', 'fa fa-file-invoice', Facture::class);
         }
@@ -107,7 +109,8 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::section('Tarification');
         }
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
-            yield MenuItem::linkToCrud('Grille de prix', 'fa fa-euro-sign', GrilleTarif::class);
+            yield MenuItem::linkToCrud('Grille de prix', 'fa fa-euro-sign', GrilleTarif::class)
+                ->setController(GrilleTarifCrudController::class);
             yield MenuItem::linkToCrud('Véhicules', 'fa fa-car', VehicleCategory::class);
         }
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
