@@ -42,6 +42,7 @@ class QuickBookController extends AbstractController
                 $reservation = $this->creator->depuisForfait($forfait, $prenom, $phone, $mode, $offset);
 
                 $url = $this->adminUrlGenerator
+                    ->setDashboard(DashboardController::class) // deux tableaux de bord (admin + espace) : dire lequel
                     ->setController(ReservationCrudController::class)
                     ->setAction('detail')
                     ->setEntityId($reservation->getId())

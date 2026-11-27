@@ -88,6 +88,7 @@ class PhoneBookingController extends AbstractController
                     : 'Réservation créée (aucun SMS envoyé).');
 
                 return $this->redirect($this->adminUrlGenerator
+                    ->setDashboard(DashboardController::class) // deux tableaux de bord (admin + espace) : dire lequel
                     ->setController(ReservationCrudController::class)
                     ->setAction('detail')
                     ->setEntityId($reservation->getId())
