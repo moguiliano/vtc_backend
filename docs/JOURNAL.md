@@ -5,6 +5,11 @@
 
 ---
 
+### 2026-11-27 — Correctif : erreur après une réservation rapide / par téléphone (PR #26)
+- **Fait** : l'utilisateur signale une page d'erreur (404) après une « Réservation rapide » dans l'admin (la réservation était quand même enregistrée). Cause : depuis l'espace abonné il y a deux tableaux de bord EasyAdmin ; hors page EasyAdmin, la redirection vers la fiche doit dire lequel (`setDashboard`). Corrigé pour « Réservation rapide » et « Nouvelle réservation (téléphone) » (PR #26, `db96948`, sans migration). Testé en local : les deux ouvrent la fiche. En prod par l'utilisateur : `git pull` + cache vidé. Vérifié en ligne par Claude : accueil 200, pages admin → connexion.
+- **Bloqué** : rien. À faire par l'utilisateur : supprimer les éventuels doublons créés pendant les essais avant correctif. Non testé par Claude en prod (derrière la connexion admin).
+- **Prochaine étape** : adresse d'envoi des e-mails (`noreply@dzencar.fr` chez Infomaniak, puis `MAILER_DSN`) — aujourd'hui aucun e-mail ne part en prod, formulaire de contact compris.
+
 ### 2026-11-26 — Mot de passe + français en prod (PR #24) et correctif 403 « Grille de prix » (PR #25)
 - **Fait** : PR #24 fusionnée (`e6ba7fb`). Avant la mise en prod, l'utilisateur signale un 403 sur `dzencar.fr/admin` → « Grille de prix » : le menu admin ne précisait pas le contrôleur et EasyAdmin prenait celui de l'espace abonné (`MesPrixCrudController`, interdit à l'admin). Correctif : `setController(...)` explicite sur « Grille de prix » et « Réservations » (PR #25, `6c84a1b`, sans migration). En prod (par l'utilisateur, un seul bloc de commandes) : sauvegarde, `git pull`, migration `Version20261125161640`, cache vidé ; l'utilisateur a vérifié l'admin. Vérifié en ligne par Claude : `/espace/mot-de-passe-oublie` 200, lien « Mot de passe oublié ? » sur la connexion abonné, accueil 200, `/admin` → connexion.
 - **Bloqué** : aucun e-mail ne part en prod tant que `MAILER_DSN` / `MAILER_FROM` ne sont pas configurés (adresse d'envoi Infomaniak à créer). Non testé : l'erreur 403 n'a pas pu être reproduite en local (la correction est vérifiée en prod par l'utilisateur) ; un vrai téléphone.
